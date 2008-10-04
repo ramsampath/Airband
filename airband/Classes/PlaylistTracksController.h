@@ -3,7 +3,7 @@
 //  airband
 //
 //  Created by Scot Shinderman on 9/7/08.
-//  Copyright 2008 Imageworks. All rights reserved.
+//  Copyright 2008 Elliptic. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
