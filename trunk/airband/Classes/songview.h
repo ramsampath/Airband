@@ -3,7 +3,7 @@
 //  NavBar
 //
 //  Created by Scot Shinderman on 8/15/08.
-//  Copyright 2008 Imageworks. All rights reserved.
+//  Copyright 2008 Elliptic. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
