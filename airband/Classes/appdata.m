@@ -9,7 +9,7 @@
 #pragma mark	-
 
 static asyncIO *g_async = nil;
-static NSString *partner_token = @"3110321588";
+static NSString *partner_token = @"[redacted]";
 static audiohelp_II *g_audio = nil;
 
 // mp3 tunes API:
