@@ -24,6 +24,7 @@
   int recv_;
   char *buf_;
   NSURLConnection  *inflight_;
+  NSMutableArray  *tasks_;	
 }
 
 - (void) clean;

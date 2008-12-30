@@ -16,6 +16,7 @@
 	  capacity_ = 0;
 	  recv_ = 0;
 	  buf_ = NULL;
+	  tasks_ = [[NSMutableArray arrayWithCapacity:10] retain];		
 	}
 	
 	return self;
@@ -23,6 +24,7 @@
 
 - (void) dealloc
 {
+  [tasks_ dealloc];
   free( buf_ );
   [super dealloc];
 }
@@ -39,20 +41,57 @@
   userdata_ = nil;
   inflight_ = nil;
   recv_ = 0;
+	
+  [tasks_ removeAllObjects];
 
   [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 
+
+- (void) doNextTask
+{
+	if( inflight_ || [tasks_ count] == 0 )
+		return;
+	
+	printf( "firing off deferred task!\n" );
+	
+	NSObject *anObject = [[tasks_ objectAtIndex:0] retain];
+	[tasks_ removeObjectAtIndex:0];
+	
+	if( [anObject isKindOfClass:[NSDictionary class]] )
+	{
+		NSDictionary *d = (NSDictionary*) anObject;
+		NSString *url = [d objectForKey:@"url"];
+		id info  = [d objectForKey:@"asyncinfo"];
+		id data  = [d objectForKey:@"userdata"];
+	
+		// try again.
+		[self loadWithURL:url asyncinfo:info asyncdata:data];
+	}
+}	
+
+
 - (void) loadWithURL:(NSString*)strurl asyncinfo:(id)user  asyncdata:(id)userdata
 {
-  if( inflight_ )
-	return;
+	if( inflight_ ) 
+	{		
+		// build a task.
+		NSMutableDictionary *task = [NSMutableDictionary dictionaryWithCapacity:5];
+		[task setObject:strurl forKey:@"url"];
+		[task setObject:user forKey:@"asyncinfo"];
+		[task setObject:userdata forKey:@"userdata"];		
+		[tasks_ addObject:task];		
+		
+		printf( "added task %d waiting\n", [tasks_ count] );
+		return;
+	}
 
   if( [user conformsToProtocol:@protocol(ProtocolAsyncInfo)] ) {
 	user_ = user;
 	userdata_ = userdata;
   } else {
-	printf( "[bug] -- bad asyncinfo\n" );
+	printf( "[bug] -- bad asyncinfo passed into loadWithURL\n" );
+	return;
   }
 
   recv_   = 0;
@@ -111,6 +150,9 @@
   recv_ = 0;
   [user_ dataReady:rdata  userdata:userdata_];
   [rdata release];
+
+  // [note] -- this is probably better handled by the top level app.
+  [self doNextTask];
 }
 
 @end
