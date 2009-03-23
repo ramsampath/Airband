@@ -3,7 +3,7 @@
 //  airband
 //
 //  Created by Scot Shinderman on 8/26/08.
-//  Copyright Imageworks 2008. All rights reserved.
+//  Copyright Elliptic 2008. All rights reserved.
 //
 
 #import "airbandAppDelegate.h"
