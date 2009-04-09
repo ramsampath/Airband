@@ -9,7 +9,7 @@
 #pragma mark	-
 
 static asyncIO *g_async = nil;
-static NSString *partner_token = @"[redacted]";
+static NSString *partner_token = @"3110321588";
 static audiohelp_II *g_audio = nil;
 
 // mp3 tunes API:
@@ -28,7 +28,6 @@ static audiohelp_II *g_audio = nil;
 @synthesize albumList_;
 @synthesize trackList_;
 @synthesize currentTrackTitle_;
-
 
 // --------------------------------------------------------------------------
 // singelton
@@ -56,7 +55,7 @@ static audiohelp_II *g_audio = nil;
 	  albumList_ = nil;
 	  trackList_ = nil;
 	  currentTrackTitle_ = nil;
-
+	
 	  // read the user settings.
 	  [self restoreState];
 	}
@@ -160,7 +159,6 @@ static audiohelp_II *g_audio = nil;
 	}
 	else if( [which isEqualToString:@"artwork"] )
 	{			
-		printf( "artwork ready.  %d bytes\n", [data length] );
 		if( [data length] > 100 )
 		{			
 			NSData *dup = [[NSData dataWithData:data] retain];
@@ -354,6 +352,18 @@ static audiohelp_II *g_audio = nil;
 }
 
 
+- (float) percent
+{
+	return [g_audio percentage];
+}
+
+
+- (BOOL) isrunning
+{
+	return [g_audio isrunning];
+}
+
+
 - (BOOL) login
 {
   if( !username_ || !password_ )
@@ -374,7 +384,7 @@ static audiohelp_II *g_audio = nil;
 }
 
 
-
+// [todo] -- should store password in keychain or whatever the equivalent is for iphone.
 
 #pragma mark	-
 #pragma mark		simple state save/restore

@@ -31,6 +31,7 @@
 -(bool) launchworker;
 -(void) consumer;
 -(void) produce:(NSData*)d;
+-(BOOL) isrunning;
 @property (readwrite) struct AudioData* myd_;
 @end
 
@@ -51,6 +52,7 @@
 -(float) percentage;
 -(void) cancel;
 -(void) setvolume:(float)v;
+-(BOOL) isrunning;
 
 @end
 
