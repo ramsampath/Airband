@@ -16,6 +16,12 @@
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
 	if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
 		// Initialization code
+		if (self)
+		{
+			self.title = NSLocalizedString(@"MP3Tunes.COM", @"");
+
+		}
+		
 	}
 	return self;
 }
@@ -134,7 +140,7 @@
 
 
 - (void)viewDidLoad {
-	
+	printf	("Loaded\n");
 	AppData *app = [AppData get];
 	if( !app ) {
 		printf( "couldn't get app? in settings controller\n" );

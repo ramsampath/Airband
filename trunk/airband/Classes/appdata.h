@@ -29,12 +29,14 @@
   NSArray *albumList_;
   // tracks (array of dictionary)for currently selected artist+album
   NSArray* trackList_;
+  float   currentTrackLength_;
   // name of the current song.
   NSString *currentTrackTitle_;
 }
 
 @property (retain) NSString *username_;
 @property (retain) NSString *password_;
+@property (readonly) NSString* sessionID_;
 @property (readonly) NSArray* fullArtistList_;
 @property (readonly) UIImage* artwork_;
 @property (readonly) NSArray* playLists_;
@@ -56,9 +58,11 @@
 - (void) dataReady:(NSData*)data  userdata:(id)userdata;
 - (void) failed:(id)userdata error:(NSError*)error;
 - (void) playTrack:(NSDictionary*)track;
+- (int) getPlayLength;
 - (void) play:(NSDictionary*)artistdictionary;
 - (void) stop;
 - (void) setvolume:(float)volume;
+- (NSArray*) parseItemList:(NSData*)data;
 - (float) percent;
 // if audio track is being played
 - (BOOL) isrunning;

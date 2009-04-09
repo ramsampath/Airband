@@ -9,7 +9,7 @@
 #pragma mark	-
 
 static asyncIO *g_async = nil;
-static NSString *partner_token = @"3110321588";
+static NSString *partner_token = @"8560950360";
 static audiohelp_II *g_audio = nil;
 
 // mp3 tunes API:
@@ -22,6 +22,7 @@ static audiohelp_II *g_audio = nil;
 @synthesize fullArtistList_;
 @synthesize username_;
 @synthesize password_;
+@synthesize sessionID_;
 @synthesize artwork_;
 @synthesize playLists_;
 @synthesize currentTracklist_;
@@ -266,13 +267,21 @@ static audiohelp_II *g_audio = nil;
 }
 
 
+- (int) getPlayLength
+{
+	return 0;
+}
+
+
 
 -(void) playTrack:(NSDictionary*)track
 {
 	NSString *playfile  = [track objectForKey:@"playURL"];
 	NSString *title     = [track objectForKey:@"trackTitle"];
-	NSString *tracksize = [track objectForKey:@"trackFileSize"];	
+	NSString *tracksize = [track objectForKey:@"trackFileSize"];
+	NSString *tracklen  = [track objectForKey:@"trackLength"];
 	
+	currentTrackLength_ = [tracklen floatValue];
 	if( !playfile ) {
 		[[[UIAlertView alloc] initWithTitle:@"Error w/ mp3tunes"
 									message:@"Couldn't get playfile" 

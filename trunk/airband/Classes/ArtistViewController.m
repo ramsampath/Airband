@@ -203,6 +203,7 @@
 - (void) play:(int)index
 {
 	AppData *app = [AppData get];
+	if( [artistList_ count] == 0 ) return;
 	[app play:[artistList_ objectAtIndex:index]];
 }
 
@@ -298,6 +299,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	[searchfield_ resignFirstResponder];
+	if( [artistList_ count] == 0 ) return;
 	
 	NSDictionary *d = [artistList_ objectAtIndex:[indexPath row]];
 	

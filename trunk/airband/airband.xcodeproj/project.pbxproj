@@ -11,8 +11,15 @@
 		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
+		210E10190F8B165B00BBA95A /* AllSettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 210E10170F8B165B00BBA95A /* AllSettingsController.m */; };
+		218776010F899B9C005809E3 /* checked.png in Resources */ = {isa = PBXBuildFile; fileRef = 218776000F899B9C005809E3 /* checked.png */; };
+		218776030F899BB3005809E3 /* unchecked.png in Resources */ = {isa = PBXBuildFile; fileRef = 218776020F899BB3005809E3 /* unchecked.png */; };
+		21A7852C0F7E84FC0053E9AD /* lastfmappdata.m in Sources */ = {isa = PBXBuildFile; fileRef = 21A7852B0F7E84FC0053E9AD /* lastfmappdata.m */; };
+		21D329B60F7BFA0A00E0C6B0 /* AllSettingsTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 21D329B50F7BFA0A00E0C6B0 /* AllSettingsTableCell.m */; };
+		21D32ACA0F7C3DFD00E0C6B0 /* AllSettingsTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 21D32AC90F7C3DFD00E0C6B0 /* AllSettingsTableCell.xib */; };
+		21F439B90F7DB5E700928851 /* SettingsData.plist in Resources */ = {isa = PBXBuildFile; fileRef = 21F439B80F7DB5E700928851 /* SettingsData.plist */; };
+		21F43A120F7DCE0800928851 /* LastFMLogin.xib in Resources */ = {isa = PBXBuildFile; fileRef = 21F43A110F7DCE0800928851 /* LastFMLogin.xib */; };
 		282CCBFE0DB6C98000C4EA27 /* Settings.xib in Resources */ = {isa = PBXBuildFile; fileRef = 282CCBFD0DB6C98000C4EA27 /* Settings.xib */; };
-		28AD73880D9D96C1002E5188 /* MainWindow_defunct.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD73870D9D96C1002E5188 /* MainWindow_defunct.xib */; };
 		7D12339F0E74CDCA0053381A /* spiky.png in Resources */ = {isa = PBXBuildFile; fileRef = 7D12339C0E74CDCA0053381A /* spiky.png */; };
 		7D1233A00E74CDCA0053381A /* gears.png in Resources */ = {isa = PBXBuildFile; fileRef = 7D12339D0E74CDCA0053381A /* gears.png */; };
 		7D1233A10E74CDCA0053381A /* headphones.png in Resources */ = {isa = PBXBuildFile; fileRef = 7D12339E0E74CDCA0053381A /* headphones.png */; };
@@ -50,9 +57,19 @@
 		1D3623250D0F684500981E51 /* airbandAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = airbandAppDelegate.m; path = Classes/airbandAppDelegate.m; sourceTree = "<group>"; };
 		1D6058910D05DD3D006BFB54 /* airband.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = airband.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		210E10170F8B165B00BBA95A /* AllSettingsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AllSettingsController.m; sourceTree = "<group>"; };
+		210E10180F8B165B00BBA95A /* AllSettingsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AllSettingsController.h; sourceTree = "<group>"; };
+		218776000F899B9C005809E3 /* checked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = checked.png; sourceTree = "<group>"; };
+		218776020F899BB3005809E3 /* unchecked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = unchecked.png; sourceTree = "<group>"; };
+		21A7852A0F7E84F60053E9AD /* lastfmappdata.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lastfmappdata.h; sourceTree = "<group>"; };
+		21A7852B0F7E84FC0053E9AD /* lastfmappdata.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = lastfmappdata.m; sourceTree = "<group>"; };
+		21D329B40F7BFA0A00E0C6B0 /* AllSettingsTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AllSettingsTableCell.h; sourceTree = "<group>"; };
+		21D329B50F7BFA0A00E0C6B0 /* AllSettingsTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AllSettingsTableCell.m; sourceTree = "<group>"; };
+		21D32AC90F7C3DFD00E0C6B0 /* AllSettingsTableCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AllSettingsTableCell.xib; sourceTree = "<group>"; };
+		21F439B80F7DB5E700928851 /* SettingsData.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = SettingsData.plist; path = Classes/SettingsData.plist; sourceTree = "<group>"; };
+		21F43A110F7DCE0800928851 /* LastFMLogin.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = LastFMLogin.xib; path = Classes/LastFMLogin.xib; sourceTree = "<group>"; };
 		282CCBFD0DB6C98000C4EA27 /* Settings.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Settings.xib; sourceTree = "<group>"; };
 		28A0AB4B0D9B1048005BE974 /* airband_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = airband_Prefix.pch; sourceTree = "<group>"; };
-		28AD73870D9D96C1002E5188 /* MainWindow_defunct.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainWindow_defunct.xib; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		7D12339C0E74CDCA0053381A /* spiky.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spiky.png; sourceTree = "<group>"; };
 		7D12339D0E74CDCA0053381A /* gears.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gears.png; sourceTree = "<group>"; };
@@ -141,6 +158,7 @@
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 				7D8D71920E7F66ED006D0DE5 /* Entitlements.plist */,
+				21F43A110F7DCE0800928851 /* LastFMLogin.xib */,
 			);
 			name = airband;
 			sourceTree = "<group>";
@@ -159,12 +177,14 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				28AD73870D9D96C1002E5188 /* MainWindow_defunct.xib */,
+				218776000F899B9C005809E3 /* checked.png */,
+				21F439B80F7DB5E700928851 /* SettingsData.plist */,
 				7D8A3E570E665AD500110D42 /* ArtistsView.xib */,
 				7D4791380E6B91A7005783F7 /* CloudView.xib */,
 				7D8A3DD30E664ED400110D42 /* NowPlaying.xib */,
 				7D8D85ED0E67ACFE00CB845D /* PlayList.xib */,
 				7D1233E80E74D70A0053381A /* PlaylistTracks.xib */,
+				218776020F899BB3005809E3 /* unchecked.png */,
 				282CCBFD0DB6C98000C4EA27 /* Settings.xib */,
 				7D8D70DD0E7F53E6006D0DE5 /* Default.svg */,
 				7DF829F50E8205840032257F /* airband.png */,
@@ -175,6 +195,7 @@
 				7D12339D0E74CDCA0053381A /* gears.png */,
 				7D12339E0E74CDCA0053381A /* headphones.png */,
 				7D8DF9630E6A51F200EA4BB8 /* AppIcon.png */,
+				21D32AC90F7C3DFD00E0C6B0 /* AllSettingsTableCell.xib */,
 				8D1107310486CEB800E47090 /* Info.plist */,
 			);
 			name = Resources;
@@ -196,6 +217,10 @@
 		7D8DF9510E6A4F4500EA4BB8 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				21D329B40F7BFA0A00E0C6B0 /* AllSettingsTableCell.h */,
+				210E10170F8B165B00BBA95A /* AllSettingsController.m */,
+				210E10180F8B165B00BBA95A /* AllSettingsController.h */,
+				21D329B50F7BFA0A00E0C6B0 /* AllSettingsTableCell.m */,
 				7D8A3DBF0E664D6800110D42 /* ArtistViewController.h */,
 				7D8A3DC00E664D6900110D42 /* ArtistViewController.m */,
 				7D8A3DC20E664D7300110D42 /* NowPlayingController.h */,
@@ -215,6 +240,8 @@
 		7D8DF9520E6A4F6200EA4BB8 /* AppDataAndAudio */ = {
 			isa = PBXGroup;
 			children = (
+				21A7852A0F7E84F60053E9AD /* lastfmappdata.h */,
+				21A7852B0F7E84FC0053E9AD /* lastfmappdata.m */,
 				7D8DF8550E6A405800EA4BB8 /* appdata.h */,
 				7D8DF8560E6A405800EA4BB8 /* appdata.m */,
 				7D8D86090E67B20D00CB845D /* songview.h */,
@@ -271,7 +298,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				28AD73880D9D96C1002E5188 /* MainWindow_defunct.xib in Resources */,
 				282CCBFE0DB6C98000C4EA27 /* Settings.xib in Resources */,
 				7D8A3DD40E664ED400110D42 /* NowPlaying.xib in Resources */,
 				7D8A3E580E665AD500110D42 /* ArtistsView.xib in Resources */,
@@ -287,6 +313,11 @@
 				7D8D71930E7F66ED006D0DE5 /* Entitlements.plist in Resources */,
 				7DF829F60E8205840032257F /* airband.png in Resources */,
 				7D9648CE0E900F010034FC93 /* cloud.png in Resources */,
+				21D32ACA0F7C3DFD00E0C6B0 /* AllSettingsTableCell.xib in Resources */,
+				21F439B90F7DB5E700928851 /* SettingsData.plist in Resources */,
+				21F43A120F7DCE0800928851 /* LastFMLogin.xib in Resources */,
+				218776010F899B9C005809E3 /* checked.png in Resources */,
+				218776030F899BB3005809E3 /* unchecked.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -310,6 +341,9 @@
 				7D4791370E6B9195005783F7 /* CloudController.m in Sources */,
 				7D47913F0E6B922A005783F7 /* cloudview.m in Sources */,
 				7D1233E20E74D5F80053381A /* PlaylistTracksController.m in Sources */,
+				21D329B60F7BFA0A00E0C6B0 /* AllSettingsTableCell.m in Sources */,
+				21A7852C0F7E84FC0053E9AD /* lastfmappdata.m in Sources */,
+				210E10190F8B165B00BBA95A /* AllSettingsController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -352,7 +386,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PREBINDING = NO;
-				SDKROOT = iphoneos2.1;
+				SDKROOT = iphoneos2.2.1;
 			};
 			name = DistributionAdHoc;
 		};
@@ -381,7 +415,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PREBINDING = NO;
-				SDKROOT = iphoneos2.1;
+				SDKROOT = iphoneos2.2.1;
 			};
 			name = Debug;
 		};
@@ -394,7 +428,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PREBINDING = NO;
-				SDKROOT = iphoneos2.1;
+				SDKROOT = iphoneos2.2.1;
 			};
 			name = Release;
 		};
