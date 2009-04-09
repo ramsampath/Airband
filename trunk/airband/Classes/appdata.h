@@ -7,19 +7,29 @@
 
 @interface AppData : NSObject<ProtocolAsyncInfo>
 {
-  // user login data;  probably should be encrypted/keychained etc.
+  // user login data
+  // [todo] probably should be encrypted/keychained as this might get stored plaintext 
+  // in user's itunes during backup?
   NSString *username_;
   NSString *password_;
+	
   // current session
   NSString* sessionID_;	
   // a list of dictionaries;  pythonesque in its wastefulness.
   NSArray *fullArtistList_;	
+  // (array of dictionary) of playlist names
   NSArray *playLists_;
+  // in flight request
   NSDictionary *albumInRequest_;
+  // (single) image of currently playing song
   UIImage *artwork_;
+  // tracks (array of dictionary) for currently select playlist
   NSArray *currentTracklist_;
+  // albums (array of dictionary) for selected artist
   NSArray *albumList_;
+  // tracks (array of dictionary)for currently selected artist+album
   NSArray* trackList_;
+  // name of the current song.
   NSString *currentTrackTitle_;
 }
 
