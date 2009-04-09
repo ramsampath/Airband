@@ -8,6 +8,7 @@
 
 #import "airbandAppDelegate.h"
 #import "ArtistViewController.h"
+#import "AllSettingsController.h"
 #import "SettingsController.h"
 #import "PlaylistController.h"
 #import "CloudController.h"
@@ -39,25 +40,25 @@
 	window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
 		
 	ArtistViewController *artistVC = [[ArtistViewController alloc] initWithNibName:@"ArtistsView" bundle:nil];
-	SettingsController *settingsVC= [[SettingsController alloc] initWithNibName:@"Settings" bundle:nil];
+	AllSettingsController *settingsVC = [AllSettingsController	alloc];
 	NowPlayingController *nowplayingVC = [[NowPlayingController alloc] initWithNibName:@"NowPlaying" bundle:nil];
 	PlaylistController *playlistVC = [[PlaylistController alloc] initWithNibName:@"PlayList" bundle:nil];
 	CloudController *cloudVC = [[CloudController alloc] initWithNibName:@"CloudView" bundle:nil];
 	
 	
-	artistVC.title = @"artists";
+	artistVC.title = @"Artists";
 	artistVC.tabBarItem.image = [UIImage imageNamed:@"spiky.png"];	
 	//
-	settingsVC.title = @"settings";
+	settingsVC.title = @"Settings";
 	settingsVC.tabBarItem.image = [UIImage imageNamed:@"gears.png"];
 	//
-	nowplayingVC.title = @"audio stream";
+	nowplayingVC.title = @"Audio stream";
 	nowplayingVC.tabBarItem.image = [UIImage imageNamed:@"headphones.png"];
 	//
-	playlistVC.title = @"playlists";
+	playlistVC.title = @"Playlists";
 	playlistVC.tabBarItem.image = [UIImage imageNamed:@"playlist.png"];
 	//
-	cloudVC.title = @"airbands";
+	cloudVC.title = @"Airbands";
 	cloudVC.tabBarItem.image = [UIImage imageNamed:@"cloud.png"];
 	
 	
@@ -68,8 +69,9 @@
 	tabBarController.viewControllers = [NSArray arrayWithObjects:artistsNC, playlistNC, cloudVC, nowplayingVC, settingsNC, nil];	
 	
 	artistsNC.navigationBar.barStyle = UIBarStyleBlackTranslucent;
-	artistsNC.navigationBarHidden = TRUE;
+	artistsNC.navigationBarHidden = NO;
 	settingsNC.navigationBar.barStyle = UIBarStyleBlackTranslucent;
+	settingsNC.navigationBarHidden = NO;
 	playlistNC.navigationBar.barStyle = UIBarStyleBlackTranslucent;
 	
 	[nowplayingVC release];
@@ -78,9 +80,10 @@
 	[cloudVC release];
 	[settingsVC release];
 	
-	[window addSubview:tabBarController.view];	
-    [window makeKeyAndVisible];
-	
+	[window addSubview:tabBarController.view];
+	//[window addSubview:navigationController.view];
+	[window makeKeyAndVisible];
+
 	// log in ...
 	AppData *app = [AppData get];
 	if( ![app login] )
