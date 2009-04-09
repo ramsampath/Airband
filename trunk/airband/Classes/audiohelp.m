@@ -123,13 +123,20 @@ static void MyAudioQueueOutputCallback(	void* inClientData,
 
 // --------------------------------------------------------------------------------
 
-static void MyAudioQueuePropertyListenerProc ( void                  *inUserData,
+static void MyAudioQueuePropertyListenerProc ( void                 *inClientData,
 											  AudioQueueRef         inAQ,
 											  AudioQueuePropertyID  inID
 )
 {
+	AudioData* myData = (AudioData*)inClientData;
+	if( !myData ) {
+		printf( "incoming data to propertyListenerProc is busted\n" );
+	}
+		 
 	UInt32 dataSize=0;
 	OSStatus status = AudioQueueGetPropertySize( inAQ, inID, &dataSize );
+
+	printf( "audioqueuePropertyListenerProc\n" );
 	
 	if( inID == kAudioQueueProperty_IsRunning )
 	{
@@ -137,9 +144,15 @@ static void MyAudioQueuePropertyListenerProc ( void                  *inUserData
 		dataSize = sizeof(isRunning);
 		status = AudioQueueGetProperty(inAQ, inID, &isRunning, &dataSize);
 		if( dataSize !=sizeof(isRunning) )
-			printf( "wacked\n" );
+			printf( "queue get proprty wacked\n" );
 		
 		printf( "audio is running prop: %d\n", isRunning );
+		if( !isRunning )
+		{
+			pthread_mutex_lock(&myData->mutex);
+			pthread_cond_signal(&myData->cond);
+			pthread_mutex_unlock(&myData->mutex);			
+		}
 	}
 }
 
@@ -157,6 +170,11 @@ static void setPropListeners( AudioData* myData )
 
 
 
+
+// --------------------------------------------------------------------------------
+
+
+
 // --------------------------------------------------------------------------------
 static void MyPropertyListenerProc(	void *inClientData,
 									AudioFileStreamID inAudioFileStream,
@@ -167,8 +185,8 @@ static void MyPropertyListenerProc(	void *inClientData,
 	AudioData* myData = (AudioData*)inClientData;
 	OSStatus err = noErr;
 	
-	//printf("found property '%c%c%c%c'\n", 
-	//	   (inPropertyID>>24)&255, (inPropertyID>>16)&255, (inPropertyID>>8)&255, inPropertyID&255);
+	printf("MyPropertyListenerProc '%c%c%c%c'\n", 
+		   (inPropertyID>>24)&255, (inPropertyID>>16)&255, (inPropertyID>>8)&255, inPropertyID&255);
 	
 	switch (inPropertyID) {
 		case kAudioFileStreamProperty_ReadyToProducePackets :
@@ -206,8 +224,12 @@ static void MyPropertyListenerProc(	void *inClientData,
 			UInt32 cookieSize;
 			Boolean writable;
 			err = AudioFileStreamGetPropertyInfo(inAudioFileStream, kAudioFileStreamProperty_MagicCookieData, &cookieSize, &writable);
-			if (err) { PRINTERROR("err - info kAudioFileStreamProperty_MagicCookieData"); checkstatus(err); break; }
-			//printf("cookieSize %d\n", cookieSize);
+			if (err) { 
+				PRINTERROR("err - info kAudioFileStreamProperty_MagicCookieData"); 
+				checkstatus(err); 
+				break; 					
+			}
+			printf("cookieSize %d\n", cookieSize);
 			
 			// get the cookie data
 			void* cookieData = calloc(1, cookieSize);
@@ -305,6 +327,10 @@ static void MyPacketsProc( void *inClientData,
 		size_t packetsDescsRemaining = kAQMaxPacketDescs - myData->packetsFilled;
 		if (packetsDescsRemaining == 0) {
 			MyEnqueueBuffer(myData);
+
+			// [todo] -- when is the appropriate time to call this?
+			//err = AudioQueueFlush(myData->audioQueue);
+			//if (err) { PRINTERROR("AudioQueueFlush"); return 1; }
 		}
 		
 		// [note] -- this is probably a logic bug;  if the stream is done loading
@@ -364,6 +390,12 @@ static void MyPacketsProc( void *inClientData,
   [super dealloc];
 }
 
+-(BOOL) isrunning
+{
+	return running_;
+}
+
+
 -(void) cancel
 {
 	if( myd_ && running_ )
@@ -395,7 +427,12 @@ static void MyPacketsProc( void *inClientData,
 {
   pthread_mutex_lock(&mutex_); 
   {
-	[datalist_ addObject:data];
+	  if( data ) {
+		  [datalist_ addObject:data];
+	  } else {
+		 // dataConnectionIsFinished_ = TRUE;
+	  }
+	  
 	pthread_cond_signal(&cond_);
   }
   pthread_mutex_unlock(&mutex_);
@@ -413,6 +450,9 @@ static void MyPacketsProc( void *inClientData,
 	  NSData *data = NULL;		
 	  pthread_mutex_lock(&mutex_); 
 		{
+			// [todo] -- this is a bug -- need something to mark that data conneciton is done.
+			// so we don't wait.
+		   
 		  while (running_ && ![datalist_ count]) {
 			//printf("waiting for network data\n");
 			pthread_cond_wait(&cond_, &mutex_);
@@ -438,6 +478,17 @@ static void MyPacketsProc( void *inClientData,
 		}
 	}  
 
+		
+	if(0) 
+	{
+		printf( "waiting for audioqueue listener marked as done\n" );
+		pthread_mutex_lock(&mutex_); 
+		{	
+			// [todo] -- probably need a new condition var here.
+			pthread_cond_wait(&cond_, &mutex_);		
+		}
+		pthread_mutex_unlock(&mutex_);		
+	}
 	
 	if(1)
 	{
@@ -492,11 +543,10 @@ static void* workerthread( void* pv )
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;		
-
-	printf( "connectionFinished\n" );
-	// don't set this so that the audioqueue can continue draining.
-	//running_ = FALSE;
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+	
+	printf( "connectionDidFinishLoading\n" );
+	[self produce:NULL];
 }
 
 
@@ -569,9 +619,25 @@ static void* workerthread( void* pv )
 
 -(float) percentage
 {
+	if( !asyncaudio_ ) {
+		return -1.0;
+	}
+
+  AudioTimeStamp timeStamp;
+  AudioQueueGetCurrentTime(asyncaudio_.myd_->audioQueue_,NULL,&timeStamp,NULL);
+  
+  double t = timeStamp.mSampleTime;
+  //printf( "percentage: %f\n", t );
+	
 	//return ((float)asyncaudio_.bytesread_)/(float)tracksize_;
-	return 0.0;
+	return t;
 }
+
+-(BOOL) isrunning
+{
+	return [asyncaudio_ isrunning];
+}
+
 
 -(void) pause
 {

@@ -40,7 +40,38 @@
 
 - (void)viewDidLoad 
 {
+	// setup timer.
+	if( 1 )
+	{
+		[NSTimer scheduledTimerWithTimeInterval:(NSTimeInterval)0.5 
+										 target:self 
+									   selector:@selector(myTimerFireMethod:)
+									   userInfo:NULL repeats:YES ];
+	}	  	
 }
+
+
+- (void)myTimerFireMethod:(NSTimer*)theTimer
+{
+	AppData *app = [AppData get];
+	if( [app isrunning] ) {
+		float cur = [app percent];	
+		printf( "myTimer fired, percent: %f\n", cur );
+	}
+	
+	
+	/*
+	if( 0 ){
+		[UIView beginAnimations:@"thump" context:nil];
+		[UIView setAnimationDuration:2.9];	
+		self.transform = CGAffineTransformMakeRotation(.5-drand48());
+		self.alpha = 1-.1*drand48();
+		[UIView setAnimationRepeatAutoreverses:YES];			
+		[UIView commitAnimations];	
+	}
+	 */
+}
+
 
 - (void) titleAvailable:(NSNotification*)notification
 {
@@ -80,7 +111,6 @@
 
 -(IBAction) random:(id)sender
 {
-	
 	AppData *app = [AppData get];
 	NSArray* fullList = app.fullArtistList_;
 	int index = drand48() * [fullList count];

@@ -49,6 +49,9 @@
 - (void) play:(NSDictionary*)artistdictionary;
 - (void) stop;
 - (void) setvolume:(float)volume;
+- (float) percent;
+// if audio track is being played
+- (BOOL) isrunning;
 
 + (AppData*) get;
 @end
