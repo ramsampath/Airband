@@ -360,6 +360,10 @@ static audiohelp_II *g_audio = nil;
 	[g_audio setvolume:volume];
 }
 
+- (float) tracklength 
+{
+    return currentTrackLength_;
+}
 
 - (float) percent
 {

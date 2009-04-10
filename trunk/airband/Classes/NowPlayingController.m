@@ -40,7 +40,7 @@
 
 - (void)viewDidLoad 
 {
-	// setup timer.
+   	// setup timer.
 	if( 1 )
 	{
 		[NSTimer scheduledTimerWithTimeInterval:(NSTimeInterval)0.5 
@@ -54,11 +54,14 @@
 - (void)myTimerFireMethod:(NSTimer*)theTimer
 {
 	AppData *app = [AppData get];
+    printf ("Timer\n");
 	if( [app isrunning] ) {
-		float cur = [app percent];	
-		printf( "myTimer fired, percent: %f\n", cur );
+		float cur = [app percent]/44.1;
+        float len = [app tracklength];
+		//printf( "myTimer fired, percent: %f %f\n", cur, len );
+        if( cur >= len ) [app stop];
+
 	}
-	
 	
 	/*
 	if( 0 ){
