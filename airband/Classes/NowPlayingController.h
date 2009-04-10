@@ -14,6 +14,8 @@
 	IBOutlet UISlider     *volume_;
 	IBOutlet UIButton     *play_;
 	IBOutlet UITextView   *trackinfo_;
+    IBOutlet UIAlertView  *alert;
+    IBOutlet UIProgressView *progbar;
 }
 
 -(IBAction) setvolume:(id)sender;

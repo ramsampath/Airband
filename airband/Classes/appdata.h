@@ -44,6 +44,8 @@
 @property (readonly) NSArray* albumList_;
 @property (readonly) NSArray* trackList_;
 @property (readonly) NSString* currentTrackTitle_;
+@property (readonly) float currentTrackLength_;
+
 
 - (void) restoreState;
 - (void) saveState;
@@ -64,6 +66,7 @@
 - (void) setvolume:(float)volume;
 - (NSArray*) parseItemList:(NSData*)data;
 - (float) percent;
+- (float) tracklength;
 // if audio track is being played
 - (BOOL) isrunning;
 

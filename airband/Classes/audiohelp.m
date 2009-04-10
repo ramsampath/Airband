@@ -616,6 +616,17 @@ static void* workerthread( void* pv )
 	}
 }
 
+/*
+- (void)seekToPacket:(NSNumber *)packet
+{.
+    aqData.mCurrentPacket = packet.longLongValue;
+    aqData.mStartPacket = aqData.mCurrentPacket;
+    NSLog(@"%s Attempting to seek to packet %qi", _cmd, aqData.mStartPacket);
+    
+    [self logError:AudioQueueStop(aqData.mQueue, true)];
+    
+}  
+*/
 
 -(float) percentage
 {
