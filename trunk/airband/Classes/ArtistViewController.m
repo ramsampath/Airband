@@ -107,8 +107,9 @@
 	dataDictionary = [newDictionary retain];
 	
 	// update value in subviews
-	nameLabel.text 	  = [dataDictionary objectForKey:@"artistName"];
-	trackcountLabel.text = [dataDictionary objectForKey:@"trackCount"];
+	nameLabel.text 	     = [newDictionary objectForKey:@"artistName"];
+	printf(" Name : %s\n", [nameLabel.text UTF8String]);
+	trackcountLabel.text = [newDictionary objectForKey:@"trackCount"];
 }
 
 @end
@@ -149,7 +150,7 @@
 	}
 	
 	artistList_ = nil;				
-	dbgtext_.text = @"greetings";	
+	//dbgtext_.text = @"greetings";	
 	[[NSNotificationCenter defaultCenter] addObserver:self 
 											 selector:@selector(artistListReady:) 
 												 name:@"artistListReady" 
@@ -165,8 +166,8 @@
 	[activity_ startAnimating];
 	
 	[UIView beginAnimations:@"animationID" context:nil];
-	[UIView setAnimationDuration:4.0];	
-	activity_.transform = CGAffineTransformMakeScale(4,4);
+	[UIView setAnimationDuration:5.0];	
+	activity_.transform = CGAffineTransformMakeScale(3,3);
 	[UIView commitAnimations];	
 }
 
@@ -245,6 +246,16 @@
 	[activity_ stopAnimating];	
 }
 
+-(id) findindex:(NSArray *)shuffleIndices index:(int) index
+{
+	NSEnumerator *enume = [shuffleIndices objectEnumerator];
+	
+	id anObject;
+	while( anObject = [enume nextObject]) {
+		if ([anObject intValue] == index) return anObject;
+	}
+	return nil;
+}
 
 -(IBAction) shuffle
 {
@@ -261,10 +272,18 @@
 	
 	NSMutableArray *indexPath = [[[NSMutableArray alloc] init] retain];  // autorelease?
 	int i;
-	for (i=0;  i<num; ++i) 
-	{
-		int index = (int) (drand48() * [fullList count]);
-		[artistList_ addObject:[fullList objectAtIndex:index]];		
+	NSMutableArray *shuffleIndices = [[[NSMutableArray alloc] init] retain];
+	
+	for( i=0;  i<num; ++i ) { 
+		int index  = (int) (drand48() * [fullList count]);
+		if( [self findindex:shuffleIndices index:index] ) {
+			while ([self findindex:shuffleIndices index:index]) {
+				index = (int) (drand48() * [fullList count]);
+			}
+		}
+		[shuffleIndices	addObject:[NSString stringWithFormat:@"%d", index]];
+		[artistList_ addObject:[fullList objectAtIndex:index]];	
+		printf("Adding artist %s index: %d\n", [[[app.fullArtistList_ objectAtIndex:index] objectForKey:@"artistName"] UTF8String], i);
 		[indexPath addObject:[NSIndexPath indexPathForRow:i inSection:0]];
 	}        
 	
@@ -308,12 +327,12 @@
 	
 	traxcontroller.navigationItem.title = [d objectForKey:@"artistName"];
 	[traxcontroller.navigationItem 
-	 setRightBarButtonItem:[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"playlist.png"] 
-															style:UIBarButtonItemStylePlain 
-														   target:nil 
-														   action:nil]];
+	setRightBarButtonItem:[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"playlist.png"] 
+														style:UIBarButtonItemStylePlain 
+														target:nil 
+														action:nil]];
 	
-	[self navigationController].navigationBarHidden = FALSE;
+	[self navigationController].navigationBarHidden = TRUE;
 	[[self navigationController] pushViewController:traxcontroller animated:YES];
 }
 
@@ -347,6 +366,7 @@ tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPat
 	}
 	
 	// get the view controller's info dictionary based on the indexPath's row
+	printf("INdex row: %d\n", indexPath.row);
 	cell.dataDictionary = [[artistList_ objectAtIndex:indexPath.row] retain];
 	
 	return cell;
@@ -377,7 +397,6 @@ tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPat
 		NSRange r = [name rangeOfString:search options:NSCaseInsensitiveSearch];
 		if( r.location == NSNotFound || r.length == 0 )
 			continue;
-		
 		[artistList_ addObject:artist];
 	}
 	
