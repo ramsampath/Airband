@@ -11,7 +11,7 @@
 	IBOutlet UIButton* shuffle_;
 	IBOutlet UILabel *dbgtext_;
 	IBOutlet UITextField *searchfield_;
-	
+		
 	UIActivityIndicatorView	*activity_;
 }
 
