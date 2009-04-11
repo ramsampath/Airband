@@ -49,6 +49,7 @@
 @property (assign) int currentTrackIndex_;
 
 
+- (NSString*) createAccount:(NSDictionary*)userinfo;
 - (void) restoreState;
 - (void) saveState;
 - (BOOL) login;

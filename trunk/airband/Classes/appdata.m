@@ -30,6 +30,7 @@ static audiohelp_II *g_audio = nil;
 @synthesize trackList_;
 @synthesize currentTrackTitle_;
 @synthesize currentTrackIndex_;
+@synthesize currentTrackLength_;
 
 // --------------------------------------------------------------------------
 // singelton
@@ -397,6 +398,72 @@ static audiohelp_II *g_audio = nil;
   g_async = [[[asyncIO alloc] init] retain];
   [g_async loadWithURL:req asyncinfo:self asyncdata:@"login"];
   return TRUE;	
+}
+
+
+// ---- pass in a dictionary of strings
+//      username, password, firstname (optional), lastname (optional)
+
+- (NSString*) createAccount:(NSDictionary*)userinfo
+{
+	NSMutableString *req = [[NSMutableString stringWithCapacity:512] retain];
+	
+	NSString *username  = [userinfo objectForKey:@"username"];
+	NSString *password  = [userinfo objectForKey:@"password"];
+	NSString *firstname = [userinfo objectForKey:@"firstname"];
+	NSString *lastname  = [userinfo objectForKey:@"lastname"];
+	
+	[req appendString: @"https://shop.mp3tunes.com/api/v1/login?output=xml" ];  
+	[req appendString:[NSString stringWithFormat:@"&partner_token=%@", partner_token]];
+	
+	if( [firstname length] && [lastname length] ) {
+		[req appendString:[NSString stringWithFormat:@"&email=%@&password=%@&firstname=%@&lastname=%@", 
+						   username, password, firstname, lastname]];
+	}
+	else {
+		[req appendString:[NSString stringWithFormat:@"&email=%@&password=%@", 
+						   username, password]];
+	}
+	
+	NSURL *url = [NSURL URLWithString:req];
+	NSData *data = [NSData dataWithContentsOfURL:url];
+		
+	if(!data) {
+		[[[UIAlertView alloc] initWithTitle:@"Account Creation Problem" 
+									message:@"Couldn't connect to mp3tunes!"
+								   delegate:nil cancelButtonTitle:@"ok" otherButtonTitles:nil] show];
+		return nil;
+	}
+	
+	NSXMLParser * parser = [[[NSXMLParser alloc] initWithData:data] autorelease];	
+	
+	XMLParseSimpleElement* parseDelegate = [[[XMLParseSimpleElement alloc] init] autorelease];	
+	[parser setDelegate:parseDelegate];
+	
+	parseDelegate.search_ = @"status";
+	[parser parse];		
+	NSString *status  = [parseDelegate.found_ retain];
+	
+	[parseDelegate reset];
+	parseDelegate.search_ = @"errorMessage";
+	[parser parse];		
+	NSString *errmsg  = [parseDelegate.found_ retain];
+		
+	if( [status isEqualToString:@"1"] )
+	{
+		[[[UIAlertView alloc] initWithTitle:@"Account Created" 
+									message:username 
+								   delegate:nil cancelButtonTitle:@"ok" otherButtonTitles:nil] show];
+	}
+	else
+	{
+		[[[UIAlertView alloc] initWithTitle:@"Account Creation Problem" 
+									message:errmsg 
+								   delegate:nil cancelButtonTitle:@"ok" otherButtonTitles:nil] show];
+	}
+	
+	
+	return errmsg;
 }
 
 
