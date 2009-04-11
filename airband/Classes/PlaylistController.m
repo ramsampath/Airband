@@ -8,6 +8,8 @@
 
 #import "PlaylistController.h"
 #import "PlaylistTracksController.h"
+#import "NowPlayingController.h"
+
 #import "appdata.h"
 
 
@@ -82,6 +84,22 @@
 }
 
 
+- (void) nowPlaying:(id) sender
+{
+    NowPlayingController *nowplayingVC = [[NowPlayingController alloc] initWithNibName:@"NowPlayingArranged" bundle:nil];    
+    
+    [nowplayingVC.navigationItem 
+     setRightBarButtonItem:[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"playlist.png"] 
+                                                            style:UIBarButtonItemStylePlain 
+                                                           target:nil 
+                                                           action:nil]];
+    
+    [[self navigationController] pushViewController:nowplayingVC animated:YES];		
+    
+    [nowplayingVC release];
+    return;
+}
+
 #pragma mark ------------------------------------------------
 #pragma mark UITableView delegates
 #pragma mark ------------------------------------------------
@@ -112,6 +130,10 @@
 															style:UIBarButtonItemStylePlain 
 														   target:nil 
 														   action:nil]];
+    [self navigationController].navigationBar.topItem.rightBarButtonItem = [[UIBarButtonItem alloc] 
+                                                                            initWithTitle:@"Now Playing"
+                                                                            style:UIBarButtonItemStyleBordered
+                                                                            target:self action:@selector(nowPlaying:)];
 	[[self navigationController] pushViewController:traxcontroller animated:YES];
 }
 

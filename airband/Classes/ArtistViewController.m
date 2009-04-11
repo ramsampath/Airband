@@ -2,6 +2,7 @@
 #import "appdata.h"
 #import "ArtistViewController.h"
 #import "PlaylistTracksController.h"
+#import "NowPlayingController.h"
 
 
 #define kMaxRows 50
@@ -180,7 +181,7 @@
 
 - (void)viewDidAppear:(BOOL)animated
 {
-	[self navigationController].navigationBarHidden = TRUE;
+	[self navigationController].navigationBarHidden = FALSE;
 }
 
 
@@ -300,6 +301,21 @@
 	}
 }
 
+- (void) nowPlaying:(id) sender
+{
+    NowPlayingController *nowplayingVC = [[NowPlayingController alloc] initWithNibName:@"NowPlayingArranged" bundle:nil];    
+    
+    [nowplayingVC.navigationItem 
+     setRightBarButtonItem:[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"playlist.png"] 
+                                                            style:UIBarButtonItemStylePlain 
+                                                           target:nil 
+                                                           action:nil]];
+    
+    [[self navigationController] pushViewController:nowplayingVC animated:YES];		
+    
+    [nowplayingVC release];
+    return;
+}
 
 
 
@@ -332,8 +348,17 @@
 														target:nil 
 														action:nil]];
 	
-	[self navigationController].navigationBarHidden = TRUE;
+	[self navigationController].navigationBarHidden = FALSE;
+
+    [self navigationController].navigationBar.topItem.rightBarButtonItem = [[UIBarButtonItem alloc] 
+                                                                            initWithTitle:@"Now Playing"
+                                                                            style:UIBarButtonItemStyleBordered
+                                                                            target:self action:@selector(nowPlaying:)];
 	[[self navigationController] pushViewController:traxcontroller animated:YES];
+    [self navigationController].navigationBar.topItem.rightBarButtonItem = [[UIBarButtonItem alloc] 
+                                                                            initWithTitle:@"Now Playing"
+                                                                            style:UIBarButtonItemStyleBordered
+                                                                            target:self action:@selector(nowPlaying:)];
 }
 
 

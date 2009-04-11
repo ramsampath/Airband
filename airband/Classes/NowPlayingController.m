@@ -20,9 +20,11 @@
 
 /*
  Implement loadView if you want to create a view hierarchy programmatically
-- (void)loadView {
-}
  */
+/*
+- (void)loadView {
+ }
+*/
 
 
 - (void)artworkReady:(NSObject*)notification
@@ -40,6 +42,7 @@
 
 - (void)viewDidLoad 
 {
+    
    	// setup timer.
 	if( 1 )
 	{
@@ -50,16 +53,45 @@
 	}	  	
 }
 
+- (void)nextTrack
+{
+    AppData *app = [AppData get];
+    
+    int index = [app currentTrackIndex_];
+    if( ++index >= ([app.trackList_ count]-1) ) 
+        index = 0;
+    
+    [app setCurrentTrackIndex_:index];
+    NSDictionary *d = [app.trackList_ objectAtIndex:index];
+    [app playTrack:d];
+}
+
+- (void)prevTrack
+{
+    AppData *app = [AppData get];
+    
+    int index = [app currentTrackIndex_];
+    if( --index <=  0) 
+        index = [app.trackList_ count] - 2;
+    
+    [app setCurrentTrackIndex_:index];
+    NSDictionary *d = [app.trackList_ objectAtIndex:index];
+    [app playTrack:d];
+}
+
 
 - (void)myTimerFireMethod:(NSTimer*)theTimer
 {
 	AppData *app = [AppData get];
-    printf ("Timer\n");
-	if( [app isrunning] ) {
+    //printf("C: %d %d", [app.trackList_ count], [app currentTrackIndex_]);
+   	if( [app isrunning] ) {
 		float cur = [app percent]/44.1;
         float len = [app tracklength];
 		//printf( "myTimer fired, percent: %f %f\n", cur, len );
-        if( cur >= len ) [app stop];
+        if( cur >= len ) {
+            [self nextTrack];
+            //[app stop];
+        }
 
 	}
 	
@@ -127,6 +159,25 @@
 
 -(IBAction) taptap:(id)sender
 {
+}
+
+-(IBAction) play:(id)sender
+{
+    AppData *app = [AppData get];
+    
+    int index = [app currentTrackIndex_];
+    NSDictionary *d = [app.trackList_ objectAtIndex:index];
+    [app playTrack:d];
+}
+
+-(IBAction) next:(id)sender
+{
+    [self nextTrack];
+}
+
+-(IBAction) prev:(id)sender
+{
+    [self prevTrack];
 }
 
 

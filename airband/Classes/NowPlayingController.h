@@ -20,6 +20,10 @@
 
 -(IBAction) setvolume:(id)sender;
 -(IBAction) pause:(id)sender;
+-(IBAction) play:(id)sender;
+-(IBAction) next:(id)sender;
+-(IBAction) prev:(id)sender;
+
 -(IBAction) random:(id)sender;
 -(IBAction) taptap:(id)sender;
 

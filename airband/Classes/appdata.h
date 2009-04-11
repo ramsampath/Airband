@@ -32,6 +32,7 @@
   float   currentTrackLength_;
   // name of the current song.
   NSString *currentTrackTitle_;
+  int currentTrackIndex_;
 }
 
 @property (retain) NSString *username_;
@@ -45,6 +46,7 @@
 @property (readonly) NSArray* trackList_;
 @property (readonly) NSString* currentTrackTitle_;
 @property (readonly) float currentTrackLength_;
+@property (assign) int currentTrackIndex_;
 
 
 - (void) restoreState;
@@ -71,6 +73,8 @@
 - (BOOL) isrunning;
 
 + (AppData*) get;
+
+
 @end
 
 
