@@ -7,6 +7,7 @@
 //
 
 #import "PlaylistTracksController.h"
+#import "NowPlayingController.h"
 #import "appdata.h"
 
 @implementation PlaylistTracksController
@@ -23,6 +24,7 @@
 		artist_ = nil;
 		albumtracks_ = nil;
 	}
+
 	return self;
 }
 
@@ -71,8 +73,7 @@
 	} else if( albumtracks_ ) {
 		waitfor = @"trackListReady";
 	}
-			
-	
+ 	
 	[[NSNotificationCenter defaultCenter] addObserver:self 
 											 selector:@selector(newlistReady:) 
 												 name:waitfor 
@@ -111,6 +112,22 @@
 	[super dealloc];
 }
 
+- (void) nowPlaying:(id) sender
+{
+      NowPlayingController *nowplayingVC = [[NowPlayingController alloc] initWithNibName:@"NowPlayingArranged" bundle:nil];    
+    
+    [nowplayingVC.navigationItem 
+     setRightBarButtonItem:[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"playlist.png"] 
+                                                            style:UIBarButtonItemStylePlain 
+                                                           target:nil 
+                                                           action:nil]];
+
+    [[self navigationController] pushViewController:nowplayingVC animated:YES];		
+    
+    [nowplayingVC release];
+    return;
+}
+
 
 
 #pragma mark ------------------------------------------------
@@ -146,19 +163,62 @@
 																style:UIBarButtonItemStylePlain 
 															   target:nil 
 															   action:nil]];
-		
-		[[self navigationController] pushViewController:traxcontroller animated:YES];		
+        [self navigationController].navigationBar.topItem.rightBarButtonItem = [[UIBarButtonItem alloc] 
+                                                                                initWithTitle:@"Now Playing"
+                                                                                style:UIBarButtonItemStyleBordered
+                                                                                target:self action:@selector(nowPlaying:)];
+        
+		[[self navigationController] pushViewController:traxcontroller animated:YES];
+        [self navigationController].navigationBar.topItem.rightBarButtonItem = [[UIBarButtonItem alloc] 
+                                                                                initWithTitle:@"Now Playing"
+                                                                                style:UIBarButtonItemStyleBordered
+                                                                                target:self action:@selector(nowPlaying:)];
 	}
 	else if( albumtracks_ )
 	{
-		NSDictionary *d = [app.trackList_ objectAtIndex:[indexPath row]];	
+
+		NSDictionary *d = [app.trackList_ objectAtIndex:[indexPath row]];
+        NowPlayingController *nowplayingVC = [[NowPlayingController alloc] initWithNibName:@"NowPlayingArranged" bundle:nil];
+        
+        nowplayingVC.navigationItem.title = [d objectForKey:@""];
+
+		[nowplayingVC.navigationItem 
+		 setRightBarButtonItem:[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"playlist.png"] 
+																style:UIBarButtonItemStylePlain 
+															   target:nil 
+															   action:nil]];
+        [self navigationController].navigationBarHidden = FALSE;
+        [self navigationController].navigationBar.topItem.rightBarButtonItem = [[UIBarButtonItem alloc] 
+                                                                                initWithTitle:@"Now Playing"
+                                                                                style:UIBarButtonItemStyleBordered
+                                                                                target:self action:@selector(nowPlaying:)];
+		[[self navigationController] pushViewController:nowplayingVC animated:YES];		
+        
+
+        
 		[app playTrack:d];
+        [app setCurrentTrackIndex_:[indexPath row]];
+        [nowplayingVC release];
 	}
 	else if( playlist_ ) 
 	{
 		NSDictionary *d = [app.currentTracklist_ objectAtIndex:[indexPath row]];	
+        
+        NowPlayingController *nowplayingVC = [[NowPlayingController alloc] initWithNibName:@"NowPlayingArranged" bundle:nil];
+        //NowPlayingController *nowplayingVC = [NowPlayingController alloc];
+        
+        nowplayingVC.navigationItem.title = [d objectForKey:@""];
+		[nowplayingVC.navigationItem 
+		 setRightBarButtonItem:[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"playlist.png"] 
+																style:UIBarButtonItemStylePlain 
+															   target:nil 
+															   action:nil]];        
+        [self navigationController].navigationBarHidden = FALSE;
+		[[self navigationController] pushViewController:nowplayingVC animated:YES];		
+        
 		[app playTrack:d];
-	}
+        [nowplayingVC release];
+    }
 }
 
 #pragma mark UITableView datasource methods

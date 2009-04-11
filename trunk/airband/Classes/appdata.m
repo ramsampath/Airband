@@ -29,6 +29,7 @@ static audiohelp_II *g_audio = nil;
 @synthesize albumList_;
 @synthesize trackList_;
 @synthesize currentTrackTitle_;
+@synthesize currentTrackIndex_;
 
 // --------------------------------------------------------------------------
 // singelton
@@ -38,6 +39,8 @@ static audiohelp_II *g_audio = nil;
   airbandAppDelegate *airband = (airbandAppDelegate*) ([UIApplication sharedApplication].delegate);	
   return airband.appdata_;
 }
+
+
 
 // --------------------------------------------------------------------------
 // constructor

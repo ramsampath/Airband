@@ -24,4 +24,6 @@
 @property (nonatomic, retain) NSDictionary* artist_;
 @property (nonatomic, retain) NSDictionary* albumtracks_;
 
+- (void) nowPlaying:(id) sender;
+
 @end
