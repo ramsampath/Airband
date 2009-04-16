@@ -50,7 +50,7 @@
 										 target:self 
 									   selector:@selector(myTimerFireMethod:)
 									   userInfo:NULL repeats:YES ];
-	}	  	
+	}
 }
 
 - (void)nextTrack

@@ -168,7 +168,10 @@
 	
 	[UIView beginAnimations:@"animationID" context:nil];
 	[UIView setAnimationDuration:5.0];	
-	activity_.transform = CGAffineTransformMakeScale(3,3);
+	activity_.transform = CGAffineTransformMakeScale(2,2);
+	
+	UINavigationBar *bar = [self navigationController].navigationBar;
+	bar.barStyle = UIBarStyleBlackOpaque;;
 	[UIView commitAnimations];	
 }
 
