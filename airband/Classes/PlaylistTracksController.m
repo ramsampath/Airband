@@ -79,7 +79,9 @@
 												 name:waitfor 
 											   object:nil];	
 	
-	
+	UINavigationBar *bar = [self navigationController].navigationBar;
+	bar.barStyle = UIBarStyleBlackOpaque;;
+
 	AppData *app = [AppData get];	
 	
 	if( artist_ ) {
