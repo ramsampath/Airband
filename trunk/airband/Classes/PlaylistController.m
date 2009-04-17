@@ -62,6 +62,9 @@
 												 name:@"playListsReady" 
 											   object:nil];	
 
+	UINavigationBar *bar = [self navigationController].navigationBar;
+	bar.barStyle = UIBarStyleBlackOpaque;;
+
 	AppData *app = [AppData get];
 	[app getPlayListsAsync];
 }
