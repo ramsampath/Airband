@@ -15,6 +15,8 @@
 	if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
 		// Initialization code
 	}
+	self.hidesBottomBarWhenPushed = TRUE;
+
 	return self;
 }
 

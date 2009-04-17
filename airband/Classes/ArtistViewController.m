@@ -65,6 +65,7 @@
 	return self;
 }
 
+
 - (void)layoutSubviews
 {
 	[super layoutSubviews];
@@ -109,7 +110,7 @@
 	
 	// update value in subviews
 	nameLabel.text 	     = [newDictionary objectForKey:@"artistName"];
-	printf(" Name : %s\n", [nameLabel.text UTF8String]);
+	//printf(" Name : %s\n", [nameLabel.text UTF8String]);
 	trackcountLabel.text = [newDictionary objectForKey:@"trackCount"];
 }
 
@@ -124,7 +125,7 @@
 
 @implementation ArtistViewController
 
-@synthesize artistTable_;
+@synthesize artistTable_, searchfield_;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -141,6 +142,213 @@
 - (void)dealloc
 {
 	[super dealloc];
+}
+
+
+
+// Implement loadView to create a view hierarchy programmatically, without using a nib.
+- (void)loadView
+{
+	UIColor *viewbgcolor = [UIColor colorWithRed:0.212 green:0.212 blue:0.212 alpha:1.000];
+
+	UIButton *view18 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+	view18.frame = CGRectMake(88.0, 20.0, 67.0, 27.0);
+	view18.adjustsImageWhenDisabled = YES;
+	view18.adjustsImageWhenHighlighted = YES;
+	view18.alpha = 0.400;
+	view18.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
+	view18.clearsContextBeforeDrawing = NO;
+	view18.clipsToBounds = NO;
+	view18.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
+	view18.contentMode = UIViewContentModeScaleToFill;
+	view18.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+	view18.enabled = YES;
+	view18.font = [UIFont fontWithName:@"Helvetica-Bold" size:12.000];
+	view18.hidden = NO;
+	view18.highlighted = NO;
+	view18.multipleTouchEnabled = NO;
+	view18.opaque = NO;
+	view18.reversesTitleShadowWhenHighlighted = NO;
+	view18.selected = NO;
+	view18.showsTouchWhenHighlighted = NO;
+	view18.tag = 0;
+	view18.userInteractionEnabled = YES;
+	[view18 setTitle:@"Random" forState:UIControlStateDisabled];
+	[view18 setTitle:@"Random" forState:UIControlStateHighlighted];
+	[view18 setTitle:@"Random" forState:UIControlStateNormal];
+	[view18 setTitle:@"Random" forState:UIControlStateSelected];
+	[view18 setTitleColor:[UIColor colorWithRed:0.196 green:0.310 blue:0.522 alpha:1.000] forState:UIControlStateNormal];
+	[view18 setTitleColor:[UIColor colorWithRed:1.000 green:1.000 blue:1.000 alpha:1.000] forState:UIControlStateHighlighted];
+	[view18 setTitleColor:[UIColor colorWithWhite:0.000 alpha:1.000] forState:UIControlStateDisabled];
+	[view18 setTitleColor:[UIColor colorWithWhite:0.000 alpha:1.000] forState:UIControlStateSelected];
+	[view18 setTitleShadowColor:[UIColor colorWithWhite:0.000 alpha:1.000] forState:UIControlStateDisabled];
+	[view18 setTitleShadowColor:[UIColor colorWithWhite:0.000 alpha:1.000] forState:UIControlStateHighlighted];
+	[view18 setTitleShadowColor:[UIColor colorWithWhite:0.000 alpha:1.000] forState:UIControlStateNormal];
+	[view18 setTitleShadowColor:[UIColor colorWithWhite:0.000 alpha:1.000] forState:UIControlStateSelected];
+	[view18 addTarget:self action:@selector(random) forControlEvents:UIControlEventTouchUpInside];
+	
+	
+	/*
+	UISegmentedControl *view18 = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:NSLocalizedString(@"Random", @""), nil]];
+	view18.frame = CGRectMake(88.0, 20.0, 67.0, 27.0);
+	view18.momentary = YES;
+	view18.segmentedControlStyle = UISegmentedControlStyleBar;
+	view18.tintColor = viewbgcolor;
+	self.navigationItem.titleView = view18;
+	[view18 addTarget:self action:@selector(random) forControlEvents:UIControlEventValueChanged];
+    */
+	
+	
+	UIView *view1 = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 480.0)];
+	view1.frame = CGRectMake(0.0, 0.0, 320.0, 480.0);
+	view1.alpha = 1.000;
+	view1.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
+	view1.backgroundColor = viewbgcolor;
+	view1.clearsContextBeforeDrawing = YES;
+	view1.clipsToBounds = NO;
+	view1.contentMode = UIViewContentModeScaleToFill;
+	view1.hidden = NO;
+	view1.multipleTouchEnabled = NO;
+	view1.opaque = YES;
+	view1.tag = 0;
+	view1.userInteractionEnabled = YES;
+	
+	UIButton *view20 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+	view20.frame = CGRectMake(14.0, 20.0, 66.0, 27.0);
+	view20.adjustsImageWhenDisabled = YES;
+	view20.adjustsImageWhenHighlighted = YES;
+	view20.alpha = 0.400;
+	view20.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
+	view20.backgroundColor = [UIColor colorWithRed:0.543 green:0.133 blue:0.114 alpha:0.000];
+	view20.clearsContextBeforeDrawing = NO;
+	view20.clipsToBounds = NO;
+	view20.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
+	view20.contentMode = UIViewContentModeScaleToFill;
+	view20.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+	view20.enabled = YES;
+	view20.font = [UIFont fontWithName:@"Helvetica-Bold" size:12.000];
+	view20.hidden = NO;
+	view20.highlighted = NO;
+	view20.multipleTouchEnabled = NO;
+	view20.opaque = NO;
+	view20.reversesTitleShadowWhenHighlighted = NO;
+	view20.selected = NO;
+	view20.showsTouchWhenHighlighted = NO;
+	view20.tag = 0;
+	view20.userInteractionEnabled = YES;
+	[view20 setTitle:@"play" forState:UIControlStateDisabled];
+	[view20 setTitle:@"play" forState:UIControlStateHighlighted];
+	[view20 setTitle:@"play" forState:UIControlStateNormal];
+	[view20 setTitle:@"play" forState:UIControlStateSelected];
+	[view20 setTitleColor:[UIColor colorWithRed:0.196 green:0.310 blue:0.522 alpha:1.000] forState:UIControlStateNormal];
+	[view20 setTitleColor:[UIColor colorWithRed:1.000 green:1.000 blue:1.000 alpha:1.000] forState:UIControlStateHighlighted];
+	[view20 setTitleColor:[UIColor colorWithWhite:0.000 alpha:1.000] forState:UIControlStateDisabled];
+	[view20 setTitleColor:[UIColor colorWithWhite:0.000 alpha:1.000] forState:UIControlStateSelected];
+	[view20 setTitleShadowColor:[UIColor colorWithWhite:0.000 alpha:1.000] forState:UIControlStateDisabled];
+	[view20 setTitleShadowColor:[UIColor colorWithWhite:0.000 alpha:1.000] forState:UIControlStateHighlighted];
+	[view20 setTitleShadowColor:[UIColor colorWithWhite:0.000 alpha:1.000] forState:UIControlStateNormal];
+	[view20 setTitleShadowColor:[UIColor colorWithWhite:0.000 alpha:1.000] forState:UIControlStateSelected];
+	[view20 addTarget:self action:@selector(pause) forControlEvents:UIControlEventTouchUpInside];
+
+	UIButton *view25 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+	view25.frame = CGRectMake(226.0, 20.0, 74.0, 27.0);
+	view25.adjustsImageWhenDisabled = YES;
+	view25.adjustsImageWhenHighlighted = YES;
+	view25.alpha = 0.400;
+	view25.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
+	view25.clearsContextBeforeDrawing = NO;
+	view25.clipsToBounds = NO;
+	view25.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
+	view25.contentMode = UIViewContentModeScaleToFill;
+	view25.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+	view25.enabled = YES;
+	view25.font = [UIFont fontWithName:@"Helvetica-Bold" size:12.000];
+	view25.hidden = NO;
+	view25.highlighted = NO;
+	view25.multipleTouchEnabled = NO;
+	view25.opaque = NO;
+	view25.reversesTitleShadowWhenHighlighted = NO;
+	view25.selected = NO;
+	view25.showsTouchWhenHighlighted = NO;
+	view25.tag = 0;
+	view25.userInteractionEnabled = YES;
+	[view25 setTitle:@"shuffle" forState:UIControlStateDisabled];
+	[view25 setTitle:@"shuffle" forState:UIControlStateHighlighted];
+	[view25 setTitle:@"shuffle" forState:UIControlStateNormal];
+	[view25 setTitle:@"shuffle" forState:UIControlStateSelected];
+	[view25 setTitleColor:[UIColor colorWithRed:0.196 green:0.310 blue:0.522 alpha:1.000] forState:UIControlStateNormal];
+	[view25 setTitleColor:[UIColor colorWithRed:1.000 green:1.000 blue:1.000 alpha:1.000] forState:UIControlStateHighlighted];
+	[view25 setTitleColor:[UIColor colorWithWhite:0.000 alpha:1.000] forState:UIControlStateDisabled];
+	[view25 setTitleColor:[UIColor colorWithWhite:0.000 alpha:1.000] forState:UIControlStateSelected];
+	[view25 setTitleShadowColor:[UIColor colorWithWhite:0.000 alpha:1.000] forState:UIControlStateDisabled];
+	[view25 setTitleShadowColor:[UIColor colorWithWhite:0.000 alpha:1.000] forState:UIControlStateHighlighted];
+	[view25 setTitleShadowColor:[UIColor colorWithWhite:0.000 alpha:1.000] forState:UIControlStateNormal];
+	[view25 setTitleShadowColor:[UIColor colorWithWhite:0.000 alpha:1.000] forState:UIControlStateSelected];
+	[view25 addTarget:self action:@selector(shuffle) forControlEvents:UIControlEventTouchUpInside];
+
+	UIColor *tablecolor = [UIColor colorWithRed:0.304 green:0.304 blue:0.304 alpha:1.000];
+	
+	searchfield_ = [[UISearchBar alloc] initWithFrame:CGRectMake(163.0, 55.0, 137.0, 26.5)];
+	//searchfield_.frame = CGRectMake(163.0, 55.0, 137.0, 26.5);
+	searchfield_.frame = CGRectMake(0, 55.0, 320.0, 26.5);
+	searchfield_.alpha = 1.000;
+	searchfield_.barStyle = UIBarStyleBlackTranslucent;
+	searchfield_.backgroundColor = nil;
+	searchfield_.autocapitalizationType = UITextAutocapitalizationTypeNone;
+	searchfield_.autocorrectionType = UITextAutocorrectionTypeNo;
+	searchfield_.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
+	//searchfield_.backgroundColor = [UIColor colorWithRed:0.712 green:0.471 blue:0.280 alpha:0.000];
+	searchfield_.placeholder = @"search";
+	searchfield_.userInteractionEnabled = YES;
+	// don't get in the way of user typing
+    searchfield_.autocorrectionType = UITextAutocorrectionTypeNo;
+    searchfield_.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    searchfield_.showsCancelButton = NO;
+	searchfield_.delegate = self;
+
+	artistTable_ = [[UITableView alloc] initWithFrame:CGRectMake(0.0, 89.5, 320.0, 390.5) style:UITableViewStylePlain];
+	
+    artistTable_.delegate = self;
+    artistTable_.dataSource = self;
+	
+	artistTable_.frame = CGRectMake(0.0, 89.5, 320.0, 390.5);
+	artistTable_.allowsSelectionDuringEditing = NO;
+	artistTable_.alpha = 0.908;
+	artistTable_.alwaysBounceHorizontal = NO;
+	artistTable_.alwaysBounceVertical = NO;
+	artistTable_.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleBottomMargin;
+	artistTable_.backgroundColor = tablecolor;
+	artistTable_.bounces = YES;
+	artistTable_.bouncesZoom = YES;
+	artistTable_.canCancelContentTouches = YES;
+	artistTable_.clearsContextBeforeDrawing = NO;
+	artistTable_.clipsToBounds = YES;
+	artistTable_.contentMode = UIViewContentModeScaleToFill;
+	artistTable_.delaysContentTouches = YES;
+	artistTable_.directionalLockEnabled = NO;
+	artistTable_.hidden = NO;
+	artistTable_.indicatorStyle = UIScrollViewIndicatorStyleDefault;
+	artistTable_.maximumZoomScale = 1.000;
+	artistTable_.minimumZoomScale = 1.000;
+	artistTable_.multipleTouchEnabled = NO;
+	artistTable_.opaque = NO;
+	artistTable_.pagingEnabled = NO;
+	artistTable_.scrollEnabled = YES;
+	artistTable_.sectionIndexMinimumDisplayRowCount = 0;
+	artistTable_.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+	artistTable_.showsHorizontalScrollIndicator = YES;
+	artistTable_.showsVerticalScrollIndicator = YES;
+	artistTable_.tag = 0;
+	artistTable_.userInteractionEnabled = YES;
+	
+	[view1 addSubview:artistTable_];
+	[view1 addSubview:view20];
+	[view1 addSubview:view18];
+	[view1 addSubview:view25];
+	[view1 addSubview:searchfield_];
+	
+    self.view = view1;
+	
 }
 
 
@@ -168,7 +376,7 @@
 	
 	[UIView beginAnimations:@"animationID" context:nil];
 	[UIView setAnimationDuration:5.0];	
-	activity_.transform = CGAffineTransformMakeScale(2,2);
+	activity_.transform = CGAffineTransformMakeScale(1.5,1.5);
 	
 	UINavigationBar *bar = [self navigationController].navigationBar;
 	bar.barStyle = UIBarStyleBlackOpaque;;
@@ -287,7 +495,7 @@
 		}
 		[shuffleIndices	addObject:[NSString stringWithFormat:@"%d", index]];
 		[artistList_ addObject:[fullList objectAtIndex:index]];	
-		printf("Adding artist %s index: %d\n", [[[app.fullArtistList_ objectAtIndex:index] objectForKey:@"artistName"] UTF8String], i);
+		//printf("Adding artist %s index: %d\n", [[[app.fullArtistList_ objectAtIndex:index] objectForKey:@"artistName"] UTF8String], i);
 		[indexPath addObject:[NSIndexPath indexPathForRow:i inSection:0]];
 	}        
 	
@@ -394,7 +602,6 @@ tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPat
 	}
 	
 	// get the view controller's info dictionary based on the indexPath's row
-	printf("INdex row: %d\n", indexPath.row);
 	cell.dataDictionary = [[artistList_ objectAtIndex:indexPath.row] retain];
 	
 	return cell;
@@ -405,8 +612,91 @@ tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPat
 #pragma mark textfield callback, delegate routines
 #pragma mark ------------------------------------------------
 
--(IBAction) textfieldchanged:(id)sender
+#pragma mark UISearchBarDelegate
+
+- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
+{
+    // only show the status bar's cancel button while in edit mode
+	
+	AppData *app = [AppData get];
+	NSArray* fullList = app.fullArtistList_;
+	
+    // flush and save the current list content in case the user cancels the search later
+    [savedArtistList_ removeAllObjects];
+
+	NSDictionary *artist;
+	for (artist in fullList) {
+		NSString *name = [artist objectForKey:@"artistName"];
+		[savedArtistList_ addObject:name];
+	}
+    //[savedArtistList_ addObjectsFromArray: fullList];
+}
+
+
+- (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
+{
+    searchfield_.showsCancelButton = NO;
+}
+
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+{
+    [artistList_ removeAllObjects];    // clear the filtered array first
+    
+	AppData *app = [AppData get];
+	NSArray* fullList = app.fullArtistList_;
+	
+	if( [searchText length] == 0 )
+	{
+		[searchBar resignFirstResponder];
+		[self shuffle];
+		return;
+	}
+	
+    // search the table content for cell titles that match "searchText"
+    // if found add to the mutable array and force the table to reload
+    //
+
+	NSDictionary *artist;
+	for (artist in fullList) {
+		NSString *name = [artist objectForKey:@"artistName"];
+		NSRange r = [name rangeOfString:searchText options:NSCaseInsensitiveSearch];
+		if( r.location == NSNotFound || r.length == 0 )
+			continue;
+		[artistList_ addObject:artist];
+	}
+    
+	[artistTable_ reloadData];
+}
+
+
+// called when cancel button pressed
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
+{
+    // if a valid search was entered but the user wanted to cancel, bring back the saved list content
+    if (searchBar.text.length > 0) {
+        [artistList_ removeAllObjects];
+        [artistList_ addObjectsFromArray: savedArtistList_];
+    }
+    
+    [artistTable_ reloadData];
+    
+    [searchBar resignFirstResponder];
+    searchBar.text = @"";
+}
+
+
+// called when Search (in our case "Done") button pressed
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+{
+    [searchBar resignFirstResponder];
+}
+
+
+//- (IBAction)searchfield_:(UISearchBar *)searchBar textDidChange(NSString *)searchText
+//-(IBAction) textfieldchanged:(id)sender
+/*
 {	
+	printf ("here\n");
 	[artistList_ removeAllObjects];
 
 	NSString *search = searchfield_.text;
@@ -430,7 +720,7 @@ tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPat
 	
 	[artistTable_ reloadData];
 }
-
+*/
 
 - (BOOL)textFieldShouldReturn:(UITextField *)thetextField {
 	[thetextField resignFirstResponder];

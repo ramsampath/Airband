@@ -217,7 +217,7 @@
 															   action:nil]];        
         [self navigationController].navigationBarHidden = FALSE;
 		[[self navigationController] pushViewController:nowplayingVC animated:YES];		
-        
+
 		[app playTrack:d];
         [nowplayingVC release];
     }

@@ -39,7 +39,9 @@
 
 	window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
 		
-	ArtistViewController *artistVC = [[ArtistViewController alloc] initWithNibName:@"ArtistsView" bundle:nil];
+	//ArtistViewController *artistVC = [[ArtistViewController alloc] initWithNibName:@"ArtistsView" bundle:nil];
+	ArtistViewController *artistVC = [ArtistViewController alloc];
+
 	AllSettingsController *settingsVC = [AllSettingsController	alloc];
 	//NowPlayingController *nowplayingVC = [[NowPlayingController alloc] initWithNibName:@"NowPlayingArranged" bundle:nil];
 	PlaylistController *playlistVC = [[PlaylistController alloc] initWithNibName:@"PlayList" bundle:nil];
