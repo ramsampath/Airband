@@ -2,6 +2,8 @@
 #import "xmlhelp.h"
 #import "songview.h"
 
+
+
 @interface ArtistViewController : 
 	UIViewController< UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UISearchBarDelegate >
 {
@@ -16,6 +18,8 @@
 		
 	UIActivityIndicatorView	*activity_;
 }
+
+
 
 -(IBAction) shuffle;
 -(IBAction) pause;

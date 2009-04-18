@@ -180,8 +180,8 @@
 	{
 
 		NSDictionary *d = [app.trackList_ objectAtIndex:[indexPath row]];
-        NowPlayingController *nowplayingVC = [[NowPlayingController alloc] initWithNibName:@"NowPlayingArranged" bundle:nil];
-        
+        //NowPlayingController *nowplayingVC = [[NowPlayingController alloc] initWithNibName:@"NowPlayingArranged" bundle:nil];
+        NowPlayingController *nowplayingVC = [[NowPlayingController alloc] init];
         nowplayingVC.navigationItem.title = [d objectForKey:@""];
 
 		[nowplayingVC.navigationItem 
@@ -206,8 +206,8 @@
 	{
 		NSDictionary *d = [app.currentTracklist_ objectAtIndex:[indexPath row]];	
         
-        NowPlayingController *nowplayingVC = [[NowPlayingController alloc] initWithNibName:@"NowPlayingArranged" bundle:nil];
-        //NowPlayingController *nowplayingVC = [NowPlayingController alloc];
+        //NowPlayingController *nowplayingVC = [[NowPlayingController alloc] initWithNibName:@"NowPlayingArranged" bundle:nil];
+        NowPlayingController *nowplayingVC = [NowPlayingController alloc];
         
         nowplayingVC.navigationItem.title = [d objectForKey:@""];
 		[nowplayingVC.navigationItem 

@@ -65,6 +65,8 @@
 - (void) playTrack:(NSDictionary*)track;
 - (int) getPlayLength;
 - (void) play:(NSDictionary*)artistdictionary;
+- (void) pause;
+- (void) resume;
 - (void) stop;
 - (void) setvolume:(float)volume;
 - (NSArray*) parseItemList:(NSData*)data;

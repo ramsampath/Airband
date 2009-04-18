@@ -83,6 +83,8 @@ struct AudioData
 	
 	pthread_mutex_t mutex;			// a mutex to protect the inuse flags
 	pthread_cond_t cond;			// a condition varable for handling the inuse flags
+	
+	AudioTimeStamp pausedTimeStamp; // where the audio was stopped
 };
 typedef struct AudioData AudioData;
 
@@ -396,6 +398,9 @@ static void MyPacketsProc( void *inClientData,
 }
 
 
+
+
+
 -(void) cancel
 {
 	if( myd_ && running_ )
@@ -653,12 +658,22 @@ static void* workerthread( void* pv )
 -(void) pause
 {
 	if( paused_ )
-		AudioQueueStart( asyncaudio_.myd_->audioQueue_, NULL );
-	else
+		AudioQueueStart( asyncaudio_.myd_->audioQueue_, &asyncaudio_.myd_->pausedTimeStamp );
+	else {
 		AudioQueuePause( asyncaudio_.myd_->audioQueue_ );
-	
+		AudioQueueGetCurrentTime( asyncaudio_.myd_->audioQueue_, NULL, &(asyncaudio_.myd_->pausedTimeStamp), NULL);
+	}
 	paused_ = !paused_;
 }
+
+
+-(void) resume
+{
+	paused_ = !paused_;
+	//AudioQueueStart( asyncaudio_.myd_->audioQueue_, &asyncaudio_.myd_->pausedTimeStamp );
+	AudioQueueStart( asyncaudio_.myd_->audioQueue_, NULL );
+}
+
 
 -(void) cancel
 {

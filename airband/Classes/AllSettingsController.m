@@ -133,7 +133,8 @@ numberOfSectionsInTableView:(UITableView *)tableView
 		return;
 	
 	if( row == 0 ) {
-		SettingsController *settings = [[SettingsController alloc] initWithNibName:@"Settings" bundle:nil];	
+		//SettingsController *settings = [[SettingsController alloc] initWithNibName:@"Settings" bundle:nil];	
+		SettingsController *settings = [SettingsController alloc] ;
 		[[self navigationController] pushViewController:settings animated:YES];
 	}
 }
