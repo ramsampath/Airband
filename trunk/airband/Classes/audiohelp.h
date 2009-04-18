@@ -27,6 +27,7 @@
 	bool running_;            // child thread is running
 	NSMutableArray*  datalist_;
 }
+
 -(void) cancel;
 -(bool) launchworker;
 -(void) consumer;
@@ -49,6 +50,7 @@
 
 -(void) play:(NSString*)url;
 -(void) pause;
+-(void) resume;
 -(float) percentage;
 -(void) cancel;
 -(void) setvolume:(float)v;

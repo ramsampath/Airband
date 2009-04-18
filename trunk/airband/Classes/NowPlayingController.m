@@ -6,6 +6,7 @@
 //  Copyright 2008 Elliptic. All rights reserved.
 //
 
+
 #import "NowPlayingController.h"
 #import "appdata.h"
 
@@ -15,18 +16,242 @@
 	if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
 		// Initialization code
 	}
-	self.hidesBottomBarWhenPushed = TRUE;
 
+	return self;
+}
+
+-(id)init 
+{
+	if (self = [super init]) {
+		self.hidesBottomBarWhenPushed = TRUE;
+	}
 	return self;
 }
 
 /*
  Implement loadView if you want to create a view hierarchy programmatically
  */
-/*
-- (void)loadView {
- }
-*/
+
+- (void)loadView 
+{
+	
+	UIView *mainview = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 436.0)];
+	mainview.frame = CGRectMake(0.0, 0.0, 320.0, 436.0);
+	mainview.alpha = 1.000;
+	mainview.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
+	mainview.backgroundColor = [UIColor colorWithRed:0.114 green:0.110 blue:0.090 alpha:1.000];
+	mainview.clearsContextBeforeDrawing = YES;
+	mainview.clipsToBounds = NO;
+	mainview.contentMode = UIViewContentModeScaleToFill;
+	mainview.hidden = NO;
+	mainview.multipleTouchEnabled = NO;
+	mainview.opaque = YES;
+	mainview.tag = 0;
+	mainview.userInteractionEnabled = YES;
+
+	
+ 
+	progbar_ = [[UISlider alloc] initWithFrame:CGRectMake(18.0, 332.0, 284.0, 23.0)];
+	progbar_.frame = CGRectMake(18.0, 332.0, 284.0, 23.0);
+	progbar_.alpha = 1.000;
+	progbar_.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
+	progbar_.backgroundColor = [UIColor colorWithRed:0.000 green:0.000 blue:0.000 alpha:0.000];
+	progbar_.clearsContextBeforeDrawing = YES;
+	progbar_.clipsToBounds = YES;
+	progbar_.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
+	progbar_.contentMode = UIViewContentModeScaleToFill;
+	progbar_.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+	progbar_.continuous = YES;
+	progbar_.enabled = YES;
+	progbar_.hidden = NO;
+	progbar_.highlighted = NO;
+	progbar_.maximumValue = 1.000;
+	progbar_.minimumValue = 0.000;
+	progbar_.multipleTouchEnabled = YES;
+	progbar_.opaque = NO;
+	progbar_.selected = NO;
+	progbar_.tag = 0;
+	progbar_.userInteractionEnabled = YES;
+	progbar_.value = 0.000;
+	
+	volume_ = [[UISlider alloc] initWithFrame:CGRectMake(81.0, 305.0, 147.0, 23.0)];
+	volume_.alpha = 1.000;
+	volume_.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
+	volume_.clearsContextBeforeDrawing = YES;
+	volume_.clipsToBounds = YES;
+	volume_.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
+	volume_.contentMode = UIViewContentModeScaleToFill;
+	volume_.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+	volume_.continuous = YES;
+	volume_.enabled = YES;
+	volume_.hidden = NO;
+	volume_.highlighted = NO;
+	volume_.maximumValue = 1.000;
+	volume_.minimumValue = 0.000;
+	volume_.multipleTouchEnabled = YES;
+	volume_.opaque = NO;
+	volume_.selected = NO;
+	volume_.tag = 0;
+	volume_.userInteractionEnabled = YES;
+	volume_.value = 1.00;
+	[volume_ addTarget:self action:@selector(setvolume:) forControlEvents:UIControlEventValueChanged];
+ 
+	UILabel *volumeLabel = [[UILabel alloc] initWithFrame:CGRectMake(20.0, 305.0, 55.0, 21.0)];
+	volumeLabel.adjustsFontSizeToFitWidth = YES;
+	volumeLabel.alpha = 1.000;
+	volumeLabel.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
+	volumeLabel.baselineAdjustment = UIBaselineAdjustmentAlignCenters;
+	volumeLabel.clearsContextBeforeDrawing = YES;
+	volumeLabel.clipsToBounds = YES;
+	volumeLabel.contentMode = UIViewContentModeScaleToFill;
+	volumeLabel.enabled = YES;
+	volumeLabel.font = [UIFont fontWithName:@"Helvetica" size:12.000];
+	volumeLabel.hidden = NO;
+	volumeLabel.lineBreakMode = UILineBreakModeTailTruncation;
+	volumeLabel.minimumFontSize = 10.000;
+	volumeLabel.multipleTouchEnabled = NO;
+	volumeLabel.numberOfLines = 1;
+	volumeLabel.opaque = NO;
+	volumeLabel.shadowOffset = CGSizeMake(0.0, -1.0);
+	volumeLabel.tag = 0;
+	volumeLabel.text = @"Volume";
+	volumeLabel.textAlignment = UITextAlignmentCenter;
+	volumeLabel.textColor = [UIColor colorWithRed:0.913 green:0.913 blue:0.913 alpha:1.000];
+	volumeLabel.backgroundColor = [UIColor clearColor];
+	volumeLabel.userInteractionEnabled = NO;
+	
+	trackinfo_ = [[UITextView alloc] initWithFrame:CGRectMake(34.0, 270.0, 240.0, 34.0)];
+	trackinfo_.alpha = 1.000;
+	trackinfo_.alwaysBounceHorizontal = NO;
+	trackinfo_.alwaysBounceVertical = NO;
+	trackinfo_.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
+	trackinfo_.bounces = YES;
+	trackinfo_.bouncesZoom = NO;
+	trackinfo_.canCancelContentTouches = NO;
+	trackinfo_.clearsContextBeforeDrawing = YES;
+	trackinfo_.clipsToBounds = YES;
+	trackinfo_.contentMode = UIViewContentModeScaleToFill;
+	trackinfo_.delaysContentTouches = NO;
+	trackinfo_.directionalLockEnabled = NO;
+	trackinfo_.editable = YES;
+	trackinfo_.font = [UIFont fontWithName:@"Helvetica" size:17.000];
+	trackinfo_.hidden = NO;
+	trackinfo_.indicatorStyle = UIScrollViewIndicatorStyleDefault;
+	trackinfo_.maximumZoomScale = 0.000;
+	trackinfo_.minimumZoomScale = 0.000;
+	trackinfo_.multipleTouchEnabled = NO;
+	trackinfo_.opaque = NO;
+	trackinfo_.pagingEnabled = NO;
+	trackinfo_.scrollEnabled = YES;
+	trackinfo_.showsHorizontalScrollIndicator = NO;
+	trackinfo_.showsVerticalScrollIndicator = YES;
+	trackinfo_.tag = 0;
+	trackinfo_.text = @"";
+	trackinfo_.textAlignment = UITextAlignmentLeft;
+	trackinfo_.backgroundColor = [UIColor clearColor];
+	trackinfo_.textColor = [UIColor colorWithRed:0.913 green:0.913 blue:0.913 alpha:1.000];
+	trackinfo_.userInteractionEnabled = NO;
+	
+	toolbar_ = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 392.0, 320.0, 44.0)];
+	toolbar_.frame = CGRectMake(0.0, 392.0, 320.0, 44.0);
+	toolbar_.alpha = 1.000;
+	toolbar_.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
+	toolbar_.barStyle = UIBarStyleBlackTranslucent;
+	toolbar_.clearsContextBeforeDrawing = NO;
+	toolbar_.clipsToBounds = NO;
+	toolbar_.contentMode = UIViewContentModeBottom;
+	toolbar_.hidden = NO;
+	toolbar_.multipleTouchEnabled = NO;
+	toolbar_.opaque = NO;
+	toolbar_.tag = 0;
+	toolbar_.userInteractionEnabled = YES;
+	
+	UIBarButtonItem *flexbeg = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+	flexbeg.enabled = YES;
+	flexbeg.style = UIBarButtonItemStylePlain;
+	flexbeg.tag = 0;
+	flexbeg.width = 0.000;
+	
+	prev_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRewind 
+														  target:self	action:@selector(prev:)];
+	prev_.enabled = YES;
+	prev_.style = UIBarButtonItemStyleBordered;
+	prev_.tag = 0;
+	prev_.width = 0.000;
+	
+	UIBarButtonItem *fixedprev = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace 
+															target:nil action:nil];
+	fixedprev.enabled = YES;
+	fixedprev.style = UIBarButtonItemStylePlain;
+	fixedprev.tag = 0;
+	fixedprev.width = 16.000;
+	
+	pause_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemPause 
+														   target:self action:@selector(pause:)];
+	pause_.enabled = YES;
+	pause_.style = UIBarButtonItemStyleBordered;
+	pause_.tag = 0;
+	pause_.width = 0.000;
+	
+	UIBarButtonItem *fixedpause = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace
+															target:nil action:nil];
+	fixedpause.enabled = YES;
+	fixedpause.style = UIBarButtonItemStylePlain;
+	fixedpause.tag = 0;
+	fixedpause.width = 16.000;
+	
+	play_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemPlay
+														  target:self action:@selector(play:)];
+	play_.enabled = YES;
+	play_.style = UIBarButtonItemStyleBordered;
+	play_.tag = 0;
+	play_.width = 0.000;
+	
+	UIBarButtonItem *fixedplay = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+	fixedplay.enabled = YES;
+	fixedplay.style = UIBarButtonItemStylePlain;
+	fixedplay.tag = 0;
+	fixedplay.width = 20.000;
+	
+	next_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFastForward 
+														  target:self action:@selector(next:)];
+	next_.enabled = YES;
+	next_.style = UIBarButtonItemStyleBordered;
+	next_.tag = 0;
+	next_.width = 0.000;
+
+	UIBarButtonItem *flexend = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+	flexend.enabled = YES;
+	flexend.style = UIBarButtonItemStylePlain;
+	flexend.tag = 0;
+	flexend.width = 0.000;
+	
+	albumcover_ = [[UIImageView alloc] initWithFrame:CGRectMake(20.0, 55.0, 280.0, 176.0)];
+	albumcover_.frame = CGRectMake(20.0, 55.0, 280.0, 176.0);
+	albumcover_.alpha = 1.000;
+	albumcover_.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+	albumcover_.clearsContextBeforeDrawing = NO;
+	albumcover_.clipsToBounds = NO;
+	albumcover_.contentMode = UIViewContentModeScaleAspectFill;
+	albumcover_.hidden = NO;
+	albumcover_.image = nil;
+	albumcover_.multipleTouchEnabled = NO;
+	albumcover_.opaque = NO;
+	albumcover_.tag = 0;
+	albumcover_.userInteractionEnabled = NO;
+	
+	[toolbar_ setItems:[NSArray arrayWithObjects:flexbeg, prev_, fixedprev, pause_, fixedpause, play_, fixedplay, next_, flexend, nil]]; 
+
+	[mainview addSubview:toolbar_];
+	[mainview addSubview:albumcover_];
+	[mainview addSubview:progbar_];
+	[mainview addSubview:volume_];
+	[mainview addSubview:volumeLabel];
+	[mainview addSubview:trackinfo_];
+	
+	self.view = mainview;
+	
+}
 
 
 - (void)artworkReady:(NSObject*)notification
@@ -38,7 +263,12 @@
 	} else {
 		albumcover_.image = [UIImage imageNamed:@"airband.png"];
 	}
-	
+	[img drawInRect: CGRectMake(0.0f, 0.0f, 100.0f, 60.0f) ]; // Draw in a custom rect.
+
+	//UIImageView *imageView = [ [ UIImageView alloc ] initWithImage: albumcover_.image];
+	//imageView.frame = CGRectMake(20.0, 55.0, 280.0, 176.0);
+	//[self.view addSubview: imageView]; // Draw the image in self.view.
+
 	trackinfo_.text = app.currentTrackTitle_;
 }
 
@@ -91,10 +321,14 @@
         float len = [app tracklength];
 		//printf( "myTimer fired, percent: %f %f\n", cur, len );
         if( cur >= len ) {
+			[progbar_ setValue:0.0 animated:YES];
             [self nextTrack];
             //[app stop];
         }
-
+		else {
+			float per = cur/len;
+			[progbar_ setValue:per animated:YES];
+		}
 	}
 	
 	/*
@@ -165,7 +399,12 @@
 
 -(IBAction) play:(id)sender
 {
-    AppData *app = [AppData get];
+	AppData *app = [AppData get];
+
+	if( paused_ ) {
+		paused_ = false;
+		[app resume];
+	}
     
     int index = [app currentTrackIndex_];
     NSDictionary *d = [app.trackList_ objectAtIndex:index];
@@ -185,6 +424,14 @@
 
 -(IBAction) pause:(id)sender
 {
+	paused_ = true;
+	[[AppData get] pause];
+	//[[AppData get] stop];
+}
+
+-(IBAction) stop:(id)sender
+{
+	paused_ = true;
 	[[AppData get] stop];
 }
 

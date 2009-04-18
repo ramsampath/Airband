@@ -117,8 +117,6 @@
 @end
 
 
-
-
 #pragma mark ------------------------------------------------
 #pragma mark controller
 #pragma mark ------------------------------------------------
@@ -151,140 +149,140 @@
 {
 	UIColor *viewbgcolor = [UIColor colorWithRed:0.212 green:0.212 blue:0.212 alpha:1.000];
 
-	UIButton *view18 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-	view18.frame = CGRectMake(88.0, 20.0, 67.0, 27.0);
-	view18.adjustsImageWhenDisabled = YES;
-	view18.adjustsImageWhenHighlighted = YES;
-	view18.alpha = 0.400;
-	view18.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
-	view18.clearsContextBeforeDrawing = NO;
-	view18.clipsToBounds = NO;
-	view18.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
-	view18.contentMode = UIViewContentModeScaleToFill;
-	view18.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-	view18.enabled = YES;
-	view18.font = [UIFont fontWithName:@"Helvetica-Bold" size:12.000];
-	view18.hidden = NO;
-	view18.highlighted = NO;
-	view18.multipleTouchEnabled = NO;
-	view18.opaque = NO;
-	view18.reversesTitleShadowWhenHighlighted = NO;
-	view18.selected = NO;
-	view18.showsTouchWhenHighlighted = NO;
-	view18.tag = 0;
-	view18.userInteractionEnabled = YES;
-	[view18 setTitle:@"Random" forState:UIControlStateDisabled];
-	[view18 setTitle:@"Random" forState:UIControlStateHighlighted];
-	[view18 setTitle:@"Random" forState:UIControlStateNormal];
-	[view18 setTitle:@"Random" forState:UIControlStateSelected];
-	[view18 setTitleColor:[UIColor colorWithRed:0.196 green:0.310 blue:0.522 alpha:1.000] forState:UIControlStateNormal];
-	[view18 setTitleColor:[UIColor colorWithRed:1.000 green:1.000 blue:1.000 alpha:1.000] forState:UIControlStateHighlighted];
-	[view18 setTitleColor:[UIColor colorWithWhite:0.000 alpha:1.000] forState:UIControlStateDisabled];
-	[view18 setTitleColor:[UIColor colorWithWhite:0.000 alpha:1.000] forState:UIControlStateSelected];
-	[view18 setTitleShadowColor:[UIColor colorWithWhite:0.000 alpha:1.000] forState:UIControlStateDisabled];
-	[view18 setTitleShadowColor:[UIColor colorWithWhite:0.000 alpha:1.000] forState:UIControlStateHighlighted];
-	[view18 setTitleShadowColor:[UIColor colorWithWhite:0.000 alpha:1.000] forState:UIControlStateNormal];
-	[view18 setTitleShadowColor:[UIColor colorWithWhite:0.000 alpha:1.000] forState:UIControlStateSelected];
-	[view18 addTarget:self action:@selector(random) forControlEvents:UIControlEventTouchUpInside];
+	UIButton *randomButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+	randomButton.frame = CGRectMake(88.0, 20.0, 67.0, 27.0);
+	randomButton.adjustsImageWhenDisabled = YES;
+	randomButton.adjustsImageWhenHighlighted = YES;
+	randomButton.alpha = 0.400;
+	randomButton.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
+	randomButton.clearsContextBeforeDrawing = NO;
+	randomButton.clipsToBounds = NO;
+	randomButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
+	randomButton.contentMode = UIViewContentModeScaleToFill;
+	randomButton.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+	randomButton.enabled = YES;
+	randomButton.font = [UIFont fontWithName:@"Helvetica-Bold" size:12.000];
+	randomButton.hidden = NO;
+	randomButton.highlighted = NO;
+	randomButton.multipleTouchEnabled = NO;
+	randomButton.opaque = NO;
+	randomButton.reversesTitleShadowWhenHighlighted = NO;
+	randomButton.selected = NO;
+	randomButton.showsTouchWhenHighlighted = NO;
+	randomButton.tag = 0;
+	randomButton.userInteractionEnabled = YES;
+	[randomButton setTitle:@"Random" forState:UIControlStateDisabled];
+	[randomButton setTitle:@"Random" forState:UIControlStateHighlighted];
+	[randomButton setTitle:@"Random" forState:UIControlStateNormal];
+	[randomButton setTitle:@"Random" forState:UIControlStateSelected];
+	[randomButton setTitleColor:[UIColor colorWithRed:0.196 green:0.310 blue:0.522 alpha:1.000] forState:UIControlStateNormal];
+	[randomButton setTitleColor:[UIColor colorWithRed:1.000 green:1.000 blue:1.000 alpha:1.000] forState:UIControlStateHighlighted];
+	[randomButton setTitleColor:[UIColor colorWithWhite:0.000 alpha:1.000] forState:UIControlStateDisabled];
+	[randomButton setTitleColor:[UIColor colorWithWhite:0.000 alpha:1.000] forState:UIControlStateSelected];
+	[randomButton setTitleShadowColor:[UIColor colorWithWhite:0.000 alpha:1.000] forState:UIControlStateDisabled];
+	[randomButton setTitleShadowColor:[UIColor colorWithWhite:0.000 alpha:1.000] forState:UIControlStateHighlighted];
+	[randomButton setTitleShadowColor:[UIColor colorWithWhite:0.000 alpha:1.000] forState:UIControlStateNormal];
+	[randomButton setTitleShadowColor:[UIColor colorWithWhite:0.000 alpha:1.000] forState:UIControlStateSelected];
+	[randomButton addTarget:self action:@selector(random) forControlEvents:UIControlEventTouchUpInside];
 	
 	
 	/*
-	UISegmentedControl *view18 = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:NSLocalizedString(@"Random", @""), nil]];
-	view18.frame = CGRectMake(88.0, 20.0, 67.0, 27.0);
-	view18.momentary = YES;
-	view18.segmentedControlStyle = UISegmentedControlStyleBar;
-	view18.tintColor = viewbgcolor;
-	self.navigationItem.titleView = view18;
-	[view18 addTarget:self action:@selector(random) forControlEvents:UIControlEventValueChanged];
+	UISegmentedControl *randomButton = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:NSLocalizedString(@"Random", @""), nil]];
+	randomButton.frame = CGRectMake(88.0, 20.0, 67.0, 27.0);
+	randomButton.momentary = YES;
+	randomButton.segmentedControlStyle = UISegmentedControlStyleBar;
+	randomButton.tintColor = viewbgcolor;
+	self.navigationItem.titleView = randomButton;
+	[randomButton addTarget:self action:@selector(random) forControlEvents:UIControlEventValueChanged];
     */
 	
 	
-	UIView *view1 = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 480.0)];
-	view1.frame = CGRectMake(0.0, 0.0, 320.0, 480.0);
-	view1.alpha = 1.000;
-	view1.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
-	view1.backgroundColor = viewbgcolor;
-	view1.clearsContextBeforeDrawing = YES;
-	view1.clipsToBounds = NO;
-	view1.contentMode = UIViewContentModeScaleToFill;
-	view1.hidden = NO;
-	view1.multipleTouchEnabled = NO;
-	view1.opaque = YES;
-	view1.tag = 0;
-	view1.userInteractionEnabled = YES;
+	UIView *mainview = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 480.0)];
+	mainview.frame = CGRectMake(0.0, 0.0, 320.0, 480.0);
+	mainview.alpha = 1.000;
+	mainview.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
+	mainview.backgroundColor = viewbgcolor;
+	mainview.clearsContextBeforeDrawing = YES;
+	mainview.clipsToBounds = NO;
+	mainview.contentMode = UIViewContentModeScaleToFill;
+	mainview.hidden = NO;
+	mainview.multipleTouchEnabled = NO;
+	mainview.opaque = YES;
+	mainview.tag = 0;
+	mainview.userInteractionEnabled = YES;
 	
-	UIButton *view20 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-	view20.frame = CGRectMake(14.0, 20.0, 66.0, 27.0);
-	view20.adjustsImageWhenDisabled = YES;
-	view20.adjustsImageWhenHighlighted = YES;
-	view20.alpha = 0.400;
-	view20.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
-	view20.backgroundColor = [UIColor colorWithRed:0.543 green:0.133 blue:0.114 alpha:0.000];
-	view20.clearsContextBeforeDrawing = NO;
-	view20.clipsToBounds = NO;
-	view20.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
-	view20.contentMode = UIViewContentModeScaleToFill;
-	view20.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-	view20.enabled = YES;
-	view20.font = [UIFont fontWithName:@"Helvetica-Bold" size:12.000];
-	view20.hidden = NO;
-	view20.highlighted = NO;
-	view20.multipleTouchEnabled = NO;
-	view20.opaque = NO;
-	view20.reversesTitleShadowWhenHighlighted = NO;
-	view20.selected = NO;
-	view20.showsTouchWhenHighlighted = NO;
-	view20.tag = 0;
-	view20.userInteractionEnabled = YES;
-	[view20 setTitle:@"play" forState:UIControlStateDisabled];
-	[view20 setTitle:@"play" forState:UIControlStateHighlighted];
-	[view20 setTitle:@"play" forState:UIControlStateNormal];
-	[view20 setTitle:@"play" forState:UIControlStateSelected];
-	[view20 setTitleColor:[UIColor colorWithRed:0.196 green:0.310 blue:0.522 alpha:1.000] forState:UIControlStateNormal];
-	[view20 setTitleColor:[UIColor colorWithRed:1.000 green:1.000 blue:1.000 alpha:1.000] forState:UIControlStateHighlighted];
-	[view20 setTitleColor:[UIColor colorWithWhite:0.000 alpha:1.000] forState:UIControlStateDisabled];
-	[view20 setTitleColor:[UIColor colorWithWhite:0.000 alpha:1.000] forState:UIControlStateSelected];
-	[view20 setTitleShadowColor:[UIColor colorWithWhite:0.000 alpha:1.000] forState:UIControlStateDisabled];
-	[view20 setTitleShadowColor:[UIColor colorWithWhite:0.000 alpha:1.000] forState:UIControlStateHighlighted];
-	[view20 setTitleShadowColor:[UIColor colorWithWhite:0.000 alpha:1.000] forState:UIControlStateNormal];
-	[view20 setTitleShadowColor:[UIColor colorWithWhite:0.000 alpha:1.000] forState:UIControlStateSelected];
-	[view20 addTarget:self action:@selector(pause) forControlEvents:UIControlEventTouchUpInside];
+	UIButton *playButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+	playButton.frame = CGRectMake(14.0, 20.0, 66.0, 27.0);
+	playButton.adjustsImageWhenDisabled = YES;
+	playButton.adjustsImageWhenHighlighted = YES;
+	playButton.alpha = 0.400;
+	playButton.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
+	playButton.backgroundColor = [UIColor colorWithRed:0.543 green:0.133 blue:0.114 alpha:0.000];
+	playButton.clearsContextBeforeDrawing = NO;
+	playButton.clipsToBounds = NO;
+	playButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
+	playButton.contentMode = UIViewContentModeScaleToFill;
+	playButton.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+	playButton.enabled = YES;
+	playButton.font = [UIFont fontWithName:@"Helvetica-Bold" size:12.000];
+	playButton.hidden = NO;
+	playButton.highlighted = NO;
+	playButton.multipleTouchEnabled = NO;
+	playButton.opaque = NO;
+	playButton.reversesTitleShadowWhenHighlighted = NO;
+	playButton.selected = NO;
+	playButton.showsTouchWhenHighlighted = NO;
+	playButton.tag = 0;
+	playButton.userInteractionEnabled = YES;
+	[playButton setTitle:@"play" forState:UIControlStateDisabled];
+	[playButton setTitle:@"play" forState:UIControlStateHighlighted];
+	[playButton setTitle:@"play" forState:UIControlStateNormal];
+	[playButton setTitle:@"play" forState:UIControlStateSelected];
+	[playButton setTitleColor:[UIColor colorWithRed:0.196 green:0.310 blue:0.522 alpha:1.000] forState:UIControlStateNormal];
+	[playButton setTitleColor:[UIColor colorWithRed:1.000 green:1.000 blue:1.000 alpha:1.000] forState:UIControlStateHighlighted];
+	[playButton setTitleColor:[UIColor colorWithWhite:0.000 alpha:1.000] forState:UIControlStateDisabled];
+	[playButton setTitleColor:[UIColor colorWithWhite:0.000 alpha:1.000] forState:UIControlStateSelected];
+	[playButton setTitleShadowColor:[UIColor colorWithWhite:0.000 alpha:1.000] forState:UIControlStateDisabled];
+	[playButton setTitleShadowColor:[UIColor colorWithWhite:0.000 alpha:1.000] forState:UIControlStateHighlighted];
+	[playButton setTitleShadowColor:[UIColor colorWithWhite:0.000 alpha:1.000] forState:UIControlStateNormal];
+	[playButton setTitleShadowColor:[UIColor colorWithWhite:0.000 alpha:1.000] forState:UIControlStateSelected];
+	[playButton addTarget:self action:@selector(pause:) forControlEvents:UIControlEventTouchUpInside];
 
-	UIButton *view25 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-	view25.frame = CGRectMake(226.0, 20.0, 74.0, 27.0);
-	view25.adjustsImageWhenDisabled = YES;
-	view25.adjustsImageWhenHighlighted = YES;
-	view25.alpha = 0.400;
-	view25.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
-	view25.clearsContextBeforeDrawing = NO;
-	view25.clipsToBounds = NO;
-	view25.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
-	view25.contentMode = UIViewContentModeScaleToFill;
-	view25.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-	view25.enabled = YES;
-	view25.font = [UIFont fontWithName:@"Helvetica-Bold" size:12.000];
-	view25.hidden = NO;
-	view25.highlighted = NO;
-	view25.multipleTouchEnabled = NO;
-	view25.opaque = NO;
-	view25.reversesTitleShadowWhenHighlighted = NO;
-	view25.selected = NO;
-	view25.showsTouchWhenHighlighted = NO;
-	view25.tag = 0;
-	view25.userInteractionEnabled = YES;
-	[view25 setTitle:@"shuffle" forState:UIControlStateDisabled];
-	[view25 setTitle:@"shuffle" forState:UIControlStateHighlighted];
-	[view25 setTitle:@"shuffle" forState:UIControlStateNormal];
-	[view25 setTitle:@"shuffle" forState:UIControlStateSelected];
-	[view25 setTitleColor:[UIColor colorWithRed:0.196 green:0.310 blue:0.522 alpha:1.000] forState:UIControlStateNormal];
-	[view25 setTitleColor:[UIColor colorWithRed:1.000 green:1.000 blue:1.000 alpha:1.000] forState:UIControlStateHighlighted];
-	[view25 setTitleColor:[UIColor colorWithWhite:0.000 alpha:1.000] forState:UIControlStateDisabled];
-	[view25 setTitleColor:[UIColor colorWithWhite:0.000 alpha:1.000] forState:UIControlStateSelected];
-	[view25 setTitleShadowColor:[UIColor colorWithWhite:0.000 alpha:1.000] forState:UIControlStateDisabled];
-	[view25 setTitleShadowColor:[UIColor colorWithWhite:0.000 alpha:1.000] forState:UIControlStateHighlighted];
-	[view25 setTitleShadowColor:[UIColor colorWithWhite:0.000 alpha:1.000] forState:UIControlStateNormal];
-	[view25 setTitleShadowColor:[UIColor colorWithWhite:0.000 alpha:1.000] forState:UIControlStateSelected];
-	[view25 addTarget:self action:@selector(shuffle) forControlEvents:UIControlEventTouchUpInside];
+	UIButton *shuffleButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+	shuffleButton.frame = CGRectMake(226.0, 20.0, 74.0, 27.0);
+	shuffleButton.adjustsImageWhenDisabled = YES;
+	shuffleButton.adjustsImageWhenHighlighted = YES;
+	shuffleButton.alpha = 0.400;
+	shuffleButton.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
+	shuffleButton.clearsContextBeforeDrawing = NO;
+	shuffleButton.clipsToBounds = NO;
+	shuffleButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
+	shuffleButton.contentMode = UIViewContentModeScaleToFill;
+	shuffleButton.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+	shuffleButton.enabled = YES;
+	shuffleButton.font = [UIFont fontWithName:@"Helvetica-Bold" size:12.000];
+	shuffleButton.hidden = NO;
+	shuffleButton.highlighted = NO;
+	shuffleButton.multipleTouchEnabled = NO;
+	shuffleButton.opaque = NO;
+	shuffleButton.reversesTitleShadowWhenHighlighted = NO;
+	shuffleButton.selected = NO;
+	shuffleButton.showsTouchWhenHighlighted = NO;
+	shuffleButton.tag = 0;
+	shuffleButton.userInteractionEnabled = YES;
+	[shuffleButton setTitle:@"shuffle" forState:UIControlStateDisabled];
+	[shuffleButton setTitle:@"shuffle" forState:UIControlStateHighlighted];
+	[shuffleButton setTitle:@"shuffle" forState:UIControlStateNormal];
+	[shuffleButton setTitle:@"shuffle" forState:UIControlStateSelected];
+	[shuffleButton setTitleColor:[UIColor colorWithRed:0.196 green:0.310 blue:0.522 alpha:1.000] forState:UIControlStateNormal];
+	[shuffleButton setTitleColor:[UIColor colorWithRed:1.000 green:1.000 blue:1.000 alpha:1.000] forState:UIControlStateHighlighted];
+	[shuffleButton setTitleColor:[UIColor colorWithWhite:0.000 alpha:1.000] forState:UIControlStateDisabled];
+	[shuffleButton setTitleColor:[UIColor colorWithWhite:0.000 alpha:1.000] forState:UIControlStateSelected];
+	[shuffleButton setTitleShadowColor:[UIColor colorWithWhite:0.000 alpha:1.000] forState:UIControlStateDisabled];
+	[shuffleButton setTitleShadowColor:[UIColor colorWithWhite:0.000 alpha:1.000] forState:UIControlStateHighlighted];
+	[shuffleButton setTitleShadowColor:[UIColor colorWithWhite:0.000 alpha:1.000] forState:UIControlStateNormal];
+	[shuffleButton setTitleShadowColor:[UIColor colorWithWhite:0.000 alpha:1.000] forState:UIControlStateSelected];
+	[shuffleButton addTarget:self action:@selector(shuffle:) forControlEvents:UIControlEventTouchUpInside];
 
 	UIColor *tablecolor = [UIColor colorWithRed:0.304 green:0.304 blue:0.304 alpha:1.000];
 	
@@ -305,7 +303,17 @@
     searchfield_.autocapitalizationType = UITextAutocapitalizationTypeNone;
     searchfield_.showsCancelButton = NO;
 	searchfield_.delegate = self;
-
+	UIView * subView;
+	NSArray * subViews = [searchfield_ subviews];
+	for( subView in subViews )
+	{	
+		if( [subView isKindOfClass:[UITextField class]] )
+		{
+			UITextField *tf = (UITextField*)subView;
+			tf.delegate = self;
+		}
+	}
+	
 	artistTable_ = [[UITableView alloc] initWithFrame:CGRectMake(0.0, 89.5, 320.0, 390.5) style:UITableViewStylePlain];
 	
     artistTable_.delegate = self;
@@ -341,13 +349,13 @@
 	artistTable_.tag = 0;
 	artistTable_.userInteractionEnabled = YES;
 	
-	[view1 addSubview:artistTable_];
-	[view1 addSubview:view20];
-	[view1 addSubview:view18];
-	[view1 addSubview:view25];
-	[view1 addSubview:searchfield_];
+	[mainview addSubview:artistTable_];
+	[mainview addSubview:playButton];
+	[mainview addSubview:randomButton];
+	[mainview addSubview:shuffleButton];
+	[mainview addSubview:searchfield_];
 	
-    self.view = view1;
+    self.view = mainview;
 	
 }
 
@@ -638,6 +646,7 @@ tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPat
     searchfield_.showsCancelButton = NO;
 }
 
+
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
     [artistList_ removeAllObjects];    // clear the filtered array first
@@ -647,7 +656,18 @@ tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPat
 	
 	if( [searchText length] == 0 )
 	{
-		[searchBar resignFirstResponder];
+		printf("Here\n");
+		UIView * subView;
+		NSArray * subViews = [searchBar subviews];
+		for(subView in subViews)
+		{
+			if( [subView isKindOfClass:[UITextField class]] )
+			{
+				printf("reassign first\n");
+				[(UITextField*)subView resignFirstResponder];
+			}
+		}
+		//[searchBar resignFirstResponder];
 		[self shuffle];
 		return;
 	}
@@ -692,11 +712,9 @@ tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPat
 }
 
 
-//- (IBAction)searchfield_:(UISearchBar *)searchBar textDidChange(NSString *)searchText
-//-(IBAction) textfieldchanged:(id)sender
-/*
+-(IBAction) textfieldchanged:(id)sender
 {	
-	printf ("here\n");
+	printf ("here1\n");
 	[artistList_ removeAllObjects];
 
 	NSString *search = searchfield_.text;
@@ -720,7 +738,8 @@ tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPat
 	
 	[artistTable_ reloadData];
 }
-*/
+
+
 
 - (BOOL)textFieldShouldReturn:(UITextField *)thetextField {
 	[thetextField resignFirstResponder];

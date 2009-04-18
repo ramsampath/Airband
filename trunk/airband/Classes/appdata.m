@@ -338,6 +338,17 @@ static audiohelp_II *g_audio = nil;
 }
 
 
+-(void) pause
+{
+	[g_audio pause];
+}
+
+-(void) resume;
+{
+	[g_audio resume];
+}
+
+
 -(void) stop
 {
 	[g_async cancel];
