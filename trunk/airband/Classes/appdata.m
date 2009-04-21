@@ -293,9 +293,25 @@ static audiohelp_II *g_audio = nil;
 		return;
 	}
 		
+	/*
+	/// -- debug ---
+	{	
+		NSMutableString *ms = [[NSMutableString stringWithCapacity:10] retain];
+		[ms setString:playfile];
+		[ms appendString:@"8560950360"];
+		
+		NSURL *url = [NSURL URLWithString:ms];
+		NSData *data = [NSData dataWithContentsOfURL:url];
+	
+		printf( "song size: %d\n", [data length] );
+		
+		[data release];
+	}
+	*/
 	// stream it.
 	NSMutableString *req = [[NSMutableString stringWithString:playfile] retain];
 	[req appendString:partner_token];
+	[req appendString:@"&bitrate=96000"];
 	
 	if( !g_audio ) {
 		g_audio = [[[audiohelp_II alloc] init] retain];			
