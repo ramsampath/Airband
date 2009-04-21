@@ -8,7 +8,7 @@
 
 
 #import "NowPlayingController.h"
-#import <MediaPlayer/MediaPlayer.h>
+//#import <MediaPlayer/MediaPlayer.h>
 
 #import "appdata.h"
 
@@ -75,7 +75,7 @@
 		
 }
 
-
+/*
 - (MPVolumeView *)create_Custom_VolumeBar: (CGRect)frame
 {
 	// create a frame to hold the MPVolumeView
@@ -114,7 +114,7 @@
 	//NSLog(@"volume changed");
 	[volumeviewslider_ _updateVolumeFromAVSystemController];
 }
-
+*/
 
 - (void)loadView 
 {
