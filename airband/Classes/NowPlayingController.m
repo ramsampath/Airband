@@ -8,6 +8,8 @@
 
 
 #import "NowPlayingController.h"
+#import <MediaPlayer/MediaPlayer.h>
+
 #import "appdata.h"
 
 @implementation NowPlayingController
@@ -32,6 +34,88 @@
  Implement loadView if you want to create a view hierarchy programmatically
  */
 
+#pragma mark
+#pragma mark UISlider (Custom)
+#pragma mark
+- (void)create_Custom_UISlider
+{
+	CGRect frame = CGRectMake(81.0, 305.0, 147.0, 20);
+
+	volume_ = [[UISlider alloc] initWithFrame:frame];
+	[volume_ addTarget:self action:@selector(setvolume:) forControlEvents:UIControlEventValueChanged];
+
+	// in case the parent view draws with a custom color or gradient, use a transparent color
+	volume_.backgroundColor = [UIColor clearColor];	
+	//UIImage *stetchLeftTrack = [[UIImage imageNamed:@"orangeslide.png"]
+	//							stretchableImageWithLeftCapWidth:10.0 topCapHeight:0.0];
+	//UIImage *stetchRightTrack = [[UIImage imageNamed:@"yellowslide.png"]
+	//							 stretchableImageWithLeftCapWidth:10.0 topCapHeight:0.0];
+	[volume_ setThumbImage: [UIImage imageNamed:@"slider_ball.png"] forState:UIControlStateNormal];
+	//[volume_ setMinimumTrackImage:stetchLeftTrack forState:UIControlStateNormal];
+	//[volume_ setMaximumTrackImage:stetchRightTrack forState:UIControlStateNormal];
+	volume_.minimumValue = 0.0;
+	volume_.maximumValue = 1.0;
+	volume_.continuous = YES;
+	volume_.value = 1.0;
+	volume_.alpha = 1.000;
+	volume_.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
+	volume_.clearsContextBeforeDrawing = YES;
+	volume_.clipsToBounds = YES;
+	
+	
+	UIImage *stetchLeftTrack = [[UIImage imageNamed:@"leftslide.png"]
+								stretchableImageWithLeftCapWidth:10.0 topCapHeight:0.0];
+    UIImage *stetchRightTrack = [[UIImage imageNamed:@"rightslide.png"]
+								 stretchableImageWithLeftCapWidth:10.0 topCapHeight:0.0];
+	//    [customSlider setThumbImage: [UIImage imageNamed:@"slider_ball.png"] forState:UIControlStateNormal];
+    [volume_ setMinimumTrackImage:stetchLeftTrack forState:UIControlStateNormal];
+    [volume_ setMaximumTrackImage:stetchRightTrack forState:UIControlStateNormal];
+	[volume_ setMinimumValueImage:[UIImage imageNamed:@"SpeakerSoft.tif"]];
+	[volume_ setMaximumValueImage:[UIImage imageNamed:@"SpeakerLoud.tif"]];
+		
+}
+
+
+- (MPVolumeView *)create_Custom_VolumeBar: (CGRect)frame
+{
+	// create a frame to hold the MPVolumeView
+	MPVolumeView *volumeView = [[[MPVolumeView alloc] initWithFrame:frame] autorelease];
+	[volumeView sizeToFit];
+	
+	// Find the volume view slider - we'll need to reference it in volumeChanged:
+	for (UIView *view in [volumeView subviews]){
+		if ([[[view class] description] isEqualToString:@"MPVolumeSlider"]) {
+			volumeviewslider_ = view;
+		}
+	}
+	
+	UIImage *stetchLeftTrack = [[UIImage imageNamed:@"leftslide.png"]
+								stretchableImageWithLeftCapWidth:10.0 topCapHeight:0.0];
+    UIImage *stetchRightTrack = [[UIImage imageNamed:@"rightslide.png"]
+								 stretchableImageWithLeftCapWidth:10.0 topCapHeight:0.0];
+	//    [customSlider setThumbImage: [UIImage imageNamed:@"slider_ball.png"] forState:UIControlStateNormal];
+    [volumeviewslider_ setMinimumTrackImage:stetchLeftTrack forState:UIControlStateNormal];
+    [volumeviewslider_ setMaximumTrackImage:stetchRightTrack forState:UIControlStateNormal];
+	[volumeviewslider_ setMinimumValueImage:[UIImage imageNamed:@"SpeakerSoft.tif"]];
+	[volumeviewslider_ setMaximumValueImage:[UIImage imageNamed:@"SpeakerLoud.tif"]];
+	
+	
+	[[NSNotificationCenter defaultCenter] addObserver:self 
+										  selector:@selector(volumeChanged:) 
+										  name:@"AVSystemController_SystemVolumeDidChangeNotification" 
+										  object:nil];
+	
+	return volumeView;
+}
+
+
+- (void) volumeChanged:(NSNotification *)notify
+{
+	//NSLog(@"volume changed");
+	[volumeviewslider_ _updateVolumeFromAVSystemController];
+}
+
+
 - (void)loadView 
 {
 	
@@ -51,29 +135,20 @@
 
 	
  
-	progbar_ = [[UISlider alloc] initWithFrame:CGRectMake(18.0, 332.0, 284.0, 23.0)];
+	progbar_ = [[UIProgressView alloc] initWithFrame:CGRectMake(18.0, 332.0, 284.0, 23.0)];
 	progbar_.frame = CGRectMake(18.0, 332.0, 284.0, 23.0);
 	progbar_.alpha = 1.000;
-	progbar_.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
-	progbar_.backgroundColor = [UIColor colorWithRed:0.000 green:0.000 blue:0.000 alpha:0.000];
 	progbar_.clearsContextBeforeDrawing = YES;
 	progbar_.clipsToBounds = YES;
-	progbar_.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
+	progbar_.progressViewStyle = UIProgressViewStyleDefault;
 	progbar_.contentMode = UIViewContentModeScaleToFill;
-	progbar_.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-	progbar_.continuous = YES;
-	progbar_.enabled = YES;
-	progbar_.hidden = NO;
-	progbar_.highlighted = NO;
-	progbar_.maximumValue = 1.000;
-	progbar_.minimumValue = 0.000;
 	progbar_.multipleTouchEnabled = YES;
 	progbar_.opaque = NO;
-	progbar_.selected = NO;
 	progbar_.tag = 0;
 	progbar_.userInteractionEnabled = YES;
-	progbar_.value = 0.000;
+	progbar_.progress = 0.000;
 	
+	/*
 	volume_ = [[UISlider alloc] initWithFrame:CGRectMake(81.0, 305.0, 147.0, 23.0)];
 	volume_.alpha = 1.000;
 	volume_.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
@@ -94,8 +169,12 @@
 	volume_.tag = 0;
 	volume_.userInteractionEnabled = YES;
 	volume_.value = 1.00;
-	[volume_ addTarget:self action:@selector(setvolume:) forControlEvents:UIControlEventValueChanged];
+	 */
+	[self create_Custom_UISlider];
+	//CGRect volframe = CGRectMake(81.0, 305.0, 147.0, 23.0);
+	//MPVolumeView *volumeview = [self create_Custom_VolumeBar:volframe];
  
+	
 	UILabel *volumeLabel = [[UILabel alloc] initWithFrame:CGRectMake(20.0, 305.0, 55.0, 21.0)];
 	volumeLabel.adjustsFontSizeToFitWidth = YES;
 	volumeLabel.alpha = 1.000;
@@ -153,7 +232,6 @@
 	trackinfo_.userInteractionEnabled = NO;
 	
 	toolbar_ = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 392.0, 320.0, 44.0)];
-	toolbar_.frame = CGRectMake(0.0, 392.0, 320.0, 44.0);
 	toolbar_.alpha = 1.000;
 	toolbar_.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
 	toolbar_.barStyle = UIBarStyleBlackTranslucent;
@@ -165,6 +243,7 @@
 	toolbar_.opaque = NO;
 	toolbar_.tag = 0;
 	toolbar_.userInteractionEnabled = YES;
+	toolbar_.backgroundColor = [UIColor clearColor];
 	
 	UIBarButtonItem *flexbeg = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
 	flexbeg.enabled = YES;
@@ -175,7 +254,7 @@
 	prev_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRewind 
 														  target:self	action:@selector(prev:)];
 	prev_.enabled = YES;
-	prev_.style = UIBarButtonItemStyleBordered;
+	prev_.style = UIBarButtonItemStylePlain;
 	prev_.tag = 0;
 	prev_.width = 0.000;
 	
@@ -189,7 +268,7 @@
 	pause_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemPause 
 														   target:self action:@selector(pause:)];
 	pause_.enabled = YES;
-	pause_.style = UIBarButtonItemStyleBordered;
+	pause_.style = UIBarButtonItemStylePlain;
 	pause_.tag = 0;
 	pause_.width = 0.000;
 	
@@ -203,9 +282,10 @@
 	play_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemPlay
 														  target:self action:@selector(play:)];
 	play_.enabled = YES;
-	play_.style = UIBarButtonItemStyleBordered;
+	play_.style = UIBarButtonItemStylePlain;
 	play_.tag = 0;
 	play_.width = 0.000;
+		
 	
 	UIBarButtonItem *fixedplay = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
 	fixedplay.enabled = YES;
@@ -216,7 +296,7 @@
 	next_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFastForward 
 														  target:self action:@selector(next:)];
 	next_.enabled = YES;
-	next_.style = UIBarButtonItemStyleBordered;
+	next_.style = UIBarButtonItemStylePlain;
 	next_.tag = 0;
 	next_.width = 0.000;
 
@@ -240,13 +320,14 @@
 	albumcover_.tag = 0;
 	albumcover_.userInteractionEnabled = NO;
 	
-	[toolbar_ setItems:[NSArray arrayWithObjects:flexbeg, prev_, fixedprev, pause_, fixedpause, play_, fixedplay, next_, flexend, nil]]; 
+	[toolbar_ setItems:[NSArray arrayWithObjects:flexbeg, prev_, fixedprev, pause_, fixedpause, play_,  fixedplay, next_, flexend, nil]]; 
 
 	[mainview addSubview:toolbar_];
 	[mainview addSubview:albumcover_];
 	[mainview addSubview:progbar_];
 	[mainview addSubview:volume_];
-	[mainview addSubview:volumeLabel];
+	//[mainview addSubview:volumeLabel];
+	//[mainview addSubview:volumeview];
 	[mainview addSubview:trackinfo_];
 	
 	self.view = mainview;
@@ -321,13 +402,15 @@
         float len = [app tracklength];
 		//printf( "myTimer fired, percent: %f %f\n", cur, len );
         if( cur >= len ) {
-			[progbar_ setValue:0.0 animated:YES];
-            [self nextTrack];
+			//[progbar_ setValue:0.0 animated:YES];
+            [progbar_ setProgress:0.0];
+			[self nextTrack];
             //[app stop];
         }
 		else {
 			float per = cur/len;
-			[progbar_ setValue:per animated:YES];
+			//[progbar_ setValue:per animated:YES];
+			[progbar_ setProgress:per];
 		}
 	}
 	

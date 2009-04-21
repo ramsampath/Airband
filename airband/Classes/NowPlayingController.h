@@ -13,6 +13,7 @@
 	IBOutlet UIToolbar       *toolbar_;
 	IBOutlet UIImageView     *albumcover_;
 	IBOutlet UISlider        *volume_;
+	IBOutlet UIView          *volumeviewslider_;
 
 	IBOutlet UIBarButtonItem *prev_;
 	IBOutlet UIBarButtonItem *pause_;
@@ -21,7 +22,7 @@
 	
 	IBOutlet UITextView      *trackinfo_;
     IBOutlet UIAlertView     *alert;
-    IBOutlet UISlider        *progbar_;
+    IBOutlet UIProgressView  *progbar_;
 	
 	bool     paused_;
 }
