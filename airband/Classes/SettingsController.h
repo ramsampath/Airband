@@ -9,11 +9,13 @@
 #import <UIKit/UIKit.h>
 
 
-//@interface SettingsController : UIViewController<UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate> {
-@interface SettingsController : UIViewController<UITextFieldDelegate> {
-	IBOutlet UITextField  *username_;
-	IBOutlet UITextField  *password_;
-	IBOutlet UITableView *table_;
+@interface SettingsController : UIViewController<UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate> {
+//@interface SettingsController : UIViewController<UITextFieldDelegate> {
+	IBOutlet UITextField     *username_;
+	IBOutlet UITextField     *password_;
+	IBOutlet UITableView     *table_;
+	IBOutlet UITableViewCell *usernamecell_;
+	IBOutlet UITableViewCell *passwordcell_;
 }
 
 -(IBAction) setPassword;

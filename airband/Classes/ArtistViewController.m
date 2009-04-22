@@ -245,16 +245,7 @@
 	UIButton *randomButton = [self createButtonWithImage:@"Random" frame:frame];
 	[randomButton addTarget:self action:@selector(random) forControlEvents:UIControlEventTouchUpInside];
 	
-	
-	/*
-	UISegmentedControl *grayButton = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:NSLocalizedString(@"Random", @""), nil]];
-	grayButton.frame = CGRectMake(88.0, 20.0, 67.0, 27.0);
-	grayButton.momentary = YES;
-	grayButton.segmentedControlStyle = UISegmentedControlStyleBar;
-	grayButton.tintColor = viewbgcolor;
-	self.navigationItem.titleView = grayButton;
-	[grayButton addTarget:self action:@selector(random) forControlEvents:UIControlEventValueChanged];
-    */
+
 	
 	
 	UIView *mainview = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 480.0)];
