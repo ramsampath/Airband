@@ -63,7 +63,9 @@
 	// load our data data from a plist file inside our app bundle
 	NSString *path = [[NSBundle mainBundle] pathForResource:@"SettingsData" ofType:@"plist"];
 	self.dataArray = [NSMutableArray arrayWithContentsOfFile:path];
-
+	
+	UINavigationBar *bar = [self navigationController].navigationBar;
+	bar.barStyle = UIBarStyleBlackOpaque;
 }
 
 
@@ -164,15 +166,11 @@ numberOfSectionsInTableView:(UITableView *)tableView
 		if( i == row ) {
 			[item setObject:[NSNumber numberWithBool:TRUE] forKey:@"Selected"];
 			checked = TRUE;
-			printf ("checked true\n");
 		}
 		else {
 			[item setObject:[NSNumber numberWithBool:FALSE] forKey:@"Selected"];
 			checked = FALSE;
-			printf ("checked false\n");
 		}
-
-		printf ("%d\n", checked);
 
 		UITableViewCell *cell = [item objectForKey:@"cell"];
 		UIButton *button = (UIButton *)cell.accessoryView;

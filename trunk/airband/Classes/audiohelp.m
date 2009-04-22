@@ -600,7 +600,7 @@ static void* workerthread( void* pv )
 {
 	[self cancel];
 	
-	printf( "new play request\n" );
+	//printf( "new play request\n" );
 	
 	asyncaudio_ = [[[asyncaudio_II alloc] init] retain];
 	
@@ -670,8 +670,8 @@ static void* workerthread( void* pv )
 -(void) resume
 {
 	paused_ = !paused_;
-	//AudioQueueStart( asyncaudio_.myd_->audioQueue_, &asyncaudio_.myd_->pausedTimeStamp );
-	AudioQueueStart( asyncaudio_.myd_->audioQueue_, NULL );
+	AudioQueueStart( asyncaudio_.myd_->audioQueue_, &asyncaudio_.myd_->pausedTimeStamp );
+	//AudioQueueStart( asyncaudio_.myd_->audioQueue_, NULL );
 }
 
 

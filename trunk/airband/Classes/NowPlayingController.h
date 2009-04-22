@@ -17,6 +17,7 @@
 
 	IBOutlet UIBarButtonItem *prev_;
 	IBOutlet UIBarButtonItem *pause_;
+	IBOutlet UIBarButtonItem *stop_;
 	IBOutlet UIBarButtonItem *play_;
 	IBOutlet UIBarButtonItem *next_;
 	

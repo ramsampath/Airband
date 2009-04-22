@@ -37,10 +37,8 @@
 #pragma mark
 #pragma mark UISlider (Custom)
 #pragma mark
-- (void)create_Custom_UISlider
+- (void)create_Custom_UISlider:(CGRect)frame
 {
-	CGRect frame = CGRectMake(81.0, 305.0, 147.0, 20);
-
 	volume_ = [[UISlider alloc] initWithFrame:frame];
 	[volume_ addTarget:self action:@selector(setvolume:) forControlEvents:UIControlEventValueChanged];
 
@@ -50,7 +48,7 @@
 	//							stretchableImageWithLeftCapWidth:10.0 topCapHeight:0.0];
 	//UIImage *stetchRightTrack = [[UIImage imageNamed:@"yellowslide.png"]
 	//							 stretchableImageWithLeftCapWidth:10.0 topCapHeight:0.0];
-	[volume_ setThumbImage: [UIImage imageNamed:@"slider_ball.png"] forState:UIControlStateNormal];
+	[volume_ setThumbImage: [UIImage imageNamed:@"slider_ball_bw.png"] forState:UIControlStateNormal];
 	//[volume_ setMinimumTrackImage:stetchLeftTrack forState:UIControlStateNormal];
 	//[volume_ setMaximumTrackImage:stetchRightTrack forState:UIControlStateNormal];
 	volume_.minimumValue = 0.0;
@@ -135,8 +133,8 @@
 
 	
  
-	progbar_ = [[UIProgressView alloc] initWithFrame:CGRectMake(18.0, 332.0, 284.0, 23.0)];
-	progbar_.frame = CGRectMake(18.0, 332.0, 284.0, 23.0);
+	//progbar_ = [[UIProgressView alloc] initWithFrame:CGRectMake(18.0, 332.0, 284.0, 23.0)];
+	progbar_ = [[UIProgressView alloc] initWithFrame:CGRectMake(18.0, 396.0, 284.0, 23.0)];
 	progbar_.alpha = 1.000;
 	progbar_.clearsContextBeforeDrawing = YES;
 	progbar_.clipsToBounds = YES;
@@ -148,30 +146,8 @@
 	progbar_.userInteractionEnabled = YES;
 	progbar_.progress = 0.000;
 	
-	/*
-	volume_ = [[UISlider alloc] initWithFrame:CGRectMake(81.0, 305.0, 147.0, 23.0)];
-	volume_.alpha = 1.000;
-	volume_.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
-	volume_.clearsContextBeforeDrawing = YES;
-	volume_.clipsToBounds = YES;
-	volume_.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
-	volume_.contentMode = UIViewContentModeScaleToFill;
-	volume_.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-	volume_.continuous = YES;
-	volume_.enabled = YES;
-	volume_.hidden = NO;
-	volume_.highlighted = NO;
-	volume_.maximumValue = 1.000;
-	volume_.minimumValue = 0.000;
-	volume_.multipleTouchEnabled = YES;
-	volume_.opaque = NO;
-	volume_.selected = NO;
-	volume_.tag = 0;
-	volume_.userInteractionEnabled = YES;
-	volume_.value = 1.00;
-	 */
-	[self create_Custom_UISlider];
-	//CGRect volframe = CGRectMake(81.0, 305.0, 147.0, 23.0);
+	CGRect volframe = CGRectMake(81.0, 305.0, 147.0, 23.0);
+	[self create_Custom_UISlider:volframe];
 	//MPVolumeView *volumeview = [self create_Custom_VolumeBar:volframe];
  
 	
@@ -231,7 +207,8 @@
 	trackinfo_.textColor = [UIColor colorWithRed:0.913 green:0.913 blue:0.913 alpha:1.000];
 	trackinfo_.userInteractionEnabled = NO;
 	
-	toolbar_ = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 392.0, 320.0, 44.0)];
+	//toolbar_ = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 392.0, 320.0, 44.0)];
+	toolbar_ = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 360.0, 320.0, 44.0)];
 	toolbar_.alpha = 1.000;
 	toolbar_.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
 	toolbar_.barStyle = UIBarStyleBlackTranslucent;
@@ -265,6 +242,13 @@
 	fixedprev.tag = 0;
 	fixedprev.width = 16.000;
 	
+	stop_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemStop
+														  target:self action:@selector(stop:)];
+	stop_.enabled = YES;
+	stop_.style = UIBarButtonItemStylePlain;
+	stop_.tag = 0;
+	stop_.width = 0.000;
+	
 	pause_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemPause 
 														   target:self action:@selector(pause:)];
 	pause_.enabled = YES;
@@ -291,7 +275,7 @@
 	fixedplay.enabled = YES;
 	fixedplay.style = UIBarButtonItemStylePlain;
 	fixedplay.tag = 0;
-	fixedplay.width = 20.000;
+	fixedplay.width = 16.000;
 	
 	next_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFastForward 
 														  target:self action:@selector(next:)];
@@ -320,7 +304,7 @@
 	albumcover_.tag = 0;
 	albumcover_.userInteractionEnabled = NO;
 	
-	[toolbar_ setItems:[NSArray arrayWithObjects:flexbeg, prev_, fixedprev, pause_, fixedpause, play_,  fixedplay, next_, flexend, nil]]; 
+	[toolbar_ setItems:[NSArray arrayWithObjects:flexbeg, prev_, fixedprev, stop_, fixedpause, play_,  fixedplay, next_, flexend, nil]]; 
 
 	[mainview addSubview:toolbar_];
 	[mainview addSubview:albumcover_];

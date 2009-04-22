@@ -7,32 +7,35 @@
 
 @interface AppData : NSObject<ProtocolAsyncInfo>
 {
-  // user login data
-  // [todo] probably should be encrypted/keychained as this might get stored plaintext 
-  // in user's itunes during backup?
-  NSString *username_;
-  NSString *password_;
+	// user login data
+	// [todo] probably should be encrypted/keychained as this might get stored plaintext 
+	// in user's itunes during backup?
+	NSString *username_;
+	NSString *password_;
 	
-  // current session
-  NSString* sessionID_;	
-  // a list of dictionaries;  pythonesque in its wastefulness.
-  NSArray *fullArtistList_;	
-  // (array of dictionary) of playlist names
-  NSArray *playLists_;
-  // in flight request
-  NSDictionary *albumInRequest_;
-  // (single) image of currently playing song
-  UIImage *artwork_;
-  // tracks (array of dictionary) for currently select playlist
-  NSArray *currentTracklist_;
-  // albums (array of dictionary) for selected artist
-  NSArray *albumList_;
-  // tracks (array of dictionary)for currently selected artist+album
-  NSArray* trackList_;
-  float   currentTrackLength_;
-  // name of the current song.
-  NSString *currentTrackTitle_;
-  int currentTrackIndex_;
+	// current session
+	NSString* sessionID_;	
+	// a list of dictionaries;  pythonesque in its wastefulness.
+	NSArray *fullArtistList_;	
+	// (array of dictionary) of playlist names
+	NSArray *playLists_;
+	// in flight request
+	NSDictionary *albumInRequest_;
+	// (single) image of currently playing song
+	UIImage *artwork_;
+	// tracks (array of dictionary) for currently select playlist
+	NSArray *currentTracklist_;
+	// albums (array of dictionary) for selected artist
+	NSArray *albumList_;
+	// tracks (array of dictionary)for currently selected artist+album
+	NSArray* trackList_;
+	float   currentTrackLength_;
+	// name of the current song.
+	NSString *currentTrackTitle_;
+	// bit rate to pass to the URL
+	int bitRate_;
+	// the index of the current track playing
+	int currentTrackIndex_;
 }
 
 @property (retain) NSString *username_;
@@ -46,7 +49,8 @@
 @property (readonly) NSArray* trackList_;
 @property (readonly) NSString* currentTrackTitle_;
 @property (readonly) float currentTrackLength_;
-@property (assign) int currentTrackIndex_;
+@property (assign)   int currentTrackIndex_;
+@property (readonly) int bitRate_;
 
 
 - (NSString*) createAccount:(NSDictionary*)userinfo;
@@ -70,6 +74,7 @@
 - (void) stop;
 - (void) setvolume:(float)volume;
 - (NSArray*) parseItemList:(NSData*)data;
+- (void) setStreamingRate:(int)rate;
 - (float) percent;
 - (float) tracklength;
 // if audio track is being played

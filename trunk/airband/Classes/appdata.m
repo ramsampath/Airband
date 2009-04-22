@@ -31,6 +31,7 @@ static audiohelp_II *g_audio = nil;
 @synthesize currentTrackTitle_;
 @synthesize currentTrackIndex_;
 @synthesize currentTrackLength_;
+@synthesize bitRate_;
 
 // --------------------------------------------------------------------------
 // singelton
@@ -50,19 +51,20 @@ static audiohelp_II *g_audio = nil;
 {
 	if( self = [super init] )
 	{
-	  username_ = nil;
-	  password_ = nil;
-	  sessionID_ = nil;
-	  fullArtistList_ = nil;
-	  albumInRequest_ = nil;
-	  artwork_ = nil;
-	  currentTracklist_ = nil;
-	  albumList_ = nil;
-	  trackList_ = nil;
-	  currentTrackTitle_ = nil;
+		username_ = nil;
+		password_ = nil;
+		sessionID_ = nil;
+		fullArtistList_ = nil;
+		albumInRequest_ = nil;
+		artwork_ = nil;
+		currentTracklist_ = nil;
+		albumList_ = nil;
+		trackList_ = nil;
+		currentTrackTitle_ = nil;
 	
-	  // read the user settings.
-	  [self restoreState];
+		bitRate_ = 96000;
+		// read the user settings.
+		[self restoreState];
 	}
 	
 	return self;
@@ -112,7 +114,7 @@ static audiohelp_II *g_audio = nil;
 {
 	NSString *which = userdata;
 	
-	printf( "----------- dataReady:%s\n", [which UTF8String] );
+	//printf( "----------- dataReady:%s\n", [which UTF8String] );
 	
 	if( [which isEqualToString:@"login"] )
 	{
@@ -144,7 +146,7 @@ static audiohelp_II *g_audio = nil;
 		NSArray *a = [self parseItemList:data];
 		albumList_ = a;
 		[[NSNotificationCenter defaultCenter] postNotificationName:@"albumListReady" object:nil];		
-		printf( "albumList size:%d\n", [a count] );
+		//printf( "albumList size:%d\n", [a count] );
 		//[self gotAlbumList:a];		
 	}		
 	else if( [which isEqualToString:@"trackList"] )
@@ -158,7 +160,7 @@ static audiohelp_II *g_audio = nil;
 	{
 		NSArray *a = [self parseItemList:data];
 		currentTracklist_ = a;
-		printf( "playlistTracks: %d items\n", [a count] );
+		//printf( "playlistTracks: %d items\n", [a count] );
 		//[self gotPlaylistTracks:a];
 		[[NSNotificationCenter defaultCenter] postNotificationName:@"playListTracksReady" object:nil];				
 	}
@@ -311,7 +313,8 @@ static audiohelp_II *g_audio = nil;
 	// stream it.
 	NSMutableString *req = [[NSMutableString stringWithString:playfile] retain];
 	[req appendString:partner_token];
-	[req appendString:@"&bitrate=96000"];
+	NSString *bitRate = [ NSString stringWithFormat:@"&bitrate=%d", bitRate_ ];
+	[req appendString:bitRate];
 	
 	if( !g_audio ) {
 		g_audio = [[[audiohelp_II alloc] init] retain];			
@@ -385,6 +388,10 @@ static audiohelp_II *g_audio = nil;
 	[self getAlbumListAsync:artist_id];
 }
 
+-(void) setStreamingRate:(int) rate
+{
+	bitRate_ = rate;
+}
 
 - (void) setvolume:(float)volume
 {
