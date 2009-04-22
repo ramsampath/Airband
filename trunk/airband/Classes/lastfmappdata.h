@@ -14,7 +14,7 @@
 }
 
 
-+ (LastFMAppData*) get;
+//+ (LastFMAppData*) get;
 @end
 
 

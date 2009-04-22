@@ -26,11 +26,13 @@ static audiohelp_II *g_audio = nil;
 // --------------------------------------------------------------------------
 // singelton
 // --------------------------------------------------------------------------
-+(LastFMAppData*) get
+/*
+ +(LastFMAppData*) get
 {
   airbandAppDelegate *airband = (airbandAppDelegate*) ([UIApplication sharedApplication].delegate);	
   return airband.appdata_;
 }
+*/
 
 // --------------------------------------------------------------------------
 // constructor

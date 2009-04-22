@@ -45,7 +45,9 @@
   NSMutableString*  found_;
 }
 @property (retain) NSString *search_;
-@property (readonly,retain) NSString *found_;
+@property (readonly,retain) NSMutableString *found_;
+
+-(void) reset;
 @end
 
 
@@ -67,7 +69,7 @@
   NSMutableArray *itemList_;
   NSMutableDictionary *currentItem_;
 }
-@property (retain) NSArray *itemList_;
+@property (retain) NSMutableArray *itemList_;
 @end
 
 
