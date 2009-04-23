@@ -30,6 +30,8 @@
 	return self;
 }
 
+
+
 /*
  Implement loadView if you want to create a view hierarchy programmatically
  */
@@ -131,10 +133,8 @@
 	mainview.tag = 0;
 	mainview.userInteractionEnabled = YES;
 
-	
- 
-	//progbar_ = [[UIProgressView alloc] initWithFrame:CGRectMake(18.0, 332.0, 284.0, 23.0)];
-	progbar_ = [[UIProgressView alloc] initWithFrame:CGRectMake(18.0, 396.0, 284.0, 23.0)];
+	progbar_ = [[UIProgressView alloc] initWithFrame:CGRectMake(18.0, 340.0, 284.0, 23.0)];
+	//progbar_ = [[UIProgressView alloc] initWithFrame:CGRectMake(18.0, 396.0, 200.0, 23.0)];
 	progbar_.alpha = 1.000;
 	progbar_.clearsContextBeforeDrawing = YES;
 	progbar_.clipsToBounds = YES;
@@ -149,8 +149,7 @@
 	CGRect volframe = CGRectMake(81.0, 305.0, 147.0, 23.0);
 	[self create_Custom_UISlider:volframe];
 	//MPVolumeView *volumeview = [self create_Custom_VolumeBar:volframe];
- 
-	
+ 	
 	UILabel *volumeLabel = [[UILabel alloc] initWithFrame:CGRectMake(20.0, 305.0, 55.0, 21.0)];
 	volumeLabel.adjustsFontSizeToFitWidth = YES;
 	volumeLabel.alpha = 1.000;
@@ -207,8 +206,9 @@
 	trackinfo_.textColor = [UIColor colorWithRed:0.913 green:0.913 blue:0.913 alpha:1.000];
 	trackinfo_.userInteractionEnabled = NO;
 	
-	//toolbar_ = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 392.0, 320.0, 44.0)];
-	toolbar_ = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 360.0, 320.0, 44.0)];
+	
+	toolbar_ = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 392.0, 320.0, 44.0)];
+	//toolbar_ = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 360.0, 320.0, 44.0)];
 	toolbar_.alpha = 1.000;
 	toolbar_.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
 	toolbar_.barStyle = UIBarStyleBlackTranslucent;
@@ -222,11 +222,11 @@
 	toolbar_.userInteractionEnabled = YES;
 	toolbar_.backgroundColor = [UIColor clearColor];
 	
-	UIBarButtonItem *flexbeg = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-	flexbeg.enabled = YES;
-	flexbeg.style = UIBarButtonItemStylePlain;
-	flexbeg.tag = 0;
-	flexbeg.width = 0.000;
+	flexbeg_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+	flexbeg_.enabled = YES;
+	flexbeg_.style = UIBarButtonItemStylePlain;
+	flexbeg_.tag = 0;
+	flexbeg_.width = 0.000;
 	
 	prev_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRewind 
 														  target:self	action:@selector(prev:)];
@@ -235,12 +235,12 @@
 	prev_.tag = 0;
 	prev_.width = 0.000;
 	
-	UIBarButtonItem *fixedprev = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace 
+	fixedprev_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace 
 															target:nil action:nil];
-	fixedprev.enabled = YES;
-	fixedprev.style = UIBarButtonItemStylePlain;
-	fixedprev.tag = 0;
-	fixedprev.width = 16.000;
+	fixedprev_.enabled = YES;
+	fixedprev_.style = UIBarButtonItemStylePlain;
+	fixedprev_.tag = 0;
+	fixedprev_.width = 20.000;
 	
 	stop_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemStop
 														  target:self action:@selector(stop:)];
@@ -256,12 +256,12 @@
 	pause_.tag = 0;
 	pause_.width = 0.000;
 	
-	UIBarButtonItem *fixedpause = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace
+	fixedpause_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace
 															target:nil action:nil];
-	fixedpause.enabled = YES;
-	fixedpause.style = UIBarButtonItemStylePlain;
-	fixedpause.tag = 0;
-	fixedpause.width = 16.000;
+	fixedpause_.enabled = YES;
+	fixedpause_.style = UIBarButtonItemStylePlain;
+	fixedpause_.tag = 0;
+	fixedpause_.width = 20.000;
 	
 	play_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemPlay
 														  target:self action:@selector(play:)];
@@ -271,11 +271,11 @@
 	play_.width = 0.000;
 		
 	
-	UIBarButtonItem *fixedplay = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-	fixedplay.enabled = YES;
-	fixedplay.style = UIBarButtonItemStylePlain;
-	fixedplay.tag = 0;
-	fixedplay.width = 16.000;
+	fixedplay_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+	fixedplay_.enabled = YES;
+	fixedplay_.style = UIBarButtonItemStylePlain;
+	fixedplay_.tag = 0;
+	fixedplay_.width = 20.000;
 	
 	next_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFastForward 
 														  target:self action:@selector(next:)];
@@ -284,28 +284,35 @@
 	next_.tag = 0;
 	next_.width = 0.000;
 
-	UIBarButtonItem *flexend = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-	flexend.enabled = YES;
-	flexend.style = UIBarButtonItemStylePlain;
-	flexend.tag = 0;
-	flexend.width = 0.000;
+	flexend_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+	flexend_.enabled = YES;
+	flexend_.style = UIBarButtonItemStylePlain;
+	flexend_.tag = 0;
+	flexend_.width = 0.000;
 	
 	albumcover_ = [[UIImageView alloc] initWithFrame:CGRectMake(20.0, 55.0, 280.0, 176.0)];
-	albumcover_.frame = CGRectMake(20.0, 55.0, 280.0, 176.0);
-	albumcover_.alpha = 1.000;
-	albumcover_.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+	albumcover_.frame                      = CGRectMake(20.0, 55.0, 280.0, 176.0);
+	albumcover_.alpha                      = 1.000;
+	albumcover_.autoresizingMask           = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	albumcover_.clearsContextBeforeDrawing = NO;
-	albumcover_.clipsToBounds = NO;
-	albumcover_.contentMode = UIViewContentModeScaleAspectFill;
-	albumcover_.hidden = NO;
-	albumcover_.image = nil;
-	albumcover_.multipleTouchEnabled = NO;
-	albumcover_.opaque = NO;
-	albumcover_.tag = 0;
-	albumcover_.userInteractionEnabled = NO;
+	albumcover_.clipsToBounds              = NO;
+	albumcover_.contentMode                = UIViewContentModeScaleAspectFill;
+	albumcover_.hidden                     = NO;
+	albumcover_.image                      = nil;
+	albumcover_.multipleTouchEnabled       = NO;
+	albumcover_.opaque                     = NO;
+	albumcover_.tag                        = 0;
+	albumcover_.userInteractionEnabled     = NO;
 	
-	[toolbar_ setItems:[NSArray arrayWithObjects:flexbeg, prev_, fixedprev, stop_, fixedpause, play_,  fixedplay, next_, flexend, nil]]; 
-
+	AppData *app = [AppData get];
+   	if( [app isrunning] ) {
+		[toolbar_ setItems:[NSArray arrayWithObjects:flexbeg_, prev_, fixedprev_, stop_, 
+							fixedpause_, pause_,  fixedplay_, next_, flexend_, nil]]; 
+	}
+	else {
+		[toolbar_ setItems:[NSArray arrayWithObjects:flexbeg_, prev_, fixedprev_, stop_, 
+							fixedpause_, play_,  fixedplay_, next_, flexend_, nil]];
+	}
 	[mainview addSubview:toolbar_];
 	[mainview addSubview:albumcover_];
 	[mainview addSubview:progbar_];
@@ -314,8 +321,7 @@
 	//[mainview addSubview:volumeview];
 	[mainview addSubview:trackinfo_];
 	
-	self.view = mainview;
-	
+	self.view = mainview;	
 }
 
 
@@ -328,7 +334,7 @@
 	} else {
 		albumcover_.image = [UIImage imageNamed:@"airband.png"];
 	}
-	[img drawInRect: CGRectMake(0.0f, 0.0f, 100.0f, 60.0f) ]; // Draw in a custom rect.
+	[img drawInRect: CGRectMake(0.0f, 0.0f, 100.0f, 60.0f)]; // Draw in a custom rect.
 
 	//UIImageView *imageView = [ [ UIImageView alloc ] initWithImage: albumcover_.image];
 	//imageView.frame = CGRectMake(20.0, 55.0, 280.0, 176.0);
@@ -339,7 +345,17 @@
 
 - (void)viewDidLoad 
 {
-    
+	AppData *app = [AppData get];
+	printf("C: %d", [app isrunning] );
+
+	if( [app isrunning] ) {
+		[toolbar_ setItems:[NSArray arrayWithObjects:flexbeg_, prev_, fixedprev_, 
+							pause_,  fixedplay_, next_, flexend_, nil]]; 
+	}
+	else {
+		[toolbar_ setItems:[NSArray arrayWithObjects:flexbeg_, prev_, fixedprev_, 
+							play_,  fixedplay_, next_, flexend_, nil]];
+	}
    	// setup timer.
 	if( 1 )
 	{
@@ -469,13 +485,15 @@
 	AppData *app = [AppData get];
 
 	if( paused_ ) {
-		paused_ = false;
 		[app resume];
+		[toolbar_ setItems:[NSArray arrayWithObjects:flexbeg_, prev_, fixedprev_,
+							pause_,  fixedplay_, next_, flexend_, nil]];
 	}
-    
-    int index = [app currentTrackIndex_];
-    NSDictionary *d = [app.trackList_ objectAtIndex:index];
-    [app playTrack:d];
+    else {
+		int index = [app currentTrackIndex_];
+		NSDictionary *d = [app.trackList_ objectAtIndex:index];
+		[app playTrack:d];
+	}
 }
 
 -(IBAction) next:(id)sender
@@ -492,13 +510,16 @@
 -(IBAction) pause:(id)sender
 {
 	paused_ = true;
+	
+	[toolbar_ setItems:[NSArray arrayWithObjects:flexbeg_, prev_, fixedprev_,
+						play_,  fixedplay_, next_, flexend_, nil]];
 	[[AppData get] pause];
 	//[[AppData get] stop];
 }
 
 -(IBAction) stop:(id)sender
 {
-	paused_ = true;
+	paused_ = false;
 	[[AppData get] stop];
 }
 

@@ -22,5 +22,6 @@
 -(IBAction) setUsername;
 -(IBAction) login;
 -(IBAction) clearEverything;
+-(IBAction) createAccount;
 
 @end

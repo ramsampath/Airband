@@ -20,6 +20,13 @@
 	IBOutlet UIBarButtonItem *stop_;
 	IBOutlet UIBarButtonItem *play_;
 	IBOutlet UIBarButtonItem *next_;
+	IBOutlet UIBarButtonItem *flexbeg_;
+	
+	IBOutlet UIBarButtonItem *fixedprev_;
+	IBOutlet UIBarButtonItem *fixedpause_;
+	IBOutlet UIBarButtonItem *fixedplay_;
+	IBOutlet UIBarButtonItem *flexend_;
+	
 	
 	IBOutlet UITextView      *trackinfo_;
     IBOutlet UIAlertView     *alert;

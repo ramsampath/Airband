@@ -12,6 +12,7 @@
 
 #import "appdata.h"
 
+#define kBgColor   [UIColor colorWithRed:0.212 green:0.212 blue:0.212 alpha:1.000];
 
 @implementation PlaylistController
 
@@ -39,8 +40,7 @@
 	int i;
 	for (i=0;  i<num; ++i) {
 		[indexPath addObject:[NSIndexPath indexPathForRow:i inSection:0]];
-	}        
-	
+	}
 	
 	if( [table_ numberOfRowsInSection:0] )
 	{
@@ -58,13 +58,13 @@
 - (void)viewDidLoad
 {	
 	[[NSNotificationCenter defaultCenter] addObserver:self 
-											 selector:@selector(playListsReady:) 
-												 name:@"playListsReady" 
-											   object:nil];	
+											selector:@selector(playListsReady:) 
+											name:@"playListsReady" 
+											object:nil];	
 
 	UINavigationBar *bar = [self navigationController].navigationBar;
-	bar.barStyle = UIBarStyleBlackOpaque;;
-
+	bar.barStyle         = UIBarStyleBlackOpaque;
+	
 	AppData *app = [AppData get];
 	[app getPlayListsAsync];
 }
