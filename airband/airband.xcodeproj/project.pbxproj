@@ -19,7 +19,6 @@
 		216256910F9F6B8900D21BFE /* AppIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 216256900F9F6B8900D21BFE /* AppIcon.png */; };
 		21845EFB0F9A927100D6927E /* ButtonmechViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 21845EFA0F9A927100D6927E /* ButtonmechViewController.m */; };
 		21845EFD0F9A928200D6927E /* Spinbutton.m in Sources */ = {isa = PBXBuildFile; fileRef = 21845EFC0F9A928200D6927E /* Spinbutton.m */; };
-		21845F000F9A92A500D6927E /* brushedButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 21845EFF0F9A92A500D6927E /* brushedButton.png */; };
 		218776010F899B9C005809E3 /* checked.png in Resources */ = {isa = PBXBuildFile; fileRef = 218776000F899B9C005809E3 /* checked.png */; };
 		218776030F899BB3005809E3 /* unchecked.png in Resources */ = {isa = PBXBuildFile; fileRef = 218776020F899BB3005809E3 /* unchecked.png */; };
 		21A7852C0F7E84FC0053E9AD /* lastfmappdata.m in Sources */ = {isa = PBXBuildFile; fileRef = 21A7852B0F7E84FC0053E9AD /* lastfmappdata.m */; };
@@ -85,7 +84,6 @@
 		21845EFA0F9A927100D6927E /* ButtonmechViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ButtonmechViewController.m; sourceTree = "<group>"; };
 		21845EFC0F9A928200D6927E /* Spinbutton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Spinbutton.m; sourceTree = "<group>"; };
 		21845EFE0F9A928800D6927E /* Spinbutton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Spinbutton.h; sourceTree = "<group>"; };
-		21845EFF0F9A92A500D6927E /* brushedButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = brushedButton.png; sourceTree = "<group>"; };
 		218776000F899B9C005809E3 /* checked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = checked.png; sourceTree = "<group>"; };
 		218776020F899BB3005809E3 /* unchecked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = unchecked.png; sourceTree = "<group>"; };
 		21A7852A0F7E84F60053E9AD /* lastfmappdata.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lastfmappdata.h; sourceTree = "<group>"; };
@@ -214,7 +212,6 @@
 				21BBC8060F9BDD4600827637 /* slider_ball.png */,
 				21BBC8070F9BDD4600827637 /* yellowslide.png */,
 				21BBC8080F9BDD4600827637 /* orangeslide.png */,
-				21845EFF0F9A92A500D6927E /* brushedButton.png */,
 			);
 			name = Images;
 			sourceTree = "<group>";
@@ -380,7 +377,6 @@
 				218776010F899B9C005809E3 /* checked.png in Resources */,
 				218776030F899BB3005809E3 /* unchecked.png in Resources */,
 				21B8AF7B0F8F3567006399A6 /* NowPlayingArranged.xib in Resources */,
-				21845F000F9A92A500D6927E /* brushedButton.png in Resources */,
 				21BBC8090F9BDD4600827637 /* slider_ball.png in Resources */,
 				21BBC80A0F9BDD4600827637 /* yellowslide.png in Resources */,
 				21BBC80B0F9BDD4600827637 /* orangeslide.png in Resources */,

@@ -9,7 +9,8 @@
 #pragma mark	-
 
 static asyncIO *g_async = nil;
-static NSString *partner_token = @"8560950360";
+//static NSString *partner_token = @"8560950360";
+static NSString *partner_token = @"3110321588";
 static audiohelp_II *g_audio = nil;
 
 // mp3 tunes API:
@@ -114,7 +115,7 @@ static audiohelp_II *g_audio = nil;
 {
 	NSString *which = userdata;
 	
-	//printf( "----------- dataReady:%s\n", [which UTF8String] );
+	printf( "----------- dataReady:%s\n", [which UTF8String] );
 	
 	if( [which isEqualToString:@"login"] )
 	{
@@ -203,6 +204,14 @@ static audiohelp_II *g_audio = nil;
 
 - (void) getArtistList
 {
+    if( [sessionID_ length] < 4 ) {
+        [[[UIAlertView alloc] initWithTitle:@"Login Failed" 
+									message:@"Bad Session"
+								   delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+        sessionID_ = nil;
+        return;
+    }
+    
 	NSMutableString *req = [[NSMutableString stringWithCapacity:512] retain];
 	[req appendString:@"http://ws.mp3tunes.com/api/v1/lockerData?output=xml&type=artist&sid="];
 	[req appendString:sessionID_];
@@ -426,7 +435,8 @@ static audiohelp_II *g_audio = nil;
   [req appendString: @"https://shop.mp3tunes.com/api/v1/login?output=xml" ];  
   [req appendString:[NSString stringWithFormat:@"&partner_token=%@", partner_token]];
   [req appendString:[NSString stringWithFormat:@"&username=%@&password=%@", username_, password_]];
-	
+
+  printf ("Login Request String: %s\n", [req UTF8String] );
   [self stop];
   [g_async release];
 	

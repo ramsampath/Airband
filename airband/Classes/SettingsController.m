@@ -551,12 +551,13 @@
 -(IBAction) login
 {
 	AppData *app = [AppData get];	
+    
 	app.password_ = password_.text;
-	app.username_ = username_.text;	
+	app.username_ = username_.text;
 	[app login];
 	
-	//[password_ resignFirstResponder];		
-	//[username_ resignFirstResponder];
+	[password_ resignFirstResponder];		
+	[username_ resignFirstResponder];
 	
 	airbandAppDelegate *airband = (airbandAppDelegate*) ([UIApplication sharedApplication].delegate);		
 	airband.tabBarController.selectedIndex = 0;
