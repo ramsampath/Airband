@@ -348,7 +348,7 @@ static audiohelp_II *g_audio = nil;
 		return;
 	}
 	
-	printf( "gotTrackList: %s\n" , [[albumInRequest_ objectForKey:@"albumTitle"] UTF8String]);
+	//printf( "gotTrackList: %s\n" , [[albumInRequest_ objectForKey:@"albumTitle"] UTF8String]);
 	
 	NSUInteger numtracks = [tracklist count];
 	NSDictionary *track = [tracklist objectAtIndex:(drand48()*numtracks)];
@@ -411,7 +411,8 @@ static audiohelp_II *g_audio = nil;
 
 - (BOOL) isrunning
 {
-	return [g_audio isrunning];
+	BOOL running = [g_audio isrunning];
+	return running;
 }
 
 

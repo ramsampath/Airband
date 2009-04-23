@@ -138,7 +138,7 @@ static void MyAudioQueuePropertyListenerProc ( void                 *inClientDat
 	UInt32 dataSize=0;
 	OSStatus status = AudioQueueGetPropertySize( inAQ, inID, &dataSize );
 
-	printf( "audioqueuePropertyListenerProc\n" );
+	//printf( "audioqueuePropertyListenerProc\n" );
 	
 	if( inID == kAudioQueueProperty_IsRunning )
 	{
@@ -187,8 +187,8 @@ static void MyPropertyListenerProc(	void *inClientData,
 	AudioData* myData = (AudioData*)inClientData;
 	OSStatus err = noErr;
 	
-	printf("MyPropertyListenerProc '%c%c%c%c'\n", 
-		   (inPropertyID>>24)&255, (inPropertyID>>16)&255, (inPropertyID>>8)&255, inPropertyID&255);
+	//printf("MyPropertyListenerProc '%c%c%c%c'\n", 
+	//	   (inPropertyID>>24)&255, (inPropertyID>>16)&255, (inPropertyID>>8)&255, inPropertyID&255);
 	
 	switch (inPropertyID) {
 		case kAudioFileStreamProperty_ReadyToProducePackets :
@@ -610,7 +610,7 @@ static void* workerthread( void* pv )
 	connection_ = [[NSURLConnection connectionWithRequest:[NSURLRequest requestWithURL:url]   
 												 delegate:asyncaudio_] retain];
 	
-	printf( "audio async request in flight:%s\n", [strurl UTF8String] );	
+	//printf( "audio async request in flight:%s\n", [strurl UTF8String] );	
 }
 
 

@@ -118,9 +118,10 @@
 {
       NowPlayingController *nowplayingVC = [[NowPlayingController alloc] initWithNibName:@"NowPlayingArranged" bundle:nil];    
     
+	nowplayingVC.hidesBottomBarWhenPushed = TRUE;
     [nowplayingVC.navigationItem 
      setRightBarButtonItem:[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"playlist.png"] 
-                                                            style:UIBarButtonItemStylePlain 
+                                                            style:UIBarButtonItemStylePlain
                                                            target:nil 
                                                            action:nil]];
 
@@ -194,11 +195,12 @@
                                                                                 initWithTitle:@"Now Playing"
                                                                                 style:UIBarButtonItemStyleBordered
                                                                                 target:self action:@selector(nowPlaying:)];
+		[app playTrack:d];
+
 		[[self navigationController] pushViewController:nowplayingVC animated:YES];		
         
 
         
-		[app playTrack:d];
         [app setCurrentTrackIndex_:[indexPath row]];
         [nowplayingVC release];
 	}
@@ -216,9 +218,10 @@
 															   target:nil 
 															   action:nil]];        
         [self navigationController].navigationBarHidden = FALSE;
+		[app playTrack:d];
+
 		[[self navigationController] pushViewController:nowplayingVC animated:YES];		
 
-		[app playTrack:d];
         [nowplayingVC release];
     }
 }

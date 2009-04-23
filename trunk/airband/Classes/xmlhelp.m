@@ -101,7 +101,7 @@
 							   delegate:self] ;
 
   [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-  printf( "async request in flight:%s\n", [strurl UTF8String] );
+  //printf( "async request in flight:%s\n", [strurl UTF8String] );
 }
 
 

@@ -133,8 +133,16 @@
 
 
 
--(UITableViewCell*) create_Cell:(NSString *)labelName frame:(CGRect) labelframe textframe:(CGRect) textframe
+-(UITableViewCell*) create_Cell:(NSString *)labelName frame:(CGRect) labelframe 
+					textframe:(CGRect) textframe 
+					index:(int) index
 {
+	AppData *app = [AppData get];
+	if( !app ) {
+		printf( "couldn't get app? in settings controller\n" );
+		return nil;
+	}
+	
 	UILabel *label = [[UILabel alloc] initWithFrame:labelframe];
 	label.adjustsFontSizeToFitWidth = YES;
 	label.lineBreakMode = UILineBreakModeTailTruncation;
@@ -147,6 +155,8 @@
 	label.textAlignment = UITextAlignmentLeft;
 	label.textColor = [UIColor colorWithRed:0.000 green:0.000 blue:0.000 alpha:1.000];
 	label.userInteractionEnabled = NO;
+	label.font = [UIFont systemFontOfSize:14.0];
+
 	
 	UITextField *textfield = [[UITextField alloc] initWithFrame:textframe];
 	textfield.adjustsFontSizeToFitWidth = NO;
@@ -178,7 +188,15 @@
 	textfield.text = @"";
 	textfield.textAlignment = UITextAlignmentLeft;
 	textfield.userInteractionEnabled = YES;
-	
+	textfield.font = [UIFont systemFontOfSize:14.0];
+
+	if( index == 0 )  {
+		username_ = textfield;
+	}
+	else {
+		password_ = textfield;
+		password_.secureTextEntry = TRUE;
+	}
 	textfield.delegate = self;
 	
 	UITableViewCell *tablecell = [[UITableViewCell alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 44.0) reuseIdentifier:(nil)];
@@ -221,7 +239,7 @@
 	switch (segControl.selectedSegmentIndex) 
 	{
 		case 0:
-			[app setStreamingRate:28000];
+			[app setStreamingRate:24000];
 			break;
 		case 1:	
 			[app setStreamingRate:56000];
@@ -232,29 +250,32 @@
 		case 3:	
 			[app setStreamingRate:128000];
 			break;
-
+		case 4:	
+			[app setStreamingRate:192000];
+			break;
 	}
 }
 
 
 -(UISegmentedControl *) create_streamingBitrateButtons
 {
-
-
-	
-	
-	NSArray *segmentTextContent = [NSArray arrayWithObjects: @"28k", @"56k", @"96k", @"128k", nil];
+	NSArray *segmentTextContent = [NSArray arrayWithObjects: @"28k", @"56k", @"96k", @"128k", @"192k", nil];
 
 	UISegmentedControl *sbrButtons = [[UISegmentedControl alloc] initWithItems:segmentTextContent];
 	
-	CGRect frame = CGRectMake( 158, 175, 150, 30);
-	 
-	sbrButtons.frame = frame;
-	sbrButtons.segmentedControlStyle = UISegmentedControlStyleBar;
-	sbrButtons.selectedSegmentIndex = 1;
-	//sbrButtons.tintColor = [UIColor blueColor];
-	sbrButtons.tintColor = [UIColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:1.0];
+	CGRect frame = CGRectMake( 127, 200, 180, 30);
+	
+	AppData *app = [AppData get];	
 
+	sbrButtons.frame                 = frame;
+	sbrButtons.segmentedControlStyle = UISegmentedControlStyleBar;
+	sbrButtons.selectedSegmentIndex  = 2;
+
+	if( app != nil ) {
+		[app setStreamingRate:96000];
+	}
+	
+	sbrButtons.tintColor  = [UIColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:1.0];
 	
 	[sbrButtons addTarget:self action:@selector(selectbitrate:) forControlEvents:UIControlEventValueChanged];
 	
@@ -347,14 +368,14 @@
 // Implement loadView to create a view hierarchy programmatically, without using a nib.
 - (void)loadView
 {
-	
+	self.title = NSLocalizedString(@"MP3tunes.COM", @"");
+
 	table_ = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];
     table_.delegate   = self;
     table_.dataSource = self;
-    table_.sectionHeaderHeight = 20.0;
-    table_.rowHeight = 40.0;
-    CGRect titleRect = CGRectMake( 0, 0, 300, 40 );
-	
+    //table_.sectionHeaderHeight = 20.0;
+    //table_.rowHeight = 40.0;
+    CGRect titleRect = CGRectMake( 0, 20, 300, 40 );
     UILabel *tableTitle = [[UILabel alloc] initWithFrame:titleRect];
 	
     tableTitle.textColor = [UIColor blackColor];
@@ -366,33 +387,34 @@
 	
 	table_.tableHeaderView = tableTitle;
 	
-	CGRect loginframe = CGRectMake( 210.0, 250.0, 90.0, 37.0 );
+	CGRect loginframe = CGRectMake( 220.0, 310.0, 84.0, 37.0 );
 	UIButton *loginButton = [self create_ButtonWithImage:@"Login" frame:loginframe];
-
-	CGRect clearframe = CGRectMake( 15.0, 250, 90.0, 37.0 );
-	UIButton *clearButton = [self create_ButtonWithImage:@"Clear" frame:clearframe];
+	[loginButton addTarget:self action:@selector(login) forControlEvents:UIControlEventTouchUpInside];
 	
-	//CGRect usernameframe     = CGRectMake( 115.0, 65.0, 79.0, 21.0 );
-	//CGRect usernametextframe = CGRectMake( 15.0, 94.0, 280.0, 31.0 );
+	CGRect caframe = CGRectMake( 121.0, 310.0, 84.0, 37.0 );
+	UIButton *createAccountButton = [self create_ButtonWithImage:@"Create" frame:caframe];
+	[createAccountButton addTarget:self action:@selector(createAccount) forControlEvents:UIControlEventTouchUpInside];
+
+	CGRect clearframe = CGRectMake( 15.0, 310, 84.0, 37.0 );
+	UIButton *clearButton = [self create_ButtonWithImage:@"Clear" frame:clearframe];
+	[clearButton addTarget:self action:@selector(clearEverything) forControlEvents:UIControlEventTouchUpInside];
+
 	CGRect usernameframe     = CGRectMake( 20.0, 6.0, 214.0, 31.0 );
 	CGRect usernametextframe = CGRectMake( 120.0, 6.0, 214.0, 31.0 );
-	usernamecell_ = [self create_Cell:@"User Name:" frame:usernameframe textframe:usernametextframe];
+	usernamecell_ = [self create_Cell:@"User Name:" frame:usernameframe textframe:usernametextframe index:0];
 
-	//CGRect passwordfieldframe = CGRectMake(15.0, 191.0, 280.0, 31.0);
-	//CGRect passwordlabelframe = CGRectMake(117.0, 162.0, 75.0, 21.0);
 	CGRect passwordfieldframe = CGRectMake( 120.0, 6.0, 214.0, 31.0 );
 	CGRect passwordlabelframe = CGRectMake( 20.0, 6.0, 214.0, 31.0 );
-	passwordcell_ = [self create_Cell:@"Password:" frame:passwordlabelframe textframe:passwordfieldframe];
+	passwordcell_ = [self create_Cell:@"Password:" frame:passwordlabelframe textframe:passwordfieldframe index:1];
 	
 	UISegmentedControl *sbrButtons = [self create_streamingBitrateButtons];
 	UILabel *sbrLabel = [[[UILabel alloc] init] autorelease];
-    sbrLabel.frame = CGRectMake( 15, 180, 200, 30);
+    sbrLabel.frame = CGRectMake( 15, 200, 200, 30);
 	sbrLabel.textAlignment = UITextAlignmentLeft;
-    sbrLabel.text = @"Streaming Bit Rate";
+    sbrLabel.text = @"Stream Rate";
     sbrLabel.font = [UIFont boldSystemFontOfSize:14.0];
     sbrLabel.textColor = [UIColor blackColor];
     sbrLabel.backgroundColor = [UIColor clearColor];
-	
 	
 	UIView *mainview = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 367.0)];
 	mainview.frame = CGRectMake(0.0, 0.0, 320.0, 367.0);
@@ -416,6 +438,7 @@
 	[mainview addSubview:table_];
 	[mainview addSubview:clearButton];
 	[mainview addSubview:loginButton];
+	[mainview addSubview:createAccountButton];
 	[mainview addSubview:sbrButtons];
 	[mainview addSubview:sbrLabel];
 	
@@ -511,6 +534,19 @@
 	app.username_ = username_.text;	
 }
 
+-(IBAction) createAccount
+{
+	AppData *app = [AppData get];
+	NSDictionary *userinfo = [NSDictionary 
+							   dictionaryWithObjects:[NSArray arrayWithObjects:username_.text, password_.text, nil]
+							   forKeys:[NSArray arrayWithObjects:@"username", @"password", nil]];
+
+	[app createAccount:userinfo];
+	
+	[userinfo release];
+	return;
+}
+
 
 -(IBAction) login
 {
@@ -519,8 +555,8 @@
 	app.username_ = username_.text;	
 	[app login];
 	
-	[password_ resignFirstResponder];		
-	[username_ resignFirstResponder];
+	//[password_ resignFirstResponder];		
+	//[username_ resignFirstResponder];
 	
 	airbandAppDelegate *airband = (airbandAppDelegate*) ([UIApplication sharedApplication].delegate);		
 	airband.tabBarController.selectedIndex = 0;
