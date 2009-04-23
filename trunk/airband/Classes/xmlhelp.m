@@ -183,7 +183,8 @@
 
 - (void) reset {
 	elementStarted_ = NO;
-	[found_ setString:nil];
+    [found_ setString:@""];
+
 }
 
 

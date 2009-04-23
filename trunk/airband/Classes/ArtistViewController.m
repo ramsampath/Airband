@@ -719,7 +719,6 @@ tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPat
 
 -(IBAction) textfieldchanged:(id)sender
 {	
-	printf ("here1\n");
 	[artistList_ removeAllObjects];
 
 	NSString *search = searchfield_.text;
