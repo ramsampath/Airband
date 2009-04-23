@@ -309,12 +309,13 @@
 		{
 			UITextField *tf = (UITextField*)subView;
 			tf.delegate = self;
+			tf.enablesReturnKeyAutomatically = NO;
 		}
 
 	}
-	UITextField *searchTextField ; 
-    searchTextField = [[searchfield_ subviews]objectAtIndex:0];
-    searchTextField.enablesReturnKeyAutomatically = NO ;
+	//UITextField *searchTextField ; 
+    //searchTextField = [[searchfield_ subviews]objectAtIndex:0];
+    //searchTextField.enablesReturnKeyAutomatically = NO ;
 	
 	artistTable_ = [[UITableView alloc] initWithFrame:CGRectMake(0.0, 89.5, 320.0, 390.5) style:UITableViewStylePlain];
     artistTable_.delegate   = self;

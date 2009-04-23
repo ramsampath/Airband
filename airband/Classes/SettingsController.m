@@ -450,7 +450,7 @@
 }
 
 
-#if TARGET_IPHONE_SIMULATOR
+#if TARGET_IPHONE_SIMULATOR_FEH
 + (BOOL)addKeychainItem:(NSString *)keychainItemName 
 		   withItemKind:(NSString *)keychainItemKind 
 			forUsername:(NSString *)username 
