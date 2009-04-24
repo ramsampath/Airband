@@ -537,9 +537,9 @@
 -(IBAction) createAccount
 {
 	AppData *app = [AppData get];
-	NSDictionary *userinfo = [NSDictionary 
+	NSDictionary *userinfo = [[NSDictionary 
 							   dictionaryWithObjects:[NSArray arrayWithObjects:username_.text, password_.text, nil]
-							   forKeys:[NSArray arrayWithObjects:@"username", @"password", nil]];
+							   forKeys:[NSArray arrayWithObjects:@"username", @"password", nil]] retain];
 
 	[app createAccount:userinfo];
 	
