@@ -334,7 +334,8 @@
 	} else {
 		albumcover_.image = [UIImage imageNamed:@"airband.png"];
 	}
-	[img drawInRect: CGRectMake(0.0f, 0.0f, 100.0f, 60.0f)]; // Draw in a custom rect.
+	
+	//[img drawInRect: CGRectMake(0.0f, 0.0f, 100.0f, 60.0f)]; // Draw in a custom rect.
 
 	//UIImageView *imageView = [ [ UIImageView alloc ] initWithImage: albumcover_.image];
 	//imageView.frame = CGRectMake(20.0, 55.0, 280.0, 176.0);

@@ -487,8 +487,7 @@ static audiohelp_II *g_audio = nil;
 	
 	parseDelegate.search_ = @"status";
 	[parser parse];		
-	NSString *status  = [parseDelegate.found_ retain];
-	
+	NSString *status  = [[NSString stringWithString:parseDelegate.found_] retain];
 	[parseDelegate reset];
 	parseDelegate.search_ = @"errorMessage";
 	[parser parse];		
