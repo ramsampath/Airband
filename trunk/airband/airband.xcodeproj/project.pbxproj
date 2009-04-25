@@ -22,6 +22,7 @@
 		218776010F899B9C005809E3 /* checked.png in Resources */ = {isa = PBXBuildFile; fileRef = 218776000F899B9C005809E3 /* checked.png */; };
 		218776030F899BB3005809E3 /* unchecked.png in Resources */ = {isa = PBXBuildFile; fileRef = 218776020F899BB3005809E3 /* unchecked.png */; };
 		21A7852C0F7E84FC0053E9AD /* lastfmappdata.m in Sources */ = {isa = PBXBuildFile; fileRef = 21A7852B0F7E84FC0053E9AD /* lastfmappdata.m */; };
+		21AF2AE00FA0203A00A90008 /* AppIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 21AF2ADF0FA0203A00A90008 /* AppIcon.png */; };
 		21B2147A0F9FA9EF007B3564 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 21B214790F9FA9EF007B3564 /* Security.framework */; };
 		21B8AF7B0F8F3567006399A6 /* NowPlayingArranged.xib in Resources */ = {isa = PBXBuildFile; fileRef = 21B8AF7A0F8F3567006399A6 /* NowPlayingArranged.xib */; };
 		21BBC8090F9BDD4600827637 /* slider_ball.png in Resources */ = {isa = PBXBuildFile; fileRef = 21BBC8060F9BDD4600827637 /* slider_ball.png */; };
@@ -34,6 +35,7 @@
 		21C3B27B0F9D8E1D0059C2CE /* SpeakerSoft.tif in Resources */ = {isa = PBXBuildFile; fileRef = 21C3B2790F9D8E1D0059C2CE /* SpeakerSoft.tif */; };
 		21C3B2FB0F9D980C0059C2CE /* slider_ball_bw.png in Resources */ = {isa = PBXBuildFile; fileRef = 21C3B2FA0F9D980C0059C2CE /* slider_ball_bw.png */; };
 		21D329B60F7BFA0A00E0C6B0 /* AllSettingsTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 21D329B50F7BFA0A00E0C6B0 /* AllSettingsTableCell.m */; };
+		21D8D5B50FA01D5600A4F889 /* Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = 21D8D5B40FA01D5600A4F889 /* Entitlements.plist */; };
 		21E32A100F9F6F7B00A6585C /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 21E32A0F0F9F6F7B00A6585C /* Default.png */; };
 		21F439B90F7DB5E700928851 /* SettingsData.plist in Resources */ = {isa = PBXBuildFile; fileRef = 21F439B80F7DB5E700928851 /* SettingsData.plist */; };
 		282CCBFE0DB6C98000C4EA27 /* Settings.xib in Resources */ = {isa = PBXBuildFile; fileRef = 282CCBFD0DB6C98000C4EA27 /* Settings.xib */; };
@@ -88,6 +90,7 @@
 		218776020F899BB3005809E3 /* unchecked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = unchecked.png; sourceTree = "<group>"; };
 		21A7852A0F7E84F60053E9AD /* lastfmappdata.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lastfmappdata.h; sourceTree = "<group>"; };
 		21A7852B0F7E84FC0053E9AD /* lastfmappdata.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = lastfmappdata.m; sourceTree = "<group>"; };
+		21AF2ADF0FA0203A00A90008 /* AppIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AppIcon.png; sourceTree = "<group>"; };
 		21B214790F9FA9EF007B3564 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		21B8AF7A0F8F3567006399A6 /* NowPlayingArranged.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NowPlayingArranged.xib; sourceTree = "<group>"; };
 		21BBC8060F9BDD4600827637 /* slider_ball.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = slider_ball.png; sourceTree = "<group>"; };
@@ -101,6 +104,7 @@
 		21C3B2FA0F9D980C0059C2CE /* slider_ball_bw.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = slider_ball_bw.png; sourceTree = "<group>"; };
 		21D329B40F7BFA0A00E0C6B0 /* AllSettingsTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AllSettingsTableCell.h; sourceTree = "<group>"; };
 		21D329B50F7BFA0A00E0C6B0 /* AllSettingsTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AllSettingsTableCell.m; sourceTree = "<group>"; };
+		21D8D5B40FA01D5600A4F889 /* Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Entitlements.plist; sourceTree = "<group>"; };
 		21E32A0F0F9F6F7B00A6585C /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		21F439B80F7DB5E700928851 /* SettingsData.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = SettingsData.plist; path = Classes/SettingsData.plist; sourceTree = "<group>"; };
 		282CCBFD0DB6C98000C4EA27 /* Settings.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Settings.xib; sourceTree = "<group>"; };
@@ -212,6 +216,7 @@
 				21BBC8060F9BDD4600827637 /* slider_ball.png */,
 				21BBC8070F9BDD4600827637 /* yellowslide.png */,
 				21BBC8080F9BDD4600827637 /* orangeslide.png */,
+				21AF2ADF0FA0203A00A90008 /* AppIcon.png */,
 			);
 			name = Images;
 			sourceTree = "<group>";
@@ -226,6 +231,7 @@
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 				7D8D71920E7F66ED006D0DE5 /* Entitlements.plist */,
+				21D8D5B40FA01D5600A4F889 /* Entitlements.plist */,
 			);
 			name = airband;
 			sourceTree = "<group>";
@@ -392,6 +398,8 @@
 				216256580F9F6AD500D21BFE /* airband_splash02.png in Resources */,
 				216256910F9F6B8900D21BFE /* AppIcon.png in Resources */,
 				21E32A100F9F6F7B00A6585C /* Default.png in Resources */,
+				21D8D5B50FA01D5600A4F889 /* Entitlements.plist in Resources */,
+				21AF2AE00FA0203A00A90008 /* AppIcon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -461,7 +469,7 @@
 			};
 			name = Release;
 		};
-		7D8D71800E7F62DD006D0DE5 /* DistributionAdHoc */ = {
+		21D8D5AE0FA01BB400A4F889 /* Distribution */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
@@ -472,14 +480,14 @@
 				PREBINDING = NO;
 				SDKROOT = iphoneos2.2.1;
 			};
-			name = DistributionAdHoc;
+			name = Distribution;
 		};
-		7D8D71810E7F62DD006D0DE5 /* DistributionAdHoc */ = {
+		21D8D5AF0FA01BB400A4F889 /* Distribution */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Scot Shinderman";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos2.2.1]" = "iPhone Distribution: Centroid PIC";
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -489,9 +497,9 @@
 				GCC_PREFIX_HEADER = airband_Prefix.pch;
 				INFOPLIST_FILE = Info.plist;
 				PRODUCT_NAME = airband;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "71B6DE36-6478-492F-88E4-A0612FAFA6DE";
+				"PROVISIONING_PROFILE[sdk=iphoneos2.2.1]" = "EEC4F048-0E96-4B4C-8815-75DA9BDB3754";
 			};
-			name = DistributionAdHoc;
+			name = Distribution;
 		};
 		C01FCF4F08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -528,7 +536,7 @@
 			buildConfigurations = (
 				1D6058940D05DD3E006BFB54 /* Debug */,
 				1D6058950D05DD3E006BFB54 /* Release */,
-				7D8D71810E7F62DD006D0DE5 /* DistributionAdHoc */,
+				21D8D5AF0FA01BB400A4F889 /* Distribution */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -538,7 +546,7 @@
 			buildConfigurations = (
 				C01FCF4F08A954540054247B /* Debug */,
 				C01FCF5008A954540054247B /* Release */,
-				7D8D71800E7F62DD006D0DE5 /* DistributionAdHoc */,
+				21D8D5AE0FA01BB400A4F889 /* Distribution */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
