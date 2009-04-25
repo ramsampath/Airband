@@ -272,7 +272,23 @@
 	sbrButtons.selectedSegmentIndex  = 2;
 
 	if( app != nil ) {
-		[app setStreamingRate:96000];
+		switch( [app bitRate_ ] ) {
+			case 28000: 
+				sbrButtons.selectedSegmentIndex = 0;
+				break;
+			case 56000:
+				sbrButtons.selectedSegmentIndex = 1;
+				break;
+			case 96000:
+				sbrButtons.selectedSegmentIndex = 2;
+				break;
+			case 128000:
+				sbrButtons.selectedSegmentIndex = 3;
+				break;
+			case 192000:
+				sbrButtons.selectedSegmentIndex = 4;
+				break;
+		}
 	}
 	
 	sbrButtons.tintColor  = [UIColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:1.0];

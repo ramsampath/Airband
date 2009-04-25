@@ -399,7 +399,8 @@
 	AppData *app = [AppData get];
     //printf("C: %d %d", [app.trackList_ count], [app currentTrackIndex_]);
    	if( [app isrunning] ) {
-		float cur = [app percent]/44.1;
+		//float cur = [app percent]/44.1;
+		float cur = [app percent];
         float len = [app tracklength];
 		//printf( "myTimer fired, percent: %f %f\n", cur, len );
         if( cur >= len ) {

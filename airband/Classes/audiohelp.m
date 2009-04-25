@@ -356,8 +356,8 @@ static void MyPacketsProc( void *inClientData,
 
 -(id)init
 {
-  workerThread_ = NULL;
-  myd_ = NULL;
+	workerThread_ = NULL;
+	myd_ = NULL;
 	
 	
 	// allocate a struct for storing our state
@@ -366,22 +366,32 @@ static void MyPacketsProc( void *inClientData,
 	// initialize a mutex and condition so that we can block on buffers in use.
 	pthread_mutex_init(&myd_->mutex, NULL);
 	pthread_cond_init(&myd_->cond, NULL);	
+	
+	// make sure that the audio can be played when the phone/iPod goes to sleep
+	AudioSessionInitialize(NULL, NULL, NULL, NULL);
+	
+	UInt32 sessionCategory = kAudioSessionCategory_MediaPlayback;
+	AudioSessionSetProperty( kAudioSessionProperty_AudioCategory, sizeof( sessionCategory ), &sessionCategory);
+	AudioSessionSetActive( YES );
+	
 	// create an audio file stream parser 
 	OSStatus err = AudioFileStreamOpen(myd_, MyPropertyListenerProc, MyPacketsProc, 
 									   kAudioFileMP3Type, //kAudioFileAAC_ADTSType, 
 									   &myd_->audioFileStream);
 	if (err) { PRINTERROR("AudioFileStreamOpen"); return nil; }
 	
-	// network buffer mutex/cond
-  pthread_mutex_init(&mutex_, NULL);
-  pthread_cond_init(&cond_, NULL);
-  pthread_cond_init(&workerdone_,NULL);
-  datalist_ = [[NSMutableArray arrayWithCapacity:20] retain];
-				 
-  running_ = TRUE;
-  [self launchworker];
+
 	
-  return self;
+	// network buffer mutex/cond
+	pthread_mutex_init(&mutex_, NULL);
+	pthread_cond_init(&cond_, NULL);
+	pthread_cond_init(&workerdone_,NULL);
+	datalist_ = [[NSMutableArray arrayWithCapacity:20] retain];
+				 
+	running_ = TRUE;
+	[self launchworker];
+	
+	return self;
 }
 
 -(void) dealloc
@@ -639,15 +649,28 @@ static void* workerthread( void* pv )
 		return -1.0;
 	}
 
-  AudioTimeStamp timeStamp;
-  AudioQueueGetCurrentTime(asyncaudio_.myd_->audioQueue_,NULL,&timeStamp,NULL);
+	AudioTimeStamp timeStamp;
+	AudioQueueGetCurrentTime(asyncaudio_.myd_->audioQueue_,NULL,&timeStamp,NULL);
   
-  double t = timeStamp.mSampleTime;
-  //printf( "percentage: %f\n", t );
+	double t = timeStamp.mSampleTime;
 	
+	Float64	sampleRate     = 0;
+	UInt32  sampleRateSize = sizeof( sampleRate );
+	AudioQueueGetProperty( asyncaudio_.myd_->audioQueue_, 
+							kAudioQueueDeviceProperty_SampleRate, &sampleRate, &sampleRateSize ); 
+		
 	//return ((float)asyncaudio_.bytesread_)/(float)tracksize_;
+	if( sampleRateSize != sizeof( sampleRate ) ) {
+		t = 44.1;
+	}
+	else {
+		// convert from millseconds.
+		t /= (sampleRate/1000);
+	}
+
 	return t;
 }
+
 
 -(BOOL) isrunning
 {
