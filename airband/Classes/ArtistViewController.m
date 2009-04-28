@@ -149,7 +149,8 @@
         artistDisplayList_[i]     = nil; 
     activity_              = nil;
 
-
+    NSString *background = [[NSBundle mainBundle] pathForResource:@"sectionbg" ofType:@"png"];
+    sectionBGImage_      = [UIImage imageNamed:background];
     
     return self;
 }
@@ -168,62 +169,49 @@
 {
 	//UIColor *viewbgcolor = [UIColor colorWithRed:0.212 green:0.212 blue:0.212 alpha:1.000];
 	UIColor *viewbgcolor = kBgColor;
-	//UIButton *randomButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    /*
-	UIButton *randomButton = [self createButtonWithImage:@"Random" frame:frame];
-	[randomButton addTarget:self action:@selector(random) forControlEvents:UIControlEventTouchUpInside];
-	*/
 	
-	UIView *mainview = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 480.0)];
-	mainview.frame   = CGRectMake(0.0, 0.0, 320.0, 480.0);
-	mainview.alpha   = 1.000;
-	mainview.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
-	mainview.backgroundColor  = viewbgcolor;
+	UIView *mainview                    = [[UIView alloc] initWithFrame:CGRectMake( 0.0, 0.0, 320.0, 480.0 )];
+	mainview.frame                      = CGRectMake(0.0, 0.0, 320.0, 480.0);
+	mainview.alpha                      = 1.000;
+	mainview.autoresizingMask           = UIViewAutoresizingFlexibleTopMargin;
+	mainview.backgroundColor            = viewbgcolor;
 	mainview.clearsContextBeforeDrawing = YES;
-	mainview.clipsToBounds = NO;
-	mainview.contentMode   = UIViewContentModeScaleToFill;
-	mainview.hidden = NO;
-	mainview.multipleTouchEnabled = NO;
-	mainview.opaque = YES;
-	mainview.tag    = 0;
-	mainview.userInteractionEnabled = YES;
+	mainview.clipsToBounds              = NO;
+	mainview.contentMode                = UIViewContentModeScaleToFill;
+	mainview.hidden                     = NO;
+	mainview.multipleTouchEnabled       = NO;
+	mainview.opaque                     = YES;
+	mainview.tag                        = 0;
+	mainview.userInteractionEnabled     = YES;
     
-    /*
-	UIImageView *v = [[UIImageView alloc] initWithFrame:CGRectMake( 20.0, 55.0, 280.0, 176.0 )];
-	CGDataProviderRef provider = CGDataProviderCreateWithFilename( "LogoBkgrnd.png" )
-	CGImageRef       imageref = CGImageCreateWithJPEGDataProvider( provider, NULL, true, kCGRenderingIntentDefault );
-	UIImage          *i        = [[UIImage imageWithCGImage:imageref] retain];
-	v.image                    = i;
-*/
+    mainview.backgroundColor            = [UIColor colorWithPatternImage:[UIImage imageNamed:@"LogoBkgrnd.png"]];
     
-    mainview.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"LogoBkgrnd.png"]];
-    
-    artistOrgControl_ = [[UISegmentedControl alloc] initWithItems:
+    artistOrgControl_                       = [[UISegmentedControl alloc] initWithItems:
                                                      [NSArray arrayWithObjects:@"A-Z", @"Shuffle", nil]];
-	//[artistOrgControl_ addTarget:self action:@selector(togglePickers:) forControlEvents:UIControlEventValueChanged];
-	artistOrgControl_.selectedSegmentIndex  = 0.0;	// start by showing the normal picker
+	[artistOrgControl_ addTarget:self action:@selector(artistOrgControlAction:) 
+                forControlEvents:UIControlEventValueChanged];
+	artistOrgControl_.selectedSegmentIndex  = 0.0;	
 	artistOrgControl_.segmentedControlStyle = UISegmentedControlStyleBar;
     artistOrgControl_.tintColor             = [UIColor darkGrayColor];
 	artistOrgControl_.backgroundColor       = [UIColor clearColor];
     
     azsortbutton_ = [[UIBarButtonItem alloc] initWithCustomView:artistOrgControl_];	
-	//bar.items = [NSArray arrayWithObject:azsortbutton_];
 	[azsortbutton_ release];
     
-	//UIColor *tablecolor = [UIColor colorWithRed:0.304 green:0.304 blue:0.304 alpha:1.000];
 	UIColor *tablecolor = kBgColor;
 
 	searchfield_ = [[UISearchBar alloc] init];
 	searchfield_.frame                  = CGRectMake( 0.0, 5.0, 320.0, 26.5 );
-	//searchfield_.frame                  = CGRectMake( 0, 55.0, 320.0, 26.5 );
 	searchfield_.alpha                  = 1.000;
 	searchfield_.barStyle               = UIBarStyleBlackTranslucent;
 	searchfield_.backgroundColor        = kBgColor;
 	searchfield_.autocapitalizationType = UITextAutocapitalizationTypeNone;
 	searchfield_.autocorrectionType     = UITextAutocorrectionTypeNo;
-	searchfield_.autoresizingMask       = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
+	searchfield_.autoresizingMask       = UIViewAutoresizingFlexibleRightMargin | 
+                                          UIViewAutoresizingFlexibleBottomMargin;
 	searchfield_.placeholder            = @"search";
 	searchfield_.userInteractionEnabled = YES;
+
     //
 	// don't get in the way of user typing
     //
@@ -243,79 +231,64 @@
 
 	}
 
-	
-	artistTable_            = [[UITableView alloc] init];
-    artistTable_.delegate   = self;
-    artistTable_.dataSource = self;
-	artistTable_.frame                        = CGRectMake( 0.0, 40.5, 320.0, 390.5 );
-	artistTable_.allowsSelectionDuringEditing = NO;
-	artistTable_.alpha                        = 1.0;
-	artistTable_.alwaysBounceHorizontal       = NO;
-	artistTable_.alwaysBounceVertical         = NO;
-	artistTable_.autoresizingMask             = UIViewAutoresizingFlexibleWidth | 
-                                                UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleBottomMargin;
-	artistTable_.backgroundColor              = tablecolor;
-	artistTable_.bounces                      = YES;
-	artistTable_.bouncesZoom                  = YES;
-	artistTable_.canCancelContentTouches      = YES;
-	artistTable_.clearsContextBeforeDrawing   = NO;
-	artistTable_.clipsToBounds                = YES;
-	artistTable_.contentMode                  = UIViewContentModeScaleToFill;
-	artistTable_.delaysContentTouches         = YES;
-	artistTable_.directionalLockEnabled       = NO;
-	artistTable_.hidden                       = NO;
-	artistTable_.indicatorStyle               = UIScrollViewIndicatorStyleDefault;
-	artistTable_.maximumZoomScale             = 1.000;
-	artistTable_.minimumZoomScale             = 1.000;
-	artistTable_.multipleTouchEnabled         = NO;
-	artistTable_.opaque                       = NO;
-	artistTable_.pagingEnabled                = NO;
-	artistTable_.scrollEnabled                = YES;
-	artistTable_.separatorStyle                     = UITableViewCellSeparatorStyleSingleLine;
-	artistTable_.separatorColor                     = kBgColor;
-	artistTable_.showsHorizontalScrollIndicator     = YES;
-	artistTable_.showsVerticalScrollIndicator       = YES;
-	artistTable_.tag                                = 0;
-	artistTable_.userInteractionEnabled             = YES;
-    artistTable_.backgroundColor                    = [UIColor clearColor];
+	artistTable_                                 = [[UITableView alloc] init];
+    artistTable_.delegate                        = self;
+    artistTable_.dataSource                      = self;
+	artistTable_.frame                           = CGRectMake( 0.0, 40.5, 320.0, 390.5 );
+	artistTable_.allowsSelectionDuringEditing    = NO;
+	artistTable_.alpha                           = 1.0;
+	artistTable_.alwaysBounceHorizontal          = NO;
+	artistTable_.alwaysBounceVertical            = NO;
+	artistTable_.autoresizingMask                = UIViewAutoresizingFlexibleWidth | 
+                                                   UIViewAutoresizingFlexibleHeight | 
+                                                   UIViewAutoresizingFlexibleBottomMargin;
+	artistTable_.backgroundColor                 = tablecolor;
+	artistTable_.bounces                         = YES;
+	artistTable_.bouncesZoom                     = YES;
+	artistTable_.canCancelContentTouches         = YES;
+	artistTable_.clearsContextBeforeDrawing      = NO;
+	artistTable_.clipsToBounds                   = YES;
+	artistTable_.contentMode                     = UIViewContentModeScaleToFill;
+	artistTable_.delaysContentTouches            = YES;
+	artistTable_.directionalLockEnabled          = NO;
+	artistTable_.hidden                          = NO;
+	artistTable_.indicatorStyle                  = UIScrollViewIndicatorStyleDefault;
+	artistTable_.maximumZoomScale                = 1.000;
+	artistTable_.minimumZoomScale                = 1.000;
+	artistTable_.multipleTouchEnabled            = NO;
+	artistTable_.opaque                          = NO;
+	artistTable_.pagingEnabled                   = NO;
+	artistTable_.scrollEnabled                   = YES;
+	artistTable_.separatorStyle                  = UITableViewCellSeparatorStyleNone;
+	artistTable_.separatorColor                  = kBgColor;
+	artistTable_.showsHorizontalScrollIndicator  = YES;
+	artistTable_.showsVerticalScrollIndicator    = YES;
+	artistTable_.tag                             = 0;
+	artistTable_.userInteractionEnabled          = YES;
+    artistTable_.backgroundColor                 = [UIColor clearColor];
     
-    for(UIView *view in [artistTable_ subviews])
-    {
-        if([[[view class] description] isEqualToString:@"UITableViewIndex"])
-        {
-            
-            [view setBackgroundColor:[UIColor whiteColor]];
-        }
-    }
-	
 	[mainview addSubview:artistTable_];
-	//[mainview addSubview:playButton];
-	//[mainview addSubview:randomButton];
-	//[mainview addSubview:shuffleButton];
 	[mainview addSubview:searchfield_];
 	[mainview addSubview:artistOrgControl_];
     
     self.view = mainview;
-	
 }
 
 
 - (void)viewDidLoad
 {	
-    /*
 	if( [artistList_ count] ) {
 		return;
 	}
-	*/
 	artistList_ = nil;				
 	[[NSNotificationCenter defaultCenter] addObserver:self 
                                             selector:@selector(artistListReady:) 
                                             name:@"artistListReady" 
                                             object:nil];	
-	
-	
+
 	UIView *v = self.view;
-	activity_ = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+	activity_ = [[UIActivityIndicatorView alloc] 
+                 initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
 	activity_.center = v.center;
 	activity_.hidesWhenStopped = TRUE;
 	[v addSubview:activity_];
@@ -326,8 +299,8 @@
 	[UIView setAnimationDuration:10.0];	
 	activity_.transform = CGAffineTransformMakeScale( 1.25,1.25 );
 	
-	UINavigationBar *bar = [self navigationController].navigationBar;
-	bar.barStyle = UIBarStyleBlackOpaque;
+	UINavigationBar *bar          = [self navigationController].navigationBar;
+	bar.barStyle                  = UIBarStyleBlackOpaque;
     self.navigationItem.titleView = artistOrgControl_;
 
 	[UIView commitAnimations];	
@@ -356,12 +329,6 @@
 
 
 
--(IBAction) pause
-{
-	//[g_audio pause];
-}
-
-
 -(IBAction) search
 {
 }
@@ -377,8 +344,7 @@
 - (void) retry
 {
 	AppData *app = [AppData get];
-	if( ![app login] )
-	{
+	if( ![app login] ) {
 		// go to settings screen.
 		UITabBarController *tabc = (UITabBarController *) self.navigationController;
 		tabc.selectedIndex = 3;
@@ -396,7 +362,8 @@
 	
 	int index = num * drand48();
 	NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
-	[artistTable_ selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionMiddle];
+	[artistTable_ selectRowAtIndexPath:indexPath animated:YES 
+                        scrollPosition:UITableViewScrollPositionMiddle];
 	
 	[self play:index];
 }
@@ -425,6 +392,21 @@
 	return nil;
 }
 
+- (void) artistOrgControlAction:(id)sender
+{
+    switch ([sender selectedSegmentIndex]) {
+        case 0:
+            [self reload];
+            break;
+        case 1:
+            [self shuffle];
+            break;
+        default:
+            break;
+    }
+	//NSLog(@"segmentAction: selected segment = %d", [sender selectedSegmentIndex]);
+}
+
 
 -(IBAction) shuffle
 {
@@ -439,7 +421,7 @@
 	
 	srand48( [NSDate timeIntervalSinceReferenceDate] );
 	
-	NSMutableArray *indexPath      = [[[NSMutableArray alloc] init] retain];  // autorelease?
+	NSMutableArray *indexPath      = [[[NSMutableArray alloc] init] retain];
 	NSMutableArray *shuffleIndices = [[[NSMutableArray alloc] init] retain];
 	
 	for( unsigned i=0;  i < num; ++i ) { 
@@ -469,26 +451,7 @@
 }
 
 
-- (void) nowPlaying:(id) sender
-{
-    NowPlayingController *nowplayingVC = [[NowPlayingController alloc] initWithNibName:@"NowPlayingArranged" bundle:nil];    
-    
-	nowplayingVC.hidesBottomBarWhenPushed = TRUE;
-
-    [nowplayingVC.navigationItem 
-     setRightBarButtonItem:[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"playlist.png"] 
-                                                            style:UIBarButtonItemStylePlain 
-                                                           target:nil 
-                                                           action:nil]];
-    
-    [[self navigationController] pushViewController:nowplayingVC animated:YES];		
-    
-    [nowplayingVC release];
-    return;
-}
-
-
-- (void) reload 
+- (IBAction) reload 
 {
     
 	AppData *app = [AppData get];
@@ -525,6 +488,7 @@
     nArtistActiveSessions_ = 0; 
     artistActiveSections_  = [[NSMutableArray alloc] init];
     artistSectionTitles_   = [[NSMutableArray alloc] init];
+
     for( unsigned i = 0; i < 27; i++ ) {
         if( [artistDisplayList_[i] count] > 0 ) {
             nArtistActiveSessions_++;
@@ -535,21 +499,32 @@
             else {
                 [artistSectionTitles_ addObject:@"0-9"];
             }
-            //[indexPath addObject:[NSIndexPath indexPathForRow:i inSection:j]];
         }
     }
     [self.artistTable_ reloadData];
-    /*
-    if( [self.artistTable_ numberOfRowsInSection:0] ) {
-        [self.artistTable_ reloadData];
-    }
-    else {
-        [self.artistTable_ beginUpdates];
-        [self.artistTable_ insertRowsAtIndexPaths:indexPath withRowAnimation:UITableViewRowAnimationFade];
-        [self.artistTable_ endUpdates];
-    }
-     */
 }
+
+
+- (void) nowPlaying:(id) sender
+{
+    NowPlayingController *nowplayingVC = [[NowPlayingController alloc] 
+                                          initWithNibName:@"NowPlayingArranged" bundle:nil];    
+    
+	nowplayingVC.hidesBottomBarWhenPushed = TRUE;
+
+    [nowplayingVC.navigationItem 
+     setRightBarButtonItem:[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"playlist.png"] 
+                                                            style:UIBarButtonItemStylePlain 
+                                                            target:nil 
+                                                            action:nil]];
+    
+    [[self navigationController] pushViewController:nowplayingVC animated:YES];		
+    
+    [nowplayingVC release];
+    return;
+}
+
+
 
 
 
@@ -666,9 +641,12 @@ tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 	sectionTitle.textColor       = [UIColor whiteColor];
 	sectionTitle.shadowColor     = [UIColor colorWithRed:.373 green:.141 blue:.024 alpha:1];
 	sectionTitle.shadowOffset    = CGSizeMake(0, 1);
-	sectionTitle.text = [sectionTitles_ objectAtIndex:section];
-    printf ("Se: %s\n", [sectionTitle.text  UTF8String]);
-	
+	sectionTitle.text            = [artistSectionTitles_ objectAtIndex:section];
+	headerView.backgroundColor   = [UIColor greenColor];
+    
+    UIImageView *sectionBG       = [[UIImageView alloc] initWithImage:sectionBGImage_];
+
+    [headerView addSubview:sectionBG];
 	[headerView addSubview:sectionTitle];
 	
 	return headerView;
@@ -684,9 +662,7 @@ tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPat
     NSInteger sec = indexPath.section;
     NSString *cellIdentifier = [NSString stringWithFormat:@"%d%d", row, sec ];
     ArtistCell *cell = (ArtistCell *)[tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-	if (cell == nil)
-	{
-
+	if (cell == nil) {
         cell = [[[ArtistCell alloc] initWithFrame:CGRectZero 
 								  reuseIdentifier:cellIdentifier] autorelease];
 	}
@@ -741,14 +717,11 @@ tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPat
 	AppData *app = [AppData get];
 	NSArray* fullList = app.fullArtistList_;
 	
-	if( [searchText length] == 0 )
-	{
+	if( [searchText length] == 0 ) {
 		UIView * subView;
 		NSArray * subViews = [searchBar subviews];
-		for(subView in subViews)
-		{
-			if( [subView isKindOfClass:[UITextField class]] )
-			{
+		for(subView in subViews) {
+			if( [subView isKindOfClass:[UITextField class]] ) {
 				UITextField *tf  = (UITextField*)subView;
 				[tf resignFirstResponder];
 				tf.returnKeyType = UIReturnKeyDone;
@@ -812,8 +785,7 @@ tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPat
 	[artistList_ removeAllObjects];
 
 	NSString *search = searchfield_.text;
-	if( [search length] == 0 )
-	{
+	if( [search length] == 0 ) {
 		[self shuffle];
 		return;
 	}

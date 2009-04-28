@@ -12,6 +12,7 @@
     NSMutableArray *artistActiveSections_;
     unsigned        nArtistActiveSessions_;
     NSMutableArray *artistSectionTitles_;
+    UIImage        *sectionBGImage_;
     
 	NSMutableArray *savedArtistList_;    // the saved content in case the user cancels a search
 
@@ -24,8 +25,6 @@
     IBOutlet UIBarButtonItem  *shufflebutton_;
     IBOutlet UISegmentedControl *artistOrgControl_;
 
-	
-		
 	UIActivityIndicatorView	*activity_;
 }
 
@@ -33,7 +32,6 @@
 
 -(IBAction) shuffle;
 -(IBAction) reload;
--(IBAction) pause;
 -(IBAction) search;
 -(IBAction) random;
 //-(IBAction) textfieldchanged:(id)sender;
