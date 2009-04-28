@@ -8,12 +8,22 @@
 	UIViewController< UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UISearchBarDelegate >
 {
 	NSMutableArray *artistList_;
-	NSMutableArray   *savedArtistList_; // the saved content in case the user cancels a search
+    NSMutableArray *artistDisplayList_[27];
+    NSMutableArray *artistActiveSections_;
+    unsigned        nArtistActiveSessions_;
+    NSMutableArray *artistSectionTitles_;
+    
+	NSMutableArray *savedArtistList_;    // the saved content in case the user cancels a search
 
-	IBOutlet UITableView	*artistTable_;  
-	IBOutlet UIButton* shuffle_;
-	IBOutlet UILabel *dbgtext_;
-	IBOutlet UISearchBar *searchfield_;
+	IBOutlet UITableView      *artistTable_;  
+	IBOutlet UIButton         *shuffle_;
+	IBOutlet UILabel          *dbgtext_;
+	IBOutlet UISearchBar      *searchfield_;
+    
+    IBOutlet UIBarButtonItem  *azsortbutton_;
+    IBOutlet UIBarButtonItem  *shufflebutton_;
+    IBOutlet UISegmentedControl *artistOrgControl_;
+
 	
 		
 	UIActivityIndicatorView	*activity_;
@@ -22,6 +32,7 @@
 
 
 -(IBAction) shuffle;
+-(IBAction) reload;
 -(IBAction) pause;
 -(IBAction) search;
 -(IBAction) random;

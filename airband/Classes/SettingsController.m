@@ -269,7 +269,6 @@
 
 	sbrButtons.frame                 = frame;
 	sbrButtons.segmentedControlStyle = UISegmentedControlStyleBar;
-	sbrButtons.selectedSegmentIndex  = 2;
 
 	if( app != nil ) {
 		switch( [app bitRate_ ] ) {
@@ -290,6 +289,8 @@
 				break;
 		}
 	}
+    else
+        sbrButtons.selectedSegmentIndex = 1;
 	
 	sbrButtons.tintColor  = [UIColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:1.0];
 	

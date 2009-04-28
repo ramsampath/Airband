@@ -17,6 +17,7 @@
 		216256570F9F6AD500D21BFE /* airband_splash01.png in Resources */ = {isa = PBXBuildFile; fileRef = 216256530F9F6AD500D21BFE /* airband_splash01.png */; };
 		216256580F9F6AD500D21BFE /* airband_splash02.png in Resources */ = {isa = PBXBuildFile; fileRef = 216256540F9F6AD500D21BFE /* airband_splash02.png */; };
 		216256910F9F6B8900D21BFE /* AppIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 216256900F9F6B8900D21BFE /* AppIcon.png */; };
+		217EE52E0FA6F95000C06684 /* LogoBkgrnd.png in Resources */ = {isa = PBXBuildFile; fileRef = 217EE52D0FA6F95000C06684 /* LogoBkgrnd.png */; };
 		21845EFB0F9A927100D6927E /* ButtonmechViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 21845EFA0F9A927100D6927E /* ButtonmechViewController.m */; };
 		21845EFD0F9A928200D6927E /* Spinbutton.m in Sources */ = {isa = PBXBuildFile; fileRef = 21845EFC0F9A928200D6927E /* Spinbutton.m */; };
 		218776010F899B9C005809E3 /* checked.png in Resources */ = {isa = PBXBuildFile; fileRef = 218776000F899B9C005809E3 /* checked.png */; };
@@ -82,6 +83,7 @@
 		216256530F9F6AD500D21BFE /* airband_splash01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = airband_splash01.png; sourceTree = "<group>"; };
 		216256540F9F6AD500D21BFE /* airband_splash02.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = airband_splash02.png; sourceTree = "<group>"; };
 		216256900F9F6B8900D21BFE /* AppIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AppIcon.png; sourceTree = "<group>"; };
+		217EE52D0FA6F95000C06684 /* LogoBkgrnd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LogoBkgrnd.png; sourceTree = "<group>"; };
 		21845EF90F9A926A00D6927E /* ButtonmechViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ButtonmechViewController.h; sourceTree = "<group>"; };
 		21845EFA0F9A927100D6927E /* ButtonmechViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ButtonmechViewController.m; sourceTree = "<group>"; };
 		21845EFC0F9A928200D6927E /* Spinbutton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Spinbutton.m; sourceTree = "<group>"; };
@@ -190,6 +192,7 @@
 		21BBC8480F9C183500827637 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				217EE52D0FA6F95000C06684 /* LogoBkgrnd.png */,
 				21E32A0F0F9F6F7B00A6585C /* Default.png */,
 				216256900F9F6B8900D21BFE /* AppIcon.png */,
 				21C3B2780F9D8E1D0059C2CE /* SpeakerLoud.tif */,
@@ -400,6 +403,7 @@
 				21E32A100F9F6F7B00A6585C /* Default.png in Resources */,
 				21D8D5B50FA01D5600A4F889 /* Entitlements.plist in Resources */,
 				21AF2AE00FA0203A00A90008 /* AppIcon.png in Resources */,
+				217EE52E0FA6F95000C06684 /* LogoBkgrnd.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
