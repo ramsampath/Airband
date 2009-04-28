@@ -397,12 +397,11 @@
 - (void)myTimerFireMethod:(NSTimer*)theTimer
 {
 	AppData *app = [AppData get];
-    //printf("C: %d %d", [app.trackList_ count], [app currentTrackIndex_]);
+
    	if( [app isrunning] ) {
-		//float cur = [app percent]/44.1;
 		float cur = [app percent];
         float len = [app tracklength];
-		//printf( "myTimer fired, percent: %f %f\n", cur, len );
+
         if( cur >= len ) {
 			//[progbar_ setValue:0.0 animated:YES];
             [progbar_ setProgress:0.0];
@@ -416,7 +415,7 @@
 		}
 	}
 	
-	/*
+    /*
 	if( 0 ){
 		[UIView beginAnimations:@"thump" context:nil];
 		[UIView setAnimationDuration:2.9];	
@@ -425,7 +424,7 @@
 		[UIView setAnimationRepeatAutoreverses:YES];			
 		[UIView commitAnimations];	
 	}
-	 */
+     */
 }
 
 

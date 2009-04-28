@@ -52,18 +52,17 @@ static audiohelp_II *g_audio = nil;
 {
 	if( self = [super init] )
 	{
-		username_ = nil;
-		password_ = nil;
-		sessionID_ = nil;
-		fullArtistList_ = nil;
-		albumInRequest_ = nil;
-		artwork_ = nil;
-		currentTracklist_ = nil;
-		albumList_ = nil;
-		trackList_ = nil;
+		username_          = nil;
+		password_          = nil;
+		sessionID_         = nil;
+		fullArtistList_    = nil;
+		albumInRequest_    = nil;
+		artwork_           = nil;
+		currentTracklist_  = nil;
+		albumList_         = nil;
+		trackList_         = nil;
 		currentTrackTitle_ = nil;
-	
-		bitRate_ = 96000;
+		bitRate_           = 56000;
 		// read the user settings.
 		[self restoreState];
 	}

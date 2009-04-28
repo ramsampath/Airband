@@ -656,18 +656,18 @@ static void* workerthread( void* pv )
 	
 	Float64	sampleRate     = 0;
 	UInt32  sampleRateSize = sizeof( sampleRate );
-	AudioQueueGetProperty( asyncaudio_.myd_->audioQueue_, 
-							kAudioQueueDeviceProperty_SampleRate, &sampleRate, &sampleRateSize ); 
-		
-	//return ((float)asyncaudio_.bytesread_)/(float)tracksize_;
-	if( sampleRateSize != sizeof( sampleRate ) ) {
-		t = 44.1;
-	}
-	else {
-		// convert from millseconds.
-		t /= (sampleRate/1000);
-	}
+	AudioQueueGetProperty( asyncaudio_.myd_->audioQueue_, kAudioQueueDeviceProperty_SampleRate, 
+                            &sampleRate, &sampleRateSize ); 
+	//printf ("sample : %f %d\n", fsampleRate, sampleRateSize );
 
+	//return ((float)asyncaudio_.bytesread_)/(float)tracksize_;
+	if( sampleRateSize != sizeof( sampleRate ) || sampleRate == 0 ) {
+		t = 0;
+	}
+    else {
+        // convert from millseconds.
+        t /= (sampleRate/1000);
+    }
 	return t;
 }
 
