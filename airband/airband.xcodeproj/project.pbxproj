@@ -13,6 +13,11 @@
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		210C88970FA757C7001A66B1 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 210C88960FA757C7001A66B1 /* Default.png */; };
 		210E10190F8B165B00BBA95A /* AllSettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 210E10170F8B165B00BBA95A /* AllSettingsController.m */; };
+		21501AE50FA82CBC00C12314 /* icon_settings.png in Resources */ = {isa = PBXBuildFile; fileRef = 21501AE00FA82CBC00C12314 /* icon_settings.png */; };
+		21501AE60FA82CBC00C12314 /* icon_playlists.png in Resources */ = {isa = PBXBuildFile; fileRef = 21501AE10FA82CBC00C12314 /* icon_playlists.png */; };
+		21501AE70FA82CBC00C12314 /* icon_artists.png in Resources */ = {isa = PBXBuildFile; fileRef = 21501AE20FA82CBC00C12314 /* icon_artists.png */; };
+		21501AE80FA82CBC00C12314 /* icon_airbands.png in Resources */ = {isa = PBXBuildFile; fileRef = 21501AE30FA82CBC00C12314 /* icon_airbands.png */; };
+		21501BC00FA8354100C12314 /* greenbar.png in Resources */ = {isa = PBXBuildFile; fileRef = 21501BBF0FA8354100C12314 /* greenbar.png */; };
 		216256550F9F6AD500D21BFE /* airband_logo01.png in Resources */ = {isa = PBXBuildFile; fileRef = 216256510F9F6AD500D21BFE /* airband_logo01.png */; };
 		216256560F9F6AD500D21BFE /* airband_logo02.png in Resources */ = {isa = PBXBuildFile; fileRef = 216256520F9F6AD500D21BFE /* airband_logo02.png */; };
 		216256570F9F6AD500D21BFE /* airband_splash01.png in Resources */ = {isa = PBXBuildFile; fileRef = 216256530F9F6AD500D21BFE /* airband_splash01.png */; };
@@ -72,6 +77,11 @@
 		210C88960FA757C7001A66B1 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		210E10170F8B165B00BBA95A /* AllSettingsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AllSettingsController.m; sourceTree = "<group>"; };
 		210E10180F8B165B00BBA95A /* AllSettingsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AllSettingsController.h; sourceTree = "<group>"; };
+		21501AE00FA82CBC00C12314 /* icon_settings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_settings.png; sourceTree = "<group>"; };
+		21501AE10FA82CBC00C12314 /* icon_playlists.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_playlists.png; sourceTree = "<group>"; };
+		21501AE20FA82CBC00C12314 /* icon_artists.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_artists.png; sourceTree = "<group>"; };
+		21501AE30FA82CBC00C12314 /* icon_airbands.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_airbands.png; sourceTree = "<group>"; };
+		21501BBF0FA8354100C12314 /* greenbar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = greenbar.png; sourceTree = "<group>"; };
 		216256510F9F6AD500D21BFE /* airband_logo01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = airband_logo01.png; sourceTree = "<group>"; };
 		216256520F9F6AD500D21BFE /* airband_logo02.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = airband_logo02.png; sourceTree = "<group>"; };
 		216256530F9F6AD500D21BFE /* airband_splash01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = airband_splash01.png; sourceTree = "<group>"; };
@@ -182,6 +192,11 @@
 		21BBC8480F9C183500827637 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				21501BBF0FA8354100C12314 /* greenbar.png */,
+				21501AE00FA82CBC00C12314 /* icon_settings.png */,
+				21501AE10FA82CBC00C12314 /* icon_playlists.png */,
+				21501AE20FA82CBC00C12314 /* icon_artists.png */,
+				21501AE30FA82CBC00C12314 /* icon_airbands.png */,
 				210C88960FA757C7001A66B1 /* Default.png */,
 				217EE52D0FA6F95000C06684 /* LogoBkgrnd.png */,
 				216256900F9F6B8900D21BFE /* AppIcon.png */,
@@ -384,6 +399,11 @@
 				21AF2AE00FA0203A00A90008 /* AppIcon.png in Resources */,
 				217EE52E0FA6F95000C06684 /* LogoBkgrnd.png in Resources */,
 				210C88970FA757C7001A66B1 /* Default.png in Resources */,
+				21501AE50FA82CBC00C12314 /* icon_settings.png in Resources */,
+				21501AE60FA82CBC00C12314 /* icon_playlists.png in Resources */,
+				21501AE70FA82CBC00C12314 /* icon_artists.png in Resources */,
+				21501AE80FA82CBC00C12314 /* icon_airbands.png in Resources */,
+				21501BC00FA8354100C12314 /* greenbar.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

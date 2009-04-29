@@ -149,8 +149,7 @@
         artistDisplayList_[i]     = nil; 
     activity_              = nil;
 
-    NSString *background = [[NSBundle mainBundle] pathForResource:@"sectionbg" ofType:@"png"];
-    sectionBGImage_      = [UIImage imageNamed:background];
+
     
     return self;
 }
@@ -183,11 +182,9 @@
 	mainview.opaque                     = YES;
 	mainview.tag                        = 0;
 	mainview.userInteractionEnabled     = YES;
-    
     mainview.backgroundColor            = [UIColor colorWithPatternImage:[UIImage imageNamed:@"LogoBkgrnd.png"]];
-    
-    artistOrgControl_                       = [[UISegmentedControl alloc] initWithItems:
-                                                     [NSArray arrayWithObjects:@"A-Z", @"Shuffle", nil]];
+    artistOrgControl_                   = [[UISegmentedControl alloc] initWithItems:
+                                          [NSArray arrayWithObjects:@"A-Z", @"Shuffle", nil]];
 	[artistOrgControl_ addTarget:self action:@selector(artistOrgControlAction:) 
                 forControlEvents:UIControlEventValueChanged];
 	artistOrgControl_.selectedSegmentIndex  = 0.0;	
@@ -267,6 +264,7 @@
 	artistTable_.userInteractionEnabled          = YES;
     artistTable_.backgroundColor                 = [UIColor clearColor];
     
+
 	[mainview addSubview:artistTable_];
 	[mainview addSubview:searchfield_];
 	[mainview addSubview:artistOrgControl_];
@@ -303,6 +301,8 @@
 	bar.barStyle                  = UIBarStyleBlackOpaque;
     self.navigationItem.titleView = artistOrgControl_;
 
+    sectionBGImage_      = [UIImage imageNamed:@"greenbar.png"];
+    
 	[UIView commitAnimations];	
 }
 
@@ -507,8 +507,10 @@
 
 - (void) nowPlaying:(id) sender
 {
-    NowPlayingController *nowplayingVC = [[NowPlayingController alloc] 
-                                          initWithNibName:@"NowPlayingArranged" bundle:nil];    
+    //NowPlayingController *nowplayingVC = [[NowPlayingController alloc] 
+    //                                      initWithNibName:@"NowPlayingArranged" bundle:nil];
+    
+    NowPlayingController *nowplayingVC = [NowPlayingController alloc];
     
 	nowplayingVC.hidesBottomBarWhenPushed = TRUE;
 
@@ -567,8 +569,10 @@
     [secTitle getCharacters:buffer range:r];
     NSInteger sectionIndex = buffer[0] - 65;
 	NSDictionary *d = [artistDisplayList_[sectionIndex] objectAtIndex:indexPath.row];
-	PlaylistTracksController *traxcontroller = [[PlaylistTracksController alloc] 
-                                                initWithNibName:@"PlaylistTracks" bundle:nil];	
+	//PlaylistTracksController *traxcontroller = [[PlaylistTracksController alloc] 
+    //                                            initWithNibName:@"PlaylistTracks" bundle:nil];
+    PlaylistTracksController *traxcontroller = [PlaylistTracksController alloc];
+
 	traxcontroller.artist_ = d;
 	
 	traxcontroller.navigationItem.title = [d objectForKey:@"artistName"];
@@ -630,7 +634,7 @@ tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
     else return 0;
 }
 
-/*
+
 - (UIView *)tableView: (UITableView *)tableView viewForHeaderInSection: (NSInteger)section {
 	
 	UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.bounds.size.width, 24)];
@@ -642,7 +646,7 @@ tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 	sectionTitle.shadowColor     = [UIColor colorWithRed:.373 green:.141 blue:.024 alpha:1];
 	sectionTitle.shadowOffset    = CGSizeMake(0, 1);
 	sectionTitle.text            = [artistSectionTitles_ objectAtIndex:section];
-	headerView.backgroundColor   = [UIColor greenColor];
+	//headerView.backgroundColor   = [UIColor greenColor];
     
     UIImageView *sectionBG       = [[UIImageView alloc] initWithImage:sectionBGImage_];
 
@@ -651,7 +655,7 @@ tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 	
 	return headerView;
 }
-*/
+
 
 #define kCellIdentifier			@"MyId3"
 

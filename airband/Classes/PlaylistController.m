@@ -25,9 +25,64 @@
 	return self;
 }
 
-/*
-- (void)loadView {}
-*/
+
+- (void)loadView 
+{
+    UIView *mainview = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 460.0)];
+    mainview.frame = CGRectMake(0.0, 0.0, 320.0, 460.0);
+    mainview.alpha = 1.000;
+    mainview.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
+    //mainview.backgroundColor = [UIColor colorWithWhite:1.000 alpha:1.000];
+    mainview.clearsContextBeforeDrawing = NO;
+    mainview.clipsToBounds = NO;
+    mainview.contentMode = UIViewContentModeScaleToFill;
+    mainview.hidden = NO;
+    mainview.multipleTouchEnabled = NO;
+    mainview.opaque = YES;
+    mainview.tag = 0;
+    mainview.userInteractionEnabled = YES;
+    mainview.backgroundColor            = [UIColor colorWithPatternImage:[UIImage imageNamed:@"LogoBkgrnd.png"]];
+
+    table_ = [[UITableView alloc] 
+              initWithFrame:CGRectMake(0.0, 0.0, 320.0, 460.0) 
+              style:UITableViewStylePlain];
+    table_.delegate   = self;
+    table_.dataSource = self;
+    table_.allowsSelectionDuringEditing = NO;
+    table_.alpha = 1.000;
+    table_.alwaysBounceHorizontal = NO;
+    table_.alwaysBounceVertical = NO;
+    table_.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    //table_.backgroundColor = [UIColor colorWithRed:0.600 green:0.600 blue:0.600 alpha:1.000];
+    table_.backgroundColor = [UIColor clearColor];
+    table_.bounces = YES;
+    table_.bouncesZoom = YES;
+    table_.canCancelContentTouches = YES;
+    table_.clearsContextBeforeDrawing = NO;
+    table_.clipsToBounds = YES;
+    table_.contentMode = UIViewContentModeScaleToFill;
+    table_.delaysContentTouches = YES;
+    table_.directionalLockEnabled = NO;
+    table_.hidden = NO;
+    table_.indicatorStyle = UIScrollViewIndicatorStyleDefault;
+    table_.maximumZoomScale = 1.000;
+    table_.minimumZoomScale = 1.000;
+    table_.multipleTouchEnabled = NO;
+    table_.opaque = NO;
+    table_.pagingEnabled = NO;
+    table_.scrollEnabled = YES;
+    table_.sectionIndexMinimumDisplayRowCount = 0;
+    table_.separatorStyle = UITableViewCellSeparatorStyleNone;
+    table_.showsHorizontalScrollIndicator = YES;
+    table_.showsVerticalScrollIndicator = YES;
+    table_.tag = 0;
+    table_.userInteractionEnabled = YES;
+    
+    [mainview addSubview:table_];
+    
+    self.view = mainview;
+ 
+}
 
 
 - (void) playListsReady:(id)object
@@ -89,8 +144,9 @@
 
 - (void) nowPlaying:(id) sender
 {
-    NowPlayingController *nowplayingVC = [[NowPlayingController alloc] initWithNibName:@"NowPlayingArranged" bundle:nil];    
-    
+    //NowPlayingController *nowplayingVC = [[NowPlayingController alloc] initWithNibName:@"NowPlayingArranged" bundle:nil];    
+    NowPlayingController *nowplayingVC = [[NowPlayingController alloc] init];
+
     [nowplayingVC.navigationItem 
      setRightBarButtonItem:[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"playlist.png"] 
                                                             style:UIBarButtonItemStylePlain 
@@ -124,7 +180,9 @@
 	AppData *app = [AppData get];			
 	NSDictionary *d = [app.playLists_ objectAtIndex:[indexPath row]];
 	
-	PlaylistTracksController *traxcontroller = [[PlaylistTracksController alloc] initWithNibName:@"PlaylistTracks" bundle:nil];	
+	//PlaylistTracksController *traxcontroller = [[PlaylistTracksController alloc] initWithNibName:@"PlaylistTracks" bundle:nil];
+    PlaylistTracksController *traxcontroller = [[PlaylistTracksController alloc] init];
+
 	traxcontroller.playlist_ = d;
 	
 	traxcontroller.navigationItem.title = [d objectForKey:@"playlistTitle"];
@@ -158,15 +216,16 @@
 
  - (UITableViewCell *)tableView:(UITableView *)tv cellForRowAtIndexPath:(NSIndexPath *)indexPath 
 {
-	 UITableViewCell *cell = [tv dequeueReusableCellWithIdentifier:@"myid2"];
-	 if (cell == nil) {
-		 cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:@"myid2"] autorelease];
-		 cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
-	 }
+    UITableViewCell *cell = [tv dequeueReusableCellWithIdentifier:@"myid2"];
+    if (cell == nil) {
+        cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:@"myid2"] autorelease];
+        cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
+    }
+    cell.textColor            = [UIColor whiteColor];
 
 	 AppData *app = [AppData get];		
 	 NSDictionary *d = [app.playLists_ objectAtIndex:[indexPath row]];
-	cell.text = [d objectForKey:@"playlistTitle"];
+	 cell.text = [d objectForKey:@"playlistTitle"];
 	 	
 	 //NSString *imagePath = [[NSBundle mainBundle] pathForResource:[cell.text lowercaseString]  ofType:@"png"];
 	 //UIImage *icon = [UIImage imageWithContentsOfFile:imagePath]; 
