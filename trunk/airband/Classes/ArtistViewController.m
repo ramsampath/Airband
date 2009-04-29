@@ -558,7 +558,8 @@
 {
 	[searchfield_ resignFirstResponder];
 	//if( [artistList_ count] == 0 ) return;
-	
+    if( artistActiveSections_ == nil ) return;
+
 	//NSDictionary *d = [artistList_ objectAtIndex:[indexPath row]];
     NSString *secTitle = [artistSectionTitles_ objectAtIndex:indexPath.section];
 
@@ -673,7 +674,10 @@ tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPat
 	
 	// get the view controller's info dictionary based on the indexPath's row
 	//cell.dataDictionary = [[artistList_ objectAtIndex:indexPath.row] retain];
-    cell.dataDictionary = [[artistActiveSections_ objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+    if( artistActiveSections_ )
+        cell.dataDictionary = [[artistActiveSections_ 
+                                objectAtIndex:indexPath.section] 
+                               objectAtIndex:indexPath.row];
 	return cell;
 }
 
