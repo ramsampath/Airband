@@ -40,29 +40,35 @@
 	window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
 		
 	//ArtistViewController *artistVC = [[ArtistViewController alloc] initWithNibName:@"ArtistsView" bundle:nil];
-	ArtistViewController *artistVC = [ArtistViewController alloc];
+	ArtistViewController *artistVC = [[ArtistViewController alloc] init];
 
-	AllSettingsController *settingsVC = [AllSettingsController	alloc];
+	AllSettingsController *settingsVC = [[AllSettingsController	alloc] init];
 	//NowPlayingController *nowplayingVC = [[NowPlayingController alloc] initWithNibName:@"NowPlayingArranged" bundle:nil];
-	PlaylistController *playlistVC = [[PlaylistController alloc] initWithNibName:@"PlayList" bundle:nil];
+	//PlaylistController *playlistVC = [[PlaylistController alloc] initWithNibName:@"PlayList" bundle:nil];
+    PlaylistController *playlistVC = [[PlaylistController alloc] init];
+
 	CloudController *cloudVC = [[CloudController alloc] initWithNibName:@"CloudView" bundle:nil];
 	
 	
 	artistVC.title = @"Artists";
-	artistVC.tabBarItem.image = [UIImage imageNamed:@"spiky.png"];	
+	//artistVC.tabBarItem.image = [UIImage imageNamed:@"spiky.png"];
+    artistVC.tabBarItem.image = [UIImage imageNamed:@"icon_artists.png"];	
+
 	//
 	settingsVC.title = @"Settings";
-	settingsVC.tabBarItem.image = [UIImage imageNamed:@"gears.png"];
+	//settingsVC.tabBarItem.image = [UIImage imageNamed:@"gears.png"];
+    settingsVC.tabBarItem.image = [UIImage imageNamed:@"icon_settings.png"];
 	//
 	//nowplayingVC.title = @"Audio stream";
 	//nowplayingVC.tabBarItem.image = [UIImage imageNamed:@"headphones.png"];
 	//
 	playlistVC.title = @"Playlists";
-	playlistVC.tabBarItem.image = [UIImage imageNamed:@"playlist.png"];
+	//playlistVC.tabBarItem.image = [UIImage imageNamed:@"playlist.png"];
+    playlistVC.tabBarItem.image = [UIImage imageNamed:@"icon_playlists.png"];
 	//
 	cloudVC.title = @"Airbands";
-	cloudVC.tabBarItem.image = [UIImage imageNamed:@"cloud.png"];
-	
+	//cloudVC.tabBarItem.image = [UIImage imageNamed:@"cloud.png"];
+    cloudVC.tabBarItem.image = [UIImage imageNamed:@"icon_airbands.png"];
 	
 	UINavigationController *artistsNC = [[UINavigationController alloc] initWithRootViewController:artistVC];
 	UINavigationController *settingsNC= [[UINavigationController alloc] initWithRootViewController:settingsVC];		
