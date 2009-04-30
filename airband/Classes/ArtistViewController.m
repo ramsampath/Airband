@@ -459,8 +459,8 @@
     if( fullList == nil ) return;
     
 	int num = [fullList count];	
-	if( num > kMaxRows )
-		num = kMaxRows;
+	//if( num > kMaxRows )
+	//	num = kMaxRows;
     
     for( unsigned i = 0; i < 27; ++i ) {
         artistDisplayList_[ i ] = [[NSMutableArray arrayWithCapacity:kMaxRows] retain];
@@ -471,10 +471,10 @@
         //char index = ([artistname cStringUsingEncoding: NSASCIIStringEncoding]) [ 0 ];
         char index = [artistname UTF8String][0];
         if( index >= 'a' && index <= 'z' ) 
-            index -= 32;
+            index -= 'a';
         
         if( index >= 'A' && index <= 'Z' ) {
-            index -= 65;
+            index -= 'A';
             [artistDisplayList_[( int ) index] addObject: [fullList objectAtIndex:i]];
         }
         else {
