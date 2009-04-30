@@ -569,7 +569,7 @@ static void* workerthread( void* pv )
 	
 	printf( "connectionDidFinishLoading\n" );
 
-#ifdef A29_LATEST_HACKS	
+#ifdef APR29_LATEST_HACKS	
 	ghackApr29_finished_loading = 1;
 #endif
 	
