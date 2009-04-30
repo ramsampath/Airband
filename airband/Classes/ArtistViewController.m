@@ -471,7 +471,7 @@
         //char index = ([artistname cStringUsingEncoding: NSASCIIStringEncoding]) [ 0 ];
         char index = [artistname UTF8String][0];
         if( index >= 'a' && index <= 'z' ) 
-            index -= 'a';
+	  index = index - 'a' + 'A';
         
         if( index >= 'A' && index <= 'Z' ) {
             index -= 'A';
