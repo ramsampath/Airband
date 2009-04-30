@@ -1,10 +1,13 @@
 //
 //  audiohelp.m
-//  NavBar
+//  
 //
 //  Created by Scot Shinderman on 8/6/08.
 //  Copyright 2008 Elliptic. All rights reserved.
 //
+
+#define APR29_LATEST_HACKS 1
+static int ghackApr29_finished_loading = 0;
 
 #import "pthread.h"
 #import "audiohelp.h"
@@ -327,7 +330,7 @@ static void MyPacketsProc( void *inClientData,
 		
 		// if that was the last free packet description, then enqueue the buffer.
 		size_t packetsDescsRemaining = kAQMaxPacketDescs - myData->packetsFilled;
-		if (packetsDescsRemaining == 0) {
+		if (packetsDescsRemaining == 0 || ghackApr29_finished_loading ) {
 			MyEnqueueBuffer(myData);
 
 			// [todo] -- when is the appropriate time to call this?
@@ -417,6 +420,10 @@ static void MyPacketsProc( void *inClientData,
 	{
 		pthread_mutex_lock(&mutex_); 
 		{		
+#ifdef APR29_LATEST_HACKS
+			AudioQueueStop( myd_->audioQueue_, TRUE );
+#endif
+			
 			[datalist_ removeAllObjects];
 			running_ = FALSE;				
 			// [note] -- forcing enqueue to quit here.
@@ -561,6 +568,11 @@ static void* workerthread( void* pv )
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	
 	printf( "connectionDidFinishLoading\n" );
+
+#ifdef A29_LATEST_HACKS	
+	ghackApr29_finished_loading = 1;
+#endif
+	
 	[self produce:NULL];
 }
 
@@ -611,6 +623,7 @@ static void* workerthread( void* pv )
 	[self cancel];
 	
 	//printf( "new play request\n" );
+	ghackApr29_finished_loading = 0;
 	
 	asyncaudio_ = [[[asyncaudio_II alloc] init] retain];
 	
