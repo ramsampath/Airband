@@ -26,6 +26,7 @@
 	pthread_cond_t workerdone_;  // a flag that signals the audio loop has exited.
 	bool running_;            // child thread is running
 	NSMutableArray*  datalist_;
+	int bytesloaded_;
 }
 
 -(void) cancel;
@@ -33,7 +34,9 @@
 -(void) consumer;
 -(void) produce:(NSData*)d;
 -(BOOL) isrunning;
+
 @property (readwrite) struct AudioData* myd_;
+@property (readonly) int bytesloaded_;
 @end
 
 
@@ -41,9 +44,9 @@
 {
 	NSURLConnection*  connection_;
 	asyncaudio_II*    asyncaudio_;
-	
+
+	int  tracksize_;
 	bool paused_;
-	int tracksize_;
 }
 
 @property (readwrite) int tracksize_;
@@ -55,6 +58,7 @@
 -(void) cancel;
 -(void) setvolume:(float)v;
 -(BOOL) isrunning;
+-(float) percentLoaded;
 
 @end
 
