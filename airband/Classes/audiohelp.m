@@ -255,6 +255,9 @@ static void MyPropertyListenerProc(	void *inClientData,
 // --------------------------------------------------------------------------------
 static OSStatus MyEnqueueBuffer(AudioData* myData)
 {
+	if (myData->endAudioData || myData->failed)
+		return noErr;
+	
 	OSStatus err = noErr;
 	myData->inuse[myData->fillBufferIndex] = true;		// set in use flag
 	
@@ -269,6 +272,8 @@ static OSStatus MyEnqueueBuffer(AudioData* myData)
 		err = AudioQueueStart(myData->audioQueue_, NULL);
 		if (err) { PRINTERROR("AudioQueueStart"); myData->failed = true; return err; }		
 		myData->started = true;
+		myData->failed=false;
+		myData->endAudioData=false;
 		printf("audio queue started\n");
 	}
 	
@@ -282,6 +287,10 @@ static OSStatus MyEnqueueBuffer(AudioData* myData)
 	// wait until next buffer is not in use
 	pthread_mutex_lock(&myData->mutex); 
 	while (myData->inuse[myData->fillBufferIndex]) {
+
+		if (myData->endAudioData || myData->failed)
+			break;
+		
 		pthread_cond_wait(&myData->cond, &myData->mutex);
 	}
 	pthread_mutex_unlock(&myData->mutex);
@@ -306,6 +315,10 @@ static void MyPacketsProc( void *inClientData,
 	int i;
 	for (i=0;  i<inNumberPackets;  ++i) 
 	{
+		if(myData->failed || myData->endAudioData) {
+			break;
+		}
+		
 		SInt64 packetOffset = inPacketDescriptions[i].mStartOffset;
 		SInt64 packetSize   = inPacketDescriptions[i].mDataByteSize;
 		
@@ -328,9 +341,10 @@ static void MyPacketsProc( void *inClientData,
 		myData->bytesFilled += packetSize;
 		myData->packetsFilled++;
 		
+		
 		// if that was the last free packet description, then enqueue the buffer.
 		size_t packetsDescsRemaining = kAQMaxPacketDescs - myData->packetsFilled;
-		if (packetsDescsRemaining == 0 || ghackApr29_finished_loading ) {
+		if (packetsDescsRemaining == 0 || ghackApr29_finished_loading ) {			
 			MyEnqueueBuffer(myData);
 
 			// [todo] -- when is the appropriate time to call this?
@@ -356,15 +370,21 @@ static void MyPacketsProc( void *inClientData,
 @implementation asyncaudio_II
 
 @synthesize myd_;
+@synthesize bytesloaded_;
 
 -(id)init
 {
 	workerThread_ = NULL;
 	myd_ = NULL;
-	
-	
+		
 	// allocate a struct for storing our state
 	myd_ = (AudioData*)calloc(1, sizeof(AudioData));
+	
+	myd_ -> started = false;
+	myd_ -> endAudioData = false;
+	myd_ -> failed = false;
+
+	bytesloaded_ = 0;
 	
 	// initialize a mutex and condition so that we can block on buffers in use.
 	pthread_mutex_init(&myd_->mutex, NULL);
@@ -389,8 +409,8 @@ static void MyPacketsProc( void *inClientData,
 	pthread_mutex_init(&mutex_, NULL);
 	pthread_cond_init(&cond_, NULL);
 	pthread_cond_init(&workerdone_,NULL);
-	datalist_ = [[NSMutableArray arrayWithCapacity:20] retain];
-				 
+	datalist_ = [[NSMutableArray arrayWithCapacity:20] retain];		
+	
 	running_ = TRUE;
 	[self launchworker];
 	
@@ -421,7 +441,8 @@ static void MyPacketsProc( void *inClientData,
 		pthread_mutex_lock(&mutex_); 
 		{		
 #ifdef APR29_LATEST_HACKS
-			AudioQueueStop( myd_->audioQueue_, TRUE );
+			myd_ -> endAudioData = true;
+			myd_ -> failed = true;
 #endif
 			
 			[datalist_ removeAllObjects];
@@ -469,6 +490,10 @@ static void MyPacketsProc( void *inClientData,
 {
   for( ;running_ || [datalist_ count]>0; )
 	{
+		if( myd_->failed || myd_->endAudioData ) {
+			break;
+		}
+		
 	  NSData *data = NULL;		
 	  pthread_mutex_lock(&mutex_); 
 		{
@@ -476,28 +501,39 @@ static void MyPacketsProc( void *inClientData,
 			// so we don't wait.
 		   
 		  while (running_ && ![datalist_ count]) {
-			//printf("waiting for network data\n");
 			pthread_cond_wait(&cond_, &mutex_);
+			  
+			  if( myd_->failed || myd_->endAudioData ) {
+				  break;
+			  }			  
 		  }
 
-		  //printf( "audioChunks(consume): %d, running:%d\n", [datalist_ count], (int) running_ );			
-		  if( [datalist_ count] ) {
-			  data = [[datalist_ objectAtIndex:0] retain];
-			  [datalist_ removeObjectAtIndex:0];
-			  // [opt] prefer swap(last,0), removeLast;
-		  }
+			if( myd_->failed || myd_->endAudioData ) {
+			} else {
+				
+				  //printf( "audioChunks(consume): %d, running:%d\n", [datalist_ count], (int) running_ );			
+				  if( [datalist_ count] ) {
+					  data = [[datalist_ objectAtIndex:0] retain];
+					  [datalist_ removeObjectAtIndex:0];
+					  // [opt] prefer swap(last,0), removeLast;
+				  }
+			}
 		}
 	  pthread_mutex_unlock(&mutex_);
 
+		if( myd_->failed || myd_->endAudioData ) {
+			break;
+		}
+		
 	  // note -- 
 	  // this blocks/waits until the audio can process it.
-		if( data ) 
+		if( data && !myd_->failed && !myd_->endAudioData) 
 		{
 		  OSStatus err;
 		  err = AudioFileStreamParseBytes(myd_->audioFileStream, [data length], [data bytes], 0);
 		  checkstatus(err);
 		  [data release];
-		}
+		}		
 	}  
 
 		
@@ -560,6 +596,8 @@ static void* workerthread( void* pv )
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
 {
+	bytesloaded_ += [data length];
+
   [self produce:[NSData dataWithData:data]];
 }
 
@@ -601,6 +639,7 @@ static void* workerthread( void* pv )
 
 @synthesize tracksize_;
 
+
 - (id) init
 {	
 	[super init];
@@ -633,7 +672,7 @@ static void* workerthread( void* pv )
 	connection_ = [[NSURLConnection connectionWithRequest:[NSURLRequest requestWithURL:url]   
 												 delegate:asyncaudio_] retain];
 	
-	//printf( "audio async request in flight:%s\n", [strurl UTF8String] );	
+	printf( "audio async request in flight:%s\n", [strurl UTF8String] );	
 }
 
 
@@ -656,6 +695,15 @@ static void* workerthread( void* pv )
 }  
 */
 
+-(float) percentLoaded
+{
+	if( !connection_ || !asyncaudio_)
+		return 0;
+	
+	return asyncaudio_.bytesloaded_; 
+}
+
+
 -(float) percentage
 {
 	if( !asyncaudio_ ) {
@@ -673,7 +721,6 @@ static void* workerthread( void* pv )
                             &sampleRate, &sampleRateSize ); 
 	//printf ("sample : %f %d\n", fsampleRate, sampleRateSize );
 
-	//return ((float)asyncaudio_.bytesread_)/(float)tracksize_;
 	if( sampleRateSize != sizeof( sampleRate ) || sampleRate == 0 ) {
 		t = 0;
 	}
