@@ -758,6 +758,9 @@ tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPat
         [name getCharacters:buffer range:r];
         NSInteger sectionIndex = buffer[0] - 65;
         
+		if (sectionIndex<0||sectionIndex>=27)
+			continue;
+		
         [artistDisplayList_[sectionIndex] addObject:artist];
 		//[artistList_ addObject:artist];
 	}
