@@ -29,9 +29,13 @@
 	NSArray *albumList_;
 	// tracks (array of dictionary)for currently selected artist+album
 	NSArray* trackList_;
+	float   currentTrackFileSize_;
 	float   currentTrackLength_;
+	float   lastVolume_;
 	// name of the current song.
 	NSString *currentTrackTitle_;
+    NSString *currentArtist_;
+    NSString *currentAlbum_;
 	// bit rate to pass to the URL
 	int bitRate_;
 	// the index of the current track playing
@@ -48,9 +52,13 @@
 @property (readonly) NSArray* albumList_;
 @property (readonly) NSArray* trackList_;
 @property (readonly) NSString* currentTrackTitle_;
+@property (readonly) NSString* currentArtist_;
+@property (readonly) NSString* currentAlbum_;
 @property (readonly) float currentTrackLength_;
+@property (readonly) float currentTrackFileSize_;
 @property (assign)   int currentTrackIndex_;
 @property (readonly) int bitRate_;
+@property (readwrite) float lastVolume_;
 
 
 - (NSString*) createAccount:(NSDictionary*)userinfo;
@@ -77,6 +85,7 @@
 - (void) setStreamingRate:(int)rate;
 - (float) percent;
 - (float) tracklength;
+- (float) trackFileSize;
 // if audio track is being played
 - (BOOL) isrunning;
 

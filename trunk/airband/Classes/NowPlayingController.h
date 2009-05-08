@@ -8,13 +8,37 @@
 
 #import <UIKit/UIKit.h>
 
+@interface VolumeKnob: NSObject
+{
+    IBOutlet  UIButton    *volumebutton_;
+	UIImage               *image_;
+	CGPoint                dragStart_;
+    IBOutlet  UIView      *volumeview_;
+    IBOutlet  UIImageView *volumeknobview_;
+    CGPoint                center_;
+    float                  radius_;
+    float                  starttheta_;
+    float                  volume_;
+}
+
+@property(readonly) UIView* volumeview_;
+@property(readonly) float   volume_;
+
+-(IBAction) initialize;
+-(void) setKnobPosition:(float) theta;
+-(void) setVolume:(float) theta;
+
+@end
+
 
 @interface NowPlayingController : UIViewController {
 	IBOutlet UIToolbar       *toolbar_;
+    IBOutlet UIToolbar       *toolbartop_;
 	IBOutlet UIImageView     *albumcover_;
 	IBOutlet UISlider        *volume_;
 	IBOutlet UIView          *volumeviewslider_;
 
+    IBOutlet UIButton *back_;
 	IBOutlet UIBarButtonItem *prev_;
 	IBOutlet UIBarButtonItem *pause_;
 	IBOutlet UIBarButtonItem *stop_;
@@ -28,9 +52,19 @@
 	IBOutlet UIBarButtonItem *flexend_;
 	
 	
-	IBOutlet UITextView      *trackinfo_;
+	IBOutlet UIView          *trackinfo_;
+    IBOutlet UILabel         *tlabel_;
+    IBOutlet UILabel         *alabel_;
+    IBOutlet UILabel         *allabel_;
     IBOutlet UIAlertView     *alert;
-    IBOutlet UIProgressView  *progbar_;
+    IBOutlet UISlider        *progbar_;
+    IBOutlet UISlider        *progbar2_;
+	
+    IBOutlet UINavigationBar *nav_;
+	UIImageView              *busyimg_;
+    VolumeKnob               *volumeknob_;
+    
+    NSDictionary             *dict_;
 	
 	bool     paused_;
 }
@@ -44,5 +78,8 @@
 
 -(IBAction) random:(id)sender;
 -(IBAction) taptap:(id)sender;
+
+-(void) setupnavigationitems:(UINavigationItem *)sender navBar:(UINavigationBar *)navbar
+                    datadict:(NSDictionary *)dict;
 
 @end

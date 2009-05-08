@@ -8,6 +8,7 @@
 
 #define APR29_LATEST_HACKS 1
 static int ghackApr29_finished_loading = 0;
+static float g_hackVolume = 1.0;
 
 #import "pthread.h"
 #import "audiohelp.h"
@@ -274,6 +275,9 @@ static OSStatus MyEnqueueBuffer(AudioData* myData)
 		myData->started = true;
 		myData->failed=false;
 		myData->endAudioData=false;
+		
+		// always set to user slider 
+		AudioQueueSetParameter( myData->audioQueue_, kAudioQueueParam_Volume, g_hackVolume );		
 		printf("audio queue started\n");
 	}
 	
@@ -676,10 +680,13 @@ static void* workerthread( void* pv )
 }
 
 
+
+
 -(void) setvolume:(float)volume
 {
 	if( asyncaudio_ && asyncaudio_.myd_ ) {
 		AudioQueueSetParameter( asyncaudio_.myd_->audioQueue_, kAudioQueueParam_Volume, volume);
+		g_hackVolume = volume;
 	}
 }
 
