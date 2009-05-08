@@ -18,14 +18,25 @@
 		21501AE70FA82CBC00C12314 /* icon_artists.png in Resources */ = {isa = PBXBuildFile; fileRef = 21501AE20FA82CBC00C12314 /* icon_artists.png */; };
 		21501AE80FA82CBC00C12314 /* icon_airbands.png in Resources */ = {isa = PBXBuildFile; fileRef = 21501AE30FA82CBC00C12314 /* icon_airbands.png */; };
 		21501BC00FA8354100C12314 /* greenbar.png in Resources */ = {isa = PBXBuildFile; fileRef = 21501BBF0FA8354100C12314 /* greenbar.png */; };
+		215ABE330FB2BB98009301CD /* nowplaying_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 215ABE320FB2BB98009301CD /* nowplaying_background.png */; };
+		215ABF750FB323B1009301CD /* track_info.png in Resources */ = {isa = PBXBuildFile; fileRef = 215ABF740FB323B1009301CD /* track_info.png */; };
+		215AC0DD0FB343E8009301CD /* bottom_toolbar_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 215AC0DC0FB343E8009301CD /* bottom_toolbar_background.png */; };
+		215AC1000FB34697009301CD /* volume_knob.png in Resources */ = {isa = PBXBuildFile; fileRef = 215AC0FE0FB34697009301CD /* volume_knob.png */; };
+		215AC1010FB34697009301CD /* volume_indicator.png in Resources */ = {isa = PBXBuildFile; fileRef = 215AC0FF0FB34697009301CD /* volume_indicator.png */; };
+		215F2BED0FB3EA6000948567 /* volume_minus.png in Resources */ = {isa = PBXBuildFile; fileRef = 215F2BEB0FB3EA6000948567 /* volume_minus.png */; };
+		215F2BEE0FB3EA6000948567 /* volume_plus.png in Resources */ = {isa = PBXBuildFile; fileRef = 215F2BEC0FB3EA6000948567 /* volume_plus.png */; };
+		215F2C720FB3FE4300948567 /* slider_ball_transp.png in Resources */ = {isa = PBXBuildFile; fileRef = 215F2C710FB3FE4300948567 /* slider_ball_transp.png */; };
+		215FF8BF0FB1C5D600C721D6 /* busySpinner.png in Resources */ = {isa = PBXBuildFile; fileRef = 215FF8BE0FB1C5D600C721D6 /* busySpinner.png */; };
+		215FF8CD0FB1C5FF00C721D6 /* gradientBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 215FF8CC0FB1C5FF00C721D6 /* gradientBackground.png */; };
+		215FF8D70FB1C9D000C721D6 /* rightslide_downloads.png in Resources */ = {isa = PBXBuildFile; fileRef = 215FF8D60FB1C9D000C721D6 /* rightslide_downloads.png */; };
+		215FF8FB0FB1CD4600C721D6 /* slider_ball_transp.png in Resources */ = {isa = PBXBuildFile; fileRef = 215FF8FA0FB1CD4600C721D6 /* slider_ball_transp.png */; };
+		215FF9240FB1F19A00C721D6 /* back_arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 215FF9230FB1F19A00C721D6 /* back_arrow.png */; };
 		216256550F9F6AD500D21BFE /* airband_logo01.png in Resources */ = {isa = PBXBuildFile; fileRef = 216256510F9F6AD500D21BFE /* airband_logo01.png */; };
 		216256560F9F6AD500D21BFE /* airband_logo02.png in Resources */ = {isa = PBXBuildFile; fileRef = 216256520F9F6AD500D21BFE /* airband_logo02.png */; };
 		216256570F9F6AD500D21BFE /* airband_splash01.png in Resources */ = {isa = PBXBuildFile; fileRef = 216256530F9F6AD500D21BFE /* airband_splash01.png */; };
 		216256580F9F6AD500D21BFE /* airband_splash02.png in Resources */ = {isa = PBXBuildFile; fileRef = 216256540F9F6AD500D21BFE /* airband_splash02.png */; };
 		216256910F9F6B8900D21BFE /* AppIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 216256900F9F6B8900D21BFE /* AppIcon.png */; };
 		217EE52E0FA6F95000C06684 /* LogoBkgrnd.png in Resources */ = {isa = PBXBuildFile; fileRef = 217EE52D0FA6F95000C06684 /* LogoBkgrnd.png */; };
-		21845EFB0F9A927100D6927E /* ButtonmechViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 21845EFA0F9A927100D6927E /* ButtonmechViewController.m */; };
-		21845EFD0F9A928200D6927E /* Spinbutton.m in Sources */ = {isa = PBXBuildFile; fileRef = 21845EFC0F9A928200D6927E /* Spinbutton.m */; };
 		218776010F899B9C005809E3 /* checked.png in Resources */ = {isa = PBXBuildFile; fileRef = 218776000F899B9C005809E3 /* checked.png */; };
 		218776030F899BB3005809E3 /* unchecked.png in Resources */ = {isa = PBXBuildFile; fileRef = 218776020F899BB3005809E3 /* unchecked.png */; };
 		21A7852C0F7E84FC0053E9AD /* lastfmappdata.m in Sources */ = {isa = PBXBuildFile; fileRef = 21A7852B0F7E84FC0053E9AD /* lastfmappdata.m */; };
@@ -82,16 +93,25 @@
 		21501AE20FA82CBC00C12314 /* icon_artists.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_artists.png; sourceTree = "<group>"; };
 		21501AE30FA82CBC00C12314 /* icon_airbands.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_airbands.png; sourceTree = "<group>"; };
 		21501BBF0FA8354100C12314 /* greenbar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = greenbar.png; sourceTree = "<group>"; };
+		215ABE320FB2BB98009301CD /* nowplaying_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nowplaying_background.png; sourceTree = "<group>"; };
+		215ABF740FB323B1009301CD /* track_info.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = track_info.png; sourceTree = "<group>"; };
+		215AC0DC0FB343E8009301CD /* bottom_toolbar_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bottom_toolbar_background.png; sourceTree = "<group>"; };
+		215AC0FE0FB34697009301CD /* volume_knob.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = volume_knob.png; sourceTree = "<group>"; };
+		215AC0FF0FB34697009301CD /* volume_indicator.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = volume_indicator.png; sourceTree = "<group>"; };
+		215F2BEB0FB3EA6000948567 /* volume_minus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = volume_minus.png; sourceTree = "<group>"; };
+		215F2BEC0FB3EA6000948567 /* volume_plus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = volume_plus.png; sourceTree = "<group>"; };
+		215F2C710FB3FE4300948567 /* slider_ball_transp.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = slider_ball_transp.png; sourceTree = "<group>"; };
+		215FF8BE0FB1C5D600C721D6 /* busySpinner.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = busySpinner.png; sourceTree = "<group>"; };
+		215FF8CC0FB1C5FF00C721D6 /* gradientBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gradientBackground.png; sourceTree = "<group>"; };
+		215FF8D60FB1C9D000C721D6 /* rightslide_downloads.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rightslide_downloads.png; sourceTree = "<group>"; };
+		215FF8FA0FB1CD4600C721D6 /* slider_ball_transp.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = slider_ball_transp.png; sourceTree = "<group>"; };
+		215FF9230FB1F19A00C721D6 /* back_arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = back_arrow.png; sourceTree = "<group>"; };
 		216256510F9F6AD500D21BFE /* airband_logo01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = airband_logo01.png; sourceTree = "<group>"; };
 		216256520F9F6AD500D21BFE /* airband_logo02.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = airband_logo02.png; sourceTree = "<group>"; };
 		216256530F9F6AD500D21BFE /* airband_splash01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = airband_splash01.png; sourceTree = "<group>"; };
 		216256540F9F6AD500D21BFE /* airband_splash02.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = airband_splash02.png; sourceTree = "<group>"; };
 		216256900F9F6B8900D21BFE /* AppIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AppIcon.png; sourceTree = "<group>"; };
 		217EE52D0FA6F95000C06684 /* LogoBkgrnd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LogoBkgrnd.png; sourceTree = "<group>"; };
-		21845EF90F9A926A00D6927E /* ButtonmechViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ButtonmechViewController.h; sourceTree = "<group>"; };
-		21845EFA0F9A927100D6927E /* ButtonmechViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ButtonmechViewController.m; sourceTree = "<group>"; };
-		21845EFC0F9A928200D6927E /* Spinbutton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Spinbutton.m; sourceTree = "<group>"; };
-		21845EFE0F9A928800D6927E /* Spinbutton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Spinbutton.h; sourceTree = "<group>"; };
 		218776000F899B9C005809E3 /* checked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = checked.png; sourceTree = "<group>"; };
 		218776020F899BB3005809E3 /* unchecked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = unchecked.png; sourceTree = "<group>"; };
 		21A7852A0F7E84F60053E9AD /* lastfmappdata.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lastfmappdata.h; sourceTree = "<group>"; };
@@ -192,6 +212,19 @@
 		21BBC8480F9C183500827637 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				215F2C710FB3FE4300948567 /* slider_ball_transp.png */,
+				215F2BEB0FB3EA6000948567 /* volume_minus.png */,
+				215F2BEC0FB3EA6000948567 /* volume_plus.png */,
+				215AC0FE0FB34697009301CD /* volume_knob.png */,
+				215AC0FF0FB34697009301CD /* volume_indicator.png */,
+				215AC0DC0FB343E8009301CD /* bottom_toolbar_background.png */,
+				215ABF740FB323B1009301CD /* track_info.png */,
+				215ABE320FB2BB98009301CD /* nowplaying_background.png */,
+				215FF9230FB1F19A00C721D6 /* back_arrow.png */,
+				215FF8FA0FB1CD4600C721D6 /* slider_ball_transp.png */,
+				215FF8D60FB1C9D000C721D6 /* rightslide_downloads.png */,
+				215FF8CC0FB1C5FF00C721D6 /* gradientBackground.png */,
+				215FF8BE0FB1C5D600C721D6 /* busySpinner.png */,
 				21501BBF0FA8354100C12314 /* greenbar.png */,
 				21501AE00FA82CBC00C12314 /* icon_settings.png */,
 				21501AE10FA82CBC00C12314 /* icon_playlists.png */,
@@ -284,10 +317,6 @@
 		7D8DF9510E6A4F4500EA4BB8 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				21845EFC0F9A928200D6927E /* Spinbutton.m */,
-				21845EFE0F9A928800D6927E /* Spinbutton.h */,
-				21845EFA0F9A927100D6927E /* ButtonmechViewController.m */,
-				21845EF90F9A926A00D6927E /* ButtonmechViewController.h */,
 				21D329B40F7BFA0A00E0C6B0 /* AllSettingsTableCell.h */,
 				210E10170F8B165B00BBA95A /* AllSettingsController.m */,
 				210E10180F8B165B00BBA95A /* AllSettingsController.h */,
@@ -404,6 +433,19 @@
 				21501AE70FA82CBC00C12314 /* icon_artists.png in Resources */,
 				21501AE80FA82CBC00C12314 /* icon_airbands.png in Resources */,
 				21501BC00FA8354100C12314 /* greenbar.png in Resources */,
+				215FF8BF0FB1C5D600C721D6 /* busySpinner.png in Resources */,
+				215FF8CD0FB1C5FF00C721D6 /* gradientBackground.png in Resources */,
+				215FF8D70FB1C9D000C721D6 /* rightslide_downloads.png in Resources */,
+				215FF8FB0FB1CD4600C721D6 /* slider_ball_transp.png in Resources */,
+				215FF9240FB1F19A00C721D6 /* back_arrow.png in Resources */,
+				215ABE330FB2BB98009301CD /* nowplaying_background.png in Resources */,
+				215ABF750FB323B1009301CD /* track_info.png in Resources */,
+				215AC0DD0FB343E8009301CD /* bottom_toolbar_background.png in Resources */,
+				215AC1000FB34697009301CD /* volume_knob.png in Resources */,
+				215AC1010FB34697009301CD /* volume_indicator.png in Resources */,
+				215F2BED0FB3EA6000948567 /* volume_minus.png in Resources */,
+				215F2BEE0FB3EA6000948567 /* volume_plus.png in Resources */,
+				215F2C720FB3FE4300948567 /* slider_ball_transp.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -430,8 +472,6 @@
 				21D329B60F7BFA0A00E0C6B0 /* AllSettingsTableCell.m in Sources */,
 				21A7852C0F7E84FC0053E9AD /* lastfmappdata.m in Sources */,
 				210E10190F8B165B00BBA95A /* AllSettingsController.m in Sources */,
-				21845EFB0F9A927100D6927E /* ButtonmechViewController.m in Sources */,
-				21845EFD0F9A928200D6927E /* Spinbutton.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

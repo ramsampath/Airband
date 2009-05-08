@@ -30,9 +30,13 @@ static audiohelp_II *g_audio = nil;
 @synthesize albumList_;
 @synthesize trackList_;
 @synthesize currentTrackTitle_;
+@synthesize currentArtist_;
+@synthesize currentAlbum_;
 @synthesize currentTrackIndex_;
 @synthesize currentTrackLength_;
+@synthesize currentTrackFileSize_;
 @synthesize bitRate_;
+@synthesize lastVolume_;
 
 // --------------------------------------------------------------------------
 // singelton
@@ -62,7 +66,10 @@ static audiohelp_II *g_audio = nil;
 		albumList_         = nil;
 		trackList_         = nil;
 		currentTrackTitle_ = nil;
+        currentAlbum_      = nil;
+        currentArtist_     = nil;
 		bitRate_           = 56000;
+		lastVolume_		   = 1;
 		// read the user settings.
 		[self restoreState];
 	}
@@ -87,6 +94,8 @@ static audiohelp_II *g_audio = nil;
 	[albumList_ release];
 	[trackList_ release];
 	[currentTrackTitle_ release];
+    [currentArtist_ release];
+    [currentAlbum_ release];
 	[super dealloc];
 }
 
@@ -294,7 +303,12 @@ static audiohelp_II *g_audio = nil;
 	NSString *title     = [track objectForKey:@"trackTitle"];
 	NSString *tracksize = [track objectForKey:@"trackFileSize"];
 	NSString *tracklen  = [track objectForKey:@"trackLength"];
-	
+	NSString *album     = [track objectForKey:@"albumTitle"];
+    NSString *artist    = [track objectForKey:@"artistName"];
+    
+	printf( "tracksize: %s\n", [tracksize UTF8String]);
+	printf ("artist name %s\n", [artist UTF8String]);
+	currentTrackFileSize_ = [tracksize floatValue];
 	currentTrackLength_ = [tracklen floatValue];
 	if( !playfile ) {
 		[[[UIAlertView alloc] initWithTitle:@"Error w/ mp3tunes"
@@ -330,8 +344,10 @@ static audiohelp_II *g_audio = nil;
 		[g_audio cancel];
 	}
 	
+	
 	[g_audio play:req];
 	[g_audio setTracksize_:[tracksize intValue]];
+	[g_audio setvolume:lastVolume_];
 	
 	// next step -- get artwork.
 	NSString *artwork = [track objectForKey:@"albumArtURL"];
@@ -342,6 +358,8 @@ static audiohelp_II *g_audio = nil;
 	
 	// someone might want to know...
 	currentTrackTitle_ = title;
+    currentArtist_     = artist;
+    currentAlbum_      = album;
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"titleAvailable" object:self userInfo:[track retain]];	
 }
 
@@ -403,6 +421,7 @@ static audiohelp_II *g_audio = nil;
 
 - (void) setvolume:(float)volume
 {
+	lastVolume_ = volume;
 	[g_audio setvolume:volume];
 }
 
@@ -416,6 +435,10 @@ static audiohelp_II *g_audio = nil;
 	return [g_audio percentage];
 }
 
+- (float) trackFileSize
+{
+	return [g_audio percentLoaded]; 
+}
 
 - (BOOL) isrunning
 {

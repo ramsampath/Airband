@@ -147,11 +147,10 @@
     //NowPlayingController *nowplayingVC = [[NowPlayingController alloc] initWithNibName:@"NowPlayingArranged" bundle:nil];    
     NowPlayingController *nowplayingVC = [[NowPlayingController alloc] init];
 
-    [nowplayingVC.navigationItem 
-     setRightBarButtonItem:[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"playlist.png"] 
-                                                            style:UIBarButtonItemStylePlain 
-                                                           target:nil 
-                                                           action:nil]];
+    [nowplayingVC setupnavigationitems:self.navigationItem 
+                                navBar:[self navigationController].navigationBar
+                              datadict:nil];
+    
     
     [[self navigationController] pushViewController:nowplayingVC animated:YES];		
     
@@ -180,7 +179,6 @@
 	AppData *app = [AppData get];			
 	NSDictionary *d = [app.playLists_ objectAtIndex:[indexPath row]];
 	
-	//PlaylistTracksController *traxcontroller = [[PlaylistTracksController alloc] initWithNibName:@"PlaylistTracks" bundle:nil];
     PlaylistTracksController *traxcontroller = [[PlaylistTracksController alloc] init];
 
 	traxcontroller.playlist_ = d;

@@ -62,6 +62,9 @@
 		trackcountLabel.textColor            = [UIColor grayColor];
 		trackcountLabel.highlightedTextColor = [UIColor whiteColor];
 		trackcountLabel.font                 = [UIFont systemFontOfSize:14];
+        
+        self.selectedBackgroundView.backgroundColor = [UIColor whiteColor];
+
 		[self.contentView addSubview:trackcountLabel];
 	}
 	
@@ -231,21 +234,20 @@
 	artistTable_                                 = [[UITableView alloc] init];
     artistTable_.delegate                        = self;
     artistTable_.dataSource                      = self;
-	artistTable_.frame                           = CGRectMake( 0.0, 40.5, 320.0, 390.5 );
+	artistTable_.frame                           = CGRectMake( 0.0, 40.5, 320.0, 450 );
 	artistTable_.allowsSelectionDuringEditing    = NO;
 	artistTable_.alpha                           = 1.0;
 	artistTable_.alwaysBounceHorizontal          = NO;
 	artistTable_.alwaysBounceVertical            = NO;
 	artistTable_.autoresizingMask                = UIViewAutoresizingFlexibleWidth | 
-                                                   UIViewAutoresizingFlexibleHeight | 
-                                                   UIViewAutoresizingFlexibleBottomMargin;
+    UIViewAutoresizingFlexibleHeight ;
 	artistTable_.backgroundColor                 = tablecolor;
 	artistTable_.bounces                         = YES;
 	artistTable_.bouncesZoom                     = YES;
 	artistTable_.canCancelContentTouches         = YES;
 	artistTable_.clearsContextBeforeDrawing      = NO;
 	artistTable_.clipsToBounds                   = YES;
-	artistTable_.contentMode                     = UIViewContentModeScaleToFill;
+	//artistTable_.contentMode                     = UIViewContentModeScaleToFill;
 	artistTable_.delaysContentTouches            = YES;
 	artistTable_.directionalLockEnabled          = NO;
 	artistTable_.hidden                          = NO;
@@ -514,11 +516,10 @@
     
 	nowplayingVC.hidesBottomBarWhenPushed = TRUE;
 
-    [nowplayingVC.navigationItem 
-     setRightBarButtonItem:[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"playlist.png"] 
-                                                            style:UIBarButtonItemStylePlain 
-                                                            target:nil 
-                                                            action:nil]];
+    [nowplayingVC setupnavigationitems:self.navigationItem 
+                                navBar:[self navigationController].navigationBar
+                              datadict:nil];
+    
     
     [[self navigationController] pushViewController:nowplayingVC animated:YES];		
     
