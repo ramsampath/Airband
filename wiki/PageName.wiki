@@ -1,4 +1,6 @@
-#summary One-sentence summary of this page.
+#Page name test
+
+#summary Coding and design issues
 
 = Introduction =
 
@@ -34,7 +36,5 @@ property can change that.
 * the album page might have #songs listed 
 
 * the order of screens should probably just be artist -> album -> play.  on the play screen there's already a playlist button (upper right).  this could do the flippy animation and show the list of songs.
-
-
 
 
