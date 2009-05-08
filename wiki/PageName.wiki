@@ -6,6 +6,9 @@
 
 = Issues =
 
+* time/progress of song is missing?  it would also be nice to have 
+min:sec remaining
+
 * the volume knob is _confusing_ -- i think either needs a simple
 left is quiet / right loud zone approach or at least a bigger
 indicator and perhaps a 0-100 text in the middle.  another choice
@@ -27,5 +30,11 @@ has no results the bar shouldn't show up
 
 * a-z slider still hilights as grey;  maybe a bkgrnd or selected
 property can change that.
+
+* the album page might have #songs listed 
+
+* the order of screens should probably just be artist -> album -> play.  on the play screen there's already a playlist button (upper right).  this could do the flippy animation and show the list of songs.
+
+
 
 
