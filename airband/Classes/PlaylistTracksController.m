@@ -496,8 +496,8 @@
 	cell.selectedBackgroundView =
     [[[UIImageView alloc] initWithImage:selectionBackground] autorelease];
 	
-	cell.backgroundView.alpha = 0.75;
-	cell.imageView.image = [UIImage imageNamed:@"whiteButton.png"];
+	//cell.backgroundView.alpha = 0.75;
+	//cell.imageView.image = [UIImage imageNamed:@"whiteButton.png"];
     
 	return cell;
 }
