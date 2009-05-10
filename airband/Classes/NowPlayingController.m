@@ -143,7 +143,8 @@
 }
 
 
-@end
+@end 
+// end --- volume knob
 
 
 @implementation NowPlayingController
@@ -238,10 +239,20 @@
     self.navigationItem.titleView = toolbartop_;
     self.navigationItem.titleView.frame = CGRectMake(30, 0, 280, 44);
     
-    if( dict_ )
+    if( 1 ) {
         dict_ = dict;
-
-    return;
+		
+		// view loaded, queue up tracklist.
+		[[NSNotificationCenter defaultCenter] addObserver:self 
+												 selector:@selector(newlistReady:) 
+													 name:@"trackListReady"
+												   object:nil];	
+		
+		NSString *req = [dict_ objectForKey:@"albumId"];
+	
+		AppData *app = [AppData get];		
+		[app getTrackListAsync:req];				
+	}
 }
 
 - (void) viewDidDisappear
@@ -535,13 +546,32 @@
     allabel_.text = app.currentAlbum_;
 }
 
+
+
+- (void) newlistReady:(id)object
+{			
+	AppData *app = [AppData get];
+	int num = [app.trackList_ count];
+	if (!num) {
+		printf( "tracklist is empty\n" );
+		return;
+	}
+    
+    
+    [app setCurrentTrackIndex_:0];
+    NSDictionary *d = [app.trackList_ objectAtIndex:0];
+    [app playTrack:d];
+}
+
+
+
+
+
+
 - (void)viewDidLoad 
 {
 	AppData *app = [AppData get];
-	//printf("C: %d", [app isrunning] );
 
- 
-    
 	[volume_ setValue:[app lastVolume_]];
 	
 
@@ -552,8 +582,70 @@
 										 target:self 
 									   selector:@selector(myTimerFireMethod:)
 									   userInfo:NULL repeats:YES ];
-	}
+	}	
 }
+
+
+
+
+
+/*
+  [TODO] -- 
+		flip the displayed view from the main view to the flipside(song list) view and vice-versa.
+ */
+
+- (void) toggleView 
+{
+	/*
+	if (flipsideViewController == nil) {
+		[self loadFlipsideViewController];
+	}
+	
+	UIView *mainView = mainViewController.view;
+	UIView *flipsideView = flipsideViewController.view;
+	
+	[UIView beginAnimations:nil context:NULL];
+	[UIView setAnimationDuration:1];
+	[UIView setAnimationTransition:([mainView superview] ? UIViewAnimationTransitionFlipFromRight : UIViewAnimationTransitionFlipFromLeft) forView:self.view cache:YES];
+	
+	if ([mainView superview] != nil) {
+		[flipsideViewController viewWillAppear:YES];
+		[mainViewController viewWillDisappear:YES];
+		[mainView removeFromSuperview];
+        [infoButton removeFromSuperview];
+		[self.view addSubview:flipsideView];
+		[self.view insertSubview:flipsideNavigationBar aboveSubview:flipsideView];
+		[mainViewController viewDidDisappear:YES];
+		[flipsideViewController viewDidAppear:YES];
+		
+	} else {
+		[mainViewController viewWillAppear:YES];
+		[flipsideViewController viewWillDisappear:YES];
+		[flipsideView removeFromSuperview];
+		[flipsideNavigationBar removeFromSuperview];
+		[self.view addSubview:mainView];
+		[self.view insertSubview:infoButton aboveSubview:mainViewController.view];
+		[flipsideViewController viewDidDisappear:YES];
+		[mainViewController viewDidAppear:YES];
+	}
+	[UIView commitAnimations];
+	 */
+}
+
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+	[UIView beginAnimations:nil context:NULL];
+	[UIView setAnimationDuration:1];
+	[UIView setAnimationTransition:([self.view superview] ? UIViewAnimationTransitionFlipFromRight : UIViewAnimationTransitionFlipFromLeft) 
+																			forView:self.view cache:YES];
+	
+	
+	[UIView commitAnimations];	
+}
+
+
+
 
 - (void)nextTrack
 {

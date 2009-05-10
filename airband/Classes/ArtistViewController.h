@@ -25,7 +25,8 @@
     IBOutlet UIBarButtonItem  *shufflebutton_;
     IBOutlet UISegmentedControl *artistOrgControl_;
 
-	UIActivityIndicatorView	*activity_;
+	UIActivityIndicatorView	*activity_;	
+	BOOL searchActive_;
 }
 
 

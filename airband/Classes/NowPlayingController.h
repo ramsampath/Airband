@@ -64,10 +64,12 @@
 	UIImageView              *busyimg_;
     VolumeKnob               *volumeknob_;
     
+	// current track info
     NSDictionary             *dict_;
 	
 	bool     paused_;
 }
+
 
 -(IBAction) setvolume:(id)sender;
 -(IBAction) pause:(id)sender;

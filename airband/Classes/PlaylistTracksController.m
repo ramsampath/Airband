@@ -118,6 +118,9 @@
 }
 
 
+
+
+
 - (void)viewDidLoad 
 {	
 
@@ -215,6 +218,22 @@
 	{
 		NSDictionary *d = [app.albumList_ objectAtIndex:[indexPath row]];
 		
+        NowPlayingController *nowplayingVC = [[NowPlayingController alloc] init];			
+		
+        [nowplayingVC setupnavigationitems:self.navigationItem 
+									navBar:[self navigationController].navigationBar
+								  datadict:d];
+        
+        [self navigationController].navigationBarHidden = FALSE;
+        [self navigationController].navigationBar.topItem.rightBarButtonItem = [[UIBarButtonItem alloc] 
+                                                                                initWithTitle:@"Now Playing"
+                                                                                style:UIBarButtonItemStyleBordered
+                                                                                target:self action:@selector(nowPlaying:)];		
+		[[self navigationController] pushViewController:nowplayingVC animated:YES];		
+
+        [nowplayingVC release];
+		
+		/*
 		PlaylistTracksController *traxcontroller = [[PlaylistTracksController alloc] initWithNibName:@"PlaylistTracks" bundle:nil];	
 		traxcontroller.albumtracks_ = d;
 		
@@ -235,10 +254,11 @@
                                                                                 initWithTitle:@"Now Playing"
                                                                                 style:UIBarButtonItemStyleBordered
                                                                                 target:self action:@selector(nowPlaying:)];
+		 */
+		
 	}
 	else if( albumtracks_ )
-	{
-
+	{		
 		NSDictionary *d = [app.trackList_ objectAtIndex:[indexPath row]];
 
         NowPlayingController *nowplayingVC = [[NowPlayingController alloc] init];
@@ -302,7 +322,7 @@
 }
 
 
-
+/*
 - (UITableViewCell *)tableView:(UITableView *)tv cellForRowAtIndexPath:(NSIndexPath *)indexPath 
 {
 	UITableViewCell *cell = [tv dequeueReusableCellWithIdentifier:@"myid2"];
@@ -310,31 +330,30 @@
 		cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:@"myid2"] autorelease];
 		cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
 	}
-    cell.textColor            = [UIColor whiteColor];
+	cell.textLabel.textColor            = [UIColor whiteColor];
 
 	AppData *app = [AppData get];
 	
 	if( playlist_ ) {
 		NSDictionary *d = [app.currentTracklist_ objectAtIndex:[indexPath row]];
-		cell.text = [d objectForKey:@"trackTitle"];
+		cell.textLabel.text = [d objectForKey:@"trackTitle"];
 	} else if( albumtracks_ ) {
 		NSDictionary *d = [app.trackList_ objectAtIndex:[indexPath row]];
-		cell.text = [d objectForKey:@"trackTitle"];		
+		cell.textLabel.text = [d objectForKey:@"trackTitle"];		
 	} else if( artist_ ) {
 		NSDictionary *d = [app.albumList_ objectAtIndex:[indexPath row]];
-		cell.text = [d objectForKey:@"albumTitle"];
+		cell.textLabel.text = [d objectForKey:@"albumTitle"];
 	}
 		
 	return cell;
 }
-
+*/
 
 //
 // tableView:cellForRowAtIndexPath:
 //
 // Returns the cell for a given indexPath.
 //
-/*
 - (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	AppData *app = [AppData get];
@@ -381,7 +400,7 @@
 		 autorelease];
 		
 		const CGFloat LABEL_HEIGHT = 20;
-		UIImage *image = [UIImage imageNamed:@"imageA.png"];
+		UIImage *image = [UIImage imageNamed:@"whiteButton.png"];
 		
 		//
 		// Create the label for the top row of text
@@ -477,29 +496,10 @@
 	cell.selectedBackgroundView =
     [[[UIImageView alloc] initWithImage:selectionBackground] autorelease];
 	
-	cell.backgroundView.alpha = 0.95;
-	
-	/*
-     //
-     // Here I set an image based on the row. This is just to have something
-     // colorful to show on each row.
-     //
-     if (row == 0)
-     {
-     cell.image = [UIImage imageNamed:@"imageA.png"];
-     }
-     else if (row == 1)
-     {
-     cell.image = [UIImage imageNamed:@"imageB.png"];
-     }
-     else
-     {
-     cell.image = [UIImage imageNamed:@"imageC.png"];
-     }
-	 */
-    /*
+	cell.backgroundView.alpha = 0.75;
+	cell.imageView.image = [UIImage imageNamed:@"whiteButton.png"];
+    
 	return cell;
 }
-*/
 
 @end

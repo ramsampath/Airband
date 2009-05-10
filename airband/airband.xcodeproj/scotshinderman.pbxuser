@@ -10,9 +10,9 @@
 	};
 	1D3623250D0F684500981E51 /* airbandAppDelegate.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {954, 1638}}";
-			sepNavSelRange = "{1343, 0}";
-			sepNavVisRange = "{1031, 1928}";
+			sepNavIntBoundsRect = "{{0, 0}, {810, 2030}}";
+			sepNavSelRange = "{1032, 0}";
+			sepNavVisRange = "{729, 947}";
 			sepNavWindowFrame = "{{69, 71}, {1013, 808}}";
 		};
 	};
@@ -22,16 +22,30 @@
 			7DD58A180E64EA5D00BFB2A5 /* airband */,
 		);
 	};
+	21C3B1E90F9D87D90059C2CE /* leftslide.png */ = {
+		uiCtxt = {
+			sepNavWindowFrame = "{{15, 165}, {833, 858}}";
+		};
+	};
+	21C3B1EA0F9D87D90059C2CE /* rightslide.png */ = {
+		uiCtxt = {
+			sepNavWindowFrame = "{{38, 144}, {833, 858}}";
+		};
+	};
+	21C3B2FA0F9D980C0059C2CE /* slider_ball_bw.png */ = {
+		uiCtxt = {
+			sepNavWindowFrame = "{{61, 123}, {833, 858}}";
+		};
+	};
 	29B97313FDCFA39411CA2CEA /* Project object */ = {
 		activeBuildConfigurationName = Debug;
 		activeExecutable = 7DD58A180E64EA5D00BFB2A5 /* airband */;
-		activeSDKPreference = iphonesimulator2.1;
+		activeSDKPreference = iphonesimulator3.0;
 		activeTarget = 1D6058900D05DD3D006BFB54 /* airband */;
 		addToTargets = (
 			1D6058900D05DD3D006BFB54 /* airband */,
 		);
 		breakpoints = (
-			7D9648B20E900BDE0034FC93 /* airbandAppDelegate.m:45 */,
 		);
 		codeSenseManager = 7DD58A1F0E64EA8500BFB2A5 /* Code sense */;
 		executables = (
@@ -84,18 +98,8 @@
 					PBXFileDataSource_Target_ColumnID,
 				);
 			};
-			PBXPerProjectTemplateStateSaveDate = 244837499;
-			PBXWorkspaceStateSaveDate = 244837499;
-		};
-		perUserProjectItems = {
-			7D9648B70E900C180034FC93 = 7D9648B70E900C180034FC93 /* PBXBookmark */;
-			7D9648BB0E900C180034FC93 = 7D9648BB0E900C180034FC93 /* PBXTextBookmark */;
-			7D9648BF0E900C180034FC93 = 7D9648BF0E900C180034FC93 /* PBXBookmark */;
-			7D9648C30E900C180034FC93 = 7D9648C30E900C180034FC93 /* PBXBookmark */;
-			7D9648E60E9022070034FC93 = 7D9648E60E9022070034FC93 /* PBXTextBookmark */;
-			7D9648E70E9022070034FC93 = 7D9648E70E9022070034FC93 /* PBXTextBookmark */;
-			7D9648E80E9022070034FC93 = 7D9648E80E9022070034FC93 /* PBXTextBookmark */;
-			7D9648E90E9022070034FC93 = 7D9648E90E9022070034FC93 /* PBXTextBookmark */;
+			PBXPerProjectTemplateStateSaveDate = 263673903;
+			PBXWorkspaceStateSaveDate = 263673903;
 		};
 		sourceControlManager = 7DD58A1E0E64EA8500BFB2A5 /* Source Control */;
 		userBuildSettings = {
@@ -134,10 +138,10 @@
 	};
 	7D1233E10E74D5F80053381A /* PlaylistTracksController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {861, 3108}}";
-			sepNavSelRange = "{2282, 38}";
-			sepNavVisRange = "{1380, 1326}";
-			sepNavWindowFrame = "{{524, 47}, {920, 845}}";
+			sepNavIntBoundsRect = "{{0, 0}, {774, 7630}}";
+			sepNavSelRange = "{17198, 0}";
+			sepNavVisRange = "{16176, 1451}";
+			sepNavWindowFrame = "{{99, 65}, {833, 858}}";
 		};
 	};
 	7D4791350E6B9195005783F7 /* CloudController.h */ = {
@@ -152,7 +156,7 @@
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {843, 854}}";
 			sepNavSelRange = "{554, 0}";
-			sepNavVisRange = "{0, 1351}";
+			sepNavVisRange = "{0, 1349}";
 			sepNavWindowFrame = "{{504, 71}, {902, 855}}";
 		};
 	};
@@ -168,40 +172,40 @@
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {746, 2198}}";
 			sepNavSelRange = "{1235, 0}";
-			sepNavVisRange = "{224, 1074}";
+			sepNavVisRange = "{224, 1073}";
 			sepNavWindowFrame = "{{564, 172}, {805, 810}}";
 		};
 	};
 	7D8A3DBF0E664D6800110D42 /* ArtistViewController.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {758, 620}}";
+			sepNavIntBoundsRect = "{{0, 0}, {758, 643}}";
 			sepNavSelRange = "{164, 19}";
-			sepNavVisRange = "{0, 608}";
+			sepNavVisRange = "{0, 1176}";
 			sepNavWindowFrame = "{{324, 147}, {817, 734}}";
 		};
 	};
 	7D8A3DC00E664D6900110D42 /* ArtistViewController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {843, 5460}}";
-			sepNavSelRange = "{4808, 0}";
-			sepNavVisRange = "{3876, 1211}";
+			sepNavIntBoundsRect = "{{0, 0}, {843, 11690}}";
+			sepNavSelRange = "{24708, 0}";
+			sepNavVisRange = "{23809, 1392}";
 			sepNavWindowFrame = "{{174, 84}, {902, 739}}";
 		};
 	};
 	7D8A3DC20E664D7300110D42 /* NowPlayingController.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {758, 620}}";
-			sepNavSelRange = "{361, 0}";
-			sepNavVisRange = "{0, 495}";
-			sepNavWindowFrame = "{{666, 68}, {817, 734}}";
+			sepNavIntBoundsRect = "{{0, 0}, {758, 1232}}";
+			sepNavSelRange = "{1782, 0}";
+			sepNavVisRange = "{1015, 1242}";
+			sepNavWindowFrame = "{{538, 113}, {817, 734}}";
 		};
 	};
 	7D8A3DC30E664D7300110D42 /* NowPlayingController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {803, 2394}}";
-			sepNavSelRange = "{1020, 0}";
-			sepNavVisRange = "{438, 1102}";
-			sepNavWindowFrame = "{{258, 108}, {862, 842}}";
+			sepNavIntBoundsRect = "{{0, 0}, {1020, 11550}}";
+			sepNavSelRange = "{8194, 0}";
+			sepNavVisRange = "{8052, 2302}";
+			sepNavWindowFrame = "{{427, 50}, {862, 842}}";
 		};
 	};
 	7D8A3DC80E664D9F00110D42 /* SettingsController.h */ = {
@@ -237,11 +241,6 @@
 			sepNavWindowFrame = "{{188, 92}, {849, 803}}";
 		};
 	};
-	7D8D70DB0E7F53D3006D0DE5 /* Default.png */ = {
-		uiCtxt = {
-			sepNavWindowFrame = "{{15, 198}, {710, 825}}";
-		};
-	};
 	7D8D71920E7F66ED006D0DE5 /* Entitlements.plist */ = {
 		uiCtxt = {
 			sepNavWindowFrame = "{{546, 98}, {862, 842}}";
@@ -257,9 +256,9 @@
 	};
 	7D8D86040E67B1C300CB845D /* audiohelp.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {810, 8526}}";
-			sepNavSelRange = "{4148, 0}";
-			sepNavVisRange = "{4003, 395}";
+			sepNavIntBoundsRect = "{{0, 0}, {892, 10374}}";
+			sepNavSelRange = "{14217, 0}";
+			sepNavVisRange = "{13494, 970}";
 			sepNavWindowFrame = "{{603, 105}, {951, 871}}";
 		};
 	};
@@ -289,115 +288,32 @@
 	};
 	7D8D860A0E67B20D00CB845D /* songview.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {984, 2912}}";
+			sepNavIntBoundsRect = "{{0, 0}, {984, 3024}}";
 			sepNavSelRange = "{5318, 0}";
-			sepNavVisRange = "{5515, 1116}";
+			sepNavVisRange = "{5513, 1116}";
 			sepNavWindowFrame = "{{393, 83}, {902, 855}}";
 		};
 	};
 	7D8DF8550E6A405800EA4BB8 /* appdata.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {861, 798}}";
+			sepNavIntBoundsRect = "{{0, 0}, {861, 1302}}";
 			sepNavSelRange = "{1057, 18}";
-			sepNavVisRange = "{0, 1675}";
+			sepNavVisRange = "{477, 1865}";
 			sepNavWindowFrame = "{{553, 126}, {920, 830}}";
 		};
 	};
 	7D8DF8560E6A405800EA4BB8 /* appdata.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {861, 6874}}";
-			sepNavSelRange = "{12586, 0}";
-			sepNavVisRange = "{11897, 1196}";
-			sepNavWindowFrame = "{{296, 94}, {920, 830}}";
+			sepNavIntBoundsRect = "{{0, 0}, {900, 8596}}";
+			sepNavSelRange = "{4765, 14}";
+			sepNavVisRange = "{3616, 1910}";
+			sepNavWindowFrame = "{{513, 60}, {920, 830}}";
 		};
-	};
-	7D8DF9630E6A51F200EA4BB8 /* AppIcon.png */ = {
-		uiCtxt = {
-			sepNavWindowFrame = "{{84, 129}, {899, 831}}";
-		};
-	};
-	7D9648B20E900BDE0034FC93 /* airbandAppDelegate.m:45 */ = {
-		isa = PBXFileBreakpoint;
-		actions = (
-		);
-		breakpointStyle = 0;
-		continueAfterActions = 0;
-		countType = 0;
-		delayBeforeContinue = 0;
-		fileReference = 1D3623250D0F684500981E51 /* airbandAppDelegate.m */;
-		functionName = "-applicationDidFinishLaunching:";
-		hitCount = 0;
-		ignoreCount = 0;
-		lineNumber = 45;
-		modificationTime = 244321246.013885;
-		state = 1;
-	};
-	7D9648B70E900C180034FC93 /* PBXBookmark */ = {
-		isa = PBXBookmark;
-		fRef = 1D3623250D0F684500981E51 /* airbandAppDelegate.m */;
-	};
-	7D9648BB0E900C180034FC93 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 7D4791360E6B9195005783F7 /* CloudController.m */;
-		name = "CloudController.m: 47";
-		rLen = 204;
-		rLoc = 962;
-		rType = 0;
-		vrLen = 1351;
-		vrLoc = 0;
-	};
-	7D9648BF0E900C180034FC93 /* PBXBookmark */ = {
-		isa = PBXBookmark;
-		fRef = 7D8D860A0E67B20D00CB845D /* songview.m */;
-	};
-	7D9648C30E900C180034FC93 /* PBXBookmark */ = {
-		isa = PBXBookmark;
-		fRef = 7D47913E0E6B922A005783F7 /* cloudview.m */;
 	};
 	7D9648CD0E900F010034FC93 /* cloud.png */ = {
 		uiCtxt = {
 			sepNavWindowFrame = "{{38, 194}, {1013, 808}}";
 		};
-	};
-	7D9648E60E9022070034FC93 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 7D4791360E6B9195005783F7 /* CloudController.m */;
-		name = "CloudController.m: 29";
-		rLen = 0;
-		rLoc = 554;
-		rType = 0;
-		vrLen = 1351;
-		vrLoc = 0;
-	};
-	7D9648E70E9022070034FC93 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 7D47913E0E6B922A005783F7 /* cloudview.m */;
-		name = "cloudview.m: 64";
-		rLen = 0;
-		rLoc = 1235;
-		rType = 0;
-		vrLen = 1073;
-		vrLoc = 225;
-	};
-	7D9648E80E9022070034FC93 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 1D3623250D0F684500981E51 /* airbandAppDelegate.m */;
-		name = "airbandAppDelegate.m: 47";
-		rLen = 0;
-		rLoc = 1343;
-		rType = 0;
-		vrLen = 1928;
-		vrLoc = 1031;
-	};
-	7D9648E90E9022070034FC93 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 7D8D860A0E67B20D00CB845D /* songview.m */;
-		name = "songview.m: 135";
-		rLen = 0;
-		rLoc = 5318;
-		rType = 0;
-		vrLen = 1082;
-		vrLoc = 5549;
 	};
 	7DD58A180E64EA5D00BFB2A5 /* airband */ = {
 		isa = PBXExecutable;
@@ -406,7 +322,7 @@
 		argumentStrings = (
 		);
 		autoAttachOnCrash = 1;
-		breakpointsEnabled = 0;
+		breakpointsEnabled = 1;
 		configStateDict = {
 		};
 		customDataFormattersEnabled = 1;

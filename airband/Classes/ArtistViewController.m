@@ -151,7 +151,7 @@
     for( unsigned i = 0; i < 26; ++i )
         artistDisplayList_[i]     = nil; 
     activity_              = nil;
-
+	searchActive_ = FALSE;
 
     
     return self;
@@ -618,17 +618,15 @@ numberOfSectionsInTableView:(UITableView *)tableView
 {
     if( [artistSectionTitles_ count] == 0 )
         return 1;
-    else
+    else if( searchActive_ )
+		return 1;
+	else
         return nArtistActiveSessions_;
 }
 
 - (NSInteger)
 tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    /*
-	int c = [artistList_ count];
-	return (c>kMaxRows) ? kMaxRows : c;
-     */
     if( artistActiveSections_ ) {
         NSInteger ns = [[artistActiveSections_ objectAtIndex:section] count];
         return ns;
@@ -647,8 +645,11 @@ tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 	sectionTitle.textColor       = [UIColor whiteColor];
 	sectionTitle.shadowColor     = [UIColor colorWithRed:.373 green:.141 blue:.024 alpha:1];
 	sectionTitle.shadowOffset    = CGSizeMake(0, 1);
-	sectionTitle.text            = [artistSectionTitles_ objectAtIndex:section];
-	//headerView.backgroundColor   = [UIColor greenColor];
+	if( searchActive_ ) {
+		sectionTitle.text		= [NSString stringWithFormat:@"search: %d items", [[artistActiveSections_ objectAtIndex:0] count]];
+	} else {
+		sectionTitle.text        = [artistSectionTitles_ objectAtIndex:section];
+	}
     
     UIImageView *sectionBG       = [[UIImageView alloc] initWithImage:sectionBGImage_];
 
@@ -727,6 +728,7 @@ tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPat
 	NSArray* fullList = app.fullArtistList_;
 	
 	if( [searchText length] == 0 ) {
+		searchActive_ = FALSE;
 		UIView * subView;
 		NSArray * subViews = [searchBar subviews];
 		for(subView in subViews) {
@@ -738,7 +740,6 @@ tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPat
 		}
 		[searchBar resignFirstResponder];
 		[self reload];
-		//[self shuffle];
 		return;
 	}
 	
@@ -761,10 +762,11 @@ tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPat
 		if (sectionIndex<0||sectionIndex>=27)
 			continue;
 		
-        [artistDisplayList_[sectionIndex] addObject:artist];
-		//[artistList_ addObject:artist];
+        //[artistDisplayList_[sectionIndex] addObject:artist];
+        [artistDisplayList_[0] addObject:artist];
 	}
     
+	searchActive_ = TRUE;
 	[artistTable_ reloadData];
 }
 
