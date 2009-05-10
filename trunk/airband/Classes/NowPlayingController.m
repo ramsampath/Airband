@@ -36,7 +36,7 @@
 
 - (void)initialize
 {	
-    volumeview_                   = [[UIView alloc] initWithFrame:CGRectMake( 20, 330, 60, 60 )];
+    volumeview_                     = [[UIView alloc] initWithFrame:CGRectMake( 20, 330, 60, 60 )];
     //UIImageView *vkbg             = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"volume_knob.png"]];
     //vkbg.frame                    = CGRectMake( 5, 5, 55, 55 );
     
@@ -86,21 +86,27 @@
     float ypos = radius_ * sin( theta );
     
     //volumeknobview_.frame  = CGRectMake( 10.5, center_.y + 10, 10, 10 );
+
     volumeknobview_.frame = CGRectMake( xpos + center_.x, ypos + center_.y, 10, 10 );
-    
 }
 
 
 -(void) setVolume:(float) theta
 {
-    float value = (theta);
+    float value = 0;
     
-    if( value < 0 ) value = -value;
-    else if( value > M_PI ) value -= M_PI;
-    value /= (2*M_PI);
+     if( theta < 0 ) {
+        theta = (-theta) + starttheta_;
+    }
+    else if( theta > 0 && theta <= starttheta_ ) {
+        theta = starttheta_ - theta;
+    }
+    else {
+        theta = 2*M_PI - theta  + starttheta_;
+    }
+
+    value = theta/(M_PI + 2 *starttheta_);
     value = 1 - value;
-    
-    printf( "Value: %f %f\n", value, theta );
     [[AppData get] setvolume:value];
 }
 
@@ -123,7 +129,11 @@
     float theta  = -theta1 ;
 	// append the transform
 	//volume_.transform = CGAffineTransformRotate( volume_.transform, theta1 - theta2 );
-    
+
+    if( ( theta > starttheta_ && theta < (M_PI - starttheta_) )|| 
+       (  theta > 0 && theta < (M_PI - starttheta_) && theta > starttheta_ ) ) 
+        return;
+
     [self setKnobPosition:theta];
 	dragStart_ = currentTouchPosition;
 
@@ -361,7 +371,7 @@
     allabel_.textColor              = [UIColor whiteColor];
     [trackinfo_ addSubview: allabel_];
     
-    tlabel_                       =  [[UILabel alloc] 
+    tlabel_                        =  [[UILabel alloc] 
                                       initWithFrame:CGRectMake(0 , 70 , 320 , 15)]; 
     tlabel_.text                   = [dict_ objectForKey:@"trackTitle"];
     tlabel_.font                   = [UIFont fontWithName:@"Arial" size:12.0];
@@ -514,8 +524,8 @@
 	
 	//[mainview addSubview:toolbar_];
 	[mainview addSubview:albumcover_];
+    [mainview addSubview:progbar2_];
 	[mainview addSubview:progbar_];
-	[mainview addSubview:progbar2_];
 	[mainview addSubview:trackinfo_];
 	[mainview addSubview:busyimg_];
 
