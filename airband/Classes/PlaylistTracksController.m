@@ -293,6 +293,12 @@
                                  datadict:d];
 
         [self navigationController].navigationBarHidden = FALSE;
+        
+        [self navigationController].navigationBar.topItem.rightBarButtonItem = [[UIBarButtonItem alloc] 
+                                                                                initWithTitle:@"Now Playing"
+                                                                                style:UIBarButtonItemStyleBordered
+                                                                                target:self action:@selector(nowPlaying:)];
+        
 		[app playTrack:d];
 
 		[[self navigationController] pushViewController:nowplayingVC animated:YES];		
@@ -496,9 +502,9 @@
 	cell.selectedBackgroundView =
     [[[UIImageView alloc] initWithImage:selectionBackground] autorelease];
 	
-	//cell.backgroundView.alpha = 0.75;
-	//cell.imageView.image = [UIImage imageNamed:@"whiteButton.png"];
-    
+	cell.backgroundView.alpha = 0.75;
+	cell.image = [UIImage imageNamed:@"whiteButton.png"];
+
 	return cell;
 }
 
