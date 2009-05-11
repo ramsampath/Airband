@@ -249,7 +249,7 @@
     self.navigationItem.titleView = toolbartop_;
     self.navigationItem.titleView.frame = CGRectMake(30, 0, 280, 44);
     
-    if( 1 ) {
+    if( dict ) {
         dict_ = dict;
 		
 		// view loaded, queue up tracklist.
