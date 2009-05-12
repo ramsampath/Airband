@@ -184,12 +184,10 @@
 	traxcontroller.playlist_ = d;
 	
 	traxcontroller.navigationItem.title = [d objectForKey:@"playlistTitle"];
-	[traxcontroller.navigationItem 
-	 setRightBarButtonItem:[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"playlist.png"] 
-															style:UIBarButtonItemStylePlain 
-														   target:nil 
-														   action:nil]];
-    [self navigationController].navigationBar.topItem.rightBarButtonItem = [[UIBarButtonItem alloc] 
+    
+    
+    if( [app isrunning] )
+        [self navigationController].navigationBar.topItem.rightBarButtonItem = [[UIBarButtonItem alloc] 
                                                                             initWithTitle:@"Now Playing"
                                                                             style:UIBarButtonItemStyleBordered
                                                                             target:self action:@selector(nowPlaying:)];

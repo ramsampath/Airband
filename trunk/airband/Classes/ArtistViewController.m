@@ -578,23 +578,24 @@
 	traxcontroller.artist_ = d;
 	
 	traxcontroller.navigationItem.title = [d objectForKey:@"artistName"];
-	[traxcontroller.navigationItem 
-	setRightBarButtonItem:[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"playlist.png"] 
-														style:UIBarButtonItemStylePlain 
-														target:nil 
-														action:nil]];
+
 	
 	[self navigationController].navigationBarHidden = FALSE;
+	AppData *app = [AppData get];
 
-    [self navigationController].navigationBar.topItem.rightBarButtonItem = [[UIBarButtonItem alloc] 
+    if( [app isrunning] )
+        [self navigationController].navigationBar.topItem.rightBarButtonItem = [[UIBarButtonItem alloc] 
                                                                             initWithTitle:@"Now Playing"
                                                                             style:UIBarButtonItemStyleBordered
                                                                             target:self action:@selector(nowPlaying:)];
 	[[self navigationController] pushViewController:traxcontroller animated:YES];
-    [self navigationController].navigationBar.topItem.rightBarButtonItem = [[UIBarButtonItem alloc] 
+    
+    if( [app isrunning] )
+        [self navigationController].navigationBar.topItem.rightBarButtonItem = [[UIBarButtonItem alloc] 
                                                                             initWithTitle:@"Now Playing"
                                                                             style:UIBarButtonItemStyleBordered
                                                                             target:self action:@selector(nowPlaying:)];
+     
 }
 
 
