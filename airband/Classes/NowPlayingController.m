@@ -512,15 +512,9 @@
     AppData *app = [AppData get];
 	[volume_ setValue:[app lastVolume_]];
 	
-    if( [app isrunning] ) {
-		[toolbartop_ setItems:[NSArray arrayWithObjects: flexbeg_, prev_, fixedprev_, 
-                               pause_,  fixedplay_, next_, flexend_, nil]]; 
-	}
-	else {
-		[toolbartop_ setItems:[NSArray arrayWithObjects:flexbeg_, prev_, fixedprev_, 
-                               play_,  fixedplay_, next_, flexend_, nil]];
-	}
-	//[mainview addSubview:image];
+	[toolbartop_ setItems:[NSArray arrayWithObjects: flexbeg_, prev_, fixedprev_, 
+                              pause_,  fixedplay_, next_, flexend_, nil]]; 
+		//[mainview addSubview:image];
 	
 	//[mainview addSubview:toolbar_];
 	[mainview addSubview:albumcover_];

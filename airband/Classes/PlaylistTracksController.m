@@ -400,10 +400,10 @@
 		 autorelease];
 		
 		UIImage *indicatorImage = [UIImage imageNamed:@"indicator.png"];
-		cell.accessoryView =
-		[[[UIImageView alloc]
-		  initWithImage:indicatorImage]
-		 autorelease];
+		//cell.accessoryView =
+		//[[[UIImageView alloc]
+		//  initWithImage:indicatorImage]
+		// autorelease];
 		
 		const CGFloat LABEL_HEIGHT = 20;
 		UIImage *image = [UIImage imageNamed:@"whiteButton.png"];
@@ -429,9 +429,10 @@
 		//
 		topLabel.tag = TOP_LABEL_TAG;
 		topLabel.backgroundColor = [UIColor clearColor];
-		topLabel.textColor = [UIColor colorWithRed:0.25 green:0.0 blue:0.0 alpha:1.0];
-		topLabel.highlightedTextColor = [UIColor colorWithRed:1.0 green:1.0 blue:0.9 alpha:1.0];
-		topLabel.font = [UIFont systemFontOfSize:[UIFont labelFontSize]];
+		//topLabel.textColor = [UIColor colorWithRed:0.25 green:0.0 blue:0.0 alpha:1.0];
+        topLabel.textColor = [UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:1.0];
+		topLabel.highlightedTextColor = [UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:1.0];
+		topLabel.font = [UIFont boldSystemFontOfSize:[UIFont labelFontSize] ];
 		
 		//
 		// Create the label for the top row of text
@@ -454,8 +455,9 @@
 		//
 		bottomLabel.tag = BOTTOM_LABEL_TAG;
 		bottomLabel.backgroundColor = [UIColor clearColor];
-		bottomLabel.textColor = [UIColor colorWithRed:0.25 green:0.0 blue:0.0 alpha:1.0];
-		bottomLabel.highlightedTextColor = [UIColor colorWithRed:1.0 green:1.0 blue:0.9 alpha:1.0];
+		//bottomLabel.textColor = [UIColor colorWithRed:0.25 green:0.0 blue:0.0 alpha:1.0];
+        bottomLabel.textColor = [UIColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:1.0];
+		bottomLabel.highlightedTextColor = [UIColor colorWithRed:0.7 green:0.7 blue:0.7 alpha:1.0];
 		bottomLabel.font = [UIFont systemFontOfSize:[UIFont labelFontSize] - 2];
 	}
 	else
@@ -497,13 +499,19 @@
 		rowBackground = [UIImage imageNamed:@"middleRow.png"];
 		selectionBackground = [UIImage imageNamed:@"middleRowSelected.png"];
 	}
-	cell.backgroundView =	
-    [[[UIImageView alloc] initWithImage:rowBackground] autorelease];
-	cell.selectedBackgroundView =
-    [[[UIImageView alloc] initWithImage:selectionBackground] autorelease];
+    //
+    // uncomment the following lines after the design is in place
+    //
+	//cell.backgroundView =	
+    //[[[UIImageView alloc] initWithImage:rowBackground] autorelease];
+	//cell.selectedBackgroundView =
+    //[[[UIImageView alloc] initWithImage:selectionBackground] autorelease];
 	
 	cell.backgroundView.alpha = 0.75;
-	cell.image = [UIImage imageNamed:@"whiteButton.png"];
+    //
+    // replace the following with the album artwork
+    //
+	cell.image = [UIImage imageNamed:@"music_note.png"];
 
 	return cell;
 }
