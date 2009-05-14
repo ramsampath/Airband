@@ -8,7 +8,6 @@
 
 
 #import "NowPlayingController.h"
-//#import <MediaPlayer/MediaPlayer.h>
 #import "PlaylistTracksController.h"
 
 #import "appdata.h"
@@ -50,7 +49,7 @@
 
     center_.x   = 40 + 10;
     center_.y   = 40 + 17;
-    radius_     = 40;
+    radius_     = 35;
     starttheta_ = M_PI/4;
 
     volumeknobview_               = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"volume_indicator.png"]];
@@ -172,8 +171,8 @@
     CGPoint currentTouchPosition = [touch locationInView:self];
 	dragStart_ = currentTouchPosition;
     
-    printf("touches began %f %f\n", dragStart_.x, dragStart_.y);
-    
+    //printf("touches began %f %f\n", dragStart_.x, dragStart_.y);
+    return;
 }
 
 
@@ -256,10 +255,9 @@
     [b release];
     
     UIImage *infoimage    = [UIImage imageNamed:@"track_info.png"];
-    b                     = [UIBarButtonItem alloc];
-    b.style               = UIBarButtonItemStyleBordered;
-    b.image               = infoimage;
-    [b setAction:@selector(flipToTracklistView)];
+    b                     = [[UIBarButtonItem alloc] initWithImage:infoimage
+                                                    style:UIBarButtonItemStylePlain target:self 
+                                                    action:@selector(flipToTracklistView:)];
     [self.navigationItem setRightBarButtonItem:b];
     [b release];
     
@@ -268,9 +266,93 @@
     toolbartop_.barStyle               = UIBarStyleBlackOpaque;
     //toolbartop_.backgroundColor        = [UIColor clearColor];
     //[navBar addSubview:toolbartop_];
+    
     self.navigationItem.titleView       = toolbartop_;
     self.navigationItem.titleView.frame = CGRectMake( 0, 0, 320, 40 );
     
+    pause_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemPause 
+														   target:self action:@selector(pause:)];
+	pause_.enabled = YES;
+	pause_.style   = UIBarButtonItemStylePlain;
+	pause_.tag     = 0;
+	pause_.width   = 0.000;
+    
+    flexbeg_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace 
+                                                             target:nil action:nil];
+	flexbeg_.enabled = YES;
+	flexbeg_.style   = UIBarButtonItemStylePlain;
+	flexbeg_.tag     = 0;
+	flexbeg_.width   = 0.000;
+	
+	prev_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRewind 
+														  target:self	action:@selector(prev:)];
+	prev_.enabled = YES;
+	prev_.style   = UIBarButtonItemStylePlain;
+	prev_.tag     = 0;
+	prev_.width   = 0.000;
+	
+	fixedprev_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace 
+                                                               target:nil action:nil];
+	fixedprev_.enabled = YES;
+	fixedprev_.style   = UIBarButtonItemStylePlain;
+	fixedprev_.tag     = 0;
+	fixedprev_.width   = 30.000;
+	
+	stop_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemStop
+														  target:self action:@selector(stop:)];
+	stop_.enabled = YES;
+	stop_.style   = UIBarButtonItemStylePlain;
+	stop_.tag     = 0;
+	stop_.width   = 0.000;
+	
+	pause_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemPause 
+														   target:self action:@selector(pause:)];
+	pause_.enabled = YES;
+	pause_.style   = UIBarButtonItemStylePlain;
+	pause_.tag     = 0;
+	pause_.width   = 0.000;
+	
+	fixedpause_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace
+                                                                target:nil action:nil];
+	fixedpause_.enabled = YES;
+	fixedpause_.style   = UIBarButtonItemStylePlain;
+	fixedpause_.tag     = 0;
+	fixedpause_.width   = 30.000;
+	
+	play_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemPlay
+														  target:self action:@selector(play:)];
+	play_.enabled = YES;
+	play_.style   = UIBarButtonItemStylePlain;
+	play_.tag     = 0;
+	play_.width   = 0.000;
+    
+	
+	fixedplay_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+	fixedplay_.enabled = YES;
+	fixedplay_.style   = UIBarButtonItemStylePlain;
+	fixedplay_.tag     = 0;
+	fixedplay_.width   = 30.000;
+	
+	next_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFastForward 
+														  target:self action:@selector(next:)];
+	next_.enabled = YES;
+	next_.style   = UIBarButtonItemStylePlain;
+	next_.tag     = 0;
+	next_.width   = 0.000;
+    
+	flexend_         = [[UIBarButtonItem alloc] 
+                        initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace 
+                        target:nil action:nil];
+	flexend_.enabled = YES;
+	flexend_.style   = UIBarButtonItemStylePlain;
+	flexend_.tag     = 0;
+	flexend_.width   = 0.000;
+
+    [toolbartop_ setItems:[NSArray arrayWithObjects: flexbeg_, prev_, fixedprev_, 
+                           pause_,  fixedplay_, next_, flexend_, nil]];
+    
+    
+
     if( dict ) {
         dict_ = dict;
 		
@@ -426,7 +508,8 @@
     back_.enabled = YES;
 	back_.tag     = 0;
 
-	albumcover_ = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 300.0)];
+    albumcovertracksview_ = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320.0, 300.0)];
+	albumcover_ = [[UIImageView alloc] initWithFrame:albumcovertracksview_.frame];
 	albumcover_.alpha                      = 1.000;
 	//albumcover_.autoresizingMask           = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	albumcover_.clearsContextBeforeDrawing = NO;
@@ -439,6 +522,7 @@
 	albumcover_.tag                        = 0;
 	albumcover_.userInteractionEnabled     = NO;
     
+    [albumcovertracksview_ addSubview:albumcover_];
     /*
     nav_ = [[UINavigationBar alloc] 
            initWithFrame: CGRectMake( 0.0f, 0.0f, 320.0f, 55.0f )];
@@ -449,83 +533,6 @@
     //                                  initWithTitle:@"Back"];
     [nav_ setDelegate: self];    
 	*/
-    pause_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemPause 
-														   target:self action:@selector(pause:)];
-	pause_.enabled = YES;
-	pause_.style   = UIBarButtonItemStylePlain;
-	pause_.tag     = 0;
-	pause_.width   = 0.000;
-    
-    flexbeg_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace 
-                                                             target:nil action:nil];
-	flexbeg_.enabled = YES;
-	flexbeg_.style   = UIBarButtonItemStylePlain;
-	flexbeg_.tag     = 0;
-	flexbeg_.width   = 0.000;
-	
-	prev_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRewind 
-														  target:self	action:@selector(prev:)];
-	prev_.enabled = YES;
-	prev_.style   = UIBarButtonItemStylePlain;
-	prev_.tag     = 0;
-	prev_.width   = 0.000;
-	
-	fixedprev_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace 
-                                                               target:nil action:nil];
-	fixedprev_.enabled = YES;
-	fixedprev_.style   = UIBarButtonItemStylePlain;
-	fixedprev_.tag     = 0;
-	fixedprev_.width   = 30.000;
-	
-	stop_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemStop
-														  target:self action:@selector(stop:)];
-	stop_.enabled = YES;
-	stop_.style   = UIBarButtonItemStylePlain;
-	stop_.tag     = 0;
-	stop_.width   = 0.000;
-	
-	pause_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemPause 
-														   target:self action:@selector(pause:)];
-	pause_.enabled = YES;
-	pause_.style   = UIBarButtonItemStylePlain;
-	pause_.tag     = 0;
-	pause_.width   = 0.000;
-	
-	fixedpause_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace
-                                                                target:nil action:nil];
-	fixedpause_.enabled = YES;
-	fixedpause_.style   = UIBarButtonItemStylePlain;
-	fixedpause_.tag     = 0;
-	fixedpause_.width   = 30.000;
-	
-	play_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemPlay
-														  target:self action:@selector(play:)];
-	play_.enabled = YES;
-	play_.style   = UIBarButtonItemStylePlain;
-	play_.tag     = 0;
-	play_.width   = 0.000;
-    
-	
-	fixedplay_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-	fixedplay_.enabled = YES;
-	fixedplay_.style   = UIBarButtonItemStylePlain;
-	fixedplay_.tag     = 0;
-	fixedplay_.width   = 30.000;
-	
-	next_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFastForward 
-														  target:self action:@selector(next:)];
-	next_.enabled = YES;
-	next_.style   = UIBarButtonItemStylePlain;
-	next_.tag     = 0;
-	next_.width   = 0.000;
-    
-	flexend_         = [[UIBarButtonItem alloc] 
-                        initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace 
-                        target:nil action:nil];
-	flexend_.enabled = YES;
-	flexend_.style   = UIBarButtonItemStylePlain;
-	flexend_.tag     = 0;
-	flexend_.width   = 0.000;
     
 	busyimg_ = [[UIImageView alloc] initWithFrame:CGRectMake(30, 30, 100, 100)];
 	busyimg_.image = [UIImage imageNamed:@"busySpinner.png"];
@@ -536,12 +543,16 @@
     AppData *app = [AppData get];
 	[volume_ setValue:[app lastVolume_]];
 	
-	[toolbartop_ setItems:[NSArray arrayWithObjects: flexbeg_, prev_, fixedprev_, 
-                              pause_,  fixedplay_, next_, flexend_, nil]]; 
-		//[mainview addSubview:image];
+    CGRect r = CGRectMake( albumcover_.frame.origin.x, albumcover_.frame.origin.y, 
+                          albumcover_.frame.size.width, albumcover_.frame.size.height );
+    tracklistview_ = [[TracklistController alloc] initWithFrame:r];
+    tracklistview_.dataSource = self;
+    tracklistview_.delegate   = self;
+    
+    //[mainview addSubview:image];
 	
 	//[mainview addSubview:toolbar_];
-	[mainview addSubview:albumcover_];
+	[mainview addSubview:albumcovertracksview_];
     [mainview addSubview:progbar2_];
 	[mainview addSubview:progbar_];
 	[mainview addSubview:trackinfo_];
@@ -597,8 +608,6 @@
     NSDictionary *d = [app.trackList_ objectAtIndex:0];
     [app playTrack:d];
 }
-
-
 
 
 
@@ -667,13 +676,31 @@
 	 */
 }
 
--(void) flipToTracklistView
+-(IBAction) flipToTracklistView:(id) sender
 {
     [UIView beginAnimations:nil context:NULL];
 	[UIView setAnimationDuration:1];
-	[UIView setAnimationTransition:([self.view superview] ? UIViewAnimationTransitionFlipFromRight : UIViewAnimationTransitionFlipFromLeft) 
-                           forView:self.view cache:YES];
-	
+ 
+    [UIView setAnimationTransition:([self.view superview] ? 
+                                    UIViewAnimationTransitionFlipFromRight : UIViewAnimationTransitionFlipFromLeft) 
+                                    forView:albumcovertracksview_ cache:YES];
+
+    if ([tracklistview_ superview])
+	{
+		[tracklistview_ removeFromSuperview];
+		[albumcovertracksview_ addSubview:albumcover_];
+	}
+	else
+	{
+		[albumcover_ removeFromSuperview];
+		[albumcovertracksview_ addSubview:tracklistview_];
+	}
+    
+    //[[self navigationController] pushViewController:tc animated:YES];	
+    
+    //
+    // reset the application artwork
+    
 	
 	[UIView commitAnimations];	
 }
@@ -878,18 +905,42 @@
 }
 
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning 
+{
 	[super didReceiveMemoryWarning]; // Releases the view if it doesn't have a superview
 	// Release anything that's not essential, such as cached data
 }
 
 
-- (void)dealloc {
-    printf ("dealloc\n");
+- (void)dealloc 
+{
 	[super dealloc];
 }
 
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView 
+{
+	return 1;
+}
 
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
+{
+	tracklistview_.separatorStyle = UITableViewCellSeparatorStyleNone;
+    
+    AppData *app = [AppData get];
+    return [app.trackList_ count];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath 
+{
+    return( [tracklistview_ cellForRowAtIndexPath:indexPath] );
+}
+
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
+{
+    [tracklistview_ didSelectRowAtIndexPath:indexPath];
+}
 
 /**
  UIActionSheet

@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "TracklistController.h"
 
 @interface VolumeKnob: UIView
 {
@@ -32,10 +33,15 @@
 @end
 
 
-@interface NowPlayingController : UIViewController {
+@interface NowPlayingController : UIViewController< UITableViewDelegate, UITableViewDataSource >
+{
 	IBOutlet UIToolbar       *toolbar_;
     IBOutlet UIToolbar       *toolbartop_;
-	IBOutlet UIImageView     *albumcover_;
+    
+    IBOutlet UIView              *albumcovertracksview_;
+	IBOutlet UIImageView         *albumcover_;
+    IBOutlet TracklistController *tracklistview_; 
+
 	IBOutlet UISlider        *volume_;
 	IBOutlet UIView          *volumeviewslider_;
 
@@ -82,6 +88,7 @@
 
 -(IBAction) random:(id)sender;
 -(IBAction) taptap:(id)sender;
+-(IBAction) flipToTracklistView:(id) sender;
 
 -(void) setupnavigationitems:(UINavigationItem *)sender navBar:(UINavigationBar *)navbar
                     datadict:(NSDictionary *)dict;

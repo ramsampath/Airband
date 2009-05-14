@@ -187,7 +187,7 @@
 	mainview.userInteractionEnabled     = YES;
     mainview.backgroundColor            = [UIColor colorWithPatternImage:[UIImage imageNamed:@"LogoBkgrnd.png"]];
     artistOrgControl_                   = [[UISegmentedControl alloc] initWithItems:
-                                          [NSArray arrayWithObjects:@"A-Z", @"Shuffle", nil]];
+                                          [NSArray arrayWithObjects:@"A-Z", nil]];
 	[artistOrgControl_ addTarget:self action:@selector(artistOrgControlAction:) 
                 forControlEvents:UIControlEventValueChanged];
 	artistOrgControl_.selectedSegmentIndex  = 0.0;	
