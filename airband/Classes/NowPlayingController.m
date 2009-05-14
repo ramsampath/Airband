@@ -34,49 +34,69 @@
 @synthesize volumeview_;
 @synthesize volume_;
 
-- (void)initialize
+
+- (id)init
 {	
-    volumeview_                     = [[UIView alloc] initWithFrame:CGRectMake( 20, 330, 60, 60 )];
-    //UIImageView *vkbg             = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"volume_knob.png"]];
-    //vkbg.frame                    = CGRectMake( 5, 5, 55, 55 );
+    self = [super initWithFrame:CGRectMake( 0, 300, 100, 100 )];
     
-    volumebutton_ = [[UIButton buttonWithType:UIButtonTypeCustom]  initWithFrame:CGRectMake( 5, 5, 55, 55 )];    
-	UIButton *button = volumebutton_;
-    image_ = [[UIImage imageNamed:@"volume_knob.png"] retain];
+    self.userInteractionEnabled = TRUE;
     
-    [volumeview_ addSubview:button];
-    //[vkbg release];
-    
-	[button setImage:image_ forState:UIControlStateNormal];
-	//[button setImage:nil forState:UIControlStateNormal];
-	// set the button's target to this table view controller so we can interpret touch events and map that to a NSIndexSet
-	[button addTarget:self action:@selector(volButtonTapped:event:) 
-	 forControlEvents:UIControlEventTouchDown];
-    
-	[button addTarget:self action:@selector(volButtonDrag:event:) 
-	 forControlEvents:UIControlEventTouchDragInside];
-    
-	//button.backgroundColor = [UIColor clearColor];
-    
-    center_.x   = 27.5;
-    center_.y   = 27.5;
-    radius_     = 22;
+    image_ = [[UIImage imageNamed:@"volume_knob_bigger.png"] retain];
+
+	UIImageView *imageView = [ [ UIImageView alloc ] initWithImage: image_];
+
+    imageView.frame = CGRectMake( 10, 17, self.frame.size.width - 10, self.frame.size.height - 10 );
+    [self addSubview:imageView];
+
+    center_.x   = 40 + 10;
+    center_.y   = 40 + 17;
+    radius_     = 40;
     starttheta_ = M_PI/4;
 
     volumeknobview_               = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"volume_indicator.png"]];
-    float theta = starttheta_;
+
+    float theta = [self getKnobAngle];
     [self setKnobPosition:theta];
-    [volumeview_ addSubview:volumeknobview_];
+    [self addSubview:volumeknobview_];
     
     UIImageView *vplus            = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"volume_plus.png"]];
-    vplus.frame                   = CGRectMake( 60, 55, 6, 6 );
-    [volumeview_ addSubview:vplus];
+    vplus.frame                   = CGRectMake( 95, 98, 8, 8 );
+    [self addSubview:vplus];
     [vplus release];
     
     UIImageView *vmin             = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"volume_minus.png"]];
-    vmin.frame                    = CGRectMake( 0, 58, 6, 2 );
-    [volumeview_ addSubview:vmin];
+    vmin.frame                    = CGRectMake( 10, 100, 8, 4 );
+    [self addSubview:vmin];
     [vmin release];
+    
+    [self addSubview:volumeview_];
+    
+    return self;
+}
+
+#define lerp(x, a, b) ((1-x)*a + x*b)
+#define slerp(x, a, b) (sin((1-x)*(M_PI/2 + M_PI))*a + sin( x*(M_PI/2 + M_PI ))*b)
+
+-(float) getKnobAngle
+{
+    AppData *app = [AppData get];
+    float theta  = 0;
+    //
+    //
+    float vol = lerp( [app lastVolume_], 0, M_PI+M_PI/2 );
+    if( vol < starttheta_ ) {
+        theta = starttheta_ + M_PI + vol;
+    }
+    else if( vol >= starttheta_ && vol < (M_PI + starttheta_) ) {
+        theta = -( ( M_PI + starttheta_ - vol ) );
+    }
+    else if( vol >= (M_PI + starttheta_) ) {
+        theta = vol - ( M_PI + starttheta_ );
+    }
+    
+    //printf("Last Vol: %f %f %f\n", [app lastVolume_], vol, theta);
+    
+    return theta;
 }
 
 
@@ -87,7 +107,9 @@
     
     //volumeknobview_.frame  = CGRectMake( 10.5, center_.y + 10, 10, 10 );
 
-    volumeknobview_.frame = CGRectMake( xpos + center_.x, ypos + center_.y, 10, 10 );
+    //volumeknobview_
+    volumeknobview_.frame = CGRectMake( xpos + center_.x, ypos + center_.y, 
+                                         volumeknobview_.frame.size.width, volumeknobview_.frame.size.height ); 
 }
 
 
@@ -111,32 +133,31 @@
 }
 
 
-- (void)volButtonDrag:(id)sender event:(id)event
+//- (void)volButtonDrag:(id)sender event:(id)event
+-(void) touchesMoved :(NSSet *)touches withEvent:(UIEvent *)event
 {
-	NSSet *touches = [event allTouches];
 	UITouch *touch = [touches anyObject];	
 	
 	// [note] -- doing the calc in the parent coord system
-	CGPoint currentTouchPosition = [touch locationInView:volumebutton_.superview];
-	//float cx=image_.size.width/2.0;
-	//float cy=image_.size.height/2.0;
-	float cx = volumebutton_.frame.origin.x + volumebutton_.frame.size.width/2;
-	float cy = volumebutton_.frame.origin.y + volumebutton_.frame.size.height/2;
+    CGPoint currentTouchPosition = [touch locationInView:self];
+
+	float cx = self.frame.size.width/2;
+	float cy = self.frame.size.height/2;
 	
 	float theta1 = atan2( -(dragStart_.y-cy), dragStart_.x-cx );
 	//float theta2 = atan2( -(currentTouchPosition.y-cy), currentTouchPosition.x-cx );
     
     float theta  = -theta1 ;
-	// append the transform
-	//volume_.transform = CGAffineTransformRotate( volume_.transform, theta1 - theta2 );
+
+    dragStart_ = currentTouchPosition;
 
     if( ( theta > starttheta_ && theta < (M_PI - starttheta_) )|| 
        (  theta > 0 && theta < (M_PI - starttheta_) && theta > starttheta_ ) ) 
         return;
-
+    
+    
     [self setKnobPosition:theta];
-	dragStart_ = currentTouchPosition;
-
+    
     [self setVolume:theta];
     
     return;
@@ -144,12 +165,15 @@
 }
 
 
-- (void)volButtonTapped:(id)sender event:(id)event
+//- (void)volButtonTapped:(id)sender event:(id)event
+-(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
-	NSSet *touches = [event allTouches];
 	UITouch *touch = [touches anyObject];	
-	CGPoint currentTouchPosition = [touch locationInView:volumebutton_.superview];
+    CGPoint currentTouchPosition = [touch locationInView:self];
 	dragStart_ = currentTouchPosition;
+    
+    printf("touches began %f %f\n", dragStart_.x, dragStart_.y);
+    
 }
 
 
@@ -235,19 +259,17 @@
     b                     = [UIBarButtonItem alloc];
     b.style               = UIBarButtonItemStyleBordered;
     b.image               = infoimage;
+    [b setAction:@selector(flipToTracklistView)];
     [self.navigationItem setRightBarButtonItem:b];
     [b release];
     
-    toolbartop_ = [[UIToolbar alloc] initWithFrame:CGRectMake( 0.0, 0.0, 320.0, 44.0)];
+    toolbartop_ = [[UIToolbar alloc] initWithFrame:CGRectMake( 0.0, 0.0, 0.0, 0.0 )];
 	toolbartop_.opaque                 = NO;
-    toolbartop_.barStyle               = UIBarStyleBlackTranslucent;
-    toolbartop_.backgroundColor        = [UIColor clearColor];
-
-      
-
+    toolbartop_.barStyle               = UIBarStyleBlackOpaque;
+    //toolbartop_.backgroundColor        = [UIColor clearColor];
     //[navBar addSubview:toolbartop_];
-    self.navigationItem.titleView = toolbartop_;
-    self.navigationItem.titleView.frame = CGRectMake(30, 0, 280, 44);
+    self.navigationItem.titleView       = toolbartop_;
+    self.navigationItem.titleView.frame = CGRectMake( 0, 0, 320, 40 );
     
     if( dict ) {
         dict_ = dict;
@@ -302,12 +324,15 @@
 								stretchableImageWithLeftCapWidth:10.0 topCapHeight:0.0];
     UIImage *stetchRightTrack = [[UIImage imageNamed:@"rightslide.png"]
 								 stretchableImageWithLeftCapWidth:10.0 topCapHeight:0.0];
+    UIImage *stetchRightTrack2 = [[UIImage imageNamed:@"rightslide_transp.png"]
+								 stretchableImageWithLeftCapWidth:10.0 topCapHeight:0.0];
     
-	progbar_ = [[UISlider alloc] initWithFrame:CGRectMake( 18.0, 305.0, 284.0, 8.0 )];
+	progbar_ = [[UISlider alloc] initWithFrame:CGRectMake( 140.0, 305.0, 170.0, 8.0 )];
+    progbar_.backgroundColor            = [UIColor clearColor];
+
     [progbar_ setThumbImage:nil forState:UIControlStateNormal];
-    
     [progbar_ setMinimumTrackImage:stetchLeftTrack forState:UIControlStateNormal];
-    [progbar_ setMaximumTrackImage:stetchRightTrack forState:UIControlStateNormal];
+    [progbar_ setMaximumTrackImage:stetchRightTrack2 forState:UIControlStateNormal];
     progbar_.alpha                      = 1.0;
 	progbar_.clearsContextBeforeDrawing = YES;
 	progbar_.clipsToBounds              = NO;
@@ -320,13 +345,12 @@
     progbar_.maximumValue               = 1.0;
 	progbar_.value                      = 0.000;
 
-    progbar2_ = [[UISlider alloc] initWithFrame:CGRectMake( 18.0, 305.0, 284.0, 8.0 )];
+    progbar2_ = [[UISlider alloc] initWithFrame:CGRectMake( 140.0, 305.0, 170.0, 8.0 )];
+    progbar2_.backgroundColor            = [UIColor clearColor];
     [progbar2_ setThumbImage:nil forState:UIControlStateNormal];
-
     [progbar2_ setMinimumTrackImage:stetchLeftTrack2 forState:UIControlStateNormal];
     [progbar2_ setMaximumTrackImage:stetchRightTrack forState:UIControlStateNormal];
-    progbar2_.alpha                      = 0.5;
-    progbar2_.backgroundColor            = [UIColor clearColor];
+    progbar2_.alpha                      = 1.0;
 	progbar2_.clearsContextBeforeDrawing = YES;
 	progbar2_.clipsToBounds              = NO;
 	progbar2_.contentMode                = UIViewContentModeScaleToFill;
@@ -346,10 +370,11 @@
     [mainview addSubview:btbg];
     [btbg release];
 
-    volumeknob_ = [VolumeKnob alloc];
-    [volumeknob_ initialize];
-    [mainview addSubview:volumeknob_.volumeview_];
-
+    volumeknob_ = [[VolumeKnob alloc] init];
+    //[volumeknob_ initialize];
+    //[mainview addSubview:volumeknob_.volumeview_];
+    [mainview addSubview:volumeknob_];
+    
     trackinfo_                    = [[UIView alloc] initWithFrame:CGRectMake( 140.0, 310.0, 170.0, 140.0 )];
     trackinfo_.backgroundColor    = [UIColor clearColor];
     
@@ -380,13 +405,12 @@
     tlabel_.textColor              = [UIColor grayColor];
     [trackinfo_ addSubview: tlabel_];
 		
-	toolbar_ = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 382.0, 320.0, 44.0)];
-	//toolbar_ = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 300.0, 320.0, 100.0)];
+	//toolbar_ = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 382.0, 320.0, 44.0)];
+	toolbar_ = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 300.0, 320.0, 100.0)];
 	toolbar_.alpha = 1.000;
 	//toolbar_.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
 	//toolbar_.barStyle = UIBarStyleBlackTranslucent;
 
-    toolbar_.barStyle                   = UIBarStyleBlackTranslucent;
 	toolbar_.clearsContextBeforeDrawing = NO;
 	toolbar_.clipsToBounds          = NO;
 	toolbar_.contentMode            = UIViewContentModeBottom;
@@ -451,7 +475,7 @@
 	fixedprev_.enabled = YES;
 	fixedprev_.style   = UIBarButtonItemStylePlain;
 	fixedprev_.tag     = 0;
-	fixedprev_.width   = 20.000;
+	fixedprev_.width   = 30.000;
 	
 	stop_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemStop
 														  target:self action:@selector(stop:)];
@@ -472,7 +496,7 @@
 	fixedpause_.enabled = YES;
 	fixedpause_.style   = UIBarButtonItemStylePlain;
 	fixedpause_.tag     = 0;
-	fixedpause_.width   = 20.000;
+	fixedpause_.width   = 30.000;
 	
 	play_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemPlay
 														  target:self action:@selector(play:)];
@@ -486,7 +510,7 @@
 	fixedplay_.enabled = YES;
 	fixedplay_.style   = UIBarButtonItemStylePlain;
 	fixedplay_.tag     = 0;
-	fixedplay_.width   = 20.000;
+	fixedplay_.width   = 30.000;
 	
 	next_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFastForward 
 														  target:self action:@selector(next:)];
@@ -526,24 +550,31 @@
     self.view = mainview;	
 }
 
+- (void)setArtwork:(UIImage *)image
+{
+    if( image ) {
+		albumcover_.image = image;
+        
+	} else {
+		albumcover_.image = [UIImage imageNamed:@"empty_album_art.png"];
+        AppData *app = [AppData get];
+        app.artwork_ = nil;
+	}
+	    
+	//[image drawInRect: CGRectMake(0.0f, 0.0f, 100.0f, 60.0f)]; // Draw in a custom rect.
+    
+	//UIImageView *imageView = [ [ UIImageView alloc ] initWithImage: albumcover_.image];
+	//imageView.frame = CGRectMake(20.0, 55.0, 280.0, 176.0);
+	//[self.view addSubview: imageView]; // Draw the image in self.view.
+}
 
 - (void)artworkReady:(NSObject*)notification
 {
 	AppData *app = [AppData get];
 	UIImage *img = app.artwork_;
-	if( img ) {
-		albumcover_.image = img;
-	} else {
-		albumcover_.image = [UIImage imageNamed:@"airband.png"];
-	}
-	
-
     
-	//[img drawInRect: CGRectMake(0.0f, 0.0f, 100.0f, 60.0f)]; // Draw in a custom rect.
+    [self setArtwork:img];
 
-	//UIImageView *imageView = [ [ UIImageView alloc ] initWithImage: albumcover_.image];
-	//imageView.frame = CGRectMake(20.0, 55.0, 280.0, 176.0);
-	//[self.view addSubview: imageView]; // Draw the image in self.view.
 
 	tlabel_.text  = app.currentTrackTitle_;
     alabel_.text  = app.currentArtist_;
@@ -636,18 +667,24 @@
 	 */
 }
 
-
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+-(void) flipToTracklistView
 {
-	[UIView beginAnimations:nil context:NULL];
+    [UIView beginAnimations:nil context:NULL];
 	[UIView setAnimationDuration:1];
 	[UIView setAnimationTransition:([self.view superview] ? UIViewAnimationTransitionFlipFromRight : UIViewAnimationTransitionFlipFromLeft) 
-																			forView:self.view cache:YES];
+                           forView:self.view cache:YES];
 	
 	
 	[UIView commitAnimations];	
 }
 
+
+/*
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [self flipToTracklistView];
+}
+*/
 
 
 
@@ -661,6 +698,7 @@
     
     [app setCurrentTrackIndex_:index];
     NSDictionary *d = [app.trackList_ objectAtIndex:index];
+    
     [app playTrack:d];
 }
 
@@ -833,7 +871,8 @@
 	[[AppData get] stop];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation 
+{
 	// Return YES for supported orientations
 	return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }

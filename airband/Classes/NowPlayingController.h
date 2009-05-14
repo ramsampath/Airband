@@ -8,9 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface VolumeKnob: NSObject
+@interface VolumeKnob: UIView
 {
-    IBOutlet  UIButton    *volumebutton_;
+    //IBOutlet  UIButton    *volumebutton_;
 	UIImage               *image_;
 	CGPoint                dragStart_;
     IBOutlet  UIView      *volumeview_;
@@ -24,8 +24,9 @@
 @property(readonly) UIView* volumeview_;
 @property(readonly) float   volume_;
 
--(IBAction) initialize;
+//-(IBAction) initialize;
 -(void) setKnobPosition:(float) theta;
+-(float) getKnobAngle;
 -(void) setVolume:(float) theta;
 
 @end
@@ -77,6 +78,7 @@
 -(IBAction) play:(id)sender;
 -(IBAction) next:(id)sender;
 -(IBAction) prev:(id)sender;
+-(IBAction) setArtwork:(UIImage *)artwork;
 
 -(IBAction) random:(id)sender;
 -(IBAction) taptap:(id)sender;

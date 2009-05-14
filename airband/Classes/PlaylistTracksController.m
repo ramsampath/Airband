@@ -217,20 +217,27 @@
 	if( artist_ ) 
 	{
 		NSDictionary *d = [app.albumList_ objectAtIndex:[indexPath row]];
-		
+
+
+        
         NowPlayingController *nowplayingVC = [[NowPlayingController alloc] init];			
 		
         [nowplayingVC setupnavigationitems:self.navigationItem 
 									navBar:[self navigationController].navigationBar
 								  datadict:d];
         
+           
         [self navigationController].navigationBarHidden = FALSE;
         [self navigationController].navigationBar.topItem.rightBarButtonItem = [[UIBarButtonItem alloc] 
                                                                                 initWithTitle:@"Now Playing"
                                                                                 style:UIBarButtonItemStyleBordered
                                                                                 target:self action:@selector(nowPlaying:)];		
-		[[self navigationController] pushViewController:nowplayingVC animated:YES];		
+		[[self navigationController] pushViewController:nowplayingVC animated:YES];	
+        //
+        // reset the application artwork
+        [nowplayingVC setArtwork:nil];
 
+        
         [nowplayingVC release];
 		
 		/*
@@ -263,7 +270,7 @@
 
         NowPlayingController *nowplayingVC = [[NowPlayingController alloc] init];
 
-        
+
         [nowplayingVC setupnavigationitems:self.navigationItem 
                                  navBar:[self navigationController].navigationBar
                                  datadict:d];
@@ -276,7 +283,7 @@
 		[app playTrack:d];
 
 		[[self navigationController] pushViewController:nowplayingVC animated:YES];		
-        
+        [nowplayingVC setArtwork:nil];
 
         
         [app setCurrentTrackIndex_:[indexPath row]];
@@ -288,6 +295,7 @@
         
         NowPlayingController *nowplayingVC = [[NowPlayingController alloc] init];
 
+        
         [nowplayingVC setupnavigationitems:self.navigationItem 
                                  navBar:[self navigationController].navigationBar
                                  datadict:d];
@@ -302,6 +310,7 @@
 		[app playTrack:d];
 
 		[[self navigationController] pushViewController:nowplayingVC animated:YES];		
+        [nowplayingVC setArtwork:nil];
 
         [nowplayingVC release];
     }
