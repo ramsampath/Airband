@@ -3,7 +3,7 @@
 //  airband
 //
 //  Created by Ram Sampath on 3/26/09.
-//  Copyright 2009 Centroid PIC. All rights reserved.
+//  Copyright 2009 Centroid PIC/Elliptic. All rights reserved.
 //
 
 #import "AllSettingsController.h"

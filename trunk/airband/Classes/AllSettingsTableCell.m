@@ -3,7 +3,7 @@
 //  airband
 //
 //  Created by Ram Sampath on 3/26/09.
-//  Copyright 2009 Centroid PIC. All rights reserved.
+//  Copyright 2009 Centroid PIC/Elliptic All rights reserved.
 //
 
 #import "AllSettingsTableCell.h"
@@ -12,7 +12,8 @@
 
 @implementation AllSettingsTableCell
 
-- (id)initWithFrame:(CGRect)frame reuseIdentifier:(NSString *)reuseIdentifier {
+- (id)initWithFrame:(CGRect)frame reuseIdentifier:(NSString *)reuseIdentifier 
+{
     if (self = [super initWithFrame:frame reuseIdentifier:reuseIdentifier]) {
         // Initialization code
 		self.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;

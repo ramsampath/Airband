@@ -297,7 +297,7 @@ static audiohelp_II *g_audio = nil;
 
 
 
--(void) playTrack:(NSDictionary*)track
+-(void) playTrack:(NSDictionary *)track
 {
 	NSString *playfile  = [track objectForKey:@"playURL"];
 	NSString *title     = [track objectForKey:@"trackTitle"];
