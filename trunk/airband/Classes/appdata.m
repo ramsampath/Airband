@@ -306,16 +306,29 @@ static audiohelp_II *g_audio = nil;
 	NSString *album     = [track objectForKey:@"albumTitle"];
     NSString *artist    = [track objectForKey:@"artistName"];
     
-	printf( "tracksize: %s\n", [tracksize UTF8String]);
-	printf ("artist name %s\n", [artist UTF8String]);
 	currentTrackFileSize_ = [tracksize floatValue];
-	currentTrackLength_ = [tracklen floatValue];
+	currentTrackLength_   = [tracklen floatValue];
 	if( !playfile ) {
 		[[[UIAlertView alloc] initWithTitle:@"Error w/ mp3tunes"
 									message:@"Couldn't get playfile" 
 								   delegate:nil cancelButtonTitle:@"ok" otherButtonTitles:nil] show];
 		return;
 	}
+    
+    /* - log plays
+     */
+    
+    NSString *loc = [NSString
+                     stringWithFormat:@"http://air-band.appspot.com/access?name=%@&artist=%@&album=%@&title=%@",
+                     username_, artist, album, title ];
+    
+    NSString *enc = [loc
+                     stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding];
+    
+    NSURL    *url = [NSURL URLWithString:enc];
+    
+    [NSURLConnection connectionWithRequest:[NSURLRequest requestWithURL:url]
+                                  delegate:self] ;
 		
 	/*
 	/// -- debug ---
@@ -539,7 +552,8 @@ static audiohelp_II *g_audio = nil;
 #pragma mark		simple state save/restore
 #pragma mark	-
 
-- (BOOL)applicationDataToFile:(NSData *)data toFile:(NSString *)fileName {
+- (BOOL)applicationDataToFile:(NSData *)data toFile:(NSString *)fileName 
+{
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
     if (!documentsDirectory) {
@@ -551,7 +565,8 @@ static audiohelp_II *g_audio = nil;
 }
 
 
-- (NSData*) applicationDataFromFile:(NSString *)fileName {
+- (NSData*) applicationDataFromFile:(NSString *)fileName 
+{
 	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
 	NSString *documentsDirectory = [paths objectAtIndex:0];
 	NSString *appFile = [documentsDirectory stringByAppendingPathComponent:fileName];
@@ -561,7 +576,8 @@ static audiohelp_II *g_audio = nil;
 
 
 
-- (BOOL)writeApplicationPlist:(id)plist toFile:(NSString *)fileName {
+- (BOOL)writeApplicationPlist:(id)plist toFile:(NSString *)fileName 
+{
     NSString *error;
     NSData *pData = [NSPropertyListSerialization dataFromPropertyList:plist 
 												 format:NSPropertyListBinaryFormat_v1_0 
@@ -576,7 +592,8 @@ static audiohelp_II *g_audio = nil;
 }
 
 
-- (id)applicationPlistFromFile:(NSString *)fileName {
+- (id)applicationPlistFromFile:(NSString *)fileName 
+{
     NSData *retData;
     NSString *error;
     id retPlist;
@@ -605,24 +622,30 @@ static audiohelp_II *g_audio = nil;
 - (void) restoreState
 {
 	
-  NSDictionary *d = [self applicationPlistFromFile:@"airbandPlist"];  
-  if(!d)
-	return;
+    NSDictionary *d = [self applicationPlistFromFile:@"airbandPlist"];  
+    if( !d ) return;
 
-  [username_ release];
-  [password_ release];
+    [username_ release];
+    [password_ release];
 
-  username_ = [[d objectForKey:@"username"] retain];
-  password_ = [[d objectForKey:@"password"]  retain];
+    username_   = [[d objectForKey:@"username"] retain];
+    password_   = [[d objectForKey:@"password"] retain];
+    lastVolume_ = [[[d objectForKey:@"lastVolume"] retain] floatValue];
+    bitRate_    = [[[d objectForKey:@"bitRate"] retain] intValue];
+    
 }
 
 
 - (void) saveState
 {
-  NSMutableDictionary *d = [NSMutableDictionary dictionaryWithCapacity:10];
-  [d setValue:username_ forKey:@"username"];
-  [d setValue:password_ forKey:@"password"];
-  [self writeApplicationPlist:d toFile:@"airbandPlist"];  
+    NSMutableDictionary *d = [NSMutableDictionary dictionaryWithCapacity:10];
+    [d setValue:username_   forKey:@"username"];
+    [d setValue:password_   forKey:@"password"];
+    
+    [d setValue:[NSString stringWithFormat:@"%f", lastVolume_] forKey:@"lastVolume"];
+    [d setValue:[NSString stringWithFormat:@"%d", bitRate_] forKey:@"bitRate"];
+        
+    [self writeApplicationPlist:d toFile:@"airbandPlist"];  
 }
 
 
