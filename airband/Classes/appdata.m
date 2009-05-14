@@ -325,10 +325,16 @@ static audiohelp_II *g_audio = nil;
     NSString *enc = [loc
                      stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding];
     
-    NSURL    *url = [NSURL URLWithString:enc];
+	if( enc) {
+		NSURL    *url = [NSURL URLWithString:enc];
     
-    [NSURLConnection connectionWithRequest:[NSURLRequest requestWithURL:url]
-                                  delegate:self] ;
+		[NSURLConnection connectionWithRequest:[NSURLRequest requestWithURL:url]
+									  delegate:self] ;
+	} else {
+		NSURL    *url = [NSURL URLWithString:loc];
+		[NSURLConnection connectionWithRequest:[NSURLRequest requestWithURL:url]
+									  delegate:self] ;
+	}
 		
 	/*
 	/// -- debug ---
