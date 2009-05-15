@@ -628,7 +628,7 @@ numberOfSectionsInTableView:(UITableView *)tableView
 - (NSInteger)
 tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if( artistActiveSections_ ) {
+    if( artistActiveSections_ && section<[artistActiveSections_ count]) {
         NSInteger ns = [[artistActiveSections_ objectAtIndex:section] count];
         return ns;
     }
@@ -649,7 +649,8 @@ tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 	if( searchActive_ ) {
 		sectionTitle.text		= [NSString stringWithFormat:@"search: %d items", [[artistActiveSections_ objectAtIndex:0] count]];
 	} else {
-		sectionTitle.text        = [artistSectionTitles_ objectAtIndex:section];
+		if( section < [artistSectionTitles_ count] ) 
+			sectionTitle.text        = [artistSectionTitles_ objectAtIndex:section];
 	}
     
     UIImageView *sectionBG       = [[UIImageView alloc] initWithImage:sectionBGImage_];
