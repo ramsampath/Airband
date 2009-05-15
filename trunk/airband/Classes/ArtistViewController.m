@@ -187,7 +187,7 @@
 	mainview.userInteractionEnabled     = YES;
     mainview.backgroundColor            = [UIColor colorWithPatternImage:[UIImage imageNamed:@"LogoBkgrnd.png"]];
     artistOrgControl_                   = [[UISegmentedControl alloc] initWithItems:
-                                          [NSArray arrayWithObjects:@"A-Z", nil]];
+                                          [NSArray arrayWithObjects:@"Artists", nil]];
 	[artistOrgControl_ addTarget:self action:@selector(artistOrgControlAction:) 
                 forControlEvents:UIControlEventValueChanged];
 	artistOrgControl_.selectedSegmentIndex  = 0.0;	
@@ -412,8 +412,15 @@
 
 -(IBAction) shuffle
 {
-	[artistList_ release];
-	artistList_ = [[NSMutableArray arrayWithCapacity:kMaxRows] retain];
+	//[artistList_ release];
+	//artistList_ = [[NSMutableArray arrayWithCapacity:kMaxRows] retain];
+    printf ("Shuffle\n");
+    [artistList_ removeAllObjects];    // clear the filtered array first
+    for( unsigned i = 0; i < 27; i++ ) {
+        [artistDisplayList_[i] removeAllObjects];
+    }
+    
+    artistDisplayList_[ 0 ] = [[NSMutableArray arrayWithCapacity:kMaxRows] retain];
 
 	AppData *app = [AppData get];
 	NSArray* fullList = app.fullArtistList_;
@@ -434,7 +441,7 @@
 			}
 		}
 		[shuffleIndices	addObject:[NSString stringWithFormat:@"%d", index]];
-		[artistList_ addObject:[fullList objectAtIndex:index]];	
+		[artistDisplayList_[0] addObject:[fullList objectAtIndex:index]];	
 		[indexPath addObject:[NSIndexPath indexPathForRow:i inSection:0]];
 	}        
 
@@ -450,6 +457,8 @@
 
     [indexPath      release];
     [shuffleIndices release];
+    
+    [self.artistTable_ reloadData];
 }
 
 
@@ -463,7 +472,13 @@
 	int num = [fullList count];	
 	//if( num > kMaxRows )
 	//	num = kMaxRows;
-    
+
+    [artistList_ removeAllObjects];    // clear the filtered array first
+
+    for( unsigned i = 0; i < 27; i++ ) {
+        [artistDisplayList_[i] removeAllObjects];
+    }
+
     for( unsigned i = 0; i < 27; ++i ) {
         artistDisplayList_[ i ] = [[NSMutableArray arrayWithCapacity:kMaxRows] retain];
     }

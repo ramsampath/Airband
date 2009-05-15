@@ -21,6 +21,7 @@
         [titleLabel release];
         */
         //self.backgroundView = [[[UIImageView alloc] initWithImage:rowBackground] autorelease];
+        self.backgroundColor = [UIColor clearColor];
         //self.selectedBackgroundView = [[[UIImageView alloc] initWithImage:@"yellow_bar.png"] autorelease];
         
 	}
@@ -37,7 +38,6 @@
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated 
 {
 	[super setSelected:selected animated:animated];
-    //self.selectedBackgroundView = [[[UIImageView alloc] initWithImage:@"yellow_bar.png"] autorelease];
 
     // Configure the view for the selected state
     // Add an image view to display a picture
@@ -65,7 +65,8 @@
 		CGContextMoveToPoint( ctx, f, 0 );
 		CGContextAddLineToPoint( ctx, f, self.bounds.size.height );
 	}
-	
+
+
 	CGContextStrokePath( ctx );
 	
 	[super drawRect:rect];

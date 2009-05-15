@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "TracklistController.h"
+#import "TracklistView.h"
 
 @interface VolumeKnob: UIView
 {
