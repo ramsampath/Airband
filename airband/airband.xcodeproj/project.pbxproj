@@ -55,13 +55,14 @@
 		21C3B27B0F9D8E1D0059C2CE /* SpeakerSoft.tif in Resources */ = {isa = PBXBuildFile; fileRef = 21C3B2790F9D8E1D0059C2CE /* SpeakerSoft.tif */; };
 		21C3B2FB0F9D980C0059C2CE /* slider_ball_bw.png in Resources */ = {isa = PBXBuildFile; fileRef = 21C3B2FA0F9D980C0059C2CE /* slider_ball_bw.png */; };
 		21D329B60F7BFA0A00E0C6B0 /* AllSettingsTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 21D329B50F7BFA0A00E0C6B0 /* AllSettingsTableCell.m */; };
-		21E011D60FBC96FE006FD562 /* TracklistController.m in Sources */ = {isa = PBXBuildFile; fileRef = 21E011D30FBC96FE006FD562 /* TracklistController.m */; };
+		21E011D60FBC96FE006FD562 /* TracklistView.m in Sources */ = {isa = PBXBuildFile; fileRef = 21E011D30FBC96FE006FD562 /* TracklistView.m */; };
 		21E011D70FBC96FE006FD562 /* TrackListTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 21E011D50FBC96FE006FD562 /* TrackListTableCell.m */; };
 		21E012680FBCA6CD006FD562 /* yellow_bar.png in Resources */ = {isa = PBXBuildFile; fileRef = 21E012670FBCA6CD006FD562 /* yellow_bar.png */; };
 		21E0126A0FBCA6D6006FD562 /* tracklist_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 21E012690FBCA6D6006FD562 /* tracklist_background.png */; };
 		21E871570FB8856100D90728 /* bottomRow.png in Resources */ = {isa = PBXBuildFile; fileRef = 7D1C854C0FB758A800B3B2CB /* bottomRow.png */; };
 		21E871580FB8856200D90728 /* topRowSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 7D1C854B0FB758A800B3B2CB /* topRowSelected.png */; };
 		21F439B90F7DB5E700928851 /* SettingsData.plist in Resources */ = {isa = PBXBuildFile; fileRef = 21F439B80F7DB5E700928851 /* SettingsData.plist */; };
+		21FC35700FBD131300F12B49 /* currently_playing_arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 21FC356F0FBD131300F12B49 /* currently_playing_arrow.png */; };
 		7D12339F0E74CDCA0053381A /* spiky.png in Resources */ = {isa = PBXBuildFile; fileRef = 7D12339C0E74CDCA0053381A /* spiky.png */; };
 		7D1233A00E74CDCA0053381A /* gears.png in Resources */ = {isa = PBXBuildFile; fileRef = 7D12339D0E74CDCA0053381A /* gears.png */; };
 		7D1233A10E74CDCA0053381A /* headphones.png in Resources */ = {isa = PBXBuildFile; fileRef = 7D12339E0E74CDCA0053381A /* headphones.png */; };
@@ -144,13 +145,14 @@
 		21C3B2FA0F9D980C0059C2CE /* slider_ball_bw.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = slider_ball_bw.png; sourceTree = "<group>"; };
 		21D329B40F7BFA0A00E0C6B0 /* AllSettingsTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AllSettingsTableCell.h; sourceTree = "<group>"; };
 		21D329B50F7BFA0A00E0C6B0 /* AllSettingsTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AllSettingsTableCell.m; sourceTree = "<group>"; };
-		21E011D20FBC96FE006FD562 /* TracklistController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TracklistController.h; sourceTree = "<group>"; };
-		21E011D30FBC96FE006FD562 /* TracklistController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TracklistController.m; sourceTree = "<group>"; };
+		21E011D20FBC96FE006FD562 /* TracklistView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TracklistView.h; sourceTree = "<group>"; };
+		21E011D30FBC96FE006FD562 /* TracklistView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TracklistView.m; sourceTree = "<group>"; };
 		21E011D40FBC96FE006FD562 /* TrackListTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrackListTableCell.h; sourceTree = "<group>"; };
 		21E011D50FBC96FE006FD562 /* TrackListTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TrackListTableCell.m; sourceTree = "<group>"; };
 		21E012670FBCA6CD006FD562 /* yellow_bar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = yellow_bar.png; sourceTree = "<group>"; };
 		21E012690FBCA6D6006FD562 /* tracklist_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tracklist_background.png; sourceTree = "<group>"; };
 		21F439B80F7DB5E700928851 /* SettingsData.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = SettingsData.plist; path = Classes/SettingsData.plist; sourceTree = "<group>"; };
+		21FC356F0FBD131300F12B49 /* currently_playing_arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = currently_playing_arrow.png; sourceTree = "<group>"; };
 		282CCBFD0DB6C98000C4EA27 /* Settings.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Settings.xib; sourceTree = "<group>"; };
 		28A0AB4B0D9B1048005BE974 /* airband_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = airband_Prefix.pch; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -238,6 +240,7 @@
 		21BBC8480F9C183500827637 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				21FC356F0FBD131300F12B49 /* currently_playing_arrow.png */,
 				21E012690FBCA6D6006FD562 /* tracklist_background.png */,
 				21E012670FBCA6CD006FD562 /* yellow_bar.png */,
 				21AD9B670FBA96E80036E91E /* volume_knob_bigger.png */,
@@ -354,8 +357,8 @@
 		7D8DF9510E6A4F4500EA4BB8 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				21E011D20FBC96FE006FD562 /* TracklistController.h */,
-				21E011D30FBC96FE006FD562 /* TracklistController.m */,
+				21E011D20FBC96FE006FD562 /* TracklistView.h */,
+				21E011D30FBC96FE006FD562 /* TracklistView.m */,
 				21E011D40FBC96FE006FD562 /* TrackListTableCell.h */,
 				21E011D50FBC96FE006FD562 /* TrackListTableCell.m */,
 				21D329B40F7BFA0A00E0C6B0 /* AllSettingsTableCell.h */,
@@ -496,6 +499,7 @@
 				2136B2F30FBC034900378089 /* rightslide_transp.png in Resources */,
 				21E012680FBCA6CD006FD562 /* yellow_bar.png in Resources */,
 				21E0126A0FBCA6D6006FD562 /* tracklist_background.png in Resources */,
+				21FC35700FBD131300F12B49 /* currently_playing_arrow.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -522,7 +526,7 @@
 				21D329B60F7BFA0A00E0C6B0 /* AllSettingsTableCell.m in Sources */,
 				21A7852C0F7E84FC0053E9AD /* lastfmappdata.m in Sources */,
 				210E10190F8B165B00BBA95A /* AllSettingsController.m in Sources */,
-				21E011D60FBC96FE006FD562 /* TracklistController.m in Sources */,
+				21E011D60FBC96FE006FD562 /* TracklistView.m in Sources */,
 				21E011D70FBC96FE006FD562 /* TrackListTableCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
