@@ -585,6 +585,16 @@
     r.length   = 1;
     [secTitle getCharacters:buffer range:r];
     NSInteger sectionIndex = buffer[0] - 65;
+	
+	if( sectionIndex<0 ) {
+		sectionIndex = sizeof(artistDisplayList_)/sizeof(artistDisplayList_[0]) - 1;
+	}
+		
+	if( sectionIndex<0 || sectionIndex >= 27 ) {
+		printf( "outta bounds: %d\n", sectionIndex );
+		return;
+	}
+		
 	NSDictionary *d = [artistDisplayList_[sectionIndex] objectAtIndex:indexPath.row];
 	//PlaylistTracksController *traxcontroller = [[PlaylistTracksController alloc] 
     //                                            initWithNibName:@"PlaylistTracks" bundle:nil];
