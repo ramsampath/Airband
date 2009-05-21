@@ -103,7 +103,8 @@
         if( [app currentTrackIndex_] == [indexPath row] ) {
             UIImage *image = [[UIImage alloc] initWithContentsOfFile:@"currently_playing_arrow.png"];
             UIImageView *currentlyplayingview = [[UIImageView alloc] initWithImage:image];
-            currentlyplayingview.frame = CGRectMake(0, 20, 5, 5);
+            currentlyplayingview.frame = CGRectMake(0, 0, 5, 5);
+            printf("adding current playing\n");
             [label addSubview:currentlyplayingview];
         }
          

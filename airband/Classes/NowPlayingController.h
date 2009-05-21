@@ -39,7 +39,12 @@
     IBOutlet UIToolbar       *toolbartop_;
     
     IBOutlet UIView              *albumcovertracksview_;
-	IBOutlet UIImageView         *albumcover_;
+    IBOutlet UIView              *albumcovertracksbview_;
+    IBOutlet UIButton            *albumcovertracksb_;
+    
+	IBOutlet UIImageView         *albumcoverview_;
+    IBOutlet UIImage             *infoimage_;
+    IBOutlet UIImage             *emptyalbumartworkimage_;
     IBOutlet TracklistController *tracklistview_; 
 
 	IBOutlet UISlider        *volume_;
@@ -74,7 +79,8 @@
 	// current track info
     NSDictionary             *dict_;
 	
-	bool     paused_;
+	bool                      paused_;
+    bool                      flipsideview_;
 }
 
 

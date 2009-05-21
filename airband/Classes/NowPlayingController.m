@@ -86,7 +86,7 @@
     if( vol < starttheta_ ) {
         theta = starttheta_ + M_PI + vol;
     }
-    else if( vol >= starttheta_ && vol < (M_PI + starttheta_) ) {
+    else if( vol >= starttheta_ && vol < (M_PI + starttheta_ ) ) {
         theta = -( ( M_PI + starttheta_ - vol ) );
     }
     else if( vol >= (M_PI + starttheta_) ) {
@@ -108,7 +108,8 @@
 
     //volumeknobview_
     volumeknobview_.frame = CGRectMake( xpos + center_.x, ypos + center_.y, 
-                                         volumeknobview_.frame.size.width, volumeknobview_.frame.size.height ); 
+                                        volumeknobview_.frame.size.width, 
+                                        volumeknobview_.frame.size.height ); 
 }
 
 
@@ -195,7 +196,7 @@
 	if (self = [super init]) {
 		self.hidesBottomBarWhenPushed = TRUE;
 	}
-
+    
 	return self;
 }
 
@@ -248,16 +249,24 @@
                       datadict:(NSDictionary *)dict
 {
     UIImage *backimage    = [UIImage imageNamed:@"back_arrow.png"];
+    
     UIBarButtonItem *b    = [UIBarButtonItem alloc];
     b.style               = UIBarButtonItemStyleBordered;
     b.image               = backimage;
     ni.backBarButtonItem  = b;
     [b release];
     
-    UIImage *infoimage    = [UIImage imageNamed:@"track_info.png"];
-    b                     = [[UIBarButtonItem alloc] initWithImage:infoimage
-                                                    style:UIBarButtonItemStylePlain target:self 
-                                                    action:@selector(flipToTracklistView:)];
+    infoimage_     = [UIImage imageNamed:@"track_info_withbg.png"];
+
+    albumcovertracksbview_             = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 35, 32)] retain];
+    albumcovertracksb_                 = [[[UIButton alloc] initWithFrame:CGRectMake( 0, 0, 35, 32 )] retain];
+    albumcovertracksb_.backgroundColor = [UIColor clearColor];
+
+    [albumcovertracksb_ addTarget:self action:@selector(flipToTracklistView:) forControlEvents:UIControlEventTouchUpInside];
+    [albumcovertracksb_ setBackgroundImage:infoimage_ forState:UIControlStateNormal];
+    [albumcovertracksbview_ addSubview:albumcovertracksb_];
+    
+    b                      = [[UIBarButtonItem alloc] initWithCustomView:albumcovertracksbview_];
     [self.navigationItem setRightBarButtonItem:b];
     [b release];
     
@@ -351,8 +360,6 @@
     [toolbartop_ setItems:[NSArray arrayWithObjects: flexbeg_, prev_, fixedprev_, 
                            pause_,  fixedplay_, next_, flexend_, nil]];
     
-    
-
     if( dict ) {
         dict_ = dict;
 		
@@ -457,8 +464,8 @@
     //[mainview addSubview:volumeknob_.volumeview_];
     [mainview addSubview:volumeknob_];
     
-    trackinfo_                    = [[UIView alloc] initWithFrame:CGRectMake( 140.0, 310.0, 170.0, 140.0 )];
-    trackinfo_.backgroundColor    = [UIColor clearColor];
+    trackinfo_                     = [[UIView alloc] initWithFrame:CGRectMake( 140.0, 310.0, 170.0, 140.0 )];
+    trackinfo_.backgroundColor     = [UIColor clearColor];
     
     alabel_                        =  [[UILabel alloc] 
                                       initWithFrame:CGRectMake(0 , 30 , 320 , 10)]; 
@@ -469,7 +476,7 @@
     alabel_.textColor              = [UIColor grayColor];
     [trackinfo_ addSubview: alabel_];
     
-    allabel_               =  [[UILabel alloc] 
+    allabel_                        =  [[UILabel alloc] 
                                        initWithFrame:CGRectMake(0 , 50 , 320 , 10)]; 
     allabel_.text                   = [dict_ objectForKey:@"albumTitle"];
     allabel_.font = [UIFont fontWithName:@"Arial" size:12.0];
@@ -494,7 +501,7 @@
 	//toolbar_.barStyle = UIBarStyleBlackTranslucent;
 
 	toolbar_.clearsContextBeforeDrawing = NO;
-	toolbar_.clipsToBounds          = NO;
+	toolbar_.clipsToBounds              = NO;
 	toolbar_.contentMode            = UIViewContentModeBottom;
 	toolbar_.hidden                 = NO;
 	toolbar_.multipleTouchEnabled   = NO;
@@ -509,30 +516,21 @@
 	back_.tag     = 0;
 
     albumcovertracksview_ = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320.0, 300.0)];
-	albumcover_ = [[UIImageView alloc] initWithFrame:albumcovertracksview_.frame];
-	albumcover_.alpha                      = 1.000;
-	//albumcover_.autoresizingMask           = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-	albumcover_.clearsContextBeforeDrawing = NO;
-	albumcover_.clipsToBounds              = NO;
-	//albumcover_.contentMode                = UIViewContentModeScaleAspectFill;
-	albumcover_.hidden                     = NO;
-	albumcover_.image                      = nil;
-	albumcover_.multipleTouchEnabled       = NO;
-	albumcover_.opaque                     = NO;
-	albumcover_.tag                        = 0;
-	albumcover_.userInteractionEnabled     = NO;
+	albumcoverview_ = [[UIImageView alloc] initWithFrame:albumcovertracksview_.frame];
+	albumcoverview_.alpha                      = 1.000;
+	//albumcoverview_.autoresizingMask           = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+	albumcoverview_.clearsContextBeforeDrawing = NO;
+	albumcoverview_.clipsToBounds              = NO;
+	//albumcoverview_.contentMode                = UIViewContentModeScaleAspectFill;
+	albumcoverview_.hidden                     = NO;
+	albumcoverview_.image                      = nil;
+	albumcoverview_.multipleTouchEnabled       = NO;
+	albumcoverview_.opaque                     = NO;
+	albumcoverview_.tag                        = 0;
+	albumcoverview_.userInteractionEnabled     = NO;
     
-    [albumcovertracksview_ addSubview:albumcover_];
-    /*
-    nav_ = [[UINavigationBar alloc] 
-           initWithFrame: CGRectMake( 0.0f, 0.0f, 320.0f, 55.0f )];
-    [nav_ setBarStyle: 0];
-    [nav_ setBarStyle:UIBarStyleBlackOpaque];
-    UIImage *backimage = [UIImage imageNamed:@"back_arrow.png"];
-    //nav_.backItem.leftBarButtonItem = [[UIBarButtonItem alloc] 
-    //                                  initWithTitle:@"Back"];
-    [nav_ setDelegate: self];    
-	*/
+    [albumcovertracksview_ addSubview:albumcoverview_];
+
     
 	busyimg_ = [[UIImageView alloc] initWithFrame:CGRectMake(30, 30, 100, 100)];
 	busyimg_.image = [UIImage imageNamed:@"busySpinner.png"];
@@ -543,22 +541,23 @@
     AppData *app = [AppData get];
 	[volume_ setValue:[app lastVolume_]];
 	
-    CGRect r = CGRectMake( albumcover_.frame.origin.x, albumcover_.frame.origin.y, 
-                          albumcover_.frame.size.width, albumcover_.frame.size.height );
+    CGRect r = CGRectMake( albumcoverview_.frame.origin.x, albumcoverview_.frame.origin.y, 
+                          albumcoverview_.frame.size.width, albumcoverview_.frame.size.height );
     tracklistview_ = [[TracklistController alloc] initWithFrame:r];
     tracklistview_.dataSource = self;
     tracklistview_.delegate   = self;
-    
-    //[mainview addSubview:image];
-	
-	//[mainview addSubview:toolbar_];
+
 	[mainview addSubview:albumcovertracksview_];
     [mainview addSubview:progbar2_];
 	[mainview addSubview:progbar_];
 	[mainview addSubview:trackinfo_];
 	[mainview addSubview:busyimg_];
+    
+    emptyalbumartworkimage_ = [UIImage imageNamed:@"empty_album_art.png"];
 
     self.view = mainview;	
+    
+    flipsideview_ = false;
 	
 	// hacky -- let's listen for errors
 	[[NSNotificationCenter defaultCenter] addObserver:self 
@@ -570,26 +569,23 @@
 - (void)setArtwork:(UIImage *)image
 {
     if( image ) {
-		
-		
-		
 		[UIView beginAnimations:nil context:NULL];
 		[UIView setAnimationDuration:1];
-		[UIView setAnimationTransition:UIViewAnimationTransitionFlipFromLeft forView:albumcover_ cache:YES];
+		[UIView setAnimationTransition:UIViewAnimationTransitionFlipFromLeft forView:albumcoverview_ cache:YES];
 
-			albumcover_.image = image;		
+        albumcoverview_.image = image;		
 
 		[UIView commitAnimations];
         
 	} else {
-		albumcover_.image = [UIImage imageNamed:@"empty_album_art.png"];
+		albumcoverview_.image = emptyalbumartworkimage_;
         AppData *app = [AppData get];
         app.artwork_ = nil;
 	}
 	    
 	//[image drawInRect: CGRectMake(0.0f, 0.0f, 100.0f, 60.0f)]; // Draw in a custom rect.
     
-	//UIImageView *imageView = [ [ UIImageView alloc ] initWithImage: albumcover_.image];
+	//UIImageView *imageView = [ [ UIImageView alloc ] initWithImage: albumcoverview_.image];
 	//imageView.frame = CGRectMake(20.0, 55.0, 280.0, 176.0);
 	//[self.view addSubview: imageView]; // Draw the image in self.view.
 }
@@ -709,31 +705,63 @@
 
 -(IBAction) flipToTracklistView:(id) sender
 {
+    AppData *app = [AppData get];
+
+    //
+    // Animate the artwork to track list
+    //
     [UIView beginAnimations:nil context:NULL];
 	[UIView setAnimationDuration:1];
  
     [UIView setAnimationTransition:([self.view superview] ? 
                                     UIViewAnimationTransitionFlipFromRight : UIViewAnimationTransitionFlipFromLeft) 
                                     forView:albumcovertracksview_ cache:YES];
-
+    
+   
     if ([tracklistview_ superview])
 	{
 		[tracklistview_ removeFromSuperview];
-		[albumcovertracksview_ addSubview:albumcover_];
+		[albumcovertracksview_ addSubview:albumcoverview_];
+        flipsideview_ = true;
 	}
 	else
 	{
-		[albumcover_ removeFromSuperview];
+		[albumcoverview_ removeFromSuperview];
 		[albumcovertracksview_ addSubview:tracklistview_];
+        flipsideview_ = false;
 	}
-    
-    //[[self navigationController] pushViewController:tc animated:YES];	
-    
-    //
-    // reset the application artwork
     
 	
 	[UIView commitAnimations];	
+    
+    // 
+    // Animate the navigation button to the opposite of the artwork animation
+    //
+    [UIView beginAnimations:nil context:NULL];
+	[UIView setAnimationDuration:1];
+    
+    
+    [UIView setAnimationTransition:([self.view superview] ? 
+                                    UIViewAnimationTransitionFlipFromRight : UIViewAnimationTransitionFlipFromLeft) 
+                           forView:albumcovertracksbview_ cache:YES];
+    
+    if( flipsideview_ == true ) {
+        [albumcovertracksb_ addTarget:self action:@selector(flipToTracklistView:) 
+                     forControlEvents:UIControlEventTouchUpInside];
+        [albumcovertracksb_ setBackgroundImage:infoimage_ forState:UIControlStateNormal];
+    
+        [albumcovertracksb_ addTarget:self action:@selector(flipToTracklistView:) 
+                     forControlEvents:UIControlEventTouchUpInside];
+    }
+    else {
+        UIImage *image = app.artwork_;
+        if( image == nil )
+            image = emptyalbumartworkimage_;
+        [albumcovertracksb_ setBackgroundImage:image forState:UIControlStateNormal];
+    }
+    
+    [UIView commitAnimations];	
+
 }
 
 
@@ -796,7 +824,7 @@
 	
 		float approxBitRateMult = 4.0;
 		float a = approxBitRateMult * [app trackFileSize] / app.currentTrackFileSize_;
-		//albumcover_.alpha = a;
+		//albumcoverview_.alpha = a;
 		//[progbar2_ setProgress:a];
         progbar2_.value = a;
 		/*
@@ -806,7 +834,7 @@
 			[UIView setAnimationDuration:0.5];
 			//busyimg_.alpha = a;
 			//busyimg_.transform = CGAffineTransformRotate( busyimg_.transform, a );			
-			albumcover_.transform = CGAffineTransformRotate( albumcover_.transform, a );
+			albumcoverview_.transform = CGAffineTransformRotate( albumcoverview_.transform, a );
 			[UIView setAnimationRepeatAutoreverses:YES];			
 			[UIView commitAnimations];	
 		}

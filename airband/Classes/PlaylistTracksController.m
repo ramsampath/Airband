@@ -156,6 +156,16 @@
 	}
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    AppData *app = [AppData get];
+    if( [app isrunning] )
+        [self navigationController].navigationBar.topItem.rightBarButtonItem = [[UIBarButtonItem alloc] 
+                                                                                initWithTitle:@"Now Playing"
+                                                                                style:UIBarButtonItemStyleBordered
+                                                                                target:self action:@selector(nowPlaying:)];
+}
+
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation 
 {
@@ -228,11 +238,7 @@
         
            
         [self navigationController].navigationBarHidden = FALSE;
-        [self navigationController].navigationBar.topItem.rightBarButtonItem = [[UIBarButtonItem alloc] 
-                                                                                initWithTitle:@"Now Playing"
-                                                                                style:UIBarButtonItemStyleBordered
-                                                                                target:self action:@selector(nowPlaying:)];		
-		[[self navigationController] pushViewController:nowplayingVC animated:YES];	
+ 		[[self navigationController] pushViewController:nowplayingVC animated:YES];	
         //
         // reset the application artwork
         [nowplayingVC setArtwork:nil];
@@ -250,11 +256,6 @@
 																style:UIBarButtonItemStylePlain 
 															   target:nil 
 															   action:nil]];
-        [self navigationController].navigationBar.topItem.rightBarButtonItem = [[UIBarButtonItem alloc] 
-                                                                                initWithTitle:@"Now Playing"
-                                                                                style:UIBarButtonItemStyleBordered
-                                                                                target:self 
-                                                                                action:@selector(nowPlaying:)];
         
 		[[self navigationController] pushViewController:traxcontroller animated:YES];
         [self navigationController].navigationBar.topItem.rightBarButtonItem = [[UIBarButtonItem alloc] 
@@ -276,10 +277,7 @@
                                  datadict:d];
         
         [self navigationController].navigationBarHidden = FALSE;
-        [self navigationController].navigationBar.topItem.rightBarButtonItem = [[UIBarButtonItem alloc] 
-                                                                                initWithTitle:@"Now Playing"
-                                                                                style:UIBarButtonItemStyleBordered
-                                                                                target:self action:@selector(nowPlaying:)];
+
 		[app playTrack:d];
 
 		[[self navigationController] pushViewController:nowplayingVC animated:YES];		
@@ -302,10 +300,6 @@
 
         [self navigationController].navigationBarHidden = FALSE;
         
-        [self navigationController].navigationBar.topItem.rightBarButtonItem = [[UIBarButtonItem alloc] 
-                                                                                initWithTitle:@"Now Playing"
-                                                                                style:UIBarButtonItemStyleBordered
-                                                                                target:self action:@selector(nowPlaying:)];
         
 		[app playTrack:d];
 
