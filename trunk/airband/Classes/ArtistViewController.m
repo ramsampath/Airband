@@ -265,7 +265,8 @@
 	artistTable_.tag                             = 0;
 	artistTable_.userInteractionEnabled          = YES;
     artistTable_.backgroundColor                 = [UIColor clearColor];
-    
+
+
 
 	[mainview addSubview:artistTable_];
 	[mainview addSubview:searchfield_];
@@ -319,6 +320,13 @@
 {
 	[self navigationController].navigationBarHidden = FALSE;
     [self reload];
+    
+    AppData *app = [AppData get];
+    if( [app isrunning] )
+        [self navigationController].navigationBar.topItem.rightBarButtonItem = [[UIBarButtonItem alloc] 
+                                                                                initWithTitle:@"Now Playing"
+                                                                                style:UIBarButtonItemStylePlain
+                                                                                target:self action:@selector(nowPlaying:)];
 }
 
 
@@ -608,19 +616,9 @@
 	[self navigationController].navigationBarHidden = FALSE;
 	AppData *app = [AppData get];
 
-    if( [app isrunning] )
-        [self navigationController].navigationBar.topItem.rightBarButtonItem = [[UIBarButtonItem alloc] 
-                                                                            initWithTitle:@"Now Playing"
-                                                                            style:UIBarButtonItemStyleBordered
-                                                                            target:self action:@selector(nowPlaying:)];
+
 	[[self navigationController] pushViewController:traxcontroller animated:YES];
-    
-    if( [app isrunning] )
-        [self navigationController].navigationBar.topItem.rightBarButtonItem = [[UIBarButtonItem alloc] 
-                                                                            initWithTitle:@"Now Playing"
-                                                                            style:UIBarButtonItemStyleBordered
-                                                                            target:self action:@selector(nowPlaying:)];
-     
+         
 }
 
 

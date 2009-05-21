@@ -84,6 +84,16 @@
  
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    AppData *app = [AppData get];
+    if( [app isrunning] )
+        [self navigationController].navigationBar.topItem.rightBarButtonItem = [[UIBarButtonItem alloc] 
+                                                                                initWithTitle:@"Now Playing"
+                                                                                style:UIBarButtonItemStyleBordered
+                                                                                target:self action:@selector(nowPlaying:)];
+}
+
 
 - (void) playListsReady:(id)object
 {
@@ -186,11 +196,6 @@
 	traxcontroller.navigationItem.title = [d objectForKey:@"playlistTitle"];
     
     
-    if( [app isrunning] )
-        [self navigationController].navigationBar.topItem.rightBarButtonItem = [[UIBarButtonItem alloc] 
-                                                                            initWithTitle:@"Now Playing"
-                                                                            style:UIBarButtonItemStyleBordered
-                                                                            target:self action:@selector(nowPlaying:)];
 	[[self navigationController] pushViewController:traxcontroller animated:YES];
 }
 
