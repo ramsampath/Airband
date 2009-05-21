@@ -559,12 +559,27 @@
 	[mainview addSubview:busyimg_];
 
     self.view = mainview;	
+	
+	// hacky -- let's listen for errors
+	[[NSNotificationCenter defaultCenter] addObserver:self 
+											 selector:@selector(connectionError:) 
+												 name:@"connectionError"
+											   object:nil];		
 }
 
 - (void)setArtwork:(UIImage *)image
 {
     if( image ) {
-		albumcover_.image = image;
+		
+		
+		
+		[UIView beginAnimations:nil context:NULL];
+		[UIView setAnimationDuration:1];
+		[UIView setAnimationTransition:UIViewAnimationTransitionFlipFromLeft forView:albumcover_ cache:YES];
+
+			albumcover_.image = image;		
+
+		[UIView commitAnimations];
         
 	} else {
 		albumcover_.image = [UIImage imageNamed:@"empty_album_art.png"];
@@ -602,11 +617,27 @@
 		printf( "tracklist is empty\n" );
 		return;
 	}
-    
-    
+
     [app setCurrentTrackIndex_:0];
     NSDictionary *d = [app.trackList_ objectAtIndex:0];
     [app playTrack:d];
+}
+
+
+
+-(void) connectionError:(id)object
+{
+	if ([object isKindOfClass:[NSURLResponse class]])
+	{ 
+		// [todo] -- something fancier?
+		//[[AppData get] stop];	
+	}
+
+	[self next:nil];
+	
+	[[[UIAlertView alloc] initWithTitle:@"airBand" 
+								message:@"Problem w/ track, skipping..."
+							   delegate:nil cancelButtonTitle:@"ok" otherButtonTitles:nil] show];	
 }
 
 

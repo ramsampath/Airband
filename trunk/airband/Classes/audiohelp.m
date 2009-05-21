@@ -152,7 +152,7 @@ static void MyAudioQueuePropertyListenerProc ( void                 *inClientDat
 		if( dataSize !=sizeof(isRunning) )
 			printf( "queue get proprty wacked\n" );
 		
-		printf( "audio is running prop: %d\n", isRunning );
+		//printf( "audio is running prop: %d\n", isRunning );
 		if( !isRunning )
 		{
 			pthread_mutex_lock(&myData->mutex);
@@ -232,10 +232,8 @@ static void MyPropertyListenerProc(	void *inClientData,
 			err = AudioFileStreamGetPropertyInfo(inAudioFileStream, kAudioFileStreamProperty_MagicCookieData, &cookieSize, &writable);
 			if (err) { 
 				PRINTERROR("err - info kAudioFileStreamProperty_MagicCookieData"); 
-				checkstatus(err); 
 				break; 					
 			}
-			printf("cookieSize %d\n", cookieSize);
 			
 			// get the cookie data
 			void* cookieData = calloc(1, cookieSize);
@@ -595,7 +593,7 @@ static void* workerthread( void* pv )
 {
   printf( "asyncaudio: didFailWithError:%s\n", [[error localizedDescription] UTF8String] );
   [self cancel];
-	// [todo] -- delgate failed.
+	// [todo] -- delegate failed.
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
@@ -623,8 +621,23 @@ static void* workerthread( void* pv )
 {
     NSHTTPURLResponse *response = (NSHTTPURLResponse*)aResponse;
     if (response) {
-		printf( "connection response: %d(%s)\n", (int) response.statusCode, 
-			   [[NSHTTPURLResponse localizedStringForStatusCode:response.statusCode] UTF8String] );
+		
+		if( response.statusCode == 200 )
+		{
+			; // no error
+		}
+		else
+		{
+			printf( "connection response: %d(%s)\n", (int) response.statusCode, 
+				   [[NSHTTPURLResponse localizedStringForStatusCode:response.statusCode] UTF8String] );
+
+			// 
+			// we'll let the client do this
+			// [self cancel];
+			// 
+
+			[[NSNotificationCenter defaultCenter] postNotificationName:@"connectionError" object:nil];			
+		}
     }
 }
 
