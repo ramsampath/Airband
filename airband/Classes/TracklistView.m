@@ -88,8 +88,8 @@
 	if (cell == nil) {
 		cell = [[[TracklistTableCell alloc] initWithFrame:CGRectZero reuseIdentifier:MyIdentifier] autorelease];
 		
-		UILabel *label = [[UILabel	alloc] initWithFrame:CGRectMake(0.0, 0, 30.0, 
-														   self.rowHeight)]; 
+		UILabel *label = [[[UILabel	alloc] initWithFrame:CGRectMake(0.0, 0, 30.0, 
+														   self.rowHeight)] retain]; 
 		[cell addColumn:50];
 		label.tag              = LABEL_TAG; 
 		label.font             = [UIFont boldSystemFontOfSize:12];
@@ -109,8 +109,8 @@
          
 		[cell.contentView addSubview:label]; 
 
-        label =  [[UILabel	alloc] initWithFrame:CGRectMake( 60.0, 0, 200.0, 
-															self.rowHeight ) ]; 
+        label =  [[[UILabel	alloc] initWithFrame:CGRectMake( 60.0, 0, 200.0, 
+															self.rowHeight ) ] retain]; 
         [cell addColumn:240];
 		label.tag              = VALUE_TAG; 
 		label.font             = [UIFont boldSystemFontOfSize:12.0];
