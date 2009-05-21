@@ -76,8 +76,8 @@
 
 - (void)dealloc 
 {
-	[super dealloc];
 	[columns dealloc];
+	[super dealloc];
 }
 
 
