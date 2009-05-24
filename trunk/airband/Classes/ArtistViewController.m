@@ -277,11 +277,25 @@
 
 
 - (void)viewDidLoad
-{	
+{		
+	AppData *app = [AppData get];
+	NSArray* fullList = app.fullArtistList_;
+	if( fullList ) {
+		[self reload];
+	}
+
+	UINavigationBar *bar          = [self navigationController].navigationBar;
+	bar.barStyle                  = UIBarStyleBlackOpaque;
+    self.navigationItem.titleView = artistOrgControl_;	
+    sectionBGImage_      = [UIImage imageNamed:@"greenbar.png"];
+	
 	if( [artistList_ count] ) {
 		return;
 	}
-	artistList_ = nil;				
+	
+	artistList_ = nil;		
+	
+	/*
 	[[NSNotificationCenter defaultCenter] addObserver:self 
                                             selector:@selector(artistListReady:) 
                                             name:@"artistListReady" 
@@ -299,14 +313,9 @@
 	[UIView beginAnimations:@"animationID" context:nil];
 	[UIView setAnimationDuration:10.0];	
 	activity_.transform = CGAffineTransformMakeScale( 1.25,1.25 );
-	
-	UINavigationBar *bar          = [self navigationController].navigationBar;
-	bar.barStyle                  = UIBarStyleBlackOpaque;
-    self.navigationItem.titleView = artistOrgControl_;
-
-    sectionBGImage_      = [UIImage imageNamed:@"greenbar.png"];
-    
 	[UIView commitAnimations];	
+	*/
+	
 }
 
 
@@ -614,7 +623,6 @@
 
 	
 	[self navigationController].navigationBarHidden = FALSE;
-	AppData *app = [AppData get];
 
 
 	[[self navigationController] pushViewController:traxcontroller animated:YES];

@@ -135,9 +135,19 @@ static audiohelp_II *g_audio = nil;
 		
 		// save the session id.
 		sessionID_ = [[NSString stringWithString:parseDelegate.found_] retain];
-				
-		// on to the next step
-		[self getArtistList];
+
+		if( [sessionID_ length] < 4 ) {
+			[sessionID_ release];
+			sessionID_ = nil;			
+			[[NSNotificationCenter defaultCenter] postNotificationName:@"loginFAIL" object:nil];				
+			return;
+		}
+		
+		if (sessionID_) {
+			[[NSNotificationCenter defaultCenter] postNotificationName:@"loginOK" object:nil];
+			// on to the next step
+			[self getArtistList];
+		}
 	}
 	else if( [which isEqualToString:@"artistList"] )
 	{
@@ -205,21 +215,14 @@ static audiohelp_II *g_audio = nil;
 								message:[error localizedDescription] 
 							   delegate:nil cancelButtonTitle:@"ok" otherButtonTitles:nil] show];
 	
-	//[busyIndicator stopAnimating];				
 	// [todo] -- nsnotification failure.
+	
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"loginFAIL" object:nil];	
 }
 
 
 - (void) getArtistList
-{
-    if( [sessionID_ length] < 4 ) {
-        [[[UIAlertView alloc] initWithTitle:@"Login Failed" 
-									message:@"Bad Session"
-								   delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
-        sessionID_ = nil;
-        return;
-    }
-    
+{    
 	NSMutableString *req = [[NSMutableString stringWithCapacity:512] retain];
 	[req appendString:@"http://ws.mp3tunes.com/api/v1/lockerData?output=xml&type=artist&sid="];
 	[req appendString:sessionID_];
