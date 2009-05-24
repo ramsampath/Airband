@@ -8,11 +8,10 @@
 @implementation TracklistTableCell
 
 - (id)initWithFrame:(CGRect)frame reuseIdentifier:(NSString *)reuseIdentifier 
-{
+{	
 	if (self = [super initWithFrame:frame reuseIdentifier:reuseIdentifier]) {
 		// Initialization code
-		columns = [NSMutableArray arrayWithCapacity:5];
-		[columns retain];
+		columns = [[NSMutableArray arrayWithCapacity:5] retain];
         
         /*
         UILabel *titleLabel = [self newLabelForMainText:YES];
@@ -76,7 +75,7 @@
 
 - (void)dealloc 
 {
-	[columns dealloc];
+	[columns release];
 	[super dealloc];
 }
 
