@@ -13,10 +13,11 @@
 @interface airbandAppDelegate : NSObject <UIApplicationDelegate, UITabBarControllerDelegate> {
 	IBOutlet UIWindow *window;
 	IBOutlet UITabBarController *tabBarController;
-	//IBOutlet UINavigationController *navigationController;
 	
 	AppData *appdata_;
 }
+
+- (void) startMainUI;
 
 @property (nonatomic, retain) UIWindow *window;
 @property (nonatomic, retain) UITabBarController *tabBarController;

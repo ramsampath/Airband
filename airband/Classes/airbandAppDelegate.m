@@ -34,74 +34,56 @@
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application 
 {	
-	[application setStatusBarStyle:UIBarStyleBlackOpaque animated:YES];
-	
-	// Add the tab bar controller's current view as a subview of the window
-	[window addSubview:tabBarController.view];
+	[application setStatusBarStyle:UIBarStyleBlackOpaque animated:YES];	
 
 	window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-		
-	//ArtistViewController *artistVC = [[ArtistViewController alloc] initWithNibName:@"ArtistsView" bundle:nil];
+			
+	//
+	// intro screen
+	//
+	
+	AllSettingsController *splash = [[AllSettingsController alloc] initWithNibName:@"Settings" bundle:nil];
+	[window addSubview:splash.view];	
+	[window makeKeyAndVisible];
+}
+
+
+
+-(void) startMainUI
+{
 	ArtistViewController *artistVC = [[ArtistViewController alloc] init];
-
-	AllSettingsController *settingsVC = [[AllSettingsController	alloc] init];
-	//NowPlayingController *nowplayingVC = [[NowPlayingController alloc] initWithNibName:@"NowPlayingArranged" bundle:nil];
-	//PlaylistController *playlistVC = [[PlaylistController alloc] initWithNibName:@"PlayList" bundle:nil];
+	AllSettingsController *settingsVC = [[SettingsController	alloc] init];
     PlaylistController *playlistVC = [[PlaylistController alloc] init];
-
 	CloudController *cloudVC = [[CloudController alloc] initWithNibName:@"CloudView" bundle:nil];
 	
-	
 	artistVC.title = @"Artists";
-	//artistVC.tabBarItem.image = [UIImage imageNamed:@"spiky.png"];
-    artistVC.tabBarItem.image = [UIImage imageNamed:@"icon_artists.png"];	
-
-	//
 	settingsVC.title = @"Settings";
-	//settingsVC.tabBarItem.image = [UIImage imageNamed:@"gears.png"];
-    settingsVC.tabBarItem.image = [UIImage imageNamed:@"icon_settings.png"];
-	//
-	//nowplayingVC.title = @"Audio stream";
-	//nowplayingVC.tabBarItem.image = [UIImage imageNamed:@"headphones.png"];
-	//
 	playlistVC.title = @"Playlists";
-	//playlistVC.tabBarItem.image = [UIImage imageNamed:@"playlist.png"];
-    playlistVC.tabBarItem.image = [UIImage imageNamed:@"icon_playlists.png"];
-	//
 	cloudVC.title = @"Airbands";
-	//cloudVC.tabBarItem.image = [UIImage imageNamed:@"cloud.png"];
+    artistVC.tabBarItem.image = [UIImage imageNamed:@"icon_artists.png"];	
+    settingsVC.tabBarItem.image = [UIImage imageNamed:@"icon_settings.png"];
+    playlistVC.tabBarItem.image = [UIImage imageNamed:@"icon_playlists.png"];
     cloudVC.tabBarItem.image = [UIImage imageNamed:@"icon_airbands.png"];
 	
 	UINavigationController *artistsNC = [[UINavigationController alloc] initWithRootViewController:artistVC];
 	UINavigationController *settingsNC= [[UINavigationController alloc] initWithRootViewController:settingsVC];		
 	UINavigationController *playlistNC= [[UINavigationController alloc] initWithRootViewController:playlistVC];		
-	tabBarController = [[UITabBarController alloc] init];	
-	//tabBarController.viewControllers = [NSArray arrayWithObjects:artistsNC, playlistNC, cloudVC, nowplayingVC, settingsNC, nil];	
-    tabBarController.viewControllers = [NSArray arrayWithObjects:artistsNC, playlistNC, cloudVC,  settingsNC, nil];	
-
 	artistsNC.navigationBar.barStyle = UIBarStyleBlackTranslucent;
 	artistsNC.navigationBarHidden = NO;
 	settingsNC.navigationBar.barStyle = UIBarStyleBlackTranslucent;
 	settingsNC.navigationBarHidden = NO;
 	playlistNC.navigationBar.barStyle = UIBarStyleBlackTranslucent;
 	
-	//[nowplayingVC release];
+	tabBarController = [[UITabBarController alloc] init];	
+    tabBarController.viewControllers = [NSArray arrayWithObjects:artistsNC, playlistNC, cloudVC,  settingsNC, nil];	
+	
 	[artistVC release];
 	[playlistVC release];
 	[cloudVC release];
-	[settingsVC release];
+	[settingsVC release];		
 	
-	[window addSubview:tabBarController.view];
-
-	[window makeKeyAndVisible];
-
-	// log in ...
-	AppData *app = [AppData get];
-	if( ![app login] )
-	  {
-		// go to settings screen.
-		  tabBarController.selectedIndex = 3;
-	  }
+	[window addSubview:tabBarController.view];	
+	[window bringSubviewToFront:tabBarController.view];
 }
 
 
