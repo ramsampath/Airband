@@ -477,7 +477,7 @@
     [trackinfo_ addSubview: alabel_];
     
     allabel_                        =  [[UILabel alloc] 
-                                       initWithFrame:CGRectMake(0 , 50 , 320 , 10)]; 
+                                       initWithFrame:CGRectMake(0 , 50 , 320 , 15)]; 
     allabel_.text                   = [dict_ objectForKey:@"albumTitle"];
     allabel_.font = [UIFont fontWithName:@"Arial" size:12.0];
     allabel_.textAlignment          = UITextAlignmentLeft;
@@ -486,7 +486,7 @@
     [trackinfo_ addSubview: allabel_];
     
     tlabel_                        =  [[UILabel alloc] 
-                                      initWithFrame:CGRectMake(0 , 70 , 320 , 15)]; 
+                                      initWithFrame:CGRectMake(0 , 75 , 320 , 15)]; 
     tlabel_.text                   = [dict_ objectForKey:@"trackTitle"];
     tlabel_.font                   = [UIFont fontWithName:@"Arial" size:12.0];
     tlabel_.textAlignment          = UITextAlignmentLeft;

@@ -124,6 +124,9 @@
 	[airband startMainUI];	
 }
 
+- (void) albumListReady:(id) unused
+{
+}
 
 
 - (void) goLogin
@@ -169,7 +172,12 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self 
 											 selector:@selector(artistListReady:) 
 												 name:@"artistListReady" 
-											   object:nil];		
+											   object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self 
+											 selector:@selector(albumListReady:) 
+												 name:@"albumListReady" 
+											   object:nil];	
 	
 	AppData *app = [AppData get];
 

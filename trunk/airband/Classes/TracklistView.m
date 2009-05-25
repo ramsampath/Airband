@@ -101,18 +101,19 @@
                                  UIViewAutoresizingFlexibleHeight; 
         
         if( [app currentTrackIndex_] == [indexPath row] ) {
-            UIImage *image = [[UIImage alloc] initWithContentsOfFile:@"currently_playing_arrow.png"];
+            UIImage *image = [[UIImage alloc] initWithContentsOfFile:@"speaker_loud.png"];
             UIImageView *currentlyplayingview = [[UIImageView alloc] initWithImage:image];
-            currentlyplayingview.frame = CGRectMake(0, 0, 5, 5);
+            [image release];
+            currentlyplayingview.frame = CGRectMake( 0, 0, 5, 5 );
             printf("adding current playing\n");
             [label addSubview:currentlyplayingview];
         }
          
 		[cell.contentView addSubview:label]; 
 
-        label =  [[[UILabel	alloc] initWithFrame:CGRectMake( 60.0, 0, 200.0, 
+        label =  [[[UILabel	alloc] initWithFrame:CGRectMake( 60.0, 0, 175.0, 
 															self.rowHeight ) ] retain]; 
-        [cell addColumn:240];
+        [cell addColumn:250];
 		label.tag              = VALUE_TAG; 
 		label.font             = [UIFont boldSystemFontOfSize:12.0];
 		label.textAlignment    = UITextAlignmentLeft; 
@@ -135,6 +136,7 @@
         int   isec = (int) floor( fsec );
         label =  [[UILabel	alloc] initWithFrame:CGRectMake( 260.0, 0, 60.0, 
 															self.rowHeight )];
+        label.font            = [UIFont boldSystemFontOfSize:12.0];
         label.textColor       = [UIColor whiteColor];
         label.textAlignment   = UITextAlignmentLeft;
         label.backgroundColor = [UIColor clearColor];

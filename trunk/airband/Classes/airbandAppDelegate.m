@@ -8,6 +8,7 @@
 
 #import "airbandAppDelegate.h"
 #import "ArtistViewController.h"
+#include "AlbumlistController.h"
 #import "AllSettingsController.h"
 #import "SettingsController.h"
 #import "PlaylistController.h"
@@ -51,35 +52,39 @@
 
 -(void) startMainUI
 {
-	ArtistViewController *artistVC = [[ArtistViewController alloc] init];
-	AllSettingsController *settingsVC = [[SettingsController	alloc] init];
-    PlaylistController *playlistVC = [[PlaylistController alloc] init];
-	CloudController *cloudVC = [[CloudController alloc] initWithNibName:@"CloudView" bundle:nil];
+	ArtistViewController  *artistVC   = [[ArtistViewController alloc] init];
+	AllSettingsController *settingsVC = [[SettingsController   alloc] init];
+    PlaylistController    *playlistVC = [[PlaylistController   alloc] init];
+	AlbumlistController   *albumsVC   = [[AlbumlistController  alloc] init];
 	
-	artistVC.title = @"Artists";
+	artistVC.title   = @"Artists";
 	settingsVC.title = @"Settings";
 	playlistVC.title = @"Playlists";
-	cloudVC.title = @"Airbands";
-    artistVC.tabBarItem.image = [UIImage imageNamed:@"icon_artists.png"];	
+	albumsVC.title   = @"Albums";
+    artistVC.tabBarItem.image   = [UIImage imageNamed:@"icon_artists.png"];	
     settingsVC.tabBarItem.image = [UIImage imageNamed:@"icon_settings.png"];
     playlistVC.tabBarItem.image = [UIImage imageNamed:@"icon_playlists.png"];
-    cloudVC.tabBarItem.image = [UIImage imageNamed:@"icon_airbands.png"];
+    albumsVC.tabBarItem.image   = [UIImage imageNamed:@"icon_albums.png"];
 	
 	UINavigationController *artistsNC = [[UINavigationController alloc] initWithRootViewController:artistVC];
+    UINavigationController *albumsNC  = [[UINavigationController alloc] initWithRootViewController:albumsVC];
 	UINavigationController *settingsNC= [[UINavigationController alloc] initWithRootViewController:settingsVC];		
-	UINavigationController *playlistNC= [[UINavigationController alloc] initWithRootViewController:playlistVC];		
+	UINavigationController *playlistNC= [[UINavigationController alloc] initWithRootViewController:playlistVC];
+    
 	artistsNC.navigationBar.barStyle = UIBarStyleBlackTranslucent;
 	artistsNC.navigationBarHidden = NO;
+    albumsNC.navigationBar.barStyle = UIBarStyleBlackTranslucent;
+	albumsNC.navigationBarHidden = NO;
 	settingsNC.navigationBar.barStyle = UIBarStyleBlackTranslucent;
 	settingsNC.navigationBarHidden = NO;
 	playlistNC.navigationBar.barStyle = UIBarStyleBlackTranslucent;
 	
 	tabBarController = [[UITabBarController alloc] init];	
-    tabBarController.viewControllers = [NSArray arrayWithObjects:artistsNC, playlistNC, cloudVC,  settingsNC, nil];	
+    tabBarController.viewControllers = [NSArray arrayWithObjects:artistsNC, albumsNC, playlistNC, settingsNC, nil];	
 	
-	[artistVC release];
+	[artistVC   release];
 	[playlistVC release];
-	[cloudVC release];
+	[albumsVC   release];
 	[settingsVC release];		
 	
 	// clean out child views.

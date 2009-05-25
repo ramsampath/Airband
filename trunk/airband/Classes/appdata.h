@@ -16,7 +16,7 @@
 	// current session
 	NSString* sessionID_;	
 	// a list of dictionaries;  pythonesque in its wastefulness.
-	NSArray *fullArtistList_;	
+	NSArray *fullArtistList_;
 	// (array of dictionary) of playlist names
 	NSArray *playLists_;
 	// in flight request
@@ -66,6 +66,7 @@
 - (void) saveState;
 - (BOOL) login;
 - (void) getArtistList;
+- (void) getAlbumList;
 - (void) getPlayListsAsync;
 - (void) getAlbumListAsync:(NSString*)artist_id;
 - (void) getTrackListAsync:(NSString*)album_id;

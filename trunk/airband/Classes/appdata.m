@@ -166,7 +166,8 @@ static audiohelp_II *g_audio = nil;
 		albumList_ = a;
 		[[NSNotificationCenter defaultCenter] postNotificationName:@"albumListReady" object:nil];		
 		//printf( "albumList size:%d\n", [a count] );
-		//[self gotAlbumList:a];		
+		[self gotAlbumList:a];
+        //[self getAlbumlistArtwork:a];
 	}		
 	else if( [which isEqualToString:@"trackList"] )
 	{
@@ -233,6 +234,40 @@ static audiohelp_II *g_audio = nil;
 };
 
 
+- (void) getAlbumList
+{
+    if( [sessionID_ length] < 4 ) {
+        [[[UIAlertView alloc] initWithTitle:@"Login Failed" 
+									message:@"Bad Session"
+								   delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+        sessionID_ = nil;
+        return;
+    }
+    
+	NSMutableString *req = [[NSMutableString stringWithCapacity:512] retain];
+	[req appendString:@"http://ws.mp3tunes.com/api/v1/lockerData?output=xml&type=album&sid="];
+	[req appendString:sessionID_];
+	
+	[g_async loadWithURL:req asyncinfo:self asyncdata:@"albumList"];
+};
+
+- (void) getAlbumListAsyn
+{
+    if( [sessionID_ length] < 4 ) {
+        [[[UIAlertView alloc] initWithTitle:@"Login Failed" 
+									message:@"Bad Session"
+								   delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+        sessionID_ = nil;
+        return;
+    }
+    
+	NSMutableString *req = [[NSMutableString stringWithCapacity:512] retain];
+	[req appendString:@"http://ws.mp3tunes.com/api/v1/lockerData?output=xml&type=album&sid="];
+	[req appendString:sessionID_];
+	
+	[g_async loadWithURL:req asyncinfo:self asyncdata:@"albumList"];
+};
+
 
 - (void) getPlayListsAsync
 {
@@ -288,10 +323,21 @@ static audiohelp_II *g_audio = nil;
 		return;
 	}
 	
-	
+	/*
 	NSDictionary *album = [albumlist objectAtIndex:(drand48()*numalbums)];
 	albumInRequest_ = [album retain];
 	[self getTrackListAsync:[album objectForKey:@"albumId"]];			
+     */
+}
+
+
+- (void) getAlbumListArtwork:(NSArray *)albumlist;
+{
+    unsigned num = [albumlist count];
+    for( int i = 0;  i < num; ++i ) {
+        //NSDictionary *album = [albumlist objectAtIndex:i];
+        //[self getAlbumArtwork:[album objectForKey:@"albumId"]];
+    }    
 }
 
 
