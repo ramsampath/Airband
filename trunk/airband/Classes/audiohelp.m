@@ -421,6 +421,10 @@ static void MyPacketsProc( void *inClientData,
 
 -(void) dealloc
 {
+  if(myd_) {
+	  free(myd_);
+  }
+	
   [datalist_ release];
   pthread_mutex_destroy(&mutex_);
   pthread_cond_destroy(&cond_);
@@ -676,9 +680,8 @@ static void* workerthread( void* pv )
 
 - (void) play:(NSString*)strurl
 {
-	[self cancel];
+	[self cancel];	
 	
-	//printf( "new play request\n" );
 	ghackApr29_finished_loading = 0;
 	
 	asyncaudio_ = [[[asyncaudio_II alloc] init] retain];
@@ -779,7 +782,7 @@ static void* workerthread( void* pv )
 
 
 -(void) cancel
-{
+{	
 	if( connection_ ) {
 		[connection_ cancel];
 		[connection_ release];

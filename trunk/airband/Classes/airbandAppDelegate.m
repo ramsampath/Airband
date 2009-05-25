@@ -82,6 +82,15 @@
 	[cloudVC release];
 	[settingsVC release];		
 	
+	// clean out child views.
+	{
+		NSArray *subz = [window subviews];
+		UIView *s;
+		for (s in subz) {
+			[s removeFromSuperview];
+		}
+	}
+	
 	[window addSubview:tabBarController.view];	
 	[window bringSubviewToFront:tabBarController.view];
 }
