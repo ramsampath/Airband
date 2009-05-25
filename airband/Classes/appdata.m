@@ -228,6 +228,8 @@ static audiohelp_II *g_audio = nil;
 	[req appendString:sessionID_];
 	
 	[g_async loadWithURL:req asyncinfo:self asyncdata:@"artistList"];
+	
+	[req release];
 };
 
 
@@ -371,6 +373,8 @@ static audiohelp_II *g_audio = nil;
 	[g_audio setTracksize_:[tracksize intValue]];
 	[g_audio setvolume:lastVolume_];
 	
+	[req release];
+	
 	// next step -- get artwork.
 	NSString *artwork = [track objectForKey:@"albumArtURL"];
 	if( artwork ) {
@@ -486,6 +490,7 @@ static audiohelp_II *g_audio = nil;
 	
   g_async = [[[asyncIO alloc] init] retain];
   [g_async loadWithURL:req asyncinfo:self asyncdata:@"login"];
+  [req release];
   return TRUE;	
 }
 
