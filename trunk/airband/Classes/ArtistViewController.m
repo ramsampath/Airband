@@ -278,7 +278,7 @@
 
 - (void)viewDidLoad
 {		
-	AppData *app = [AppData get];
+	AppData *app      = [AppData get];
 	NSArray* fullList = app.fullArtistList_;
 	if( fullList ) {
 		[self reload];
@@ -287,7 +287,7 @@
 	UINavigationBar *bar          = [self navigationController].navigationBar;
 	bar.barStyle                  = UIBarStyleBlackOpaque;
     self.navigationItem.titleView = artistOrgControl_;	
-    sectionBGImage_      = [UIImage imageNamed:@"greenbar.png"];
+    sectionBGImage_               = [UIImage imageNamed:@"greenbar.png"];
 	
 	if( [artistList_ count] ) {
 		return;
@@ -299,7 +299,7 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self 
                                             selector:@selector(artistListReady:) 
                                             name:@"artistListReady" 
-                                            object:nil];	
+                                            object:nil];
 
 	UIView *v = self.view;
 	activity_ = [[UIActivityIndicatorView alloc] 

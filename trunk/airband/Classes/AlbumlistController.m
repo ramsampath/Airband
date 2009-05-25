@@ -63,7 +63,7 @@
         UIImage *image = [UIImage imageNamed:@"empty_album_art.png"];
         UIImageView *ciview = [[UIImageView alloc] initWithImage:image];
         ciview.frame = CGRectMake( 0, 0, 32, 2*LABEL_HEIGHT );
-        [self addSubview:ciview];
+        [self.contentView addSubview:ciview];
         
         [image release];
         
@@ -71,6 +71,8 @@
         // Create the label for the top row of text
         //
         UIImage *indicatorImage = [UIImage imageNamed:@"indicator.png"];
+        
+        //nameLabel = [[[UILabel alloc] initWithFrame:CGRectMake( 32, 0, 100, LABEL_HEIGHT)] retain];
         
         nameLabel = [[[UILabel alloc]
                      initWithFrame:
@@ -81,12 +83,13 @@
                                 ciview.frame.size.width - 4.0 * self.indentationWidth
                                 - indicatorImage.size.width,
                                 LABEL_HEIGHT)] retain];
-        [self.contentView addSubview:nameLabel];
         
+        [self.contentView addSubview:nameLabel];
         
         //
         // Configure the properties for the text that are the same on every row
         //
+        
         nameLabel.tag                  = TOP_LABEL_TAG;
         nameLabel.backgroundColor      = [UIColor clearColor];
         nameLabel.textColor            = [UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:1.0];
@@ -96,21 +99,27 @@
         //
         // Create the label for the top row of text
         //
-        /*
-        trackcountLabel = [[[UILabel alloc] initWithFrame:CGRectMake(32, 10, 32, 32)] retain];
-         
+        trackcountLabel = [[[UILabel alloc] initWithFrame:
+                            CGRectMake(
+                                       ciview.frame.size.width + 2.0 * self.indentationWidth,
+                                       0.5 * (aTableView.rowHeight - 2 * LABEL_HEIGHT) + LABEL_HEIGHT,
+                                       aTableView.bounds.size.width -
+                                       ciview.frame.size.width - 4.0 * self.indentationWidth
+                                       - indicatorImage.size.width,
+                                       LABEL_HEIGHT)] retain];
+        
         [self.contentView addSubview:trackcountLabel];
-        [indicatorImage release];
         
         //
         // Configure the properties for the text that are the same on every row
         //
+        
         trackcountLabel.tag                  = BOTTOM_LABEL_TAG;
         trackcountLabel.backgroundColor      = [UIColor clearColor];
         trackcountLabel.textColor            = [UIColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:1.0];
         trackcountLabel.highlightedTextColor = [UIColor colorWithRed:0.7 green:0.7 blue:0.7 alpha:1.0];
         trackcountLabel.font                 = [UIFont systemFontOfSize:[UIFont labelFontSize] - 2];
-        */
+        
         self.backgroundView.alpha = 1.0;
         
         [ciview release];
@@ -131,7 +140,7 @@
 	// In this example we will never be editing, but this illustrates the appropriate pattern
     CGRect frame = CGRectMake(contentRect.origin.x + LEFT_COLUMN_OFFSET, UPPER_ROW_TOP, 
 							  LEFT_COLUMN_WIDTH, CELL_HEIGHT);
-	nameLabel.frame = frame;
+	//nameLabel.frame = frame;
 	
 	frame = CGRectMake(contentRect.origin.x + contentRect.size.width - 50.0 + LEFT_COLUMN_OFFSET, UPPER_ROW_TOP, 
 					   LEFT_COLUMN_WIDTH, CELL_HEIGHT+5);
@@ -172,8 +181,7 @@
     cellExtra       = [NSString stringWithFormat:@"%@ tracks", [newDictionary objectForKey:@"trackCount"]];
     
 	nameLabel.text       = cellMain; 
-    printf("Label: %s\n", [cellMain UTF8String]);
-	//trackcountLabel.text = cellExtra; 
+	trackcountLabel.text = cellExtra; 
 
 }
 
@@ -195,8 +203,8 @@
 	if (self)
 	{
 		self.title = NSLocalizedString(@"Albums", @"");
-		albumList_        = nil;
-		activity_          = nil;
+		albumList_ = nil;
+		activity_  = nil;
 	}
 	return self;
 }
@@ -363,6 +371,8 @@
 	
     self.navigationItem.titleView = albumOrgControl_;
     
+
+    
     sectionBGImage_      = [UIImage imageNamed:@"greenbar.png"];
 }
 
@@ -444,7 +454,6 @@
     [self reload];
 	[activity_ stopAnimating];
     
-    printf("removing\n");
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -606,7 +615,17 @@
 }
 
 
+- (void) trackListReady:(id)object
+{
+    AppData *app = [AppData get];
+    
 
+    NSDictionary *d = [app.trackList_ objectAtIndex:0];
+
+    [app playTrack:d];
+
+    return;
+}
 
 
 
@@ -660,6 +679,7 @@
 	}
     
 	NSDictionary *d = [albumDisplayList_[sectionIndex] objectAtIndex:indexPath.row];
+    
     NowPlayingController *nowplayingVC = [[NowPlayingController alloc] init];
     
     [nowplayingVC setupnavigationitems:self.navigationItem 
@@ -668,10 +688,18 @@
     
     [self navigationController].navigationBarHidden = FALSE;
     
-    [app playTrack:d];
+    NSString *req = [d objectForKey:@"albumId"];
+    [app getTrackListAsync:req];
     
-    [[self navigationController] pushViewController:nowplayingVC animated:YES];		
+    [[NSNotificationCenter defaultCenter] addObserver:self 
+											 selector:@selector(trackListReady:) 
+												 name:@"trackListReady" 
+											   object:nil];	
+	
+    
+    
     [nowplayingVC setArtwork:nil];
+    [[self navigationController] pushViewController:nowplayingVC animated:YES];		
     
     [app setCurrentTrackIndex_:[indexPath row]];
     [nowplayingVC release];
@@ -757,7 +785,6 @@ tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPat
 	if (cell == nil) {
         cell = [[AlbumCell alloc] initWithFrame:CGRectZero 
                                  reuseIdentifier:cellIdentifier tableView:tableView];
-        printf("indexpath: %d\n", indexPath);
 	}
 	
 	// get the view controller's info dictionary based on the indexPath's row
