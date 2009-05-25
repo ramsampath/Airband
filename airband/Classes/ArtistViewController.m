@@ -624,7 +624,6 @@
 	
 	[self navigationController].navigationBarHidden = FALSE;
 
-
 	[[self navigationController] pushViewController:traxcontroller animated:YES];
          
 }

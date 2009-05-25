@@ -144,12 +144,19 @@
 	AppData *app = [AppData get];	
 	
 	if( artist_ ) {
-		NSString *req = [artist_ objectForKey:@"artistId"];
-		[app getAlbumListAsync:req];
-	} else if( albumtracks_ ) {
+        if( artist_ != @"" ) {
+            NSString *req = [artist_ objectForKey:@"artistId"];
+            [app getAlbumListAsync:req];
+        }
+        else {
+            [app getAlbumList];
+        }
+	} 
+    else if( albumtracks_ ) {
 		NSString *req = [albumtracks_ objectForKey:@"albumId"];
 		[app getTrackListAsync:req];		
-	} else if( playlist_ ) {
+	} 
+    else if( playlist_ ) {
 		NSString *req = [playlist_ objectForKey:@"playlistId"];
 		NSString *enc = [req stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding];  //NSUTF8StringEncoding	
 		[app getPlayListTracksAsync:enc];		
@@ -390,6 +397,8 @@
 	UILabel *bottomLabel;
 	
 	static NSString *CellIdentifier = @"Cell";
+    const CGFloat LABEL_HEIGHT = 20;
+
 	UITableViewCell *cell = [aTableView dequeueReusableCellWithIdentifier:CellIdentifier];
 	if (cell == nil)
 	{
@@ -408,7 +417,6 @@
 		//  initWithImage:indicatorImage]
 		// autorelease];
 		
-		const CGFloat LABEL_HEIGHT = 20;
 		UIImage *image = [UIImage imageNamed:@"whiteButton.png"];
 		
 		//
@@ -514,8 +522,13 @@
     //
     // replace the following with the album artwork
     //
-	cell.image = [UIImage imageNamed:@"music_note.png"];
-
+    UIImage *image = [UIImage imageNamed:@"empty_album_art.png"];
+    UIImageView *ciview = [[UIImageView alloc] initWithImage:image];
+    [image release];
+    ciview.frame = CGRectMake( 0, 0, 32, 2*LABEL_HEIGHT );
+    [cell addSubview:ciview];
+    [ciview release];
+//	cell.image = [[UIImage imageNamed:@"empty_album_art.png"]];
 	return cell;
 }
 

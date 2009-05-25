@@ -56,6 +56,7 @@
 		21C3B27B0F9D8E1D0059C2CE /* SpeakerSoft.tif in Resources */ = {isa = PBXBuildFile; fileRef = 21C3B2790F9D8E1D0059C2CE /* SpeakerSoft.tif */; };
 		21C3B2FB0F9D980C0059C2CE /* slider_ball_bw.png in Resources */ = {isa = PBXBuildFile; fileRef = 21C3B2FA0F9D980C0059C2CE /* slider_ball_bw.png */; };
 		21D329B60F7BFA0A00E0C6B0 /* AllSettingsTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 21D329B50F7BFA0A00E0C6B0 /* AllSettingsTableCell.m */; };
+		21DBAF010FCA431500399A50 /* AlbumlistController.m in Sources */ = {isa = PBXBuildFile; fileRef = 21DBAEFF0FCA431500399A50 /* AlbumlistController.m */; };
 		21E011D60FBC96FE006FD562 /* TracklistView.m in Sources */ = {isa = PBXBuildFile; fileRef = 21E011D30FBC96FE006FD562 /* TracklistView.m */; };
 		21E011D70FBC96FE006FD562 /* TrackListTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 21E011D50FBC96FE006FD562 /* TrackListTableCell.m */; };
 		21E012680FBCA6CD006FD562 /* yellow_bar.png in Resources */ = {isa = PBXBuildFile; fileRef = 21E012670FBCA6CD006FD562 /* yellow_bar.png */; };
@@ -148,6 +149,8 @@
 		21C3B2FA0F9D980C0059C2CE /* slider_ball_bw.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = slider_ball_bw.png; sourceTree = "<group>"; };
 		21D329B40F7BFA0A00E0C6B0 /* AllSettingsTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AllSettingsTableCell.h; sourceTree = "<group>"; };
 		21D329B50F7BFA0A00E0C6B0 /* AllSettingsTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AllSettingsTableCell.m; sourceTree = "<group>"; };
+		21DBAEFF0FCA431500399A50 /* AlbumlistController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlbumlistController.m; sourceTree = "<group>"; };
+		21DBAF000FCA431500399A50 /* AlbumlistController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlbumlistController.h; sourceTree = "<group>"; };
 		21E011D20FBC96FE006FD562 /* TracklistView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TracklistView.h; sourceTree = "<group>"; };
 		21E011D30FBC96FE006FD562 /* TracklistView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TracklistView.m; sourceTree = "<group>"; };
 		21E011D40FBC96FE006FD562 /* TrackListTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrackListTableCell.h; sourceTree = "<group>"; };
@@ -361,6 +364,8 @@
 		7D8DF9510E6A4F4500EA4BB8 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				21DBAEFF0FCA431500399A50 /* AlbumlistController.m */,
+				21DBAF000FCA431500399A50 /* AlbumlistController.h */,
 				21E011D20FBC96FE006FD562 /* TracklistView.h */,
 				21E011D30FBC96FE006FD562 /* TracklistView.m */,
 				21E011D40FBC96FE006FD562 /* TrackListTableCell.h */,
@@ -534,6 +539,7 @@
 				210E10190F8B165B00BBA95A /* AllSettingsController.m in Sources */,
 				21E011D60FBC96FE006FD562 /* TracklistView.m in Sources */,
 				21E011D70FBC96FE006FD562 /* TrackListTableCell.m in Sources */,
+				21DBAF010FCA431500399A50 /* AlbumlistController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
