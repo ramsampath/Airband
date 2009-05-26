@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "LoadingView.h"
 
 
 @interface AlbumlistController: UIViewController<UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate, UITextFieldDelegate> {
@@ -33,6 +34,8 @@
 	BOOL                         searchActive_;
     
     NSArray                     *fullAlbumList_;
+
+    LoadingView                 *loadingView_;
 }
 
 @property (nonatomic, retain) UITableView* table_;

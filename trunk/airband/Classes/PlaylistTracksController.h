@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "LoadingView.h"
 
 @interface PlaylistTracksController : UIViewController<UITableViewDelegate, UITableViewDataSource> {
 	IBOutlet  UITableView* table_;
@@ -17,6 +17,8 @@
 	NSDictionary* artist_;	
 	// used to display particular album tracks
 	NSDictionary* albumtracks_;
+    
+    LoadingView *loadingView_;
         
 }
 

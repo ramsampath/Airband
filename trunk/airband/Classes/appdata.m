@@ -37,6 +37,8 @@ static audiohelp_II *g_audio = nil;
 @synthesize currentTrackFileSize_;
 @synthesize bitRate_;
 @synthesize lastVolume_;
+@synthesize autoLogin_;
+@synthesize albumArtCache_;
 
 // --------------------------------------------------------------------------
 // singelton
@@ -70,6 +72,7 @@ static audiohelp_II *g_audio = nil;
         currentArtist_     = nil;
 		bitRate_           = 56000;
 		lastVolume_		   = 1;
+        albumArtCache_     = [[imagecache alloc] retain];
 		// read the user settings.
 		[self restoreState];
 	}
@@ -82,7 +85,7 @@ static audiohelp_II *g_audio = nil;
 // --------------------------------------------------------------------------
 - (void)dealloc
 {
-  [self saveState];
+    [self saveState];
 
 	[username_ release];
 	[password_ release];
@@ -96,6 +99,7 @@ static audiohelp_II *g_audio = nil;
 	[currentTrackTitle_ release];
     [currentArtist_ release];
     [currentAlbum_ release];
+    [albumArtCache_ release];
 	[super dealloc];
 }
 
@@ -433,6 +437,8 @@ static audiohelp_II *g_audio = nil;
     currentArtist_     = artist;
     currentAlbum_      = album;
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"titleAvailable" object:self userInfo:[track retain]];	
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"appPlaying" object:nil];				
 }
 
 
@@ -458,11 +464,13 @@ static audiohelp_II *g_audio = nil;
 -(void) pause
 {
 	[g_audio pause];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"appPaused" object:nil];				
 }
 
 -(void) resume;
 {
 	[g_audio resume];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"appResumed" object:nil];				
 }
 
 
@@ -470,6 +478,16 @@ static audiohelp_II *g_audio = nil;
 {
 	[g_async cancel];
 	[g_audio cancel];	
+}
+
+-(bool) isPlaying
+{
+    return( ![g_audio paused_] );
+}
+
+-(bool) isPaused
+{
+    return( [g_audio paused_] );
 }
 
 
@@ -484,6 +502,7 @@ static audiohelp_II *g_audio = nil;
 	
 	// start retrieving new info.
 	[self getAlbumListAsync:artist_id];
+    
 }
 
 -(void) setStreamingRate:(int) rate
@@ -692,7 +711,7 @@ static audiohelp_II *g_audio = nil;
     password_   = [[d objectForKey:@"password"] retain];
     lastVolume_ = [[[d objectForKey:@"lastVolume"] retain] floatValue];
     bitRate_    = [[[d objectForKey:@"bitRate"] retain] intValue];
-    
+    autoLogin_  = [[[d objectForKey:@"autoLogin"] retain] boolValue];
 }
 
 
@@ -704,6 +723,7 @@ static audiohelp_II *g_audio = nil;
     
     [d setValue:[NSString stringWithFormat:@"%f", lastVolume_] forKey:@"lastVolume"];
     [d setValue:[NSString stringWithFormat:@"%d", bitRate_] forKey:@"bitRate"];
+    [d setValue:[NSString stringWithFormat:@"%d", autoLogin_] forKey:@"autoLogin"];
         
     [self writeApplicationPlist:d toFile:@"airbandPlist"];  
 }

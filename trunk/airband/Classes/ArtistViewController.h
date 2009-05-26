@@ -1,6 +1,7 @@
 #import <UIKit/UIKit.h>
 #import "xmlhelp.h"
 #import "songview.h"
+#import "LoadingView.h"
 
 
 
@@ -27,6 +28,8 @@
 
 	UIActivityIndicatorView	*activity_;	
 	BOOL searchActive_;
+    
+    LoadingView *loadingView_;
 }
 
 

@@ -7,13 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "LoadingView.h"
 
 
 
 @interface PlaylistController : UIViewController<UITableViewDelegate, UITableViewDataSource>
 {
 	IBOutlet  UITableView* table_;
+    LoadingView *loadingView_;
 }
 
 @property (nonatomic, retain) UITableView* table_;

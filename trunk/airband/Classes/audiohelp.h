@@ -50,6 +50,7 @@
 }
 
 @property (readwrite) int tracksize_;
+@property (readonly) bool paused_;
 
 -(void) play:(NSString*)url;
 -(void) pause;

@@ -47,7 +47,8 @@
 #define CELL_HEIGHT				50
 
 
-- (id)initWithFrame:(CGRect)aRect reuseIdentifier:(NSString *)identifier tableView:(UITableView *)aTableView
+- (id)initWithFrame:(CGRect)aRect 
+    reuseIdentifier:(NSString *)identifier tableView:(UITableView *)aTableView image:(UIImage *) albumart
 {
     self = [super initWithFrame:aRect reuseIdentifier:identifier];
 
@@ -55,18 +56,16 @@
         const NSInteger TOP_LABEL_TAG    = 1001;
         const NSInteger BOTTOM_LABEL_TAG = 1002;
 	
-        const CGFloat LABEL_HEIGHT       = 20;
+        const CGFloat LABEL_HEIGHT       = 22;
 
         //
         // album artwork
         //
-        UIImage *image = [UIImage imageNamed:@"empty_album_art.png"];
-        UIImageView *ciview = [[UIImageView alloc] initWithImage:image];
-        ciview.frame = CGRectMake( 0, 0, 32, 2*LABEL_HEIGHT );
+
+        UIImageView *ciview = [[UIImageView alloc] initWithImage:albumart];
+        ciview.frame = CGRectMake( 0, 0, 34, 2*LABEL_HEIGHT  );
         [self.contentView addSubview:ciview];
-        
-        [image release];
-        
+                
         //
         // Create the label for the top row of text
         //
@@ -359,19 +358,9 @@
 	}
 	albumList_ = nil;				
 
-    
-	UIView *v = self.view;
-	activity_ = [[UIActivityIndicatorView alloc] 
-                 initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-	activity_.center = v.center;
-	activity_.hidesWhenStopped = TRUE;
-	[v addSubview:activity_];
-	[v bringSubviewToFront:activity_];
-	[activity_ startAnimating];
+    loadingView_ = [LoadingView loadingViewInView:self.view loadingText:@"Loading Albums..."];
 	
     self.navigationItem.titleView = albumOrgControl_;
-    
-
     
     sectionBGImage_      = [UIImage imageNamed:@"greenbar.png"];
 }
@@ -386,8 +375,12 @@
 - (void)viewDidAppear:(BOOL)animated
 {
 	[self navigationController].navigationBarHidden = FALSE;
-    [self reload];
     
+    UINavigationBar *bar          = [self navigationController].navigationBar;
+	bar.barStyle                  = UIBarStyleBlackOpaque;
+
+    //[self reload];
+
     AppData *app = [AppData get];
     if( [app isrunning] )
         [self navigationController].navigationBar.topItem.rightBarButtonItem = [[UIBarButtonItem alloc] 
@@ -452,7 +445,7 @@
 	fullAlbumList_ = [app.albumList_ copy];
 	
     [self reload];
-	[activity_ stopAnimating];
+    [loadingView_ removeView];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
@@ -783,8 +776,10 @@ tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPat
     NSString *cellIdentifier = [NSString stringWithFormat:@"%d%d", row, sec ];
     AlbumCell *cell = (AlbumCell *)[tableView dequeueReusableCellWithIdentifier:cellIdentifier];
 	if (cell == nil) {
+        AppData *app = [AppData get];
+        UIImage *image = [app.albumArtCache_ loadImage:@"empty_album_art.png"];
         cell = [[AlbumCell alloc] initWithFrame:CGRectZero 
-                                 reuseIdentifier:cellIdentifier tableView:tableView];
+                                reuseIdentifier:cellIdentifier tableView:tableView image:image];
 	}
 	
 	// get the view controller's info dictionary based on the indexPath's row

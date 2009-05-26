@@ -89,6 +89,7 @@
 
 - (void) newlistReady:(id)object
 {	
+    [loadingView_ removeView];
 	if( [table_ numberOfRowsInSection:0] ) {
 		[table_ reloadData];
 	} else {
@@ -144,6 +145,7 @@
 	AppData *app = [AppData get];	
 	
 	if( artist_ ) {
+        loadingView_ = [LoadingView loadingViewInView:self.view loadingText:@"Loading Artist List..."]; 
         if( artist_ != @"" ) {
             NSString *req = [artist_ objectForKey:@"artistId"];
             [app getAlbumListAsync:req];
@@ -153,10 +155,12 @@
         }
 	} 
     else if( albumtracks_ ) {
+        loadingView_ = [LoadingView loadingViewInView:self.view loadingText:@"Loading Album Tracks..."]; 
 		NSString *req = [albumtracks_ objectForKey:@"albumId"];
 		[app getTrackListAsync:req];		
 	} 
     else if( playlist_ ) {
+        loadingView_ = [LoadingView loadingViewInView:self.view loadingText:@"Loading Playlist Tracks..."]; 
 		NSString *req = [playlist_ objectForKey:@"playlistId"];
 		NSString *enc = [req stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding];  //NSUTF8StringEncoding	
 		[app getPlayListTracksAsync:enc];		
@@ -522,10 +526,10 @@
     //
     // replace the following with the album artwork
     //
-    UIImage *image = [UIImage imageNamed:@"empty_album_art.png"];
+    UIImage *image = [app.albumArtCache_ loadImage:@"empty_album_art.png"];
     UIImageView *ciview = [[UIImageView alloc] initWithImage:image];
     [image release];
-    ciview.frame = CGRectMake( 0, 0, 32, 2*LABEL_HEIGHT );
+    ciview.frame = CGRectMake( 0, 0, 34, 2*LABEL_HEIGHT + 4);
     [cell addSubview:ciview];
     [ciview release];
 //	cell.image = [[UIImage imageNamed:@"empty_album_art.png"]];

@@ -1,5 +1,6 @@
 #import <UIKit/UIKit.h>
 #import "xmlhelp.h"
+#import "imgcache.h"
 
 #pragma mark	-------------------------------------------------
 #pragma mark	AppData
@@ -40,6 +41,13 @@
 	int bitRate_;
 	// the index of the current track playing
 	int currentTrackIndex_;
+    
+    bool autoLogin_;
+    
+    imagecache                  *albumArtCache_;
+
+    // 
+    bool currentlyPlaying_;
 }
 
 @property (retain) NSString *username_;
@@ -59,7 +67,8 @@
 @property (assign)   int currentTrackIndex_;
 @property (readonly) int bitRate_;
 @property (readwrite) float lastVolume_;
-
+@property (readwrite) bool autoLogin_;
+@property (readonly) imagecache* albumArtCache_;
 
 - (NSString*) createAccount:(NSDictionary*)userinfo;
 - (void) restoreState;
@@ -87,6 +96,8 @@
 - (float) percent;
 - (float) tracklength;
 - (float) trackFileSize;
+- (bool) isPlaying;
+- (bool) isPaused;
 // if audio track is being played
 - (BOOL) isrunning;
 
