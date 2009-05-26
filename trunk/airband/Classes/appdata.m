@@ -222,7 +222,7 @@ static audiohelp_II *g_audio = nil;
 	
 	// [todo] -- nsnotification failure.
 	
-	[[NSNotificationCenter defaultCenter] postNotificationName:@"loginFAIL" object:nil];	
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"connectionFAIL" object:nil];	
 }
 
 
