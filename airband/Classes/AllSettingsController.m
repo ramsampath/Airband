@@ -93,6 +93,15 @@
 }
 
 
+- (void)viewWillDisappear:(BOOL)animated
+{
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)viewDidUnload
+{
+}
+
 
 - (void) loginFail:(id) unused
 {
@@ -170,6 +179,11 @@
 												 name:@"loginFAIL" 
 											   object:nil];		
 
+	[[NSNotificationCenter defaultCenter] addObserver:self 
+											 selector:@selector(loginFail:) 
+												 name:@"connectionFAIL" 
+											   object:nil];		
+	
 	// [TODO] -- might want to split this into just login 
 	//           and then go directly to artist view screen.
 	
@@ -182,12 +196,7 @@
 											 selector:@selector(artistListReady:) 
 												 name:@"artistListReady" 
 											   object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self 
-											 selector:@selector(albumListReady:) 
-												 name:@"albumListReady" 
-											   object:nil];	
-	
+    	
 	AppData *app = [AppData get];
 
 	//
