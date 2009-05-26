@@ -49,12 +49,13 @@
 	[timeout_ invalidate];
 	timeout_ = nil;
 	
-	[[[UIAlertView alloc] initWithTitle:@"airBand" 
+	[[[UIAlertView alloc] initWithTitle:@"Airband" 
 								message:@"Couldn't log in"
-							   delegate:nil cancelButtonTitle:@"ok" otherButtonTitles:nil] show];
+							   delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
 	
 	status_.text = @"try again!";	
 	
+    [loadingView_ removeView];
 	[self prepForLogin];
 }
 
@@ -81,8 +82,9 @@
 	{	
 		// [TODO] -- let the user set this; use autologin_ switch
 		
-		BOOL autologin = FALSE;
-		if (autologin) {
+		BOOL autologin = [app autoLogin_];
+        
+		if( autologin ) {
 			[self loginAction:nil];
 		} else {
 			[self prepForLogin];
@@ -96,12 +98,13 @@
 {
 	[timeout_ invalidate];
 	timeout_ = nil;
-	status_.text = @"login problems!";
+	status_.text = @"Login problems!";
 
-	[[[UIAlertView alloc] initWithTitle:@"airband" 
+	[[[UIAlertView alloc] initWithTitle:@"Airband" 
 								message:@"Problem logging in"
 							   delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
 	
+    [loadingView_ removeView];
 	[self prepForLogin];
 }
 
@@ -114,12 +117,16 @@
 	[timeout_ invalidate];
 	timeout_ = nil;
 	
-	status_.text = @"success! request bands...";
+	status_.text = @"Success! request bands...";
+    [loadingView_ removeView];
+    loadingView_ = [LoadingView loadingViewInView:self.view loadingText:@"Loading Artists..."];
 }
 
 
 - (void) artistListReady:(id) unused
 {
+    [loadingView_ removeView];
+    
 	airbandAppDelegate *airband = (airbandAppDelegate*) ([UIApplication sharedApplication].delegate);
 	[airband startMainUI];	
 }
@@ -151,7 +158,9 @@
 	username_.enabled = FALSE;
 	password_.enabled = FALSE;	
 	
-	status_.text = @"connecting...";
+	status_.text = @"Connecting...";
+    
+    loadingView_ = [LoadingView loadingViewInView:self.view loadingText:@"Connecting..."];
 
 	//
 	// wait for login to succeed and artist list to arrive

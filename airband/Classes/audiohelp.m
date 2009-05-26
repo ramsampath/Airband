@@ -659,7 +659,7 @@ static void* workerthread( void* pv )
 @implementation audiohelp_II
 
 @synthesize tracksize_;
-
+@synthesize paused_;
 
 - (id) init
 {	

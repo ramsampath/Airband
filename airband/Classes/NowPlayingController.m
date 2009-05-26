@@ -256,11 +256,13 @@
     ni.backBarButtonItem  = b;
     [b release];
     
-    infoimage_     = [UIImage imageNamed:@"track_info_withbg.png"];
+    infoimage_            = [UIImage imageNamed:@"track_info_withbg.png"];
 
     albumcovertracksbview_             = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 35, 32)] retain];
     albumcovertracksb_                 = [[[UIButton alloc] initWithFrame:CGRectMake( 0, 0, 35, 32 )] retain];
     albumcovertracksb_.backgroundColor = [UIColor clearColor];
+    
+    navBar.barStyle                    = UIBarStyleBlackOpaque;
 
     [albumcovertracksb_ addTarget:self action:@selector(flipToTracklistView:) forControlEvents:UIControlEventTouchUpInside];
     [albumcovertracksb_ setBackgroundImage:infoimage_ forState:UIControlStateNormal];
@@ -358,7 +360,7 @@
 	flexend_.width   = 0.000;
 
     [toolbartop_ setItems:[NSArray arrayWithObjects: flexbeg_, prev_, fixedprev_, 
-                           pause_,  fixedplay_, next_, flexend_, nil]];
+                           play_,  fixedplay_, next_, flexend_, nil]];
     
     if( dict ) {
         dict_ = dict;
@@ -654,6 +656,24 @@
 									   selector:@selector(myTimerFireMethod:)
 									   userInfo:NULL repeats:YES ];
 	}	
+    
+    // 
+    // setup play/pause notifications to change the buttons appropriately
+    //
+    [[NSNotificationCenter defaultCenter] addObserver:self 
+                                             selector:@selector(displayPauseButton:) 
+                                                 name:@"appPlaying" 
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self 
+                                             selector:@selector(displayPlayButton:) 
+                                                 name:@"appPaused" 
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self 
+                                             selector:@selector(displayPauseButton:) 
+                                                 name:@"appResumed" 
+                                               object:nil];
 }
 
 
@@ -882,6 +902,17 @@
 											 selector:@selector(titleAvailable:) 
 												 name:@"titleAvailable" 
 											   object:nil];	
+    
+    AppData *app = [AppData get];
+    
+    if( [app isPaused] )
+        [toolbartop_ setItems:[NSArray arrayWithObjects:flexbeg_, prev_, fixedprev_,
+                               play_,  fixedplay_, next_, flexend_, nil]];
+    else {
+        [toolbartop_ setItems:[NSArray arrayWithObjects:flexbeg_, prev_, fixedprev_,
+                               pause_,  fixedplay_, next_, flexend_, nil]];
+    }
+    
 	[self artworkReady:nil];
 }
 
@@ -914,14 +945,13 @@
 {
 }
 
+
 -(IBAction) play:(id)sender
 {
 	AppData *app = [AppData get];
 
-	if( paused_ ) {
+	if( [app isPaused] ) {
 		[app resume];
-		[toolbartop_ setItems:[NSArray arrayWithObjects:flexbeg_, prev_, fixedprev_,
-							pause_,  fixedplay_, next_, flexend_, nil]];
 	}
     else {
 		int index = [app currentTrackIndex_];
@@ -930,10 +960,12 @@
 	}
 }
 
+
 -(IBAction) next:(id)sender
 {
     [self nextTrack];
 }
+
 
 -(IBAction) prev:(id)sender
 {
@@ -941,12 +973,26 @@
 }
 
 
+
+- (void) displayPlayButton:(id) sender
+{
+    [toolbartop_ setItems:[NSArray arrayWithObjects:flexbeg_, prev_, fixedprev_,
+                           play_,  fixedplay_, next_, flexend_, nil]];
+}
+
+
+- (void) displayPauseButton:(id) sender
+{
+    printf(" hhhh\n");
+    [toolbartop_ setItems:[NSArray arrayWithObjects:flexbeg_, prev_, fixedprev_,
+                           pause_,  fixedplay_, next_, flexend_, nil]];
+}
+
+
 -(IBAction) pause:(id)sender
 {
 	paused_ = true;
-	
-	[toolbartop_ setItems:[NSArray arrayWithObjects:flexbeg_, prev_, fixedprev_,
-						play_,  fixedplay_, next_, flexend_, nil]];
+
 	[[AppData get] pause];
 	//[[AppData get] stop];
 }

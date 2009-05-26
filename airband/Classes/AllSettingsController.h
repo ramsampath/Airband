@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "LoadingView.h"
 
 @interface AllSettingsController : UIViewController<UITextFieldDelegate>
 {	
@@ -20,6 +21,8 @@
 	IBOutlet UISwitch     *autologin_;
 	
 	NSTimer  *timeout_;
+    
+    LoadingView           *loadingView_;
 }
 
 - (IBAction) loginAction:(id)sender;

@@ -293,14 +293,21 @@
 		return;
 	}
 	
-	artistList_ = nil;		
+	artistList_ = nil;	
 	
-	/*
-	[[NSNotificationCenter defaultCenter] addObserver:self 
-                                            selector:@selector(artistListReady:) 
-                                            name:@"artistListReady" 
-                                            object:nil];
+    //
+    // if artistlist is not yet avaliable request the artist list
+    //
+    if( !fullList ) {
+        loadingView_ = [LoadingView loadingViewInView:self.view loadingText:@"Loading Artists..."];
 
+    
+        [[NSNotificationCenter defaultCenter] addObserver:self 
+                                                 selector:@selector(artistListReady:) 
+                                                     name:@"artistListReady" 
+                                                   object:nil];
+    }
+/*
 	UIView *v = self.view;
 	activity_ = [[UIActivityIndicatorView alloc] 
                  initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
@@ -396,7 +403,8 @@
 	
 	//[self shuffle];
     [self reload];
-	[activity_ stopAnimating];	
+
+    [loadingView_ removeView];
 }
 
 

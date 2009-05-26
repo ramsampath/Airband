@@ -97,6 +97,8 @@
 
 - (void) playListsReady:(id)object
 {
+    [loadingView_ removeView];
+    
 	AppData *app = [AppData get];
 	int num = [app.playLists_ count];
 
@@ -129,6 +131,8 @@
 
 	UINavigationBar *bar = [self navigationController].navigationBar;
 	bar.barStyle         = UIBarStyleBlackOpaque;
+    
+    loadingView_ = [LoadingView loadingViewInView:self.view loadingText:@"Loading Playlists..."];
 	
 	AppData *app = [AppData get];
 	[app getPlayListsAsync];

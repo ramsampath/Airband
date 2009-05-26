@@ -200,27 +200,28 @@
 	textfield.delegate = self;
 	
 	UITableViewCell *tablecell = [[UITableViewCell alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 44.0) reuseIdentifier:(nil)];
-	tablecell.frame = CGRectMake(0.0, 0.0, 320.0, 44.0);
-	tablecell.accessoryType = UITableViewCellAccessoryNone;
-	tablecell.alpha = 1.000;
+	tablecell.frame            = CGRectMake(0.0, 0.0, 320.0, 44.0);
+	tablecell.accessoryType    = UITableViewCellAccessoryNone;
+	tablecell.alpha            = 1.000;
 	tablecell.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
-	tablecell.backgroundColor = [UIColor colorWithWhite:1.000 alpha:0.000];
+	tablecell.backgroundColor  = [UIColor colorWithWhite:1.000 alpha:0.000];
 	tablecell.clearsContextBeforeDrawing = NO;
-	tablecell.clipsToBounds = NO;
-	tablecell.contentMode = UIViewContentModeScaleToFill;
-	tablecell.hidden = NO;
+	tablecell.clipsToBounds   = NO;
+	tablecell.contentMode     = UIViewContentModeScaleToFill;
+	tablecell.hidden          = NO;
+    
 	tablecell.hidesAccessoryWhenEditing = YES;
-	tablecell.indentationLevel = 0;
-	tablecell.indentationWidth = 10.000;
-	tablecell.lineBreakMode = UILineBreakModeTailTruncation;
-	tablecell.multipleTouchEnabled = NO;
-	tablecell.opaque = NO;
-	tablecell.selectedTextColor = [UIColor colorWithWhite:1.000 alpha:1.000];
-	tablecell.selectionStyle = UITableViewCellSelectionStyleNone;
-	tablecell.showsReorderControl = NO;
-	tablecell.tag = 0;
-	tablecell.textAlignment = UITextAlignmentLeft;
-	tablecell.textColor = [UIColor colorWithWhite:0.000 alpha:1.000];
+	tablecell.indentationLevel          = 0;
+	tablecell.indentationWidth          = 10.000;
+	tablecell.lineBreakMode             = UILineBreakModeTailTruncation;
+	tablecell.multipleTouchEnabled      = NO;
+	tablecell.opaque                    = NO;
+	tablecell.selectedTextColor         = [UIColor colorWithWhite:1.000 alpha:1.000];
+	tablecell.selectionStyle            = UITableViewCellSelectionStyleNone;
+	tablecell.showsReorderControl       = NO;
+	tablecell.tag                       = 0;
+	tablecell.textAlignment             = UITextAlignmentLeft;
+	tablecell.textColor                 = [UIColor colorWithWhite:0.000 alpha:1.000];
 	
 	[tablecell addSubview:label];
 	[tablecell addSubview:textfield];
@@ -256,6 +257,19 @@
 	}
 }
 
+
+- (void)selectautologin:(id)sender
+{
+    UISegmentedControl *alcontrol = sender;
+	AppData *app = [AppData get];	
+    
+	if (alcontrol.selectedSegmentIndex == 1)  {
+        [app setAutoLogin_:true];
+    }
+    else {
+        [app setAutoLogin_:false];
+    }
+}
 
 -(UISegmentedControl *) create_streamingBitrateButtons
 {
@@ -298,6 +312,40 @@
 	
 	return sbrButtons;
 }
+
+
+-(UISegmentedControl *) create_autoLoginButtons
+{
+	NSArray *segmentTextContent = [NSArray arrayWithObjects: @"Off", @"On", nil];
+    
+	UISegmentedControl *alButtons = [[UISegmentedControl alloc] initWithItems:segmentTextContent];
+	
+	CGRect frame = CGRectMake( 127, 260, 180, 30);
+	
+	AppData *app = [AppData get];	
+    
+	alButtons.frame                 = frame;
+	alButtons.segmentedControlStyle = UISegmentedControlStyleBar;
+    
+	if( app != nil ) {
+		if( [app autoLogin_ ] ) {
+            alButtons.selectedSegmentIndex = 1;
+		}
+        else {
+            alButtons.selectedSegmentIndex = 0;
+        }
+
+	}
+    else
+        alButtons.selectedSegmentIndex = 1;
+	
+	alButtons.tintColor  = [UIColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:1.0];
+	
+	[alButtons addTarget:self action:@selector(selectautologin:) forControlEvents:UIControlEventValueChanged];
+	
+	return alButtons;
+}
+
 
 
 - (UIButton *)buttonWithTitle:	(NSString *)title
@@ -385,66 +433,87 @@
 // Implement loadView to create a view hierarchy programmatically, without using a nib.
 - (void)loadView
 {
-	self.title = NSLocalizedString(@"MP3tunes.COM", @"");
+	self.title = NSLocalizedString(@"Settings", @"");
 
 	table_ = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];
     table_.delegate   = self;
     table_.dataSource = self;
+    table_.backgroundColor       = [UIColor colorWithPatternImage:[UIImage imageNamed:@"LogoBkgrnd.png"]];
+
     //table_.sectionHeaderHeight = 20.0;
     //table_.rowHeight = 40.0;
     CGRect titleRect = CGRectMake( 0, 20, 300, 40 );
     UILabel *tableTitle = [[UILabel alloc] initWithFrame:titleRect];
 	
-    tableTitle.textColor = [UIColor blackColor];
+    tableTitle.textColor       = [UIColor whiteColor];
     tableTitle.backgroundColor = [UIColor clearColor];
-    tableTitle.opaque = YES;
-    tableTitle.font = [UIFont boldSystemFontOfSize:18];
-	tableTitle.textAlignment = UITextAlignmentCenter;
-    tableTitle.text = @"Login";
+    tableTitle.opaque          = YES;
+    tableTitle.font            = [UIFont boldSystemFontOfSize:18];
+	tableTitle.textAlignment   = UITextAlignmentCenter;
+    tableTitle.text            = @"Login";
 	
 	table_.tableHeaderView = tableTitle;
 	
-	CGRect loginframe = CGRectMake( 220.0, 310.0, 84.0, 37.0 );
+    /*
+	CGRect loginframe     = CGRectMake( 220.0, 310.0, 84.0, 37.0 );
 	UIButton *loginButton = [self create_ButtonWithImage:@"Login" frame:loginframe];
-	[loginButton addTarget:self action:@selector(login) forControlEvents:UIControlEventTouchUpInside];
+	[loginButton addTarget:self action:@selector(login:) 
+          forControlEvents:UIControlEventTouchUpInside];
 	
-	CGRect caframe = CGRectMake( 121.0, 310.0, 84.0, 37.0 );
+	CGRect caframe                = CGRectMake( 121.0, 310.0, 84.0, 37.0 );
 	UIButton *createAccountButton = [self create_ButtonWithImage:@"Create" frame:caframe];
-	[createAccountButton addTarget:self action:@selector(createAccount) forControlEvents:UIControlEventTouchUpInside];
+	[createAccountButton addTarget:self action:@selector(createAccount) 
+                  forControlEvents:UIControlEventTouchUpInside];
 
-	CGRect clearframe = CGRectMake( 15.0, 310, 84.0, 37.0 );
+	CGRect clearframe     = CGRectMake( 15.0, 310, 84.0, 37.0 );
 	UIButton *clearButton = [self create_ButtonWithImage:@"Clear" frame:clearframe];
-	[clearButton addTarget:self action:@selector(clearEverything) forControlEvents:UIControlEventTouchUpInside];
-
+	[clearButton addTarget:self action:@selector(clearEverything:) 
+          forControlEvents:UIControlEventTouchUpInside];
+    */
 	CGRect usernameframe     = CGRectMake( 20.0, 6.0, 214.0, 31.0 );
 	CGRect usernametextframe = CGRectMake( 120.0, 6.0, 214.0, 31.0 );
-	usernamecell_ = [self create_Cell:@"User Name:" frame:usernameframe textframe:usernametextframe index:0];
+	usernamecell_ = [self create_Cell:@"User Name:" 
+                                frame:usernameframe textframe:usernametextframe index:0];
 
 	CGRect passwordfieldframe = CGRectMake( 120.0, 6.0, 214.0, 31.0 );
 	CGRect passwordlabelframe = CGRectMake( 20.0, 6.0, 214.0, 31.0 );
-	passwordcell_ = [self create_Cell:@"Password:" frame:passwordlabelframe textframe:passwordfieldframe index:1];
+	passwordcell_ = [self create_Cell:@"Password:" frame:passwordlabelframe 
+                            textframe:passwordfieldframe index:1];
 	
 	UISegmentedControl *sbrButtons = [self create_streamingBitrateButtons];
-	UILabel *sbrLabel = [[[UILabel alloc] init] autorelease];
-    sbrLabel.frame = CGRectMake( 15, 200, 200, 30);
-	sbrLabel.textAlignment = UITextAlignmentLeft;
-    sbrLabel.text = @"Stream Rate";
-    sbrLabel.font = [UIFont boldSystemFontOfSize:14.0];
-    sbrLabel.textColor = [UIColor blackColor];
-    sbrLabel.backgroundColor = [UIColor clearColor];
+	UILabel *sbrLabel              = [[[UILabel alloc] init] autorelease];
+    sbrLabel.frame                 = CGRectMake( 15, 200, 200, 30);
+	sbrLabel.textAlignment         = UITextAlignmentLeft;
+    sbrLabel.text                  = @"Stream Rate";
+    sbrLabel.font                  = [UIFont boldSystemFontOfSize:14.0];
+    sbrLabel.textColor             = [UIColor whiteColor];
+    sbrLabel.backgroundColor       = [UIColor clearColor];
+    
+    UISegmentedControl *alButtons  = [self create_autoLoginButtons];
+    UILabel *alLabel               = [[[UILabel alloc] init] autorelease];
+    alLabel.frame                  = CGRectMake( sbrLabel.frame.origin.x, alButtons.frame.origin.y + 5, 
+                                                alButtons.frame.size.width, alButtons.frame.size.height );
+    alLabel.textAlignment          = UITextAlignmentLeft;
+    alLabel.text                   = @"Auto Login";
+    alLabel.font                   = [UIFont boldSystemFontOfSize:14.0];
+    alLabel.textColor              = [UIColor whiteColor];
+    alLabel.backgroundColor        = [UIColor clearColor];
 	
-	UIView *mainview = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 367.0)];
-	mainview.frame = CGRectMake(0.0, 0.0, 320.0, 367.0);
-	mainview.alpha = 1.000;
-	mainview.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
-	mainview.backgroundColor = [UIColor colorWithRed:0.549 green:0.549 blue:0.549 alpha:1.000];
+	UIView *mainview               = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 367.0)];
+	mainview.frame                 = CGRectMake(0.0, 0.0, 320.0, 367.0);
+	mainview.alpha                 = 1.000;
+	mainview.autoresizingMask      = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
+	//mainview.backgroundColor       = [UIColor colorWithRed:0.549 green:0.549 blue:0.549 alpha:1.000];
+    mainview.backgroundColor       = [UIColor colorWithPatternImage:[UIImage imageNamed:@"LogoBkgrnd.png"]];
+
 	mainview.clearsContextBeforeDrawing = YES;
-	mainview.clipsToBounds = NO;
-	mainview.contentMode = UIViewContentModeScaleToFill;
-	mainview.hidden = NO;
-	mainview.multipleTouchEnabled = NO;
-	mainview.opaque = YES;
-	mainview.tag = 0;
+	mainview.clipsToBounds              = NO;
+	mainview.contentMode                = UIViewContentModeScaleToFill;
+
+	mainview.hidden                 = NO;
+	mainview.multipleTouchEnabled   = NO;
+	mainview.opaque                 = YES;
+	mainview.tag                    = 0;
 	mainview.userInteractionEnabled = YES;
 	
     //[tableTitle release];
@@ -453,11 +522,14 @@
 	[table_ addSubview:passwordcell_];
 
 	[mainview addSubview:table_];
-	[mainview addSubview:clearButton];
-	[mainview addSubview:loginButton];
-	[mainview addSubview:createAccountButton];
+	//[mainview addSubview:clearButton];
+	//[mainview addSubview:loginButton];
+	//[mainview addSubview:createAccountButton];
 	[mainview addSubview:sbrButtons];
-	[mainview addSubview:sbrLabel];
+    [mainview addSubview:sbrLabel];
+
+    [mainview addSubview:alButtons];
+    [mainview addSubview:alLabel];
 	
 	
 	self.view = mainview;
