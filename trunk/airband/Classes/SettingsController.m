@@ -448,9 +448,9 @@
     tableTitle.textColor       = [UIColor whiteColor];
     tableTitle.backgroundColor = [UIColor clearColor];
     tableTitle.opaque          = YES;
-    tableTitle.font            = [UIFont boldSystemFontOfSize:18];
+    tableTitle.font            = [UIFont boldSystemFontOfSize:16];
 	tableTitle.textAlignment   = UITextAlignmentCenter;
-    tableTitle.text            = @"Login";
+    tableTitle.text            = @"mp3tunes.com";
 	
 	table_.tableHeaderView = tableTitle;
 	

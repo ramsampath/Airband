@@ -23,6 +23,7 @@
 	NSTimer  *timeout_;
     
     LoadingView           *loadingView_;
+    IBOutlet UILabel       *progressView_;
 }
 
 - (IBAction) loginAction:(id)sender;

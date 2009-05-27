@@ -78,7 +78,12 @@
     table_.tag = 0;
     table_.userInteractionEnabled = YES;
     
+    progressView_                 = [[UILabel alloc] initWithFrame:CGRectMake( 25, 150, 250, 100)];
+    progressView_.backgroundColor = [UIColor clearColor];
+    progressView_.alpha           = 1.0;
+    
     [mainview addSubview:table_];
+    [mainview addSubview:progressView_];
     
     self.view = mainview;
  
@@ -98,7 +103,8 @@
 - (void) playListsReady:(id)object
 {
     [loadingView_ removeView];
-    
+    [progressView_ removeFromSuperview];
+
 	AppData *app = [AppData get];
 	int num = [app.playLists_ count];
 
@@ -132,7 +138,7 @@
 	UINavigationBar *bar = [self navigationController].navigationBar;
 	bar.barStyle         = UIBarStyleBlackOpaque;
     
-    loadingView_ = [LoadingView loadingViewInView:self.view loadingText:@"Loading Playlists..."];
+    loadingView_ = [LoadingView loadingViewInView:progressView_ loadingText:@"Loading Playlists..."];
 	
 	AppData *app = [AppData get];
 	[app getPlayListsAsync];

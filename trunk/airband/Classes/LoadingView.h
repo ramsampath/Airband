@@ -13,6 +13,7 @@
 
 }
 
++ (id)loadingViewInView:(UIView *)aSuperview loadingText:(NSString *)ltext fontSize:(float) fontSize;
 + (id)loadingViewInView:(UIView *)aSuperview loadingText:(NSString *)ltext;
 - (void)removeView;
 

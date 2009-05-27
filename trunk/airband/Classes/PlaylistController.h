@@ -13,8 +13,9 @@
 
 @interface PlaylistController : UIViewController<UITableViewDelegate, UITableViewDataSource>
 {
-	IBOutlet  UITableView* table_;
-    LoadingView *loadingView_;
+	IBOutlet  UITableView  *table_;
+    LoadingView            *loadingView_;
+    UIView                 *progressView_;
 }
 
 @property (nonatomic, retain) UITableView* table_;

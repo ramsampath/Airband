@@ -44,6 +44,7 @@
 	//
 	
 	AllSettingsController *splash = [[AllSettingsController alloc] initWithNibName:@"Settings" bundle:nil];
+    //AllSettingsController *splash = [AllSettingsController alloc];
 	[window addSubview:splash.view];	
 	[window makeKeyAndVisible];
 }
