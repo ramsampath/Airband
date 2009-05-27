@@ -280,28 +280,35 @@
 {		
 	AppData *app      = [AppData get];
 	NSArray* fullList = app.fullArtistList_;
+    /*
 	if( fullList ) {
 		[self reload];
 	}
-
+    */
+    
 	UINavigationBar *bar          = [self navigationController].navigationBar;
 	bar.barStyle                  = UIBarStyleBlackOpaque;
     self.navigationItem.titleView = artistOrgControl_;	
     sectionBGImage_               = [UIImage imageNamed:@"greenbar.png"];
 	
+    /*
 	if( [artistList_ count] ) {
 		return;
 	}
 	
 	artistList_ = nil;	
-	
+	*/
+    
     //
     // if artistlist is not yet avaliable request the artist list
     //
     if( !fullList ) {
-        loadingView_ = [LoadingView loadingViewInView:self.view loadingText:@"Loading Artists..."];
-
-    
+        progressView_                 = [[UILabel alloc] initWithFrame:CGRectMake( 25, 150, 250, 100)];
+        progressView_.backgroundColor = [UIColor clearColor];
+        progressView_.alpha           = 1.0;
+        [self.view addSubview:progressView_];
+        loadingView_ = [LoadingView loadingViewInView:progressView_ loadingText:@"Loading Artists..."];
+        
         [[NSNotificationCenter defaultCenter] addObserver:self 
                                                  selector:@selector(artistListReady:) 
                                                      name:@"artistListReady" 
@@ -623,7 +630,7 @@
 	NSDictionary *d = [artistDisplayList_[sectionIndex] objectAtIndex:indexPath.row];
 	//PlaylistTracksController *traxcontroller = [[PlaylistTracksController alloc] 
     //                                            initWithNibName:@"PlaylistTracks" bundle:nil];
-    PlaylistTracksController *traxcontroller = [PlaylistTracksController alloc];
+    PlaylistTracksController *traxcontroller = [[PlaylistTracksController alloc] init];
 
 	traxcontroller.artist_ = d;
 	

@@ -338,7 +338,6 @@
 // additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad 
 {	
-    printf("load\n");
 	//[TODO] -- when more providers are available:
 	//load our data data from a plist file inside our app bundle
 	//NSString *path = [[NSBundle mainBundle] pathForResource:@"SettingsData" ofType:@"plist"];
