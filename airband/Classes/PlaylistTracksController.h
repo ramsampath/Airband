@@ -19,7 +19,7 @@
 	NSDictionary* albumtracks_;
     
     LoadingView *loadingView_;
-        
+    UIView      *progressView_;
 }
 
 @property (nonatomic, retain) UITableView* table_;

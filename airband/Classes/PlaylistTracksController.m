@@ -90,6 +90,8 @@
 - (void) newlistReady:(id)object
 {	
     [loadingView_ removeView];
+    [progressView_ removeFromSuperview];
+    
 	if( [table_ numberOfRowsInSection:0] ) {
 		[table_ reloadData];
 	} else {
@@ -123,8 +125,7 @@
 
 
 - (void)viewDidLoad 
-{	
-
+{
 	NSString *waitfor;
 	if( artist_ ) {
 		waitfor = @"albumListReady";
@@ -144,8 +145,13 @@
 
 	AppData *app = [AppData get];	
 	
+    progressView_                 = [[UILabel alloc] initWithFrame:CGRectMake( 25, 150, 250, 100)];
+    progressView_.backgroundColor = [UIColor clearColor];
+    progressView_.alpha           = 1.0;
+    [self.view addSubview:progressView_];
+    
 	if( artist_ ) {
-        loadingView_ = [LoadingView loadingViewInView:self.view loadingText:@"Loading Artist List..."]; 
+        loadingView_ = [LoadingView loadingViewInView:progressView_ loadingText:@"Loading Artist List..."]; 
         if( artist_ != @"" ) {
             NSString *req = [artist_ objectForKey:@"artistId"];
             [app getAlbumListAsync:req];
@@ -155,12 +161,12 @@
         }
 	} 
     else if( albumtracks_ ) {
-        loadingView_ = [LoadingView loadingViewInView:self.view loadingText:@"Loading Album Tracks..."]; 
+        loadingView_ = [LoadingView loadingViewInView:progressView_ loadingText:@"Loading Album Tracks..."]; 
 		NSString *req = [albumtracks_ objectForKey:@"albumId"];
 		[app getTrackListAsync:req];		
 	} 
     else if( playlist_ ) {
-        loadingView_ = [LoadingView loadingViewInView:self.view loadingText:@"Loading Playlist Tracks..."]; 
+        loadingView_ = [LoadingView loadingViewInView:progressView_ loadingText:@"Loading Playlist Tracks..."]; 
 		NSString *req = [playlist_ objectForKey:@"playlistId"];
 		NSString *enc = [req stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding];  //NSUTF8StringEncoding	
 		[app getPlayListTracksAsync:enc];		

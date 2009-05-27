@@ -335,6 +335,12 @@
 	[mainview addSubview:searchfield_];
 	[mainview addSubview:albumOrgControl_];
     
+    progressView_                 = [[UILabel alloc] initWithFrame:CGRectMake( 25, 150, 250, 100)];
+    progressView_.backgroundColor = [UIColor clearColor];
+    progressView_.alpha           = 1.0;
+    
+    [mainview addSubview:progressView_];
+    
     self.view = mainview;
 }
 
@@ -358,7 +364,7 @@
 	}
 	albumList_ = nil;				
 
-    loadingView_ = [LoadingView loadingViewInView:self.view loadingText:@"Loading Albums..."];
+    loadingView_ = [LoadingView loadingViewInView:progressView_ loadingText:@"Loading Albums..."];
 	
     self.navigationItem.titleView = albumOrgControl_;
     
@@ -446,6 +452,8 @@
 	
     [self reload];
     [loadingView_ removeView];
+    
+    [progressView_ removeFromSuperview];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
