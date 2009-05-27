@@ -17,7 +17,6 @@
 @synthesize artist_;
 @synthesize albumtracks_;
 
-
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil 
 {
 	if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
@@ -27,6 +26,15 @@
 	}
 
 	return self;
+}
+
+
+- (id) init
+{
+    loadingView_ = nil;
+    progressView_ = nil;
+    
+    return self;
 }
 
 /* Implement loadView if you want to create a view hierarchy programmatically
@@ -83,14 +91,15 @@
     
     [mainview addSubview:table_];
     
+
+    
     self.view = mainview;
 }
 
 
 - (void) newlistReady:(id)object
-{	
+{
     [loadingView_ removeView];
-    [progressView_ removeFromSuperview];
     
 	if( [table_ numberOfRowsInSection:0] ) {
 		[table_ reloadData];
@@ -145,11 +154,19 @@
 
 	AppData *app = [AppData get];	
 	
-    progressView_                 = [[UILabel alloc] initWithFrame:CGRectMake( 25, 150, 250, 100)];
+    if( progressView_ ) {
+        [progressView_ removeFromSuperview];
+        [progressView_ release];
+    }
+    
+    progressView_                 = [[[UILabel alloc] initWithFrame:CGRectMake( 25, 150, 250, 100)] retain];
     progressView_.backgroundColor = [UIColor clearColor];
     progressView_.alpha           = 1.0;
     [self.view addSubview:progressView_];
     
+    if( loadingView_ ) [loadingView_ release];
+    loadingView_ = nil;
+
 	if( artist_ ) {
         loadingView_ = [LoadingView loadingViewInView:progressView_ loadingText:@"Loading Artist List..."]; 
         if( artist_ != @"" ) {
