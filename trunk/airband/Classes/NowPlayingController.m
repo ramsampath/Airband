@@ -573,7 +573,7 @@
     if( image ) {
 		[UIView beginAnimations:nil context:NULL];
 		[UIView setAnimationDuration:1];
-		[UIView setAnimationTransition:UIViewAnimationTransitionFlipFromLeft forView:albumcoverview_ cache:YES];
+		[UIView setAnimationTransition:UIViewAnimationTransitionFlipFromLeft forView:albumcovertracksview_ cache:YES];
 
         albumcoverview_.image = image;		
 
@@ -983,7 +983,6 @@
 
 - (void) displayPauseButton:(id) sender
 {
-    printf(" hhhh\n");
     [toolbartop_ setItems:[NSArray arrayWithObjects:flexbeg_, prev_, fixedprev_,
                            pause_,  fixedplay_, next_, flexend_, nil]];
 }

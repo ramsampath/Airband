@@ -30,6 +30,7 @@
 	BOOL searchActive_;
     
     LoadingView *loadingView_;
+    UIView      *progressView_;
 }
 
 
