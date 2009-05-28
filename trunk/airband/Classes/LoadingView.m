@@ -60,6 +60,8 @@ CGPathRef NewPathWithRoundRect(CGRect rect, CGFloat cornerRadius)
 
 @implementation LoadingView
 
+@synthesize loadingLabel_;
+
 //
 // loadingViewInView:
 //
@@ -73,77 +75,92 @@ CGPathRef NewPathWithRoundRect(CGRect rect, CGFloat cornerRadius)
 + (id)loadingViewInView:(UIView *)aSuperview loadingText:(NSString *)ltext fontSize:(float) fontSize
 {
 	LoadingView *loadingView =
-		[[[LoadingView alloc] initWithFrame:[aSuperview bounds]] retain];
-	if (!loadingView) {
+    [[[LoadingView alloc] initWithFrame:[aSuperview bounds] fontSize:fontSize] retain];
+	if( !loadingView ) {
 		return nil;
 	}
-	
-	loadingView.opaque = NO;
-	loadingView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-	[aSuperview addSubview:loadingView];
-
-	const CGFloat DEFAULT_LABEL_WIDTH  = 280.0;
-	const CGFloat DEFAULT_LABEL_HEIGHT = 50.0;
-	CGRect labelFrame = CGRectMake( 0, 0, DEFAULT_LABEL_WIDTH, DEFAULT_LABEL_HEIGHT );
-	UILabel *loadingLabel = [[[UILabel alloc] initWithFrame:labelFrame] autorelease];
-	loadingLabel.text            = NSLocalizedString( ltext, nil );
-	loadingLabel.textColor       = [UIColor whiteColor];
-	loadingLabel.backgroundColor = [UIColor clearColor];
-	loadingLabel.textAlignment   = UITextAlignmentCenter;
     
+    loadingView.loadingLabel_.text            = NSLocalizedString( ltext, nil );
+
     if( fontSize == 0 )
-        loadingLabel.font = [UIFont boldSystemFontOfSize:[UIFont labelFontSize]];
+        loadingView.loadingLabel_.font = [UIFont boldSystemFontOfSize:[UIFont labelFontSize]];
     else
-        loadingLabel.font = [UIFont boldSystemFontOfSize:fontSize];
-
-	loadingLabel.autoresizingMask =
-		UIViewAutoresizingFlexibleLeftMargin |
-		UIViewAutoresizingFlexibleRightMargin |
-		UIViewAutoresizingFlexibleTopMargin |
-		UIViewAutoresizingFlexibleBottomMargin;
-	
-	[loadingView addSubview:loadingLabel];
-
-	UIActivityIndicatorView *activityIndicatorView = [[[UIActivityIndicatorView alloc]
-                                                       initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite]
-                                                      autorelease];
-    activityIndicatorView.frame = CGRectMake( activityIndicatorView.frame.origin.x, 
-                                             activityIndicatorView.frame.origin.y,
-                                             20, 20 );
-	[loadingView addSubview:activityIndicatorView];
+        loadingView.loadingLabel_.font = [UIFont boldSystemFontOfSize:fontSize];
     
-	activityIndicatorView.autoresizingMask =
-		UIViewAutoresizingFlexibleLeftMargin |
-		UIViewAutoresizingFlexibleRightMargin |
-		UIViewAutoresizingFlexibleTopMargin |
-		UIViewAutoresizingFlexibleBottomMargin;
-	[activityIndicatorView startAnimating];
-	
-	CGFloat totalHeight = loadingLabel.frame.size.height + activityIndicatorView.frame.size.height;
-	labelFrame.origin.x = floor(0.5 * (loadingView.frame.size.width - DEFAULT_LABEL_WIDTH));
-	labelFrame.origin.y = floor(0.5 * (loadingView.frame.size.height - totalHeight));
-	loadingLabel.frame  = labelFrame;
-	
-	CGRect activityIndicatorRect = activityIndicatorView.frame;
+	loadingView.loadingLabel_.autoresizingMask =
+    UIViewAutoresizingFlexibleLeftMargin |
+    UIViewAutoresizingFlexibleRightMargin |
+    UIViewAutoresizingFlexibleTopMargin |
+    UIViewAutoresizingFlexibleBottomMargin;
 
-	activityIndicatorRect.origin.x =
-		0.5 * (loadingView.frame.size.width - activityIndicatorRect.size.width);
-    if( fontSize == 0 )
-        activityIndicatorRect.origin.y =
-		loadingLabel.frame.origin.y + loadingLabel.frame.size.height;
-    else {
-        activityIndicatorRect.origin.y =
-		loadingLabel.frame.origin.y + loadingLabel.frame.size.height * fontSize/16.0;
-    }
-	activityIndicatorView.frame = activityIndicatorRect;
-	
 	// Set up the fade-in animation
 	CATransition *animation = [CATransition animation];
 	[animation setType:kCATransitionFade];
 	[[aSuperview layer] addAnimation:animation forKey:@"layerAnimation"];
 	
+    [aSuperview addSubview:loadingView];
+
 	return loadingView;
 }
+
+- (id) initWithFrame:(CGRect) frame fontSize:(float)fontSize
+{
+    [super initWithFrame:frame];
+    
+	self.opaque = NO;
+	self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    
+	const CGFloat DEFAULT_LABEL_WIDTH  = 280.0;
+	const CGFloat DEFAULT_LABEL_HEIGHT = 50.0;
+	CGRect labelFrame = CGRectMake( 0, 0, DEFAULT_LABEL_WIDTH, DEFAULT_LABEL_HEIGHT );
+	loadingLabel_ = [[[UILabel alloc] initWithFrame:labelFrame] retain];
+	loadingLabel_.textColor       = [UIColor whiteColor];
+	loadingLabel_.backgroundColor = [UIColor clearColor];
+	loadingLabel_.textAlignment   = UITextAlignmentCenter;
+    
+ 
+	
+	[self addSubview:loadingLabel_];
+    
+	 activityIndicatorView_ = [[[UIActivityIndicatorView alloc]
+                                                       initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite]
+                                                      retain];
+    activityIndicatorView_.frame = CGRectMake( activityIndicatorView_.frame.origin.x, 
+                                             activityIndicatorView_.frame.origin.y,
+                                             20, 20 );
+	[self addSubview:activityIndicatorView_];
+    
+	activityIndicatorView_.autoresizingMask =
+    UIViewAutoresizingFlexibleLeftMargin |
+    UIViewAutoresizingFlexibleRightMargin |
+    UIViewAutoresizingFlexibleTopMargin |
+    UIViewAutoresizingFlexibleBottomMargin;
+	[activityIndicatorView_ startAnimating];
+	
+	CGFloat totalHeight = loadingLabel_.frame.size.height + activityIndicatorView_.frame.size.height;
+	labelFrame.origin.x = floor(0.5 * (self.frame.size.width - DEFAULT_LABEL_WIDTH));
+	labelFrame.origin.y = floor(0.5 * (self.frame.size.height - totalHeight));
+	loadingLabel_.frame  = labelFrame;
+	
+	CGRect activityIndicatorRect = activityIndicatorView_.frame;
+    
+	activityIndicatorRect.origin.x =
+    0.5 * (self.frame.size.width - activityIndicatorRect.size.width);
+
+    if( fontSize == 0 )
+        activityIndicatorRect.origin.y =
+		loadingLabel_.frame.origin.y + loadingLabel_.frame.size.height;
+    else {
+        activityIndicatorRect.origin.y =
+		loadingLabel_.frame.origin.y + self.frame.size.height * fontSize/16.0;
+    }
+    
+	activityIndicatorView_.frame = activityIndicatorRect;
+    
+    return self;
+}
+
+
 
 //
 // removeView
@@ -201,6 +218,10 @@ CGPathRef NewPathWithRoundRect(CGRect rect, CGFloat cornerRadius)
 //
 - (void)dealloc
 {
+    
+    [loadingLabel_ dealloc];
+    [activityIndicatorView_ dealloc];
+
     [super dealloc];
 }
 

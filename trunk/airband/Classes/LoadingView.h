@@ -10,11 +10,17 @@
 
 @interface LoadingView : UIView
 {
-
+    UILabel *loadingLabel_;
+    UIActivityIndicatorView *activityIndicatorView_;
 }
 
 + (id)loadingViewInView:(UIView *)aSuperview loadingText:(NSString *)ltext fontSize:(float) fontSize;
 + (id)loadingViewInView:(UIView *)aSuperview loadingText:(NSString *)ltext;
 - (void)removeView;
+- (id) initWithFrame:(CGRect) frame fontSize:(float)fontSize;
+
+
+@property (readonly) UILabel* loadingLabel_;
+
 
 @end

@@ -618,12 +618,12 @@
 
 - (void) trackListReady:(id)object
 {
-    AppData *app = [AppData get];
+    //AppData *app = [AppData get];
     
 
-    NSDictionary *d = [app.trackList_ objectAtIndex:0];
+    //NSDictionary *d = [app.trackList_ objectAtIndex:0];
 
-    [app playTrack:d];
+    //[app playTrack:d];
 
     return;
 }
@@ -689,14 +689,15 @@
     
     [self navigationController].navigationBarHidden = FALSE;
     
-    NSString *req = [d objectForKey:@"albumId"];
-    [app getTrackListAsync:req];
+    //NSString *req = [d objectForKey:@"albumId"];
+    //[app getTrackListAsync:req];
     
+    /*
     [[NSNotificationCenter defaultCenter] addObserver:self 
 											 selector:@selector(trackListReady:) 
 												 name:@"trackListReady" 
 											   object:nil];	
-	
+	*/
     
     
     [nowplayingVC setArtwork:nil];
@@ -759,7 +760,7 @@ tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 	sectionTitle.shadowColor     = [UIColor colorWithRed:.373 green:.141 blue:.024 alpha:1];
 	sectionTitle.shadowOffset    = CGSizeMake(0, 1);
 	if( searchActive_ ) {
-		sectionTitle.text		= [NSString stringWithFormat:@"search: %d items", [[albumActiveSections_ objectAtIndex:0] count]];
+		sectionTitle.text		= [NSString stringWithFormat:@"Search: %d items", [[albumActiveSections_ objectAtIndex:0] count]];
 	} else {
 		if( section < [albumSectionTitles_ count] ) 
 			sectionTitle.text        = [albumSectionTitles_ objectAtIndex:section];
@@ -818,7 +819,7 @@ tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPat
     
 	NSDictionary *artist;
 	for (artist in fullList) {
-		NSString *name = [artist objectForKey:@"artistName"];
+		NSString *name = [artist objectForKey:@"albumTitle"];
 		[savedAlbumList_ addObject:name];
 	}
     //[savedalbumList_ addObjectsFromArray: fullList];
@@ -864,7 +865,7 @@ tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPat
     
 	NSDictionary *artist;
 	for (artist in fullList) {
-		NSString *name = [artist objectForKey:@"artistName"];
+		NSString *name = [artist objectForKey:@"albumTitle"];
 		NSRange r = [name rangeOfString:searchText options:NSCaseInsensitiveSearch];
 		if( r.location == NSNotFound || r.length == 0 )
 			continue;
@@ -923,7 +924,7 @@ tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPat
 	
 	NSDictionary *artist;
 	for (artist in fullList) {
-		NSString *name = [artist objectForKey:@"artistName"];
+		NSString *name = [artist objectForKey:@"albumTitle"];
 		NSRange r = [name rangeOfString:search options:NSCaseInsensitiveSearch];
 		if( r.location == NSNotFound || r.length == 0 )
 			continue;

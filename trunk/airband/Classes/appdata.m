@@ -197,7 +197,7 @@ static audiohelp_II *g_audio = nil;
 			CGImageRef        imageref = CGImageCreateWithJPEGDataProvider(provider, NULL, true, kCGRenderingIntentDefault);						
 			if( imageref )
 			{
-				CGImageRetain(imageref);			
+				CGImageRetain( imageref );			
 				[artwork_ release];
 				artwork_ = [[UIImage imageWithCGImage:imageref] retain];			
 				[[NSNotificationCenter defaultCenter] postNotificationName:@"artworkReady" object:artwork_];						

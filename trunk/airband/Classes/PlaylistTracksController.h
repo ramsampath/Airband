@@ -20,6 +20,8 @@
     
     LoadingView *loadingView_;
     UIView      *progressView_;
+    
+    bool         clearTable_;
 }
 
 @property (nonatomic, retain) UITableView* table_;

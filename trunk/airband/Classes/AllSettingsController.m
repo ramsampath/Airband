@@ -325,10 +325,10 @@
 	timeout_ = nil;
 	
 	[[[UIAlertView alloc] initWithTitle:@"Airband" 
-								message:@"Couldn't log in"
+								message:@"Login Timedout"
 							   delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
 	
-	status_.text = @"try again!";	
+	status_.text = @"Try Again!";	
 	
     [loadingView_ removeView];
 	[self prepForLogin];
@@ -425,18 +425,18 @@
 {
 	[activity_ startAnimating];
 	
-	timeout_ = [NSTimer scheduledTimerWithTimeInterval:(NSTimeInterval)10
+	timeout_ = [NSTimer scheduledTimerWithTimeInterval:(NSTimeInterval)15
 												target:self 
 											  selector:@selector(timerFireMethod:)
 											  userInfo:NULL repeats:NO ];	
 	
 	[UIView beginAnimations:nil context:NULL];
 	[UIView setAnimationDuration:2];
-	login_.alpha = .1;
-	create_.alpha  = .1;
-	password_.alpha = .1;
-	username_.alpha = .1;
-	autologin_.alpha = .1;
+	login_.alpha      = .1;
+	create_.alpha     = .1;
+	password_.alpha   = .1;
+	username_.alpha   = .1;
+	autologin_.alpha  = .1;
 	background_.alpha = 1;
 	[UIView commitAnimations];		
 	
@@ -512,7 +512,6 @@
 
 - (IBAction) loginAction:(id)sender
 {
-    printf("here\n");
 	[self goLogin];
 }
 

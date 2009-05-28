@@ -11,6 +11,7 @@
 #import "PlaylistTracksController.h"
 
 #import "appdata.h"
+#import "imgcache.h"
 
 @implementation UINavigationBar (UINavigationBarCategory)
 
@@ -361,21 +362,38 @@
 
     [toolbartop_ setItems:[NSArray arrayWithObjects: flexbeg_, prev_, fixedprev_, 
                            play_,  fixedplay_, next_, flexend_, nil]];
-    
     if( dict ) {
         dict_ = dict;
-		
-		// view loaded, queue up tracklist.
-		[[NSNotificationCenter defaultCenter] addObserver:self 
-												 selector:@selector(newlistReady:) 
-													 name:@"trackListReady"
-												   object:nil];	
-		
-		NSString *req = [dict_ objectForKey:@"albumId"];
-	
-		AppData *app = [AppData get];		
-		[app getTrackListAsync:req];				
-	}
+        
+        AppData *app = [AppData get];
+        //
+        // view loaded, queue up tracklist.
+        //
+        [[NSNotificationCenter defaultCenter] addObserver:self 
+                                                 selector:@selector(trackListReady:) 
+                                                     name:@"trackListReady"
+                                                   object:nil];	
+        
+        NSString *req = [dict_ objectForKey:@"albumId"];
+        [app getTrackListAsync:req];				
+        
+        //
+        // setup the progress view
+        //
+        if( progressView_ ) {
+            [progressView_ removeFromSuperview];
+            [progressView_ release];
+        }
+        
+        progressView_                 = [[[UILabel alloc] initWithFrame:CGRectMake( 30, 100, 250, 100)] retain];
+        progressView_.backgroundColor = [UIColor clearColor];
+        progressView_.alpha           = 1.0;
+        [self.view addSubview:progressView_];
+        
+        if( loadingView_ ) [loadingView_ release];
+        loadingView_ = nil;
+        loadingView_ = [LoadingView loadingViewInView:progressView_ loadingText:@"Loading Track List..."]; 
+    }
 }
 
 - (void) viewDidDisappear
@@ -541,6 +559,8 @@
 	busyimg_.hidden = NO;
 	
     AppData *app = [AppData get];
+    if( !app ) return;
+    
 	[volume_ setValue:[app lastVolume_]];
 	
     CGRect r = CGRectMake( albumcoverview_.frame.origin.x, albumcoverview_.frame.origin.y, 
@@ -554,9 +574,8 @@
 	[mainview addSubview:progbar_];
 	[mainview addSubview:trackinfo_];
 	[mainview addSubview:busyimg_];
-    
-    emptyalbumartworkimage_ = [UIImage imageNamed:@"empty_album_art.png"];
 
+    emptyalbumartworkimage_ = [[app albumArtCache_] loadImage:@"empty_album_art.png"];
     self.view = mainview;	
     
     flipsideview_ = false;
@@ -607,12 +626,13 @@
 
 
 
-- (void) newlistReady:(id)object
+- (void) trackListReady:(id)object
 {			
+    [loadingView_ removeView];
+    
 	AppData *app = [AppData get];
 	int num = [app.trackList_ count];
-	if (!num) {
-		printf( "tracklist is empty\n" );
+	if( !num ) {
 		return;
 	}
 
@@ -633,9 +653,9 @@
 
 	[self next:nil];
 	
-	[[[UIAlertView alloc] initWithTitle:@"airBand" 
+	[[[UIAlertView alloc] initWithTitle:@"Airband" 
 								message:@"Problem w/ track, skipping..."
-							   delegate:nil cancelButtonTitle:@"ok" otherButtonTitles:nil] show];	
+							   delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];	
 }
 
 
@@ -647,6 +667,7 @@
 
 	[volume_ setValue:[app lastVolume_]];
 	
+
 
    	// setup timer.
 	if( 1 )
