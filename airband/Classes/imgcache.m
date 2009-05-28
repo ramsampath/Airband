@@ -128,6 +128,7 @@
     }
     else {
         UIImage *img = [UIImage imageNamed:imagename];
+        [cache_ setObject:img forKey:imagename];
         return img;
     }
     

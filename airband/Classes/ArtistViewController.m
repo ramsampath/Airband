@@ -692,7 +692,7 @@ tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 	sectionTitle.shadowColor     = [UIColor colorWithRed:.373 green:.141 blue:.024 alpha:1];
 	sectionTitle.shadowOffset    = CGSizeMake(0, 1);
 	if( searchActive_ ) {
-		sectionTitle.text		= [NSString stringWithFormat:@"search: %d items", [[artistActiveSections_ objectAtIndex:0] count]];
+		sectionTitle.text		= [NSString stringWithFormat:@"Search: %d items", [[artistActiveSections_ objectAtIndex:0] count]];
 	} else {
 		if( section < [artistSectionTitles_ count] ) 
 			sectionTitle.text        = [artistSectionTitles_ objectAtIndex:section];

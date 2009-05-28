@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "TracklistView.h"
+#import "LoadingView.h"
 
 @interface VolumeKnob: UIView
 {
@@ -81,6 +82,10 @@
 	
 	bool                      paused_;
     bool                      flipsideview_;
+    
+    // progress views
+    UIView                   *progressView_;
+    LoadingView              *loadingView_;
 }
 
 

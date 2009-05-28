@@ -9,6 +9,7 @@
 #import "TracklistView.h"
 #import "TracklistTableCell.h"
 #import "appdata.h"
+#import "imgcache.h"
 
 @implementation TracklistController
 
@@ -99,15 +100,17 @@
         label.backgroundColor  = [UIColor clearColor];
 		label.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | 
                                  UIViewAutoresizingFlexibleHeight; 
-        
+        /*
         if( [app currentTrackIndex_] == [indexPath row] ) {
-            UIImage *image = [[UIImage alloc] initWithContentsOfFile:@"speaker_loud.png"];
+            UIImage *image = [UIImage imageWithContentsOfFile:@"speaker_loud.png"];
             UIImageView *currentlyplayingview = [[UIImageView alloc] initWithImage:image];
             [image release];
             currentlyplayingview.frame = CGRectMake( 0, 0, 5, 5 );
             printf("adding current playing\n");
-            [label addSubview:currentlyplayingview];
+            [cell.contentView addSubview:currentlyplayingview];
+            [currentlyplayingview release];
         }
+         */
          
 		[cell.contentView addSubview:label]; 
 

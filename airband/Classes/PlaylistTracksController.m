@@ -31,8 +31,12 @@
 
 - (id) init
 {
-    loadingView_ = nil;
+    loadingView_  = nil;
     progressView_ = nil;
+    playlist_     = nil;
+    albumtracks_  = nil;
+    artist_       = nil;
+    clearTable_   = true;
     
     return self;
 }
@@ -100,6 +104,7 @@
 - (void) newlistReady:(id)object
 {
     [loadingView_ removeView];
+    clearTable_ = false;
     
 	if( [table_ numberOfRowsInSection:0] ) {
 		[table_ reloadData];
@@ -149,6 +154,7 @@
 												 name:waitfor 
 											   object:nil];	
 	
+
 	UINavigationBar *bar = [self navigationController].navigationBar;
 	bar.barStyle = UIBarStyleBlackOpaque;;
 
@@ -159,16 +165,21 @@
         [progressView_ release];
     }
     
-    progressView_                 = [[[UILabel alloc] initWithFrame:CGRectMake( 25, 150, 250, 100)] retain];
+    progressView_                 = [[[UILabel alloc] initWithFrame:CGRectMake( 25, 170, 250, 100)] retain];
     progressView_.backgroundColor = [UIColor clearColor];
     progressView_.alpha           = 1.0;
     [self.view addSubview:progressView_];
     
     if( loadingView_ ) [loadingView_ release];
     loadingView_ = nil;
+    
+    // 
+    // clear out all entries
+    //
+    [table_ reloadData];
 
 	if( artist_ ) {
-        loadingView_ = [LoadingView loadingViewInView:progressView_ loadingText:@"Loading Artist List..."]; 
+        loadingView_ = [LoadingView loadingViewInView:progressView_ loadingText:@"Loading Album List..."]; 
         if( artist_ != @"" ) {
             NSString *req = [artist_ objectForKey:@"artistId"];
             [app getAlbumListAsync:req];
@@ -354,11 +365,11 @@
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
 	AppData *app = [AppData get];		
-	if( playlist_ )
+	if( !clearTable_ && playlist_ )
 		return [app.currentTracklist_ count];
-	else if( artist_ )
+	else if( !clearTable_ && artist_ )
 		return [app.albumList_ count];	
-	else if( albumtracks_ )
+	else if( !clearTable_ && albumtracks_ )
 		return [app.trackList_ count];
 	
 	return 0;
