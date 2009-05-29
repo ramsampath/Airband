@@ -565,8 +565,12 @@
 
     //ciview.frame = CGRectMake( 0, 0, 34, 2*LABEL_HEIGHT + 4);
     //[cell addSubview:ciview];
-    //[ciview release];
-//	cell.image = [[UIImage imageNamed:@"empty_album_art.png"]];
+    
+    //
+    // [NOTE] the following is just a temp image till a more comprehensive 
+    // solution for the album art is worked out.
+    //
+	cell.image = [app.albumArtCache_ loadImage:@"music_note_gray.png"];
 	return cell;
 }
 
