@@ -41,6 +41,8 @@
 	int bitRate_;
 	// the index of the current track playing
 	int currentTrackIndex_;
+    // the index in the album of the current track (from mp3tunes.com)
+    int currentAlbumTrackIndex_;
     
     bool autoLogin_;
     
@@ -62,13 +64,14 @@
 @property (readonly) NSString* currentTrackTitle_;
 @property (readonly) NSString* currentArtist_;
 @property (readonly) NSString* currentAlbum_;
-@property (readonly) float currentTrackLength_;
-@property (readonly) float currentTrackFileSize_;
-@property (assign)   int currentTrackIndex_;
-@property (readonly) int bitRate_;
+@property (readonly)  float currentTrackLength_;
+@property (readonly)  float currentTrackFileSize_;
+@property (readonly)  int currentAlbumTrackIndex_;
+@property (readwrite) int currentTrackIndex_;
+@property (readonly)  int bitRate_;
 @property (readwrite) float lastVolume_;
 @property (readwrite) bool autoLogin_;
-@property (readonly) imagecache* albumArtCache_;
+@property (readonly)  imagecache* albumArtCache_;
 
 - (NSString*) createAccount:(NSDictionary*)userinfo;
 - (void) restoreState;

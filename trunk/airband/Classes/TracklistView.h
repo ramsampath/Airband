@@ -15,6 +15,7 @@
 }
 
 -(void) didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
+-(void) highlightTrack:(int) tracknum;
 
 //@property(readonly) UITableView *table_;
 
