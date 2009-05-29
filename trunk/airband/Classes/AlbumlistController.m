@@ -29,6 +29,9 @@
 	NSDictionary	*dataDictionary;
 	UILabel			*nameLabel;
 	UILabel			*trackcountLabel;
+    UIImageView     *albumartView;
+    
+    NSMutableDictionary *albumartViewmap_;
 }
 
 @property (nonatomic, retain) NSDictionary *dataDictionary;
@@ -62,10 +65,10 @@
         // album artwork
         //
 
-        UIImageView *ciview = [[UIImageView alloc] initWithImage:albumart];
-        ciview.frame = CGRectMake( 0, 0, 34, 2*LABEL_HEIGHT  );
-        [self.contentView addSubview:ciview];
-                
+        albumartView = [[[UIImageView alloc] initWithImage:albumart] retain];
+        albumartView.frame = CGRectMake( 0, 0, 34, 2*LABEL_HEIGHT  );
+        [self.contentView addSubview:albumartView];
+
         //
         // Create the label for the top row of text
         //
@@ -76,10 +79,10 @@
         nameLabel = [[[UILabel alloc]
                      initWithFrame:
                      CGRectMake(
-                                ciview.frame.size.width + 2.0 * self.indentationWidth,
+                                albumartView.frame.size.width + 2.0 * self.indentationWidth,
                                 0.5 * (aTableView.rowHeight - 2 * LABEL_HEIGHT),
                                 aTableView.bounds.size.width -
-                                ciview.frame.size.width - 4.0 * self.indentationWidth
+                                albumartView.frame.size.width - 4.0 * self.indentationWidth
                                 - indicatorImage.size.width,
                                 LABEL_HEIGHT)] retain];
         
@@ -100,10 +103,10 @@
         //
         trackcountLabel = [[[UILabel alloc] initWithFrame:
                             CGRectMake(
-                                       ciview.frame.size.width + 2.0 * self.indentationWidth,
+                                       albumartView.frame.size.width + 2.0 * self.indentationWidth,
                                        0.5 * (aTableView.rowHeight - 2 * LABEL_HEIGHT) + LABEL_HEIGHT,
                                        aTableView.bounds.size.width -
-                                       ciview.frame.size.width - 4.0 * self.indentationWidth
+                                       albumartView.frame.size.width - 4.0 * self.indentationWidth
                                        - indicatorImage.size.width,
                                        LABEL_HEIGHT)] retain];
         
@@ -120,13 +123,16 @@
         trackcountLabel.font                 = [UIFont systemFontOfSize:[UIFont labelFontSize] - 2];
         
         self.backgroundView.alpha = 1.0;
-        
-        [ciview release];
+        //[indicatorImage release];
     }
     
 	return self;
 }
 
+-(void) setCellImage:(UIImage *)albumart
+{
+    albumartView.image = albumart;
+}
 
 
 
@@ -150,6 +156,8 @@
 
 - (void)dealloc
 {
+    [albumartView release];
+
 	[nameLabel       release];
 	[trackcountLabel release];
 	[dataDictionary  release];
@@ -452,9 +460,7 @@
 	
     [self reload];
     [loadingView_ removeView];
-    
-    [progressView_ removeFromSuperview];
-    
+        
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -780,16 +786,25 @@ tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 - (UITableViewCell*)
 tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSInteger row = indexPath.row;
-    NSInteger sec = indexPath.section;
-    NSString *cellIdentifier = [NSString stringWithFormat:@"%d%d", row, sec ];
-    AlbumCell *cell = (AlbumCell *)[tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-	if (cell == nil) {
-        AppData *app = [AppData get];
+    //NSInteger row = indexPath.row;
+    //NSInteger sec = indexPath.section;
+    //NSString *cellIdentifier = [NSString stringWithFormat:@"%d%d", row, sec ];
+    static NSString *CellIdentifier = kCellIdentifier;
+
+    AlbumCell *cell = (AlbumCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    AppData *app = [AppData get];
+
+	if( cell == nil ) {
         UIImage *image = [app.albumArtCache_ loadImage:@"empty_album_art.png"];
-        cell = [[AlbumCell alloc] initWithFrame:CGRectZero 
-                                reuseIdentifier:cellIdentifier tableView:tableView image:image];
+        cell = [[[AlbumCell alloc] initWithFrame:CGRectZero 
+                                reuseIdentifier:CellIdentifier tableView:tableView image:image] autorelease];
 	}
+    else {
+        // just update the earlier cell with the new values
+        UIImage *image = [app.albumArtCache_ loadImage:@"empty_album_art.png"];
+        [cell setCellImage:image];
+    }
+
 	
 	// get the view controller's info dictionary based on the indexPath's row
 	//cell.dataDictionary = [[albumList_ objectAtIndex:indexPath.row] retain];

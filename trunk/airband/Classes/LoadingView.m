@@ -152,7 +152,7 @@ CGPathRef NewPathWithRoundRect(CGRect rect, CGFloat cornerRadius)
 		loadingLabel_.frame.origin.y + loadingLabel_.frame.size.height;
     else {
         activityIndicatorRect.origin.y =
-		loadingLabel_.frame.origin.y + self.frame.size.height * fontSize/16.0;
+		loadingLabel_.frame.origin.y + self.frame.size.height * fontSize/18.0;
     }
     
 	activityIndicatorView_.frame = activityIndicatorRect;
@@ -218,9 +218,8 @@ CGPathRef NewPathWithRoundRect(CGRect rect, CGFloat cornerRadius)
 //
 - (void)dealloc
 {
-    
-    [loadingLabel_ dealloc];
-    [activityIndicatorView_ dealloc];
+    [loadingLabel_ release];
+    [activityIndicatorView_ release];
 
     [super dealloc];
 }
