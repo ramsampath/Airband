@@ -826,6 +826,8 @@
     [app setCurrentTrackIndex_:index];
     NSDictionary *d = [app.trackList_ objectAtIndex:index];
     
+    [tracklistview_ reloadData];
+
     [app playTrack:d];
 }
 
@@ -839,6 +841,8 @@
     
     [app setCurrentTrackIndex_:index];
     NSDictionary *d = [app.trackList_ objectAtIndex:index];
+    
+    [tracklistview_ reloadData];
     [app playTrack:d];
 }
 
@@ -1064,6 +1068,9 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
 {
+    AppData *app = [AppData get];
+    
+    [app setCurrentTrackIndex_:[indexPath row]];
     [tracklistview_ didSelectRowAtIndexPath:indexPath];
 }
 

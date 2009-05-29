@@ -323,7 +323,7 @@
         
         [self navigationController].navigationBarHidden = FALSE;
 
-		[app playTrack:d];
+		//[app playTrack:d];
 
 		[[self navigationController] pushViewController:nowplayingVC animated:YES];		
         [nowplayingVC setArtwork:nil];
@@ -346,7 +346,7 @@
         [self navigationController].navigationBarHidden = FALSE;
         
         
-		[app playTrack:d];
+		//[app playTrack:d];
 
 		[[self navigationController] pushViewController:nowplayingVC animated:YES];		
         [nowplayingVC setArtwork:nil];

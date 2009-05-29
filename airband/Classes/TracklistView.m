@@ -14,8 +14,6 @@
 @implementation TracklistController
 
 
-#define LABEL_TAG 1 
-#define VALUE_TAG 2 
 #define FIRST_CELL_IDENTIFIER @"TrailItemCell" 
 #define SECOND_CELL_IDENTIFIER @"RegularCell" 
 
@@ -63,6 +61,11 @@
 }
 
 
+- (void)highlightTrack:(int) tracknum
+{
+}
+
+
 -(NSInteger) numberOfSectionsInTableView
 {
 	return 1;
@@ -80,73 +83,17 @@
 
 -(UITableViewCell *) cellForRowAtIndexPath:(NSIndexPath *) indexPath
 {	
-	NSString *MyIdentifier = [NSString stringWithFormat:@"MyIdentifier %i", indexPath.row];
+	//NSString *MyIdentifier = [NSString stringWithFormat:@"MyIdentifier %i", indexPath.row];
 	
+    NSString *MyIdentifier = @"MyIdentifier";
+    
 	TracklistTableCell *cell = (TracklistTableCell *)[self dequeueReusableCellWithIdentifier:MyIdentifier];
-
-    AppData *app = [AppData get];
 
 	if (cell == nil) {
 		cell = [[[TracklistTableCell alloc] initWithFrame:CGRectZero reuseIdentifier:MyIdentifier] autorelease];
-		
-		UILabel *label = [[[UILabel	alloc] initWithFrame:CGRectMake(0.0, 0, 30.0, 
-														   self.rowHeight)] retain]; 
-		[cell addColumn:50];
-		label.tag              = LABEL_TAG; 
-		label.font             = [UIFont boldSystemFontOfSize:12];
-		label.text             = [NSString stringWithFormat:@"%d", indexPath.row + 1];
-		label.textAlignment    = UITextAlignmentRight; 
-		label.textColor        = [UIColor whiteColor];
-        label.backgroundColor  = [UIColor clearColor];
-		label.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | 
-                                 UIViewAutoresizingFlexibleHeight; 
-        /*
-        if( [app currentTrackIndex_] == [indexPath row] ) {
-            UIImage *image = [UIImage imageWithContentsOfFile:@"speaker_loud.png"];
-            UIImageView *currentlyplayingview = [[UIImageView alloc] initWithImage:image];
-            [image release];
-            currentlyplayingview.frame = CGRectMake( 0, 0, 5, 5 );
-            printf("adding current playing\n");
-            [cell.contentView addSubview:currentlyplayingview];
-            [currentlyplayingview release];
-        }
-         */
-         
-		[cell.contentView addSubview:label]; 
-
-        label =  [[[UILabel	alloc] initWithFrame:CGRectMake( 60.0, 0, 175.0, 
-															self.rowHeight ) ] retain]; 
-        [cell addColumn:250];
-		label.tag              = VALUE_TAG; 
-		label.font             = [UIFont boldSystemFontOfSize:12.0];
-		label.textAlignment    = UITextAlignmentLeft; 
-		label.textColor        = [UIColor whiteColor]; 
-        label.backgroundColor  = [UIColor clearColor];
-		label.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | 
-                                 UIViewAutoresizingFlexibleHeight; 
-		[cell.contentView addSubview:label]; 
-
-        NSDictionary *d        = [app.trackList_ objectAtIndex:[indexPath row]];
-        NSString *tracktitle   = [d objectForKey:@"trackTitle"];
-        label.text             = tracktitle;
-        
-        NSString *tracklength  = [d objectForKey:@"trackLength"];
-        float len  = [tracklength floatValue];
-        float sec  = (len/1000); // convert from ms to s
-        float min  = sec/60;
-        int   imin = (int)  min ;
-        float fsec  = (sec - imin*60) ;
-        int   isec = (int) floor( fsec );
-        label =  [[UILabel	alloc] initWithFrame:CGRectMake( 260.0, 0, 60.0, 
-															self.rowHeight )];
-        label.font            = [UIFont boldSystemFontOfSize:12.0];
-        label.textColor       = [UIColor whiteColor];
-        label.textAlignment   = UITextAlignmentLeft;
-        label.backgroundColor = [UIColor clearColor];
-        label.text            = [NSString stringWithFormat:@"%2d:%02d", imin, isec];
-        [cell.contentView addSubview:label];
 	}
 
+    [cell setTrackLabels:[indexPath row]];
 
 	return cell;
 }
@@ -155,11 +102,12 @@
 -(void) didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // play the track selected
-    AppData *app = [AppData get];
-    NSDictionary *d        = [app.trackList_ objectAtIndex:[indexPath row]];
+    AppData *app    = [AppData get];
+    NSDictionary *d = [app.trackList_ objectAtIndex:[indexPath row]];
 
     [app playTrack:d];
-    
+    [self reloadData];
+
     return;
 }
 

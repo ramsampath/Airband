@@ -665,7 +665,6 @@
 	//if( [albumList_ count] == 0 ) return;
     if( albumActiveSections_ == nil ) return;
     
-    AppData *app = [AppData get];
 	//NSDictionary *d = [albumList_ objectAtIndex:[indexPath row]];
     NSString *secTitle = [albumSectionTitles_ objectAtIndex:indexPath.section];
     
@@ -709,7 +708,6 @@
     [nowplayingVC setArtwork:nil];
     [[self navigationController] pushViewController:nowplayingVC animated:YES];		
     
-    [app setCurrentTrackIndex_:[indexPath row]];
     [nowplayingVC release];
 }
 

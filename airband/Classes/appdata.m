@@ -33,6 +33,7 @@ static audiohelp_II *g_audio = nil;
 @synthesize currentArtist_;
 @synthesize currentAlbum_;
 @synthesize currentTrackIndex_;
+@synthesize currentAlbumTrackIndex_;
 @synthesize currentTrackLength_;
 @synthesize currentTrackFileSize_;
 @synthesize bitRate_;
@@ -360,9 +361,12 @@ static audiohelp_II *g_audio = nil;
 	NSString *tracklen  = [track objectForKey:@"trackLength"];
 	NSString *album     = [track objectForKey:@"albumTitle"];
     NSString *artist    = [track objectForKey:@"artistName"];
+    NSString *tracknum  = [track objectForKey:@"trackNumber"];
     
-	currentTrackFileSize_ = [tracksize floatValue];
-	currentTrackLength_   = [tracklen floatValue];
+	currentTrackFileSize_   = [tracksize floatValue];
+	currentTrackLength_     = [tracklen floatValue];
+    currentAlbumTrackIndex_ = [tracknum intValue];
+    
 	if( !playfile ) {
 		[[[UIAlertView alloc] initWithTitle:@"Error w/ mp3tunes"
 									message:@"Couldn't get playfile" 
