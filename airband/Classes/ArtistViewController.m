@@ -712,9 +712,11 @@ tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 - (UITableViewCell*)
 tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSInteger row = indexPath.row;
-    NSInteger sec = indexPath.section;
-    NSString *cellIdentifier = [NSString stringWithFormat:@"%d%d", row, sec ];
+    //NSInteger row = indexPath.row;
+    //NSInteger sec = indexPath.section;
+    //NSString *cellIdentifier = [NSString stringWithFormat:@"%d%d", row, sec ];
+    NSString *cellIdentifier = kCellIdentifier;
+
     ArtistCell *cell = (ArtistCell *)[tableView dequeueReusableCellWithIdentifier:cellIdentifier];
 	if (cell == nil) {
         cell = [[[ArtistCell alloc] initWithFrame:CGRectZero 

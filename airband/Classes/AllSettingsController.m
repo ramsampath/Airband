@@ -154,7 +154,6 @@
     mainButton_.selected = NO;
     mainButton_.showsTouchWhenHighlighted = NO;
     mainButton_.tag = 0;
-    mainButton_.titleShadowOffset = CGSizeMake(0.0, 0.0);
     mainButton_.userInteractionEnabled = NO;
     [mainButton_ setTitleColor:[UIColor colorWithRed:1.000 green:1.000 blue:1.000 alpha:1.000] forState:UIControlStateNormal];
     [mainButton_ setTitleColor:[UIColor colorWithWhite:1.000 alpha:1.000] forState:UIControlStateHighlighted];
@@ -182,7 +181,6 @@
     createButton_.selected = NO;
     createButton_.showsTouchWhenHighlighted = NO;
     createButton_.tag = 0;
-    createButton_.titleShadowOffset = CGSizeMake(0.0, 0.0);
     createButton_.userInteractionEnabled = YES;
     [createButton_ setTitle:@"Create" forState:UIControlStateNormal];
     [createButton_ setTitleColor:[UIColor colorWithRed:1.000 green:1.000 blue:1.000 alpha:1.000] forState:UIControlStateHighlighted];

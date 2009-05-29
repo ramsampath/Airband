@@ -560,12 +560,12 @@
     //
     // replace the following with the album artwork
     //
-    UIImage *image = [app.albumArtCache_ loadImage:@"empty_album_art.png"];
-    UIImageView *ciview = [[UIImageView alloc] initWithImage:image];
-    [image release];
-    ciview.frame = CGRectMake( 0, 0, 34, 2*LABEL_HEIGHT + 4);
-    [cell addSubview:ciview];
-    [ciview release];
+    //UIImage *image = [app.albumArtCache_ loadImage:@"empty_album_art.png"];
+    //UIImageView *ciview = [[UIImageView alloc] initWithImage:image];
+
+    //ciview.frame = CGRectMake( 0, 0, 34, 2*LABEL_HEIGHT + 4);
+    //[cell addSubview:ciview];
+    //[ciview release];
 //	cell.image = [[UIImage imageNamed:@"empty_album_art.png"]];
 	return cell;
 }
