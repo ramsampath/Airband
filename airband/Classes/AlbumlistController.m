@@ -226,6 +226,8 @@
     activity_              = nil;
 	searchActive_          = FALSE;
     
+    shuffleview_           = FALSE;
+
     
     return self;
 }
@@ -260,9 +262,9 @@
 	mainview.userInteractionEnabled     = YES;
     mainview.backgroundColor            = [UIColor colorWithPatternImage:[UIImage imageNamed:@"LogoBkgrnd.png"]];
     albumOrgControl_                   = [[UISegmentedControl alloc] initWithItems:
-                                           [NSArray arrayWithObjects:@"Albums", nil]];
-	//[albumOrgControl_ addTarget:self action:@selector(artistOrgControlAction:) 
-      //          forControlEvents:UIControlEventValueChanged];
+                                           [NSArray arrayWithObjects:@"A-Z", @"Shuffle", nil]];
+	[albumOrgControl_ addTarget:self action:@selector(albumOrgControlAction:) 
+               forControlEvents:UIControlEventValueChanged];
 	albumOrgControl_.selectedSegmentIndex  = 0.0;	
 	albumOrgControl_.segmentedControlStyle = UISegmentedControlStyleBar;
     albumOrgControl_.tintColor             = [UIColor darkGrayColor];
@@ -273,8 +275,11 @@
     
 	UIColor *tablecolor = kBgColor;
     
+    float h = self.navigationController.navigationBar.bounds.size.height;
+
 	searchfield_ = [[UISearchBar alloc] init];
-	searchfield_.frame                  = CGRectMake( 0.0, 5.0, 320.0, 26.5 );
+	//searchfield_.frame                  = CGRectMake( 0.0, 5.0, 320.0, 26.5 );
+    searchfield_.frame                  = CGRectMake(0, h, 320, 30.0);
 	searchfield_.alpha                  = 1.000;
 	searchfield_.barStyle               = UIBarStyleBlackTranslucent;
 	searchfield_.backgroundColor        = kBgColor;
@@ -307,7 +312,8 @@
 	table_                                 = [[UITableView alloc] init];
     table_.delegate                        = self;
     table_.dataSource                      = self;
-	table_.frame                           = CGRectMake( 0.0, 40.5, 320.0, 450 );
+	//table_.frame                           = CGRectMake( 0.0, 40.5, 320.0, 450 );
+    table_.frame                           = CGRectMake(0, 0, 320, 480);
 	table_.allowsSelectionDuringEditing    = NO;
 	table_.alpha                           = 1.0;
 	table_.alwaysBounceHorizontal          = NO;
@@ -340,7 +346,7 @@
     table_.backgroundColor                 = [UIColor clearColor];
     
 	[mainview addSubview:table_];
-	[mainview addSubview:searchfield_];
+	//[mainview addSubview:searchfield_];
 	[mainview addSubview:albumOrgControl_];
     
     progressView_                 = [[UILabel alloc] initWithFrame:CGRectMake( 25, 150, 250, 100)];
@@ -355,6 +361,8 @@
 
 - (void)viewDidLoad
 {	
+    self.table_.tableHeaderView = searchfield_;
+
 	[[NSNotificationCenter defaultCenter] addObserver:self 
                                              selector:@selector(albumListReady:) 
                                                  name:@"albumListReady" 
@@ -496,16 +504,19 @@
 {
 	//[albumList_ release];
 	//albumList_ = [[NSMutableArray arrayWithCapacity:kMaxRows] retain];
+    shuffleview_ = TRUE;
+
     [albumList_ removeAllObjects];    // clear the filtered array first
     for( unsigned i = 0; i < 27; i++ ) {
         [albumDisplayList_[i] removeAllObjects];
     }
+    [albumActiveSections_ removeAllObjects];
     
     albumDisplayList_[ 0 ] = [[NSMutableArray arrayWithCapacity:kMaxRows] retain];
     
 	NSArray* fullList = fullAlbumList_;
 	int num = [fullList count];	
-	if( num>kMaxRows )
+	if( num > kMaxRows )
 		num = kMaxRows;
 	
 	srand48( [NSDate timeIntervalSinceReferenceDate] );
@@ -535,6 +546,8 @@
 		[self.table_ endUpdates];    			
 	}
     
+    [albumActiveSections_ addObject:albumDisplayList_[0]];
+    
     [indexPath      release];
     [shuffleIndices release];
     
@@ -544,6 +557,8 @@
 
 - (IBAction) reload 
 {
+    shuffleview_ = FALSE;
+
 	NSArray* fullList = fullAlbumList_;
     if( fullList == nil ) return;
     
@@ -643,6 +658,7 @@
 - (NSArray *) sectionIndexTitlesForTableView:(UITableView *) tableView 
 {
     return [NSMutableArray arrayWithObjects:
+            @"{search}",
             @"A", @"B", @"C", @"D", @"E", @"F",
             @"G", @"H", @"I", @"J", @"K", @"L",
             @"M", @"N", @"O", @"P", @"Q", @"R",
@@ -732,6 +748,8 @@ titleForHeaderInSection:(NSInteger) section
 - (NSInteger)
 numberOfSectionsInTableView:(UITableView *)tableView
 {
+    if( shuffleview_ ) return 1;
+    
     if( [albumSectionTitles_ count] == 0 )
         return 1;
     else if( searchActive_ )
@@ -741,6 +759,17 @@ numberOfSectionsInTableView:(UITableView *)tableView
     
     return 1;
 }
+
+- (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title 
+               atIndex:(NSInteger)index 
+{
+    if( index == 0 ) {
+        [tableView scrollRectToVisible:[[tableView tableHeaderView] bounds] animated:NO];
+        return -1;
+    }
+    return index  - 1;
+}
+
 
 - (NSInteger)
 tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -766,8 +795,12 @@ tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 	if( searchActive_ ) {
 		sectionTitle.text		= [NSString stringWithFormat:@"Search: %d items", [[albumActiveSections_ objectAtIndex:0] count]];
 	} else {
-		if( section < [albumSectionTitles_ count] ) 
-			sectionTitle.text        = [albumSectionTitles_ objectAtIndex:section];
+        if( shuffleview_ ) 
+            sectionTitle.text   = @"All Albums";
+        else {
+            if( section < [albumSectionTitles_ count] ) 
+                sectionTitle.text        = [albumSectionTitles_ objectAtIndex:section];
+        }
 	}
     
     UIImageView *sectionBG       = [[UIImageView alloc] initWithImage:sectionBGImage_];
@@ -830,9 +863,9 @@ tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPat
     // flush and save the current list content in case the user cancels the search later
     [savedAlbumList_ removeAllObjects];
     
-	NSDictionary *artist;
-	for (artist in fullList) {
-		NSString *name = [artist objectForKey:@"albumTitle"];
+	NSDictionary *album;
+	for( album in fullList ) {
+		NSString *name = [album objectForKey:@"albumTitle"];
 		[savedAlbumList_ addObject:name];
 	}
     //[savedalbumList_ addObjectsFromArray: fullList];
@@ -868,7 +901,10 @@ tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPat
 			}
 		}
 		[searchBar resignFirstResponder];
-		[self reload];
+        if( shuffleview_ )
+            [self shuffle];
+        else
+            [self reload];
 		return;
 	}
 	

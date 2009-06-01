@@ -37,6 +37,9 @@
 
     LoadingView                 *loadingView_;
     UIView                      *progressView_;
+    
+    bool                         shuffleview_;
+
 }
 
 @property (nonatomic, retain) UITableView* table_;

@@ -199,6 +199,7 @@
 	AppData *app = [AppData get];			
 	NSDictionary *d = [app.playLists_ objectAtIndex:[indexPath row]];
 	
+    /*
     PlaylistTracksController *traxcontroller = [[PlaylistTracksController alloc] init];
 
 	traxcontroller.playlist_ = d;
@@ -207,6 +208,19 @@
     
     
 	[[self navigationController] pushViewController:traxcontroller animated:YES];
+     */    
+    NowPlayingController *nowplayingVC = [[NowPlayingController alloc] init];
+    
+    [nowplayingVC setupnavigationitems:self.navigationItem 
+                                navBar:[self navigationController].navigationBar
+                              datadict:d];
+    //
+    // reset the artwork.
+    //
+    [nowplayingVC setArtwork:nil];
+
+    [self navigationController].navigationBarHidden = FALSE;
+    [[self navigationController] pushViewController:nowplayingVC animated:YES];
 }
 
 #pragma mark ------------------------------------------------

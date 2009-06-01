@@ -31,6 +31,8 @@
     
     LoadingView *loadingView_;
     UIView      *progressView_;
+    
+    bool         shuffleview_;
 }
 
 

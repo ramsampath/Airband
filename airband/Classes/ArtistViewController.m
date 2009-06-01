@@ -153,6 +153,7 @@
     activity_              = nil;
 	searchActive_ = FALSE;
 
+    shuffleview_ = FALSE;
     
     return self;
 }
@@ -187,7 +188,7 @@
 	mainview.userInteractionEnabled     = YES;
     mainview.backgroundColor            = [UIColor colorWithPatternImage:[UIImage imageNamed:@"LogoBkgrnd.png"]];
     artistOrgControl_                   = [[UISegmentedControl alloc] initWithItems:
-                                          [NSArray arrayWithObjects:@"Artists", nil]];
+                                          [NSArray arrayWithObjects:@"A-Z", @"Shuffle", nil]];
 	[artistOrgControl_ addTarget:self action:@selector(artistOrgControlAction:) 
                 forControlEvents:UIControlEventValueChanged];
 	artistOrgControl_.selectedSegmentIndex  = 0.0;	
@@ -198,43 +199,16 @@
     azsortbutton_ = [[UIBarButtonItem alloc] initWithCustomView:artistOrgControl_];	
 	[azsortbutton_ release];
     
-	UIColor *tablecolor = kBgColor;
+	UIColor *tablecolor                         = kBgColor;
 
-	searchfield_ = [[UISearchBar alloc] init];
-	searchfield_.frame                  = CGRectMake( 0.0, 5.0, 320.0, 26.5 );
-	searchfield_.alpha                  = 1.000;
-	searchfield_.barStyle               = UIBarStyleBlackTranslucent;
-	searchfield_.backgroundColor        = kBgColor;
-	searchfield_.autocapitalizationType = UITextAutocapitalizationTypeNone;
-	searchfield_.autocorrectionType     = UITextAutocorrectionTypeNo;
-	searchfield_.autoresizingMask       = UIViewAutoresizingFlexibleRightMargin | 
-                                          UIViewAutoresizingFlexibleBottomMargin;
-	searchfield_.placeholder            = @"search";
-	searchfield_.userInteractionEnabled = YES;
-
-    //
-	// don't get in the way of user typing
-    //
-    searchfield_.autocorrectionType     = UITextAutocorrectionTypeNo;
-    searchfield_.autocapitalizationType = UITextAutocapitalizationTypeNone;
-	searchfield_.tintColor              = kBgColor;
-    searchfield_.showsCancelButton      = NO;
-	searchfield_.delegate               = self;
-	UIView  *subView;
-	NSArray *subViews = [searchfield_ subviews];
-	for( subView in subViews ) {
-		if( [subView isKindOfClass:[UITextField class]] ) {
-			UITextField *tf                  = (UITextField*)subView;
-			tf.delegate                      = self;
-			tf.enablesReturnKeyAutomatically = NO;
-		}
-
-	}
 
 	artistTable_                                 = [[UITableView alloc] init];
     artistTable_.delegate                        = self;
     artistTable_.dataSource                      = self;
-	artistTable_.frame                           = CGRectMake( 0.0, 40.5, 320.0, 450 );
+	//artistTable_.frame                           = CGRectMake( 0.0, 40.5, 320.0, 450 );
+    float h = self.navigationController.navigationBar.bounds.size.height;
+
+    artistTable_.frame                           = CGRectMake( 0.0, 0.0, 320, 480 );
 	artistTable_.allowsSelectionDuringEditing    = NO;
 	artistTable_.alpha                           = 1.0;
 	artistTable_.alwaysBounceHorizontal          = NO;
@@ -267,9 +241,41 @@
     artistTable_.backgroundColor                 = [UIColor clearColor];
 
 
+    searchfield_ = [[UISearchBar alloc] init];
+	//searchfield_.frame                  = CGRectMake( 0.0, 5.0, 320.0, 26.5 );
+    searchfield_.frame                  = CGRectMake(0, h, 320, 30);
+	searchfield_.alpha                  = 1.000;
+	searchfield_.barStyle               = UIBarStyleBlackTranslucent;
+	searchfield_.backgroundColor        = kBgColor;
+	searchfield_.autocapitalizationType = UITextAutocapitalizationTypeNone;
+	searchfield_.autocorrectionType     = UITextAutocorrectionTypeNo;
+	searchfield_.autoresizingMask       = UIViewAutoresizingFlexibleRightMargin | 
+    UIViewAutoresizingFlexibleBottomMargin;
+	searchfield_.placeholder            = @"search";
+	searchfield_.userInteractionEnabled = YES;
+    
+    //
+	// don't get in the way of user typing
+    //
+    searchfield_.autocorrectionType     = UITextAutocorrectionTypeNo;
+    searchfield_.autocapitalizationType = UITextAutocapitalizationTypeNone;
+	searchfield_.tintColor              = kBgColor;
+    searchfield_.showsCancelButton      = NO;
+	searchfield_.delegate               = self;
+	UIView  *subView;
+	NSArray *subViews = [searchfield_ subviews];
+	for( subView in subViews ) {
+		if( [subView isKindOfClass:[UITextField class]] ) {
+			UITextField *tf                  = (UITextField*)subView;
+			tf.delegate                      = self;
+			tf.enablesReturnKeyAutomatically = NO;
+		}
+        
+	}
+    //[artistTable_ addSubview:searchfield_];
 
 	[mainview addSubview:artistTable_];
-	[mainview addSubview:searchfield_];
+	//[mainview addSubview:searchfield_];
 	[mainview addSubview:artistOrgControl_];
     
     self.view = mainview;
@@ -285,7 +291,8 @@
 		[self reload];
 	}
     */
-    
+    self.artistTable_.tableHeaderView = searchfield_;
+
 	UINavigationBar *bar          = [self navigationController].navigationBar;
 	bar.barStyle                  = UIBarStyleBlackOpaque;
     self.navigationItem.titleView = artistOrgControl_;	
@@ -342,7 +349,9 @@
 - (void)viewDidAppear:(BOOL)animated
 {
 	[self navigationController].navigationBarHidden = FALSE;
-    [self reload];
+    [self navigationController].navigationBar.barStyle = UIBarStyleBlackOpaque;
+    //[self reload];
+    [artistTable_ reloadData];
     
     AppData *app = [AppData get];
     if( [app isrunning] )
@@ -446,17 +455,20 @@
 {
 	//[artistList_ release];
 	//artistList_ = [[NSMutableArray arrayWithCapacity:kMaxRows] retain];
-    printf ("Shuffle\n");
+    shuffleview_ = TRUE;
+    
     [artistList_ removeAllObjects];    // clear the filtered array first
     for( unsigned i = 0; i < 27; i++ ) {
         [artistDisplayList_[i] removeAllObjects];
     }
+    [artistActiveSections_  removeAllObjects];
     
     artistDisplayList_[ 0 ] = [[NSMutableArray arrayWithCapacity:kMaxRows] retain];
 
 	AppData *app = [AppData get];
 	NSArray* fullList = app.fullArtistList_;
 	int num = [fullList count];	
+
 	if( num>kMaxRows )
 		num = kMaxRows;
 	
@@ -476,7 +488,7 @@
 		[artistDisplayList_[0] addObject:[fullList objectAtIndex:index]];	
 		[indexPath addObject:[NSIndexPath indexPathForRow:i inSection:0]];
 	}        
-
+    
 	if( [self.artistTable_ numberOfRowsInSection:0] ) {
 		[self.artistTable_ reloadData];
 	}
@@ -487,10 +499,11 @@
 		[self.artistTable_ endUpdates];    			
 	}
 
+    [artistActiveSections_ addObject: artistDisplayList_[0]];
+    [artistTable_ reloadData];
+    
     [indexPath      release];
     [shuffleIndices release];
-    
-    [self.artistTable_ reloadData];
 }
 
 
@@ -499,6 +512,9 @@
     
 	AppData *app = [AppData get];
 	NSArray* fullList = app.fullArtistList_;
+    
+    shuffleview_ = FALSE;
+    
     if( fullList == nil ) return;
     
 	int num = [fullList count];	
@@ -563,6 +579,7 @@
     
 	nowplayingVC.hidesBottomBarWhenPushed = TRUE;
 
+    
     [nowplayingVC setupnavigationitems:self.navigationItem 
                                 navBar:[self navigationController].navigationBar
                               datadict:nil];
@@ -585,7 +602,7 @@
 
 - (NSArray *) sectionIndexTitlesForTableView:(UITableView *) tableView 
 {
-    return [NSMutableArray arrayWithObjects:
+    return [NSMutableArray arrayWithObjects: @"{search}",
                       @"A", @"B", @"C", @"D", @"E", @"F",
                       @"G", @"H", @"I", @"J", @"K", @"L",
                       @"M", @"N", @"O", @"P", @"Q", @"R",
@@ -593,6 +610,15 @@
                       @"Y", @"Z", @"#", nil ];
 }
 
+- (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title 
+               atIndex:(NSInteger)index {
+    NSLog([NSString stringWithFormat:@"clicked index : %i",index]);
+    if (index == 0) {
+        [tableView scrollRectToVisible:[[tableView tableHeaderView] bounds] animated:NO];
+        return -1;
+    }
+    return index  - 1;
+}
 
 
 - (UITableViewCellAccessoryType)tableView:(UITableView *)tableView
@@ -662,6 +688,8 @@ titleForHeaderInSection:(NSInteger) section
 - (NSInteger)
 numberOfSectionsInTableView:(UITableView *)tableView
 {
+    if( shuffleview_ ) return 1;
+    
     if( [artistSectionTitles_ count] == 0 )
         return 1;
     else if( searchActive_ )
@@ -681,8 +709,8 @@ tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 }
 
 
-- (UIView *)tableView: (UITableView *)tableView viewForHeaderInSection: (NSInteger)section {
-	
+- (UIView *)tableView: (UITableView *)tableView viewForHeaderInSection: (NSInteger)section 
+{	
 	UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.bounds.size.width, 24)];
 
 	UILabel *sectionTitle = [[UILabel alloc] initWithFrame:CGRectMake(10, -1, tableView.bounds.size.width, 24)];
@@ -694,8 +722,12 @@ tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 	if( searchActive_ ) {
 		sectionTitle.text		= [NSString stringWithFormat:@"Search: %d items", [[artistActiveSections_ objectAtIndex:0] count]];
 	} else {
-		if( section < [artistSectionTitles_ count] ) 
-			sectionTitle.text        = [artistSectionTitles_ objectAtIndex:section];
+        if( shuffleview_ ) 
+            sectionTitle.text        = @"Random Artists";
+        else {
+            if( section < [artistSectionTitles_ count] ) 
+                sectionTitle.text        = [artistSectionTitles_ objectAtIndex:section];
+        }
 	}
     
     UIImageView *sectionBG       = [[UIImageView alloc] initWithImage:sectionBGImage_];
@@ -722,13 +754,13 @@ tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPat
         cell = [[[ArtistCell alloc] initWithFrame:CGRectZero 
 								  reuseIdentifier:cellIdentifier] autorelease];
 	}
-	
 	// get the view controller's info dictionary based on the indexPath's row
 	//cell.dataDictionary = [[artistList_ objectAtIndex:indexPath.row] retain];
-    if( artistActiveSections_ )
+    if( artistActiveSections_ ) {
         cell.dataDictionary = [[artistActiveSections_ 
                                 objectAtIndex:indexPath.section] 
                                objectAtIndex:indexPath.row];
+    }
 	return cell;
 }
 
@@ -788,7 +820,10 @@ tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPat
 			}
 		}
 		[searchBar resignFirstResponder];
-		[self reload];
+        if( shuffleview_ )
+            [self shuffle];
+        else
+            [self reload];
 		return;
 	}
 	
@@ -849,7 +884,7 @@ tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPat
 
 	NSString *search = searchfield_.text;
 	if( [search length] == 0 ) {
-		[self shuffle];
+		[self reload];
 		return;
 	}
 	

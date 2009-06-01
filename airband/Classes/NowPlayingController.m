@@ -374,8 +374,22 @@
                                                      name:@"trackListReady"
                                                    object:nil];	
         
+        [[NSNotificationCenter defaultCenter] addObserver:self 
+                                                 selector:@selector(playListTracksReady:) 
+                                                     name:@"playListTracksReady"
+                                                   object:nil];	
+        
         NSString *req = [dict_ objectForKey:@"albumId"];
-        [app getTrackListAsync:req];				
+        NSString *playlistid = [dict objectForKey:@"playlistId"];
+        
+        printf("pll: %s\n", [playlistid UTF8String]);
+        if( playlistid ) {
+            NSString *enc = [playlistid stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding];
+            [app getPlayListTracksAsync:enc];
+        }
+        else {
+            [app getTrackListAsync:req];
+        }
         
         //
         // setup the progress view
@@ -642,6 +656,23 @@
 }
 
 
+- (void) playListTracksReady:(id)object
+{			
+    [loadingView_ removeView];
+    
+	AppData *app = [AppData get];
+	int num = [app.currentTracklist_ count];
+	if( !num ) {
+		return;
+	}
+    
+    [app setCurrentTrackIndex_:0];
+    NSDictionary *d = [app.currentTracklist_ objectAtIndex:0];
+    [app playTrack:d];
+}
+
+
+
 
 -(void) connectionError:(id)object
 {
@@ -653,6 +684,7 @@
 
 	[self next:nil];
 	
+    [self displayPlayButton:nil];
 	[[[UIAlertView alloc] initWithTitle:@"Airband" 
 								message:@"Problem w/ track, skipping..."
 							   delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];	
