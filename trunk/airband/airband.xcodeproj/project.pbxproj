@@ -40,7 +40,7 @@
 		216256560F9F6AD500D21BFE /* airband_logo02.png in Resources */ = {isa = PBXBuildFile; fileRef = 216256520F9F6AD500D21BFE /* airband_logo02.png */; };
 		216256570F9F6AD500D21BFE /* airband_splash01.png in Resources */ = {isa = PBXBuildFile; fileRef = 216256530F9F6AD500D21BFE /* airband_splash01.png */; };
 		216256580F9F6AD500D21BFE /* airband_splash02.png in Resources */ = {isa = PBXBuildFile; fileRef = 216256540F9F6AD500D21BFE /* airband_splash02.png */; };
-		216256910F9F6B8900D21BFE /* AppIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 216256900F9F6B8900D21BFE /* AppIcon.png */; };
+		216B4E070FD1A79400D42BB8 /* AppIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 216B4E060FD1A79400D42BB8 /* AppIcon.png */; };
 		2179A83C0FCF3FEE00EF78E7 /* AsyncImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2179A83B0FCF3FEE00EF78E7 /* AsyncImageView.m */; };
 		2179A9E90FCF776200EF78E7 /* music_note_gray.png in Resources */ = {isa = PBXBuildFile; fileRef = 2179A9E80FCF776200EF78E7 /* music_note_gray.png */; };
 		217EE52E0FA6F95000C06684 /* LogoBkgrnd.png in Resources */ = {isa = PBXBuildFile; fileRef = 217EE52D0FA6F95000C06684 /* LogoBkgrnd.png */; };
@@ -138,7 +138,7 @@
 		216256520F9F6AD500D21BFE /* airband_logo02.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = airband_logo02.png; sourceTree = "<group>"; };
 		216256530F9F6AD500D21BFE /* airband_splash01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = airband_splash01.png; sourceTree = "<group>"; };
 		216256540F9F6AD500D21BFE /* airband_splash02.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = airband_splash02.png; sourceTree = "<group>"; };
-		216256900F9F6B8900D21BFE /* AppIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AppIcon.png; sourceTree = "<group>"; };
+		216B4E060FD1A79400D42BB8 /* AppIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AppIcon.png; sourceTree = "<group>"; };
 		2179A83A0FCF3FEE00EF78E7 /* AsyncImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AsyncImageView.h; sourceTree = "<group>"; };
 		2179A83B0FCF3FEE00EF78E7 /* AsyncImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AsyncImageView.m; sourceTree = "<group>"; };
 		2179A9E80FCF776200EF78E7 /* music_note_gray.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = music_note_gray.png; sourceTree = "<group>"; };
@@ -271,6 +271,7 @@
 				21FC356F0FBD131300F12B49 /* currently_playing_arrow.png */,
 				21E012690FBCA6D6006FD562 /* tracklist_background.png */,
 				21E012670FBCA6CD006FD562 /* yellow_bar.png */,
+				216B4E060FD1A79400D42BB8 /* AppIcon.png */,
 				21AD9B670FBA96E80036E91E /* volume_knob_bigger.png */,
 				21AD9B5C0FBA95460036E91E /* volume_knob_big.png */,
 				21AD9B4D0FBA93B00036E91E /* empty_album_art.png */,
@@ -301,7 +302,6 @@
 				21501AE30FA82CBC00C12314 /* icon_airbands.png */,
 				210C88960FA757C7001A66B1 /* Default.png */,
 				217EE52D0FA6F95000C06684 /* LogoBkgrnd.png */,
-				216256900F9F6B8900D21BFE /* AppIcon.png */,
 				21C3B2780F9D8E1D0059C2CE /* SpeakerLoud.tif */,
 				21C3B2790F9D8E1D0059C2CE /* SpeakerSoft.tif */,
 				216256510F9F6AD500D21BFE /* airband_logo01.png */,
@@ -503,7 +503,6 @@
 				216256560F9F6AD500D21BFE /* airband_logo02.png in Resources */,
 				216256570F9F6AD500D21BFE /* airband_splash01.png in Resources */,
 				216256580F9F6AD500D21BFE /* airband_splash02.png in Resources */,
-				216256910F9F6B8900D21BFE /* AppIcon.png in Resources */,
 				217EE52E0FA6F95000C06684 /* LogoBkgrnd.png in Resources */,
 				210C88970FA757C7001A66B1 /* Default.png in Resources */,
 				21501AE50FA82CBC00C12314 /* icon_settings.png in Resources */,
@@ -542,6 +541,7 @@
 				213AD7460FCBE4D50024081C /* icon_albums.png in Resources */,
 				213AD9350FCBEEFF0024081C /* loginbutton_bg.png in Resources */,
 				2179A9E90FCF776200EF78E7 /* music_note_gray.png in Resources */,
+				216B4E070FD1A79400D42BB8 /* AppIcon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

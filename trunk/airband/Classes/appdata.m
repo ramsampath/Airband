@@ -185,6 +185,12 @@ static audiohelp_II *g_audio = nil;
 	{
 		NSArray *a = [self parseItemList:data];
 		currentTracklist_ = a;
+        //
+        // [NOTE] the following added by ram to make the nowplaying display
+        // the playlist's tracks and not from the artist. - dont know if it will cause other problems
+        //
+        trackList_ = currentTracklist_;
+        // end of additions
 		//printf( "playlistTracks: %d items\n", [a count] );
 		//[self gotPlaylistTracks:a];
 		[[NSNotificationCenter defaultCenter] postNotificationName:@"playListTracksReady" object:nil];				
