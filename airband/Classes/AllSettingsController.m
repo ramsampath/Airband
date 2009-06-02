@@ -319,8 +319,11 @@
 	username_.enabled = TRUE;
 	password_.enabled = TRUE;
 	autologin_.enabled = TRUE;
+	username_.userInteractionEnabled = TRUE;
+	password_.userInteractionEnabled = TRUE;
+	login_.enabled = TRUE;
+	create_.enabled = TRUE;
 	
-
     
 	[UIView beginAnimations:nil context:NULL];
 	[UIView setAnimationDuration:6];
@@ -396,14 +399,24 @@
 
 - (void) loginFail:(id) unused
 {
-	[timeout_ invalidate];
-	timeout_ = nil;
-	status_.text = @"Login problems!";
+	AppData *app = [AppData get];		
 
-	[[[UIAlertView alloc] initWithTitle:@"Airband" 
-								message:@"Problem logging in"
-							   delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+	[timeout_ invalidate];
+	[app stop];
 	
+	timeout_ = nil;
+
+	NSString *signInProbs = @"Couldn't Sign In";
+	
+	// hack for too many messages...
+	if( ![status_.text isEqualToString:signInProbs] ) {
+		[[[UIAlertView alloc] initWithTitle:@"Airband" 
+									message:@"Problem signing in"
+								   delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+	}
+
+	status_.text = signInProbs;
+
     [loadingView_ removeView];
 	[self prepForLogin];
 }
@@ -457,6 +470,10 @@
 	
 	username_.enabled = FALSE;
 	password_.enabled = FALSE;	
+	username_.userInteractionEnabled = FALSE;
+	password_.userInteractionEnabled = FALSE;
+	login_.enabled = FALSE;
+	create_.enabled = FALSE;
 	
 	status_.text = @"Connecting...";
     
@@ -542,7 +559,14 @@
 
 - (BOOL)textFieldShouldReturn:(UITextField *)thetextField 
 {
-	[thetextField resignFirstResponder];
+	[thetextField resignFirstResponder];	
+
+	if( thetextField == username_ ) {
+		[password_ becomeFirstResponder];
+	} else {
+		[self goLogin];
+	}
+
 	return YES;
 }
 
