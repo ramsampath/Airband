@@ -156,11 +156,13 @@ static audiohelp_II *g_audio = nil;
 	}
 	else if( [which isEqualToString:@"artistList"] )
 	{
+		[fullArtistList_ release];
 		fullArtistList_ = [self parseItemList:data];
 		[[NSNotificationCenter defaultCenter] postNotificationName:@"artistListReady" object:nil];								
 	}
 	else if( [which isEqualToString:@"playLists"] )
 	{		
+		[playLists_ release];
 		playLists_ = [self parseItemList:data];
 		[[NSNotificationCenter defaultCenter] postNotificationName:@"playListsReady" object:nil];		
 	}		
@@ -176,6 +178,7 @@ static audiohelp_II *g_audio = nil;
 	}		
 	else if( [which isEqualToString:@"trackList"] )
 	{
+		[trackList_ release];
 		NSArray *a = [self parseItemList:data];		
 		trackList_ = a;
 		[[NSNotificationCenter defaultCenter] postNotificationName:@"trackListReady" object:nil];		
@@ -183,6 +186,7 @@ static audiohelp_II *g_audio = nil;
 	}
 	else if( [which isEqualToString:@"playlistTracks"] )
 	{
+		[currentTracklist_ release];
 		NSArray *a = [self parseItemList:data];
 		currentTracklist_ = a;
         //
@@ -204,6 +208,7 @@ static audiohelp_II *g_audio = nil;
 			CGImageRef        imageref = CGImageCreateWithJPEGDataProvider(provider, NULL, true, kCGRenderingIntentDefault);						
 			if( imageref )
 			{
+				CGDataProviderRelease(provider);				
 				CGImageRetain( imageref );			
 				[artwork_ release];
 				artwork_ = [[UIImage imageWithCGImage:imageref] retain];			

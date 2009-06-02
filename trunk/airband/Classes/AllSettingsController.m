@@ -41,7 +41,12 @@
     loginButton_.contentMode = UIViewContentModeScaleToFill;
     loginButton_.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
     loginButton_.enabled = YES;
+#ifdef __IPHONE_3_0	
+	loginButton_.titleLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:11.000];
+#else
     loginButton_.font = [UIFont fontWithName:@"Helvetica-Bold" size:11.000];
+#endif
+	
     loginButton_.hidden = NO;
     loginButton_.highlighted = NO;
     loginButton_.multipleTouchEnabled = NO;
@@ -50,7 +55,11 @@
     loginButton_.selected = NO;
     loginButton_.showsTouchWhenHighlighted = NO;
     loginButton_.tag = 0;
+#ifdef __IPHONE_3_0	
+	// [todo] -- assuming this is setup by default
+#else
     loginButton_.titleShadowOffset = CGSizeMake(0.0, 0.0);
+#endif
     loginButton_.userInteractionEnabled = YES;
     [loginButton_ setTitle:@"Login" forState:UIControlStateNormal];
     [loginButton_ addTarget:self action:@selector(loginAction:) forControlEvents:UIControlStateSelected];
@@ -145,7 +154,11 @@
     mainButton_.contentMode = UIViewContentModeScaleToFill;
     mainButton_.contentVerticalAlignment = UIControlContentVerticalAlignmentTop;
     mainButton_.enabled = YES;
+#ifdef __IPHONE_3_0
+	mainButton_.titleLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:15.000];
+#else	
     mainButton_.font = [UIFont fontWithName:@"Helvetica-Bold" size:15.000];
+#endif
     mainButton_.hidden = NO;
     mainButton_.highlighted = NO;
     mainButton_.multipleTouchEnabled = NO;
@@ -172,7 +185,11 @@
     createButton_.contentMode = UIViewContentModeScaleToFill;
     createButton_.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
     createButton_.enabled = YES;
+#ifdef __IPHONE_3_0	
+	createButton_.titleLabel.font = [UIFont fontWithName:@"Helvetica" size:11.000];
+#else	
     createButton_.font = [UIFont fontWithName:@"Helvetica" size:11.000];
+#endif
     createButton_.hidden = NO;
     createButton_.highlighted = NO;
     createButton_.multipleTouchEnabled = NO;

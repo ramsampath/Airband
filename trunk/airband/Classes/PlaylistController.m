@@ -246,11 +246,20 @@
         cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:@"myid2"] autorelease];
         cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
     }
+	
+#ifdef __IPHONE_3_0	
+	cell.textLabel.textColor  = [UIColor whiteColor];
+#else	
     cell.textColor            = [UIColor whiteColor];
+#endif
 
 	 AppData *app = [AppData get];		
 	 NSDictionary *d = [app.playLists_ objectAtIndex:[indexPath row]];
+#ifdef __IPHONE_3_0	
+	cell.textLabel.text = [d objectForKey:@"playlistTitle"];
+#else	
 	 cell.text = [d objectForKey:@"playlistTitle"];
+#endif
 	 	
 	 //NSString *imagePath = [[NSBundle mainBundle] pathForResource:[cell.text lowercaseString]  ofType:@"png"];
 	 //UIImage *icon = [UIImage imageWithContentsOfFile:imagePath]; 

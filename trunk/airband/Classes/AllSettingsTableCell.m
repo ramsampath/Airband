@@ -18,13 +18,21 @@
         // Initialization code
 		self.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
         self.selectionStyle = UITableViewCellSelectionStyleBlue;
+#ifdef __IPHONE_3_0	
+		self.textLabel.textAlignment = UITextAlignmentLeft;
+#else
 		self.textAlignment = UITextAlignmentLeft;
+#endif
     }
     return self;
 }
 
 -(void)setCellDataWithString:(NSString	*)labelString {
+#ifdef __IPHONE_3_0	
+	self.textLabel.text = labelString;
+#else
 	self.text = labelString;
+#endif
 }
 
 
