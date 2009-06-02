@@ -217,13 +217,13 @@
 
 	tablecell.indentationLevel          = 0;
 	tablecell.indentationWidth          = 10.000;
-	tablecell.textLabel.lineBreakMode   = UILineBreakModeTailTruncation;
-	//tablecell.lineBreakMode             = UILineBreakModeTailTruncation;
 	tablecell.multipleTouchEnabled      = NO;
 	tablecell.opaque                    = NO;
 #ifdef __IPHONE_3_0	
+	tablecell.textLabel.lineBreakMode   = UILineBreakModeTailTruncation;
 	tablecell.textLabel.highlightedTextColor = [UIColor colorWithWhite:1.000 alpha:1.000];
 #else
+	tablecell.lineBreakMode             = UILineBreakModeTailTruncation;
 	tablecell.selectedTextColor         = [UIColor colorWithWhite:1.000 alpha:1.000];
 #endif
 	
