@@ -209,19 +209,34 @@
 	tablecell.clipsToBounds   = NO;
 	tablecell.contentMode     = UIViewContentModeScaleToFill;
 	tablecell.hidden          = NO;
-    
+#ifdef __IPHONE_3_0	
+	// [todo] -- not sure what this should be.
+#else
 	tablecell.hidesAccessoryWhenEditing = YES;
+#endif
+
 	tablecell.indentationLevel          = 0;
 	tablecell.indentationWidth          = 10.000;
-	tablecell.lineBreakMode             = UILineBreakModeTailTruncation;
+	tablecell.textLabel.lineBreakMode   = UILineBreakModeTailTruncation;
+	//tablecell.lineBreakMode             = UILineBreakModeTailTruncation;
 	tablecell.multipleTouchEnabled      = NO;
 	tablecell.opaque                    = NO;
+#ifdef __IPHONE_3_0	
+	tablecell.textLabel.highlightedTextColor = [UIColor colorWithWhite:1.000 alpha:1.000];
+#else
 	tablecell.selectedTextColor         = [UIColor colorWithWhite:1.000 alpha:1.000];
+#endif
+	
 	tablecell.selectionStyle            = UITableViewCellSelectionStyleNone;
 	tablecell.showsReorderControl       = NO;
 	tablecell.tag                       = 0;
+#ifdef __IPHONE_3_0	
+	tablecell.textLabel.textAlignment   = UITextAlignmentLeft;
+	tablecell.textLabel.textColor       = [UIColor colorWithWhite:0.000 alpha:1.000];
+#else
 	tablecell.textAlignment             = UITextAlignmentLeft;
 	tablecell.textColor                 = [UIColor colorWithWhite:0.000 alpha:1.000];
+#endif
 	
 	[tablecell addSubview:label];
 	[tablecell addSubview:textfield];
@@ -407,7 +422,12 @@
 	grayButton.contentMode = UIViewContentModeScaleToFill;
 	grayButton.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
 	grayButton.enabled = YES;
+#ifdef __IPHONE_3_0	
+	grayButton.titleLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:12.000];
+#else
 	grayButton.font = [UIFont fontWithName:@"Helvetica-Bold" size:12.000];
+#endif
+	
 	grayButton.hidden = NO;
 	grayButton.highlighted = NO;
 	grayButton.multipleTouchEnabled = NO;

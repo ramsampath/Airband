@@ -570,7 +570,11 @@
     // [NOTE] the following is just a temp image till a more comprehensive 
     // solution for the album art is worked out.
     //
+#ifdef __IPHONE_3_0	
+	cell.imageView.image = [app.albumArtCache_ loadImage:@"music_note_gray.png"];
+#else
 	cell.image = [app.albumArtCache_ loadImage:@"music_note_gray.png"];
+#endif
 	return cell;
 }
 

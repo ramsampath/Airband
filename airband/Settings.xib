@@ -153,7 +153,7 @@
 					<object class="IBUIButton" id="692457395">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{120, 285}, {80, 27}}</string>
+						<string key="NSFrame">{{111, 285}, {80, 27}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
@@ -185,7 +185,7 @@
 					<object class="IBUIButton" id="603991716">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{120, 227}, {80, 27}}</string>
+						<string key="NSFrame">{{111, 227}, {80, 50}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
@@ -202,7 +202,7 @@
 						<double key="IBUIImageEdgeInsets.bottom">0.000000e+00</double>
 						<double key="IBUIImageEdgeInsets.left">-5.000000e+00</double>
 						<double key="IBUIImageEdgeInsets.right">0.000000e+00</double>
-						<string key="IBUINormalTitle">Login</string>
+						<string key="IBUINormalTitle">Sign In</string>
 						<reference key="IBUIHighlightedTitleColor" ref="664244993"/>
 						<reference key="IBUINormalTitleColor" ref="952513604"/>
 						<object class="NSColor" key="IBUINormalTitleShadowColor">
@@ -486,7 +486,7 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="IBUserGuide">
 							<reference key="view" ref="191373211"/>
-							<float key="location">2.070000e+02</float>
+							<float key="location">1.110000e+02</float>
 							<int key="affinity">0</int>
 						</object>
 					</object>
