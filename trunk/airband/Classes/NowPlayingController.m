@@ -21,7 +21,7 @@
 		return;
 	}
 	UIImageView *aTabBarBackground = [[UIImageView alloc]initWithImage:image];
-	aTabBarBackground.frame = CGRectMake(0,0,self.frame.size.width,self.frame.size.height);
+	aTabBarBackground.frame = CGRectMake(0,0,self.frame.size.width, self.frame.size.height);
 	[self addSubview:aTabBarBackground];
 	[self sendSubviewToBack:aTabBarBackground];
 	[aTabBarBackground release];
@@ -382,7 +382,6 @@
         NSString *req = [dict_ objectForKey:@"albumId"];
         NSString *playlistid = [dict objectForKey:@"playlistId"];
         
-        printf("pll: %s\n", [playlistid UTF8String]);
         if( playlistid ) {
             NSString *enc = [playlistid stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding];
             [app getPlayListTracksAsync:enc];
@@ -397,6 +396,7 @@
         if( progressView_ ) {
             [progressView_ removeFromSuperview];
             [progressView_ release];
+            progressView_ = nil;
         }
         
         progressView_                 = [[[UILabel alloc] initWithFrame:CGRectMake( 30, 100, 250, 100)] retain];
@@ -419,11 +419,11 @@
 - (void)loadView 
 {
 	
-	UIView *mainview          = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 436.0)];
-	mainview.frame            = CGRectMake(0.0, 0.0, 320.0, 436.0);
+	UIView *mainview          = [[UIView alloc] initWithFrame:CGRectMake(0, 40, 320, 480)];
 	mainview.alpha            = 1.000;
 	mainview.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | 
-                                UIViewAutoresizingFlexibleBottomMargin;
+                                UIViewAutoresizingFlexibleBottomMargin | 
+                                UIViewAutoresizingFlexibleTopMargin;
 	mainview.backgroundColor  = [UIColor colorWithRed:0.114 green:0.110 blue:0.090 alpha:1.000];
 	mainview.clearsContextBeforeDrawing = YES;
 	mainview.clipsToBounds              = NO;
@@ -578,7 +578,7 @@
 	[volume_ setValue:[app lastVolume_]];
 	
     CGRect r = CGRectMake( albumcoverview_.frame.origin.x, albumcoverview_.frame.origin.y, 
-                          albumcoverview_.frame.size.width, albumcoverview_.frame.size.height );
+                           albumcoverview_.frame.size.width, albumcoverview_.frame.size.height );
     tracklistview_ = [[TracklistController alloc] initWithFrame:r];
     tracklistview_.dataSource = self;
     tracklistview_.delegate   = self;
@@ -592,7 +592,7 @@
     emptyalbumartworkimage_ = [[app albumArtCache_] loadImage:@"empty_album_art.png"];
     self.view = mainview;	
     
-    flipsideview_ = false;
+    flipsideview_ = true;
 	
 	// hacky -- let's listen for errors
 	[[NSNotificationCenter defaultCenter] addObserver:self 
@@ -604,14 +604,29 @@
 - (void)setArtwork:(UIImage *)image
 {
     if( image ) {
-		[UIView beginAnimations:nil context:NULL];
-		[UIView setAnimationDuration:1];
-		[UIView setAnimationTransition:UIViewAnimationTransitionFlipFromLeft forView:albumcovertracksview_ cache:YES];
-
-        albumcoverview_.image = image;		
-
-		[UIView commitAnimations];
+        // 
+        // if viewing the album art at the moment transition the album art to the new artwork
+        //
+        if( flipsideview_ == true ) {
+            [UIView beginAnimations:nil context:NULL];
+            [UIView setAnimationDuration:1];
+            [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromLeft forView:albumcovertracksview_ cache:YES];
+        }
+        albumcoverview_.image = image;
+        if( flipsideview_ == true )
+            [UIView commitAnimations];
         
+        // 
+        // if viewing the track list at the moment transition the navigation button's album artwork to the new one
+        //
+        if( flipsideview_ == false ) {
+            [UIView beginAnimations:nil context:NULL];
+            [UIView setAnimationDuration:1];
+            [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromLeft 
+                                   forView:albumcovertracksbview_ cache:YES];
+            [albumcovertracksb_ setBackgroundImage:image forState:UIControlStateNormal];
+            [UIView commitAnimations];
+        }        
 	} else {
 		albumcoverview_.image = emptyalbumartworkimage_;
         AppData *app = [AppData get];
@@ -659,6 +674,8 @@
 - (void) playListTracksReady:(id)object
 {			
     [loadingView_ removeView];
+    [progressView_ release];
+    progressView_ = nil;
     
 	AppData *app = [AppData get];
 	int num = [app.currentTracklist_ count];
@@ -857,11 +874,13 @@
     
     [app setCurrentTrackIndex_:index];
     NSDictionary *d = [app.trackList_ objectAtIndex:index];
-    
-    [tracklistview_ reloadData];
 
+    [tracklistview_ reloadData];
+    [tracklistview_ scrollToTrack:index];
+    
     [app playTrack:d];
 }
+
 
 - (void)prevTrack
 {
@@ -875,6 +894,8 @@
     NSDictionary *d = [app.trackList_ objectAtIndex:index];
     
     [tracklistview_ reloadData];
+    [tracklistview_ scrollToTrack:index];
+
     [app playTrack:d];
 }
 

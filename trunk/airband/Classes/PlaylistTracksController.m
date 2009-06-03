@@ -104,6 +104,8 @@
 - (void) newlistReady:(id)object
 {
     [loadingView_ removeView];
+    [progressView_ release];
+    
     clearTable_ = false;
     
 	if( [table_ numberOfRowsInSection:0] ) {
@@ -165,7 +167,7 @@
         [progressView_ release];
     }
     
-    progressView_                 = [[[UILabel alloc] initWithFrame:CGRectMake( 25, 170, 250, 100)] retain];
+    progressView_                 = [[[UILabel alloc] initWithFrame:CGRectMake( 25, 100, 250, 100)] retain];
     progressView_.backgroundColor = [UIColor clearColor];
     progressView_.alpha           = 1.0;
     [self.view addSubview:progressView_];
@@ -253,12 +255,13 @@
 #pragma mark UITableView delegates
 #pragma mark ------------------------------------------------
 
+/*
 - (UITableViewCellAccessoryType)tableView:(UITableView *)tableView
 		 accessoryTypeForRowWithIndexPath:(NSIndexPath *)indexPath
 {
 	return UITableViewCellAccessoryNone;
 }
-
+*/
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -448,6 +451,8 @@
 		  initWithFrame:CGRectZero
 		  reuseIdentifier:CellIdentifier]
 		 autorelease];
+        
+        cell.accessoryType = UITableViewCellAccessoryNone;
 		
 		UIImage *indicatorImage = [UIImage imageNamed:@"indicator.png"];
 		//cell.accessoryView =

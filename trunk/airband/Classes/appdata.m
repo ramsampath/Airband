@@ -74,6 +74,7 @@ static audiohelp_II *g_audio = nil;
 		bitRate_           = 56000;
 		lastVolume_		   = 1;
         albumArtCache_     = [[imagecache alloc] retain];
+        autoLogin_         = true;
 		// read the user settings.
 		[self restoreState];
 	}

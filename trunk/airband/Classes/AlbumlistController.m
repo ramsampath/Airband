@@ -14,7 +14,7 @@
 #import "NowPlayingController.h"
 
 
-#define kMaxRows 50
+#define kMaxRows 100
 //#define kBgColor [UIColor colorWithRed:140.0/256 green:152.0/255 blue:88.0/255.0 alpha:1.000];
 #define kBgColor   [UIColor colorWithRed:0.212 green:0.212 blue:0.212 alpha:1.000];
 //#define kBgColor   [UIColor whiteColor];
@@ -244,13 +244,17 @@
 // Implement loadView to create a view hierarchy programmatically, without using a nib.
 - (void)loadView
 {
-	//UIColor *viewbgcolor = [UIColor colorWithRed:0.212 green:0.212 blue:0.212 alpha:1.000];
 	UIColor *viewbgcolor = kBgColor;
 	
 	UIView *mainview                    = [[UIView alloc] initWithFrame:CGRectMake( 0.0, 0.0, 320.0, 480.0 )];
 	mainview.frame                      = CGRectMake(0.0, 0.0, 320.0, 480.0);
 	mainview.alpha                      = 1.000;
-	mainview.autoresizingMask           = UIViewAutoresizingFlexibleTopMargin;
+    //mainview.autoresizingMask           = UIViewAutoresizingFlexibleTopMargin;
+    //
+    // the following autoresizing is set to None because the search bar seems to slide under
+    // the navigation if autoresizing is used.
+    //
+    mainview.autoresizingMask           = UIViewAutoresizingNone;
 	mainview.backgroundColor            = viewbgcolor;
 	mainview.clearsContextBeforeDrawing = YES;
 	mainview.clipsToBounds              = NO;
@@ -349,7 +353,7 @@
 	//[mainview addSubview:searchfield_];
 	[mainview addSubview:albumOrgControl_];
     
-    progressView_                 = [[UILabel alloc] initWithFrame:CGRectMake( 25, 150, 250, 100)];
+    progressView_                 = [[[UILabel alloc] initWithFrame:CGRectMake( 25, 100, 250, 100)] retain];
     progressView_.backgroundColor = [UIColor clearColor];
     progressView_.alpha           = 1.0;
     
@@ -468,6 +472,7 @@
 	
     [self reload];
     [loadingView_ removeView];
+    [progressView_ release];
         
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
@@ -667,12 +672,13 @@
 }
 
 
-
+/*
 - (UITableViewCellAccessoryType)tableView:(UITableView *)tableView
 		 accessoryTypeForRowWithIndexPath:(NSIndexPath *)indexPath
 {
 	return UITableViewCellAccessoryDisclosureIndicator;
 }
+ */
 
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -829,6 +835,7 @@ tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPat
         UIImage *image = [app.albumArtCache_ loadImage:@"empty_album_art.png"];
         cell = [[[AlbumCell alloc] initWithFrame:CGRectZero 
                                 reuseIdentifier:CellIdentifier tableView:tableView image:image] autorelease];
+        cell.accessoryType = UITableViewCellAccessoryNone;
 	}
     else {
         // just update the earlier cell with the new values

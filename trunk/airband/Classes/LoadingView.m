@@ -135,6 +135,7 @@ CGPathRef NewPathWithRoundRect(CGRect rect, CGFloat cornerRadius)
     UIViewAutoresizingFlexibleRightMargin |
     UIViewAutoresizingFlexibleTopMargin |
     UIViewAutoresizingFlexibleBottomMargin;
+    
 	[activityIndicatorView_ startAnimating];
 	
 	CGFloat totalHeight = loadingLabel_.frame.size.height + activityIndicatorView_.frame.size.height;
@@ -153,6 +154,8 @@ CGPathRef NewPathWithRoundRect(CGRect rect, CGFloat cornerRadius)
     else {
         activityIndicatorRect.origin.y =
 		loadingLabel_.frame.origin.y + self.frame.size.height * fontSize/20.0;
+        activityIndicatorRect.size.width  = 18;
+        activityIndicatorRect.size.height = 18;
     }
     
 	activityIndicatorView_.frame = activityIndicatorRect;
