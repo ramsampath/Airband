@@ -349,6 +349,7 @@
 	status_.text = @"Try Again!";	
 	
     [loadingView_ removeView];
+    
 	[self prepForLogin];
 }
 
@@ -418,6 +419,7 @@
 	status_.text = signInProbs;
 
     [loadingView_ removeView];
+    
 	[self prepForLogin];
 }
 
@@ -432,7 +434,7 @@
 	
 	status_.text = @"Loading Artists...";
     [loadingView_ removeView];
-    loadingView_ = [LoadingView loadingViewInView:status_ loadingText:@"Loading Artists..." fontSize:12.0];
+    loadingView_ = [[LoadingView loadingViewInView:status_ loadingText:@"Loading Artists..." fontSize:12.0] retain];
 }
 
 
@@ -477,7 +479,7 @@
 	
 	status_.text = @"Connecting...";
     
-    loadingView_ = [LoadingView loadingViewInView:status_ loadingText:@"Connecting..." fontSize:12.0];
+    loadingView_ = [[LoadingView loadingViewInView:status_ loadingText:@"Connecting..." fontSize:12.0] retain];
 
 	//
 	// wait for login to succeed and artist list to arrive

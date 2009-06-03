@@ -255,8 +255,12 @@
     [activity_ release];
     [fullAlbumList_ release];
     
-    [loadingView_ release];
-    [progressView_ release];
+    if( [loadingView_ retainCount] ) 
+        [loadingView_ release];
+    
+    if( [progressView_ retainCount] )
+        [progressView_ release];
+    
 	[super dealloc];
 }
 
@@ -386,6 +390,10 @@
                                              selector:@selector(albumListReady:) 
                                                  name:@"albumListReady" 
 											   object:nil];	
+    [[NSNotificationCenter defaultCenter] addObserver:self 
+											 selector:@selector(connectionFailed:) 
+												 name:@"connectionFailed"
+											   object:nil];
 	
 	UINavigationBar *bar = [self navigationController].navigationBar; 
 	bar.barStyle = UIBarStyleBlackOpaque;;
@@ -402,10 +410,9 @@
     //
     // just to make sure that the progress view is released if its not released by now
     //
-    if( progressView_ ) {
+    if( progressView_ ) 
         [progressView_ removeFromSuperview];
-        [progressView_ release];
-    }
+    
     progressView_                 = [[UILabel alloc] initWithFrame:CGRectMake( kScreenWidth/2 - 250/2, 
                                                                               100, 250, 100)];
     progressView_.backgroundColor = [UIColor clearColor];
@@ -417,12 +424,6 @@
     //
     [progressView_ release];
     
-    //
-    // [NOTE] 
-    // release the loadingView if it hasn't been released by now
-    //
-    if( loadingView_ ) [loadingView_ release];
-    loadingView_ = nil;
 
     // 
     // [NOTE] retain the loadingView, but this is not the usual recommended practice, but this case is 
@@ -459,6 +460,22 @@
                                                                                 target:self action:@selector(nowPlaying:)];
 }
 
+-(void) connectionFailed:(id)object
+{
+    //
+    // Remove the loadingView which should remove the progressView_ as well
+    //
+    [loadingView_ removeView];
+    //
+    // set it to nil comfortably as it would have been released by now
+    //
+    loadingView_  = nil;
+    progressView_ = nil;
+    //
+    // remove myself since we dont need to know anymore till the next time.
+    //
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation 
 {
@@ -521,18 +538,10 @@
     //
     [loadingView_ removeView];
     //
-    // So we can comfortably set the progressView_ to nil
+    // set it to nil comfortably as it would have been released by now
     //
+    loadingView_  = nil;
     progressView_ = nil;
-    //
-    // [NOTE] this is not the recommended memory management practice
-    // but in this case is special because of callbacks involved - now remove the loadingview
-    //
-    [loadingView_ release];
-    //
-    // set it to nil 
-    //
-    loadingView_ = nil;
 
     //
     // Remove ourselves to be notified when a new album list is ready because 

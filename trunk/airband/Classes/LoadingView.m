@@ -75,7 +75,7 @@ CGPathRef NewPathWithRoundRect(CGRect rect, CGFloat cornerRadius)
 + (id)loadingViewInView:(UIView *)aSuperview loadingText:(NSString *)ltext fontSize:(float) fontSize
 {
 	LoadingView *loadingView =
-    [[[LoadingView alloc] initWithFrame:[aSuperview bounds] fontSize:fontSize] retain];
+    [[[LoadingView alloc] initWithFrame:[aSuperview bounds] fontSize:fontSize] autorelease];
 	if( !loadingView ) {
 		return nil;
 	}

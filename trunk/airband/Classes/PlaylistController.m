@@ -103,6 +103,10 @@
 											selector:@selector(playListsReady:) 
 											name:@"playListsReady" 
 											object:nil];	
+    [[NSNotificationCenter defaultCenter] addObserver:self 
+											 selector:@selector(connectionFailed:) 
+												 name:@"connectionFailed"
+											   object:nil];
 
 	UINavigationBar *bar = [self navigationController].navigationBar;
 	bar.barStyle         = UIBarStyleBlackOpaque;
@@ -110,10 +114,9 @@
     //
     // just to make sure that the progress view is released if its not released by now
     //
-    if( progressView_ ) {
+    if( progressView_ )
         [progressView_ removeFromSuperview];
-        [progressView_ release];
-    }
+
     //
     // create a new progressView
     //
@@ -128,10 +131,7 @@
     // release the progressview now as self.view should take care of it by now
     //
     [progressView_ release];
-    //
-    // [NOTE] just in case loadingView is not released by now, release it
-    //
-    if( loadingView_ ) [loadingView_ release];
+
     //
     // [NOTE] retain the loadingView: this is not the recommendation from memory management
     //  but this is a special case due to callbacks and its made sure that loadingView_ is released later
@@ -159,6 +159,19 @@
 	[super dealloc];
 }
 
+-(void) connectionFailed:(id)object
+{
+    //
+    // Remove the loadingView which should remove the progressView_ as well
+    //
+    [loadingView_ removeView];
+    //
+    // set it to nil comfortably as it would have been released by now
+    //
+    loadingView_  = nil;
+    progressView_ = nil;
+}
+
 - (void) playListsReady:(id)object
 {
     // 
@@ -169,11 +182,6 @@
     // so we can comfortably make progressView_ to nil as it should be released by now
     //
     progressView_ = nil;
-    //
-    // [NOTE] this is not the recommended memory management practice
-    // but in this case is special because of callbacks involved - now remove the loadingview
-    //
-    [loadingView_ release];
     //
     // set it to nil 
     //
