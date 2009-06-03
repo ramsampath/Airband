@@ -719,7 +719,7 @@
     //
     [[NSNotificationCenter defaultCenter] addObserver:self 
 											 selector:@selector(connectionFailed:) 
-												 name:@"connectionFailed"
+												 name:@"connectionFAIL"
 											   object:nil];
 }
 
