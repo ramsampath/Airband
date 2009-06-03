@@ -18,7 +18,7 @@
 //#define kBgColor [UIColor colorWithRed:140.0/256 green:152.0/255 blue:88.0/255.0 alpha:1.000];
 #define kBgColor   [UIColor colorWithRed:0.212 green:0.212 blue:0.212 alpha:1.000];
 //#define kBgColor   [UIColor whiteColor];
-
+#define kScreenWidth 320
 
 #pragma mark ------------------------------------------------
 #pragma mark cell for our table
@@ -236,6 +236,27 @@
 
 - (void)dealloc
 {
+    [albumList_ dealloc];
+    
+    for( int i = 0; i < 26; i++ )
+        [albumDisplayList_[i] release];
+
+    [albumActiveSections_ release];
+    [albumSectionTitles_ release];
+    [savedAlbumList_ release];
+    
+    [sectionBGImage_ release];
+	[searchfield_ release];
+    
+    [azsortbutton_ release];
+    [shufflebutton_ release];
+    [albumOrgControl_ release];
+    
+    [activity_ release];
+    [fullAlbumList_ release];
+    
+    [loadingView_ release];
+    [progressView_ release];
 	[super dealloc];
 }
 
@@ -349,15 +370,9 @@
 	table_.userInteractionEnabled          = YES;
     table_.backgroundColor                 = [UIColor clearColor];
     
-	[mainview addSubview:table_];
-	//[mainview addSubview:searchfield_];
+    [mainview addSubview:table_];
 	[mainview addSubview:albumOrgControl_];
-    
-    progressView_                 = [[[UILabel alloc] initWithFrame:CGRectMake( 25, 100, 250, 100)] retain];
-    progressView_.backgroundColor = [UIColor clearColor];
-    progressView_.alpha           = 1.0;
-    
-    [mainview addSubview:progressView_];
+
     
     self.view = mainview;
 }
@@ -382,9 +397,38 @@
 	if( [albumList_ count] ) {
 		return;
 	}
-	albumList_ = nil;				
+	albumList_ = nil;		
+        
+    //
+    // just to make sure that the progress view is released if its not released by now
+    //
+    if( progressView_ ) {
+        [progressView_ removeFromSuperview];
+        [progressView_ release];
+    }
+    progressView_                 = [[UILabel alloc] initWithFrame:CGRectMake( kScreenWidth/2 - 250/2, 
+                                                                              100, 250, 100)];
+    progressView_.backgroundColor = [UIColor clearColor];
+    progressView_.alpha           = 1.0;
+    
+    [self.view addSubview:progressView_];
+    //
+    // release the progressView as self.view should take care of it by now
+    //
+    [progressView_ release];
+    
+    //
+    // [NOTE] 
+    // release the loadingView if it hasn't been released by now
+    //
+    if( loadingView_ ) [loadingView_ release];
+    loadingView_ = nil;
 
-    loadingView_ = [LoadingView loadingViewInView:progressView_ loadingText:@"Loading Albums..."];
+    // 
+    // [NOTE] retain the loadingView, but this is not the usual recommended practice, but this case is 
+    // special due to callbacks involved.
+    // 
+    loadingView_ = [[LoadingView loadingViewInView:progressView_ loadingText:@"Loading Albums..."] retain];
 	
     self.navigationItem.titleView = albumOrgControl_;
     
@@ -471,8 +515,30 @@
 	fullAlbumList_ = [app.albumList_ copy];
 	
     [self reload];
+    
+    //
+    // Remove the loadingView which should remove the progressView_ as well
+    //
     [loadingView_ removeView];
-    [progressView_ release];
+    //
+    // So we can comfortably set the progressView_ to nil
+    //
+    progressView_ = nil;
+    //
+    // [NOTE] this is not the recommended memory management practice
+    // but in this case is special because of callbacks involved - now remove the loadingview
+    //
+    [loadingView_ release];
+    //
+    // set it to nil 
+    //
+    loadingView_ = nil;
+
+    //
+    // Remove ourselves to be notified when a new album list is ready because 
+    // once we know that all the albums have been loaded here we dont need to know
+    // about it anymore
+    //
         
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
