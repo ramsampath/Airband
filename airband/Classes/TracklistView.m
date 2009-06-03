@@ -94,10 +94,16 @@
 	}
 
     [cell setTrackLabels:[indexPath row]];
-
+    
 	return cell;
 }
 
+-(void) scrollToTrack:(int) tracknum
+{
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:tracknum inSection:0];
+    
+    [self scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+}
 
 -(void) didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -105,16 +111,20 @@
     AppData *app    = [AppData get];
     NSDictionary *d = [app.trackList_ objectAtIndex:[indexPath row]];
 
+    [self scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+    
     [app playTrack:d];
     [self reloadData];
 
     return;
 }
 
-- (void)viewWillDisappear:(BOOL)animated {
+- (void)viewWillDisappear:(BOOL)animated 
+{
 }
 
-- (void)viewDidDisappear:(BOOL)animated {
+- (void)viewDidDisappear:(BOOL)animated 
+{
 }
 
 

@@ -5,7 +5,7 @@
 #import "NowPlayingController.h"
 
 
-#define kMaxRows 50
+#define kMaxRows 200
 //#define kBgColor [UIColor colorWithRed:140.0/256 green:152.0/255 blue:88.0/255.0 alpha:1.000];
 #define kBgColor   [UIColor colorWithRed:0.212 green:0.212 blue:0.212 alpha:1.000];
 //#define kBgColor   [UIColor whiteColor];
@@ -170,13 +170,17 @@
 // Implement loadView to create a view hierarchy programmatically, without using a nib.
 - (void)loadView
 {
-	//UIColor *viewbgcolor = [UIColor colorWithRed:0.212 green:0.212 blue:0.212 alpha:1.000];
-	UIColor *viewbgcolor = kBgColor;
+	UIColor *viewbgcolor                = kBgColor;
 	
 	UIView *mainview                    = [[UIView alloc] initWithFrame:CGRectMake( 0.0, 0.0, 320.0, 480.0 )];
 	mainview.frame                      = CGRectMake(0.0, 0.0, 320.0, 480.0);
 	mainview.alpha                      = 1.000;
-	mainview.autoresizingMask           = UIViewAutoresizingFlexibleTopMargin;
+	//mainview.autoresizingMask           = UIViewAutoresizingFlexibleTopMargin;
+    //
+    // the autoresizing is set to None to prevent the table to slide under the navigation bar
+    //
+    mainview.autoresizingMask           = UIViewAutoresizingNone;
+    
 	mainview.backgroundColor            = viewbgcolor;
 	mainview.clearsContextBeforeDrawing = YES;
 	mainview.clipsToBounds              = NO;
@@ -310,7 +314,11 @@
     // if artistlist is not yet avaliable request the artist list
     //
     if( !fullList ) {
-        progressView_                 = [[UILabel alloc] initWithFrame:CGRectMake( 25, 150, 250, 100)];
+        if( progressView_ ) {
+            [progressView_ release];
+            progressView_ = nil;
+        }
+        progressView_                 = [[UILabel alloc] initWithFrame:CGRectMake( 25, 100, 250, 100)];
         progressView_.backgroundColor = [UIColor clearColor];
         progressView_.alpha           = 1.0;
         [self.view addSubview:progressView_];
@@ -415,12 +423,14 @@
 {
 	AppData *app = [AppData get];
 	NSArray* fullList = app.fullArtistList_;	
-	dbgtext_.text = [NSString stringWithFormat:@"%d artists", [fullList count]];	
+	dbgtext_.text = [NSString stringWithFormat:@"%d Artists", [fullList count]];	
 	
 	//[self shuffle];
     [self reload];
 
     [loadingView_ removeView];
+    [progressView_ release];
+    progressView_ = nil;
 }
 
 
@@ -620,13 +630,13 @@
     return index  - 1;
 }
 
-
+/*
 - (UITableViewCellAccessoryType)tableView:(UITableView *)tableView
 		 accessoryTypeForRowWithIndexPath:(NSIndexPath *)indexPath
 {
 	return UITableViewCellAccessoryDisclosureIndicator;
 }
-
+*/
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -753,6 +763,7 @@ tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPat
 	if (cell == nil) {
         cell = [[[ArtistCell alloc] initWithFrame:CGRectZero 
 								  reuseIdentifier:cellIdentifier] autorelease];
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	}
 	// get the view controller's info dictionary based on the indexPath's row
 	//cell.dataDictionary = [[artistList_ objectAtIndex:indexPath.row] retain];

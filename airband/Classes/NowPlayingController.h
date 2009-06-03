@@ -39,19 +39,19 @@
 	IBOutlet UIToolbar       *toolbar_;
     IBOutlet UIToolbar       *toolbartop_;
     
-    IBOutlet UIView              *albumcovertracksview_;
-    IBOutlet UIView              *albumcovertracksbview_;
-    IBOutlet UIButton            *albumcovertracksb_;
+    IBOutlet UIView              *albumcovertracksview_;   // album cover/track list view parent
+    IBOutlet UIView              *albumcovertracksbview_;  // album cover/info button navigation button view parent
+    IBOutlet UIButton            *albumcovertracksb_;      // the navigation bar's right button 
     
-	IBOutlet UIImageView         *albumcoverview_;
-    IBOutlet UIImage             *infoimage_;
-    IBOutlet UIImage             *emptyalbumartworkimage_;
-    IBOutlet TracklistController *tracklistview_; 
+	IBOutlet UIImageView         *albumcoverview_;         // the view which holds the album cover
+    IBOutlet UIImage             *infoimage_;              // the image which holds the info icon
+    IBOutlet UIImage             *emptyalbumartworkimage_; // the image which holds the empty album cover 
+    IBOutlet TracklistController *tracklistview_;         
 
-	IBOutlet UISlider        *volume_;
-	IBOutlet UIView          *volumeviewslider_;
+	IBOutlet UISlider        *volume_;                     // unused at the moment
+	IBOutlet UIView          *volumeviewslider_;           // ununsed at the moment
 
-    IBOutlet UIButton *back_;
+    IBOutlet UIButton        *back_;
 	IBOutlet UIBarButtonItem *prev_;
 	IBOutlet UIBarButtonItem *pause_;
 	IBOutlet UIBarButtonItem *stop_;

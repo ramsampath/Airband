@@ -78,7 +78,7 @@
     table_.tag = 0;
     table_.userInteractionEnabled = YES;
     
-    progressView_                 = [[UILabel alloc] initWithFrame:CGRectMake( 25, 150, 250, 100)];
+    progressView_                 = [[[UILabel alloc] initWithFrame:CGRectMake( 25, 100, 250, 100)] retain];
     progressView_.backgroundColor = [UIColor clearColor];
     progressView_.alpha           = 1.0;
     
@@ -103,7 +103,7 @@
 - (void) playListsReady:(id)object
 {
     [loadingView_ removeView];
-    [progressView_ removeFromSuperview];
+    [progressView_ release];
 
 	AppData *app = [AppData get];
 	int num = [app.playLists_ count];
@@ -182,11 +182,13 @@
 #pragma mark UITableView delegates
 #pragma mark ------------------------------------------------
 
+/*
 - (UITableViewCellAccessoryType)tableView:(UITableView *)tableView
 		 accessoryTypeForRowWithIndexPath:(NSIndexPath *)indexPath
 {
 	return UITableViewCellAccessoryDisclosureIndicator;
 }
+ */
 
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -244,7 +246,7 @@
     UITableViewCell *cell = [tv dequeueReusableCellWithIdentifier:@"myid2"];
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:@"myid2"] autorelease];
-        cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
+        cell.accessoryType = UITableViewCellAccessoryNone;
     }
 	
 #ifdef __IPHONE_3_0	

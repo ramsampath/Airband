@@ -16,6 +16,7 @@
 
 -(void) didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
 -(void) highlightTrack:(int) tracknum;
+-(void) scrollToTrack:(int) tracknum;
 
 //@property(readonly) UITableView *table_;
 
