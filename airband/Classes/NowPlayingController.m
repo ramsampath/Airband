@@ -403,10 +403,12 @@
         progressView_.backgroundColor = [UIColor clearColor];
         progressView_.alpha           = 1.0;
         [self.view addSubview:progressView_];
+        [progressView_ release];
         
         if( loadingView_ ) [loadingView_ release];
         loadingView_ = nil;
-        loadingView_ = [LoadingView loadingViewInView:progressView_ loadingText:@"Loading Track List..."]; 
+        
+        loadingView_ = [[LoadingView loadingViewInView:progressView_ loadingText:@"Loading Track List..."] retain]; 
     }
 }
 
@@ -657,7 +659,7 @@
 
 - (void) trackListReady:(id)object
 {			
-    [loadingView_ removeView];
+    [self stopLoadingView];
     
 	AppData *app = [AppData get];
 	int num = [app.trackList_ count];
@@ -670,12 +672,31 @@
     [app playTrack:d];
 }
 
+-(void) stopLoadingView
+{
+    //
+    // Remove the loadingView which should remove the progressView_ as well
+    //
+    [loadingView_ removeView];
+    //
+    // So we can comfortably set the progressView_ to nil
+    //
+    progressView_ = nil;
+    //
+    // [NOTE] this is not the recommended memory management practice
+    // but in this case is special because of callbacks involved - now remove the loadingview
+    //
+    [loadingView_ release];
+    //
+    // set it to nil 
+    //
+    loadingView_ = nil;
+}
+
 
 - (void) playListTracksReady:(id)object
 {			
-    [loadingView_ removeView];
-    [progressView_ release];
-    progressView_ = nil;
+    [self stopLoadingView];
     
 	AppData *app = [AppData get];
 	int num = [app.currentTracklist_ count];
@@ -698,6 +719,8 @@
 		// [todo] -- something fancier?
 		//[[AppData get] stop];	
 	}
+    
+    [self stopLoadingView];
 
 	[self next:nil];
 	
