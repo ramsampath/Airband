@@ -103,5 +103,6 @@
 -(void) displayPlayButton:(id) sender;
 -(void) setupnavigationitems:(UINavigationItem *)sender navBar:(UINavigationBar *)navbar
                     datadict:(NSDictionary *)dict;
+-(void) stopLoadingView;
 
 @end
