@@ -193,7 +193,7 @@
 	
     [[NSNotificationCenter defaultCenter] addObserver:self 
 											 selector:@selector(connectionFailed:) 
-												 name:@"connectionFailed"
+												 name:@"connectionFAIL"
 											   object:nil];
     
 	UINavigationBar *bar = [self navigationController].navigationBar;
