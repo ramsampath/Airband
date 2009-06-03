@@ -320,10 +320,8 @@
         //
         // Just in case the progressView has not been released by now, release it
         //
-        if( progressView_ ) {
+        if( progressView_ )
             [progressView_ removeFromSuperview];
-            [progressView_ release];
-        }
         
         progressView_                 = [[[UILabel alloc] initWithFrame:CGRectMake( kScreenWidth/2 - 250/2, 
                                                                                   100, 250, 100)] retain];
@@ -334,13 +332,7 @@
         // release the progressView_ because self.view should have taken care of it by now
         //
         [progressView_ release];
-        
-        //
-        // [NOTE] 
-        // release the loadingView if it hasn't been released by now
-        //
-        if( loadingView_ ) [loadingView_ release];
-        loadingView_ = nil;
+
 
         // 
         // [NOTE] retain the loadingView, but this is not the usual recommended practice, but this case is 
@@ -351,6 +343,11 @@
         [[NSNotificationCenter defaultCenter] addObserver:self 
                                                  selector:@selector(artistListReady:) 
                                                      name:@"artistListReady" 
+                                                   object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self 
+                                                 selector:@selector(connectionFailed:) 
+                                                     name:@"connectionFailed"
                                                    object:nil];
     }
 /*
@@ -443,6 +440,24 @@
 }
 
 
+-(void) connectionFailed:(id)object
+{
+    //
+    // Remove the loadingView which should remove the progressView_ as well
+    //
+    [loadingView_ removeView];
+    //
+    // set it to nil comfortably as it would have been released by now
+    //
+    loadingView_  = nil;
+    progressView_ = nil;
+    //
+    // remove myself since we dont need to know anymore till the next time.
+    //
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+
 -(void) artistListReady:(id) feh
 {
 	AppData *app = [AppData get];
@@ -461,12 +476,7 @@
     //
     progressView_ = nil;
     //
-    // [NOTE] this is not the recommended memory management practice
-    // but in this case is special because of callbacks involved - now remove the loadingview
-    //
-    [loadingView_ release];
-    //
-    // set it to nil 
+    // loading view would have been released by now so comfortably set it to nil 
     //
     loadingView_ = nil;
 }

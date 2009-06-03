@@ -103,6 +103,26 @@
 }
 
 
+-(void) connectionFailed:(id)object
+{
+    //
+    // Remove the loadingView which should remove the progressView_ as well
+    //
+    [loadingView_ removeView];
+    //
+    // set it to nil comfortably as it would have been released by now
+    //
+    loadingView_  = nil;
+    progressView_ = nil;
+    
+    //
+    // remove myself
+    //
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+
+
 - (void) newlistReady:(id)object
 {
     //
@@ -113,11 +133,6 @@
     // So we can comfortably set the progressView_ to nil
     //
     progressView_ = nil;
-    //
-    // [NOTE] this is not the recommended memory management practice
-    // but in this case is special because of callbacks involved - now remove the loadingview
-    //
-    [loadingView_ release];
     //
     // set it to nil 
     //
@@ -176,7 +191,11 @@
 												 name:waitfor 
 											   object:nil];	
 	
-
+    [[NSNotificationCenter defaultCenter] addObserver:self 
+											 selector:@selector(connectionFailed:) 
+												 name:@"connectionFailed"
+											   object:nil];
+    
 	UINavigationBar *bar = [self navigationController].navigationBar;
 	bar.barStyle = UIBarStyleBlackOpaque;;
 
@@ -185,10 +204,8 @@
     //
     // Just in case the progressView has not been released by now, release it
     //
-    if( progressView_ ) {
+    if( progressView_ ) 
         [progressView_ removeFromSuperview];
-        [progressView_ release];
-    }
     
     progressView_                 = [[[UILabel alloc] initWithFrame:CGRectMake( kScreenWidth/2 - 250/2, 
                                                                                100, 250, 100)] retain];
@@ -200,13 +217,6 @@
     // release the progressView as self.view should take care of it by now
     //
     [progressView_ release];
-    
-    //
-    // [NOTE] 
-    // release the loadingView if it hasn't been released by now
-    //
-    if( loadingView_ ) [loadingView_ release];
-    loadingView_ = nil;
     
     // 
     // clear out all entries
@@ -228,12 +238,12 @@
         }
 	} 
     else if( albumtracks_ ) {
-        loadingView_ = [LoadingView loadingViewInView:progressView_ loadingText:@"Loading Album Tracks..."]; 
+        loadingView_ = [[LoadingView loadingViewInView:progressView_ loadingText:@"Loading Album Tracks..."] retain]; 
 		NSString *req = [albumtracks_ objectForKey:@"albumId"];
 		[app getTrackListAsync:req];		
 	} 
     else if( playlist_ ) {
-        loadingView_ = [LoadingView loadingViewInView:progressView_ loadingText:@"Loading Playlist Tracks..."]; 
+        loadingView_  = [[LoadingView loadingViewInView:progressView_ loadingText:@"Loading Playlist Tracks..."] retain]; 
 		NSString *req = [playlist_ objectForKey:@"playlistId"];
 		NSString *enc = [req stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding];  //NSUTF8StringEncoding	
 		[app getPlayListTracksAsync:enc];		

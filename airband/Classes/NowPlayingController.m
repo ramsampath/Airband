@@ -600,7 +600,12 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self 
 											 selector:@selector(connectionError:) 
 												 name:@"connectionError"
-											   object:nil];		
+											   object:nil];	
+	
+    [[NSNotificationCenter defaultCenter] addObserver:self 
+											 selector:@selector(connectionFailed:) 
+												 name:@"connectionFailed"
+											   object:nil];
 }
 
 - (void)setArtwork:(UIImage *)image
@@ -679,14 +684,9 @@
     //
     [loadingView_ removeView];
     //
-    // So we can comfortably set the progressView_ to nil
+    // So we can comfortably set to nil
     //
     progressView_ = nil;
-    //
-    // [NOTE] this is not the recommended memory management practice
-    // but in this case is special because of callbacks involved - now remove the loadingview
-    //
-    [loadingView_ release];
     //
     // set it to nil 
     //
@@ -709,7 +709,19 @@
     [app playTrack:d];
 }
 
-
+-(void) connectionFailed:(id)object
+{
+    [self stopLoadingView];
+    
+    [self displayPlayButton:nil];
+    //
+    // remove myself as next time another observer will be created.
+    //
+    [[NSNotificationCenter defaultCenter] addObserver:self 
+											 selector:@selector(connectionFailed:) 
+												 name:@"connectionFailed"
+											   object:nil];
+}
 
 
 -(void) connectionError:(id)object
