@@ -99,6 +99,7 @@ CGPathRef NewPathWithRoundRect(CGRect rect, CGFloat cornerRadius)
 	[[aSuperview layer] addAnimation:animation forKey:@"layerAnimation"];
 	
     [aSuperview addSubview:loadingView];
+    [loadingView release];
 
 	return loadingView;
 }

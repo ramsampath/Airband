@@ -9,6 +9,8 @@
 //#define kBgColor [UIColor colorWithRed:140.0/256 green:152.0/255 blue:88.0/255.0 alpha:1.000];
 #define kBgColor   [UIColor colorWithRed:0.212 green:0.212 blue:0.212 alpha:1.000];
 //#define kBgColor   [UIColor whiteColor];
+#define kScreenHeight 480
+#define kScreenWidth  320
 
 
 #pragma mark ------------------------------------------------
@@ -48,7 +50,7 @@
 		
 		// Create label views to contain the various pieces of text that make up the cell.
 		// Add these as subviews.
-		nameLabel                      = [[UILabel alloc] initWithFrame:CGRectZero];
+		nameLabel                      = [[[UILabel alloc] initWithFrame:CGRectZero] autorelease];
 		nameLabel.backgroundColor      = [UIColor clearColor];
 		nameLabel.opaque               = NO;
 		nameLabel.textColor            = [UIColor whiteColor];
@@ -56,7 +58,7 @@
 		nameLabel.font                 = [UIFont boldSystemFontOfSize:18];
 		[self.contentView addSubview:nameLabel];
 		
-		trackcountLabel                      = [[UILabel alloc] initWithFrame:CGRectZero];
+		trackcountLabel                      = [[[UILabel alloc] initWithFrame:CGRectZero] autorelease];
 		trackcountLabel.backgroundColor      = [UIColor clearColor];
 		trackcountLabel.opaque               = NO;
 		trackcountLabel.textColor            = [UIColor grayColor];
@@ -314,15 +316,37 @@
     // if artistlist is not yet avaliable request the artist list
     //
     if( !fullList ) {
+
+        //
+        // Just in case the progressView has not been released by now, release it
+        //
         if( progressView_ ) {
+            [progressView_ removeFromSuperview];
             [progressView_ release];
-            progressView_ = nil;
         }
-        progressView_                 = [[UILabel alloc] initWithFrame:CGRectMake( 25, 100, 250, 100)];
+        
+        progressView_                 = [[[UILabel alloc] initWithFrame:CGRectMake( kScreenWidth/2 - 250/2, 
+                                                                                  100, 250, 100)] retain];
         progressView_.backgroundColor = [UIColor clearColor];
         progressView_.alpha           = 1.0;
         [self.view addSubview:progressView_];
-        loadingView_ = [LoadingView loadingViewInView:progressView_ loadingText:@"Loading Artists..."];
+        //
+        // release the progressView_ because self.view should have taken care of it by now
+        //
+        [progressView_ release];
+        
+        //
+        // [NOTE] 
+        // release the loadingView if it hasn't been released by now
+        //
+        if( loadingView_ ) [loadingView_ release];
+        loadingView_ = nil;
+
+        // 
+        // [NOTE] retain the loadingView, but this is not the usual recommended practice, but this case is 
+        // special due to callbacks involved.
+        // 
+        loadingView_ = [[LoadingView loadingViewInView:progressView_ loadingText:@"Loading Artists..."] retain];
         
         [[NSNotificationCenter defaultCenter] addObserver:self 
                                                  selector:@selector(artistListReady:) 
@@ -427,10 +451,24 @@
 	
 	//[self shuffle];
     [self reload];
-
+    
+    //
+    // Remove the loadingView which should remove the progressView_ as well
+    //
     [loadingView_ removeView];
-    [progressView_ release];
+    //
+    // So we can comfortably set the progressView_ to nil
+    //
     progressView_ = nil;
+    //
+    // [NOTE] this is not the recommended memory management practice
+    // but in this case is special because of callbacks involved - now remove the loadingview
+    //
+    [loadingView_ release];
+    //
+    // set it to nil 
+    //
+    loadingView_ = nil;
 }
 
 

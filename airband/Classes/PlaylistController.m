@@ -13,6 +13,7 @@
 #import "appdata.h"
 
 #define kBgColor   [UIColor colorWithRed:0.212 green:0.212 blue:0.212 alpha:1.000];
+#define kScreenWidth 320
 
 @implementation PlaylistController
 
@@ -78,12 +79,8 @@
     table_.tag = 0;
     table_.userInteractionEnabled = YES;
     
-    progressView_                 = [[[UILabel alloc] initWithFrame:CGRectMake( 25, 100, 250, 100)] retain];
-    progressView_.backgroundColor = [UIColor clearColor];
-    progressView_.alpha           = 1.0;
-    
     [mainview addSubview:table_];
-    [mainview addSubview:progressView_];
+
     
     self.view = mainview;
  
@@ -100,34 +97,6 @@
 }
 
 
-- (void) playListsReady:(id)object
-{
-    [loadingView_ removeView];
-    [progressView_ release];
-
-	AppData *app = [AppData get];
-	int num = [app.playLists_ count];
-
-	NSMutableArray *indexPath = [[[NSMutableArray alloc] init] retain];  // autorelease?
-
-	int i;
-	for (i=0;  i<num; ++i) {
-		[indexPath addObject:[NSIndexPath indexPathForRow:i inSection:0]];
-	}
-	
-	if( [table_ numberOfRowsInSection:0] )
-	{
-		[table_ reloadData];
-	}
-	else
-	{
-		[table_ beginUpdates];
-		[table_	insertRowsAtIndexPaths:indexPath 
-									withRowAnimation:UITableViewRowAnimationFade];
-		[table_ endUpdates];    			
-	}	
-}
-
 - (void)viewDidLoad
 {	
 	[[NSNotificationCenter defaultCenter] addObserver:self 
@@ -138,8 +107,37 @@
 	UINavigationBar *bar = [self navigationController].navigationBar;
 	bar.barStyle         = UIBarStyleBlackOpaque;
     
-    loadingView_ = [LoadingView loadingViewInView:progressView_ loadingText:@"Loading Playlists..."];
-	
+    //
+    // just to make sure that the progress view is released if its not released by now
+    //
+    if( progressView_ ) {
+        [progressView_ removeFromSuperview];
+        [progressView_ release];
+    }
+    //
+    // create a new progressView
+    //
+    progressView_                 = [[[UILabel alloc] initWithFrame:CGRectMake( kScreenWidth/2 - 250/2, 
+                                                                               100, 250, 100)] retain];
+    progressView_.backgroundColor = [UIColor clearColor];
+    progressView_.backgroundColor = [UIColor clearColor];
+    progressView_.alpha           = 1.0;
+    
+    [self.view addSubview:progressView_];
+    //
+    // release the progressview now as self.view should take care of it by now
+    //
+    [progressView_ release];
+    //
+    // [NOTE] just in case loadingView is not released by now, release it
+    //
+    if( loadingView_ ) [loadingView_ release];
+    //
+    // [NOTE] retain the loadingView: this is not the recommendation from memory management
+    //  but this is a special case due to callbacks and its made sure that loadingView_ is released later
+    //
+    loadingView_ = [[LoadingView loadingViewInView:progressView_ loadingText:@"Loading Playlists..."] retain];
+    
 	AppData *app = [AppData get];
 	[app getPlayListsAsync];
 }
@@ -159,6 +157,49 @@
 
 - (void)dealloc {
 	[super dealloc];
+}
+
+- (void) playListsReady:(id)object
+{
+    // 
+    // loadingView removeView calls removeFromSuperView which should release the progressView_
+    //
+    [loadingView_ removeView];
+    //
+    // so we can comfortably make progressView_ to nil as it should be released by now
+    //
+    progressView_ = nil;
+    //
+    // [NOTE] this is not the recommended memory management practice
+    // but in this case is special because of callbacks involved - now remove the loadingview
+    //
+    [loadingView_ release];
+    //
+    // set it to nil 
+    //
+    loadingView_ = nil;
+    
+	AppData *app = [AppData get];
+	int num = [app.playLists_ count];
+    
+	NSMutableArray *indexPath = [[[NSMutableArray alloc] init] retain];  // autorelease?
+    
+	int i;
+	for (i=0;  i<num; ++i) {
+		[indexPath addObject:[NSIndexPath indexPathForRow:i inSection:0]];
+	}
+	
+	if( [table_ numberOfRowsInSection:0] )
+	{
+		[table_ reloadData];
+	}
+	else
+	{
+		[table_ beginUpdates];
+		[table_	insertRowsAtIndexPaths:indexPath 
+                      withRowAnimation:UITableViewRowAnimationFade];
+		[table_ endUpdates];    			
+	}	
 }
 
 

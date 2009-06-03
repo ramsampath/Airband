@@ -10,6 +10,8 @@
 #import "NowPlayingController.h"
 #import "appdata.h"
 
+#define kScreenWidth 320
+
 @implementation PlaylistTracksController
 
 @synthesize table_;
@@ -103,9 +105,27 @@
 
 - (void) newlistReady:(id)object
 {
+    //
+    // Remove the loadingView which should remove the progressView_ as well
+    //
     [loadingView_ removeView];
-    [progressView_ release];
+    //
+    // So we can comfortably set the progressView_ to nil
+    //
+    progressView_ = nil;
+    //
+    // [NOTE] this is not the recommended memory management practice
+    // but in this case is special because of callbacks involved - now remove the loadingview
+    //
+    [loadingView_ release];
+    //
+    // set it to nil 
+    //
+    loadingView_ = nil;
     
+    //
+    // 
+    //
     clearTable_ = false;
     
 	if( [table_ numberOfRowsInSection:0] ) {
@@ -162,16 +182,29 @@
 
 	AppData *app = [AppData get];	
 	
+    //
+    // Just in case the progressView has not been released by now, release it
+    //
     if( progressView_ ) {
         [progressView_ removeFromSuperview];
         [progressView_ release];
     }
     
-    progressView_                 = [[[UILabel alloc] initWithFrame:CGRectMake( 25, 100, 250, 100)] retain];
+    progressView_                 = [[[UILabel alloc] initWithFrame:CGRectMake( kScreenWidth/2 - 250/2, 
+                                                                               100, 250, 100)] retain];
+    progressView_.backgroundColor = [UIColor clearColor];
     progressView_.backgroundColor = [UIColor clearColor];
     progressView_.alpha           = 1.0;
     [self.view addSubview:progressView_];
+    //
+    // release the progressView as self.view should take care of it by now
+    //
+    [progressView_ release];
     
+    //
+    // [NOTE] 
+    // release the loadingView if it hasn't been released by now
+    //
     if( loadingView_ ) [loadingView_ release];
     loadingView_ = nil;
     
@@ -181,7 +214,11 @@
     [table_ reloadData];
 
 	if( artist_ ) {
-        loadingView_ = [LoadingView loadingViewInView:progressView_ loadingText:@"Loading Album List..."]; 
+        // 
+        // [NOTE] retain the loadingView, but this is not the usual recommended practice, but this case is 
+        // special due to callbacks involved.
+        // 
+        loadingView_ = [[LoadingView loadingViewInView:progressView_ loadingText:@"Loading Album List..."] retain]; 
         if( artist_ != @"" ) {
             NSString *req = [artist_ objectForKey:@"artistId"];
             [app getAlbumListAsync:req];
