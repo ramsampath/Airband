@@ -50,15 +50,16 @@
 		
 		// Create label views to contain the various pieces of text that make up the cell.
 		// Add these as subviews.
-		nameLabel                      = [[[UILabel alloc] initWithFrame:CGRectZero] autorelease];
+		nameLabel                      = [[[UILabel alloc] initWithFrame:CGRectZero] retain];
 		nameLabel.backgroundColor      = [UIColor clearColor];
 		nameLabel.opaque               = NO;
 		nameLabel.textColor            = [UIColor whiteColor];
 		nameLabel.highlightedTextColor = [UIColor whiteColor];
 		nameLabel.font                 = [UIFont boldSystemFontOfSize:18];
 		[self.contentView addSubview:nameLabel];
+        [nameLabel release];
 		
-		trackcountLabel                      = [[[UILabel alloc] initWithFrame:CGRectZero] autorelease];
+		trackcountLabel                      = [[[UILabel alloc] initWithFrame:CGRectZero] retain];
 		trackcountLabel.backgroundColor      = [UIColor clearColor];
 		trackcountLabel.opaque               = NO;
 		trackcountLabel.textColor            = [UIColor grayColor];
@@ -68,6 +69,7 @@
         self.selectedBackgroundView.backgroundColor = [UIColor whiteColor];
 
 		[self.contentView addSubview:trackcountLabel];
+        [trackcountLabel release];
 	}
 	
 	return self;
@@ -707,7 +709,7 @@
 	}
 		
 	if( sectionIndex<0 || sectionIndex >= 27 ) {
-		printf( "outta bounds: %d\n", sectionIndex );
+		//printf( "outta bounds: %d\n", sectionIndex );
 		return;
 	}
 		
@@ -769,9 +771,10 @@ tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 
 - (UIView *)tableView: (UITableView *)tableView viewForHeaderInSection: (NSInteger)section 
 {	
-	UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.bounds.size.width, 24)];
+	UIView *headerView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.bounds.size.width, 24)] 
+                          autorelease];
 
-	UILabel *sectionTitle = [[UILabel alloc] initWithFrame:CGRectMake(10, -1, tableView.bounds.size.width, 24)];
+	UILabel *sectionTitle = [[[UILabel alloc] initWithFrame:CGRectMake(10, -1, tableView.bounds.size.width, 24)] retain];
 	sectionTitle.backgroundColor = [UIColor clearColor];
 	sectionTitle.font            = [UIFont boldSystemFontOfSize:18];
 	sectionTitle.textColor       = [UIColor whiteColor];
@@ -788,11 +791,14 @@ tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
         }
 	}
     
-    UIImageView *sectionBG       = [[UIImageView alloc] initWithImage:sectionBGImage_];
+    UIImageView *sectionBG       = [[[UIImageView alloc] initWithImage:sectionBGImage_] retain];
 
     [headerView addSubview:sectionBG];
+    [sectionBG release];
+
 	[headerView addSubview:sectionTitle];
-	
+	[sectionTitle release];
+    
 	return headerView;
 }
 
@@ -820,6 +826,7 @@ tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPat
                                 objectAtIndex:indexPath.section] 
                                objectAtIndex:indexPath.row];
     }
+    
 	return cell;
 }
 

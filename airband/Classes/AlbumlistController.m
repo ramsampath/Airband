@@ -68,6 +68,7 @@
         albumartView = [[[UIImageView alloc] initWithImage:albumart] retain];
         albumartView.frame = CGRectMake( 0, 0, 34, 2*LABEL_HEIGHT  );
         [self.contentView addSubview:albumartView];
+        [albumartView release];
 
         //
         // Create the label for the top row of text
@@ -87,6 +88,7 @@
                                 LABEL_HEIGHT)] retain];
         
         [self.contentView addSubview:nameLabel];
+        [nameLabel release];
         
         //
         // Configure the properties for the text that are the same on every row
@@ -397,7 +399,7 @@
 	
 	UINavigationBar *bar = [self navigationController].navigationBar; 
 	bar.barStyle = UIBarStyleBlackOpaque;;
-    
+
 	AppData *app = [AppData get];	
 
     [app getAlbumList];
@@ -777,7 +779,7 @@
 	}
     
 	if( sectionIndex<0 || sectionIndex >= 27 ) {
-		printf( "outta bounds: %d\n", sectionIndex );
+		//printf( "outta bounds: %d\n", sectionIndex );
 		return;
 	}
     
@@ -865,9 +867,11 @@ tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 
 - (UIView *)tableView: (UITableView *)tableView viewForHeaderInSection: (NSInteger)section {
 	
-	UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.bounds.size.width, 24)];
+	UIView *headerView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.bounds.size.width, 24)] 
+                          autorelease];
     
-	UILabel *sectionTitle = [[UILabel alloc] initWithFrame:CGRectMake(10, -1, tableView.bounds.size.width, 24)];
+	UILabel *sectionTitle = [[[UILabel alloc] initWithFrame:CGRectMake(10, -1, tableView.bounds.size.width, 24)] 
+                             retain];
 	sectionTitle.backgroundColor = [UIColor clearColor];
 	sectionTitle.font            = [UIFont boldSystemFontOfSize:18];
 	sectionTitle.textColor       = [UIColor whiteColor];
@@ -884,10 +888,13 @@ tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
         }
 	}
     
-    UIImageView *sectionBG       = [[UIImageView alloc] initWithImage:sectionBGImage_];
+    UIImageView *sectionBG       = [[[UIImageView alloc] initWithImage:sectionBGImage_] retain];
     
     [headerView addSubview:sectionBG];
+    [sectionBG release];
+    
 	[headerView addSubview:sectionTitle];
+    [sectionTitle release];
 	
 	return headerView;
 }

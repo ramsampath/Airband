@@ -53,7 +53,7 @@
 	if( inflight_ || [tasks_ count] == 0 )
 		return;
 	
-	printf( "firing off deferred task!\n" );
+	//printf( "firing off deferred task!\n" );
 	
 	NSObject *anObject = [[tasks_ objectAtIndex:0] retain];
 	[tasks_ removeObjectAtIndex:0];
@@ -82,7 +82,7 @@
 		[task setObject:userdata forKey:@"userdata"];		
 		[tasks_ addObject:task];		
 		
-		printf( "added task %d waiting\n", [tasks_ count] );
+		//printf( "added task %d waiting\n", [tasks_ count] );
 		return;
 	}
 
@@ -90,7 +90,7 @@
 	user_ = user;
 	userdata_ = userdata;
   } else {
-	printf( "[bug] -- bad asyncinfo passed into loadWithURL\n" );
+	//printf( "[bug] -- bad asyncinfo passed into loadWithURL\n" );
 	return;
   }
 
@@ -115,7 +115,7 @@
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
-  printf( "didFailWithError:%s\n", [[error localizedDescription] UTF8String] );
+  //printf( "didFailWithError:%s\n", [[error localizedDescription] UTF8String] );
   [user_ failed:userdata_ error:error];
   [self clean];
 }

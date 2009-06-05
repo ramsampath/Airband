@@ -33,7 +33,7 @@
 {
 	AppData *app = [AppData get];
 	if( !app ) {
-		printf( "couldn't get app? in settings controller\n" );
+		//printf( "couldn't get app? in settings controller\n" );
 		return;
 	}
 	
@@ -139,7 +139,7 @@
 {
 	AppData *app = [AppData get];
 	if( !app ) {
-		printf( "couldn't get app? in settings controller\n" );
+		//printf( "couldn't get app? in settings controller\n" );
 		return nil;
 	}
 	
