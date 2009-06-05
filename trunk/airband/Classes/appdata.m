@@ -129,7 +129,7 @@ static audiohelp_II *g_audio = nil;
 {
 	NSString *which = userdata;
 	
-	printf( "----------- dataReady:%s\n", [which UTF8String] );
+	//printf( "----------- dataReady:%s\n", [which UTF8String] );
 	
 	if( [which isEqualToString:@"login"] )
 	{
@@ -222,7 +222,7 @@ static audiohelp_II *g_audio = nil;
 	}
 	else
 	{
-		printf("WTF -- unknown callback:%s\n", [which UTF8String] );
+		//printf("WTF -- unknown callback:%s\n", [which UTF8String] );
 	}
 	
 }
@@ -565,7 +565,7 @@ static audiohelp_II *g_audio = nil;
   [req appendString:[NSString stringWithFormat:@"&partner_token=%@", partner_token]];
   [req appendString:[NSString stringWithFormat:@"&username=%@&password=%@", username_, password_]];
 
-  printf ("Login Request String: %s\n", [req UTF8String] );
+  //printf ("Login Request String: %s\n", [req UTF8String] );
   [self stop];
   [g_async release];
 	

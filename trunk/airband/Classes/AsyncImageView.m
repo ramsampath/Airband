@@ -43,7 +43,7 @@
 
 -(void) failed:(id)userdata error:(NSError*)error
 {
-	printf( "image failed\n" );
+	//printf( "image failed\n" );
 }
 
 @end

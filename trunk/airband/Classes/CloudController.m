@@ -27,7 +27,7 @@
 
 - (void)viewDidLoad {
 	
-	printf( "view: %s\n", [[self.view description] UTF8String] );	
+	//printf( "view: %s\n", [[self.view description] UTF8String] );	
 	/*
 	 if( [self.view isKindOfClass:[cloudview class]] )
 	{
