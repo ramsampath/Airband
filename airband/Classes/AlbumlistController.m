@@ -65,7 +65,7 @@
         // album artwork
         //
 
-        albumartView = [[[UIImageView alloc] initWithImage:albumart] retain];
+        albumartView = [[UIImageView alloc] initWithImage:albumart];
         albumartView.frame = CGRectMake( 0, 0, 34, 2*LABEL_HEIGHT  );
         [self.contentView addSubview:albumartView];
         [albumartView release];
@@ -77,7 +77,7 @@
         
         //nameLabel = [[[UILabel alloc] initWithFrame:CGRectMake( 32, 0, 100, LABEL_HEIGHT)] retain];
         
-        nameLabel = [[[UILabel alloc]
+        nameLabel = [[UILabel alloc]
                      initWithFrame:
                      CGRectMake(
                                 albumartView.frame.size.width + 2.0 * self.indentationWidth,
@@ -85,7 +85,7 @@
                                 aTableView.bounds.size.width -
                                 albumartView.frame.size.width - 4.0 * self.indentationWidth
                                 - indicatorImage.size.width,
-                                LABEL_HEIGHT)] retain];
+                                LABEL_HEIGHT)];
         
         [self.contentView addSubview:nameLabel];
         [nameLabel release];
@@ -125,7 +125,6 @@
         trackcountLabel.font                 = [UIFont systemFontOfSize:[UIFont labelFontSize] - 2];
         
         self.backgroundView.alpha = 1.0;
-        //[indicatorImage release];
     }
     
 	return self;
@@ -230,7 +229,8 @@
     
     shuffleview_           = FALSE;
 
-    
+    albumActiveSections_ = nil;
+    albumSectionTitles_ = nil;
     return self;
 }
 
@@ -678,6 +678,9 @@
     // Create the secions
     //  
     nAlbumActiveSessions_ = 0; 
+    if( albumActiveSections_ ) [albumActiveSections_ release];
+    if( albumSectionTitles_ ) [albumSectionTitles_ release];
+    
     albumActiveSections_  = [[NSMutableArray alloc] init];
     albumSectionTitles_   = [[NSMutableArray alloc] init];
     
@@ -694,7 +697,6 @@
         }
     }
     [table_ reloadData];
-    
 }
 
 
