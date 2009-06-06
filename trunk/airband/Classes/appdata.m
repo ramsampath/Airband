@@ -65,6 +65,7 @@ static audiohelp_II *g_audio = nil;
 		fullArtistList_    = nil;
 		albumInRequest_    = nil;
 		artwork_           = nil;
+		artworkdata_       = nil;
 		currentTracklist_  = nil;
 		albumList_         = nil;
 		trackList_         = nil;
@@ -95,6 +96,7 @@ static audiohelp_II *g_audio = nil;
 	[fullArtistList_ release];
 	[albumInRequest_ release];
 	[artwork_ release];
+	[artworkdata_ release];
 	[currentTracklist_ release];
 	[albumList_ release];
 	[trackList_ release];
@@ -204,20 +206,19 @@ static audiohelp_II *g_audio = nil;
 	{			
 		if( [data length] > 100 )
 		{			
-			NSData *dup = [[NSData dataWithData:data] retain];
-			CGDataProviderRef provider = CGDataProviderCreateWithData( NULL, [dup bytes], [dup length], NULL );
-			CGImageRef        imageref = CGImageCreateWithJPEGDataProvider(provider, NULL, true, kCGRenderingIntentDefault);						
+			[artworkdata_ release];
+			artworkdata_ = [[NSData dataWithData:data] retain];
+			CGDataProviderRef provider = CGDataProviderCreateWithData( NULL, [artworkdata_ bytes], [artworkdata_ length], NULL );
+			CGImageRef imageref = CGImageCreateWithJPEGDataProvider(provider, NULL, true, kCGRenderingIntentDefault);						
 			if( imageref )
 			{
-				CGDataProviderRelease(provider);				
-				CGImageRetain( imageref );			
 				[artwork_ release];
+				CGImageRetain(imageref);			
 				artwork_ = [[UIImage imageWithCGImage:imageref] retain];			
 				[[NSNotificationCenter defaultCenter] postNotificationName:@"artworkReady" object:artwork_];						
-				//CGImageRelease(imageref);				
-			}
-			
-			//[dup release];
+				CGDataProviderRelease(provider);				
+				CGImageRelease(imageref);				
+			}			
 		}
 	}
 	else
