@@ -14,7 +14,8 @@ static float g_hackVolume = 1.0;
 #import "audiohelp.h"
 #import "CFNetwork/CFHTTPMessage.h"
 
-#define PRINTERROR(LABEL)	printf("%s (%4.4s:%d)\n", LABEL, &err, err)
+//#define PRINTERROR(LABEL)	dbg_printf("%s (%4.4s:%d)\n", LABEL, &err, err)
+#define PRINTERROR(LABEL)
 
 // --------------------------------------------------------------------------------
 static const char* checkstatus( OSStatus s )
@@ -46,8 +47,8 @@ static const char* checkstatus( OSStatus s )
 	}
 	
 	if( s ) {
-		const char *e = (const char*)&s;
-		printf( "ERROR status: %s %c%c%c%c\n", r, e[3],e[2],e[1],e[0] );
+		//const char *e = (const char*)&s;
+		//dbg_printf( "ERROR status: %s %c%c%c%c\n", r, e[3],e[2],e[1],e[0] );
 	}
 	
 	return r;
@@ -103,7 +104,7 @@ static int MyFindQueueBuffer(AudioData* myData, AudioQueueBufferRef inBuffer)
 		if (inBuffer == myData->audioQueueBuffer[i]) 
 			return i;
 	}
-	printf( "HUH -- couldn't find audio buffer index\n" );
+	//dbg_printf( "HUH -- couldn't find audio buffer index\n" );
 	return -1;
 }
 
@@ -136,13 +137,13 @@ static void MyAudioQueuePropertyListenerProc ( void                 *inClientDat
 {
 	AudioData* myData = (AudioData*)inClientData;
 	if( !myData ) {
-		printf( "incoming data to propertyListenerProc is busted\n" );
+		//dbg_printf( "incoming data to propertyListenerProc is busted\n" );
 	}
 		 
 	UInt32 dataSize=0;
 	OSStatus status = AudioQueueGetPropertySize( inAQ, inID, &dataSize );
 
-	//printf( "audioqueuePropertyListenerProc\n" );
+	////dbg_printf( "audioqueuePropertyListenerProc\n" );
 	
 	if( inID == kAudioQueueProperty_IsRunning )
 	{
@@ -150,9 +151,9 @@ static void MyAudioQueuePropertyListenerProc ( void                 *inClientDat
 		dataSize = sizeof(isRunning);
 		status = AudioQueueGetProperty(inAQ, inID, &isRunning, &dataSize);
 		if( dataSize !=sizeof(isRunning) )
-			printf( "queue get proprty wacked\n" );
+			//dbg_printf( "queue get proprty wacked\n" );
 		
-		//printf( "audio is running prop: %d\n", isRunning );
+		////dbg_printf( "audio is running prop: %d\n", isRunning );
 		if( !isRunning )
 		{
 			pthread_mutex_lock(&myData->mutex);
@@ -191,7 +192,7 @@ static void MyPropertyListenerProc(	void *inClientData,
 	AudioData* myData = (AudioData*)inClientData;
 	OSStatus err = noErr;
 	
-	//printf("MyPropertyListenerProc '%c%c%c%c'\n", 
+	////dbg_printf("MyPropertyListenerProc '%c%c%c%c'\n", 
 	//	   (inPropertyID>>24)&255, (inPropertyID>>16)&255, (inPropertyID>>8)&255, inPropertyID&255);
 	
 	switch (inPropertyID) {
@@ -276,7 +277,7 @@ static OSStatus MyEnqueueBuffer(AudioData* myData)
 		
 		// always set to user slider 
 		AudioQueueSetParameter( myData->audioQueue_, kAudioQueueParam_Volume, g_hackVolume );		
-		printf("audio queue started\n");
+		//dbg_printf("audio queue started\n");
 	}
 	
 	// go to next buffer
@@ -460,13 +461,13 @@ static void MyPacketsProc( void *inClientData,
 		pthread_mutex_unlock(&mutex_);	
 	
 		// wait for worker thread to say it's done.
-		printf( "waiting for workerthread\n" );
+		//dbg_printf( "waiting for workerthread\n" );
 		pthread_mutex_lock(&mutex_); 
 		{	
 			pthread_cond_wait(&workerdone_, &mutex_);		
 		}
 		pthread_mutex_unlock(&mutex_);		
-		printf( "workerdone signalled ... waiting for workerthread\n" );	
+		//dbg_printf( "workerdone signalled ... waiting for workerthread\n" );	
 	}
 }
 
@@ -517,7 +518,7 @@ static void MyPacketsProc( void *inClientData,
 			if( myd_->failed || myd_->endAudioData ) {
 			} else {
 				
-				  //printf( "audioChunks(consume): %d, running:%d\n", [datalist_ count], (int) running_ );			
+				  ////dbg_printf( "audioChunks(consume): %d, running:%d\n", [datalist_ count], (int) running_ );			
 				  if( [datalist_ count] ) {
 					  data = [[datalist_ objectAtIndex:0] retain];
 					  [datalist_ removeObjectAtIndex:0];
@@ -545,7 +546,7 @@ static void MyPacketsProc( void *inClientData,
 		
 	if(0) 
 	{
-		printf( "waiting for audioqueue listener marked as done\n" );
+		//dbg_printf( "waiting for audioqueue listener marked as done\n" );
 		pthread_mutex_lock(&mutex_); 
 		{	
 			// [todo] -- probably need a new condition var here.
@@ -556,7 +557,7 @@ static void MyPacketsProc( void *inClientData,
 	
 	if(1)
 	{
-		printf( "closingdown audio.\n" );
+		//dbg_printf( "closingdown audio.\n" );
 		OSStatus err;	
 		err = AudioQueueStop(myd_->audioQueue_, TRUE);
 		err = AudioFileStreamClose(myd_->audioFileStream);
@@ -565,7 +566,7 @@ static void MyPacketsProc( void *inClientData,
 	
 	pthread_mutex_lock(&mutex_); 
 	{	
-		printf( "signal audio.\n" );
+		//dbg_printf( "signal audio.\n" );
 		running_ = FALSE;
 		pthread_cond_signal(&workerdone_);
 	}
@@ -577,7 +578,7 @@ static void* workerthread( void* pv )
   asyncaudio_II *aa = (asyncaudio_II*)pv;
   [aa consumer];
 	
-  printf( "worker thread exiting\n" );	
+  //dbg_printf( "worker thread exiting\n" );	
   return NULL;
 }
 
@@ -595,7 +596,7 @@ static void* workerthread( void* pv )
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
-  printf( "asyncaudio: didFailWithError:%s\n", [[error localizedDescription] UTF8String] );
+  //dbg_printf( "asyncaudio: didFailWithError:%s\n", [[error localizedDescription] UTF8String] );
   [self cancel];
 	// [todo] -- delegate failed.
 }
@@ -611,7 +612,7 @@ static void* workerthread( void* pv )
 {
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	
-	printf( "connectionDidFinishLoading\n" );
+	//dbg_printf( "connectionDidFinishLoading\n" );
 
 #ifdef APR29_LATEST_HACKS	
 	ghackApr29_finished_loading = 1;
@@ -632,8 +633,8 @@ static void* workerthread( void* pv )
 		}
 		else
 		{
-			printf( "connection response: %d(%s)\n", (int) response.statusCode, 
-				   [[NSHTTPURLResponse localizedStringForStatusCode:response.statusCode] UTF8String] );
+			//dbg_printf( "connection response: %d(%s)\n", (int) response.statusCode, 
+			//	   [[NSHTTPURLResponse localizedStringForStatusCode:response.statusCode] UTF8String] );
 
 			// 
 			// we'll let the client do this
@@ -692,7 +693,7 @@ static void* workerthread( void* pv )
 	connection_ = [[NSURLConnection connectionWithRequest:[NSURLRequest requestWithURL:url]   
 												 delegate:asyncaudio_] retain];
 	
-	printf( "audio async request in flight:%s\n", [strurl UTF8String] );	
+	//dbg_printf( "audio async request in flight:%s\n", [strurl UTF8String] );	
 }
 
 
@@ -742,7 +743,7 @@ static void* workerthread( void* pv )
 	UInt32  sampleRateSize = sizeof( sampleRate );
 	AudioQueueGetProperty( asyncaudio_.myd_->audioQueue_, kAudioQueueDeviceProperty_SampleRate, 
                             &sampleRate, &sampleRateSize ); 
-	//printf ("sample : %f %d\n", fsampleRate, sampleRateSize );
+	////dbg_printf ("sample : %f %d\n", fsampleRate, sampleRateSize );
 
 	if( sampleRateSize != sizeof( sampleRate ) || sampleRate == 0 ) {
 		t = 0;

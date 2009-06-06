@@ -24,6 +24,7 @@
 	NSDictionary *albumInRequest_;
 	// (single) image of currently playing song
 	UIImage *artwork_;
+	NSData  *artworkdata_;
 	// tracks (array of dictionary) for currently select playlist
 	NSArray *currentTracklist_;
 	// albums (array of dictionary) for selected artist
