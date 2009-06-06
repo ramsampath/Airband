@@ -602,7 +602,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Scot Shinderman";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Ram Sampath";
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -615,20 +615,53 @@
 			};
 			name = Release;
 		};
-		21D8D5AE0FA01BB400A4F889 /* Distribution */ = {
+		218D07A90FD99C3200390E41 /* App Store Distribution */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PREBINDING = NO;
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos2.2.1;
 			};
-			name = Distribution;
+			name = "App Store Distribution";
 		};
-		21D8D5AF0FA01BB400A4F889 /* Distribution */ = {
+		218D07AA0FD99C3200390E41 /* App Store Distribution */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Ram Sampath";
+				COPY_PHASE_STRIP = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = airband_Prefix.pch;
+				INFOPLIST_FILE = Info.plist;
+				PRODUCT_NAME = airband;
+			};
+			name = "App Store Distribution";
+		};
+		21D8D5AE0FA01BB400A4F889 /* Ad Hoc Distribution */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Don't Code Sign";
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				PREBINDING = NO;
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				SDKROOT = iphoneos2.2.1;
+			};
+			name = "Ad Hoc Distribution";
+		};
+		21D8D5AF0FA01BB400A4F889 /* Ad Hoc Distribution */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -643,9 +676,9 @@
 				GCC_PREFIX_HEADER = airband_Prefix.pch;
 				INFOPLIST_FILE = Info.plist;
 				PRODUCT_NAME = airband;
-				"PROVISIONING_PROFILE[sdk=iphoneos2.2.1]" = "EEC4F048-0E96-4B4C-8815-75DA9BDB3754";
+				"PROVISIONING_PROFILE[sdk=iphoneos2.2.1]" = "C2143047-AB3F-446A-A832-68CFC34713C4";
 			};
-			name = Distribution;
+			name = "Ad Hoc Distribution";
 		};
 		C01FCF4F08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -682,7 +715,8 @@
 			buildConfigurations = (
 				1D6058940D05DD3E006BFB54 /* Debug */,
 				1D6058950D05DD3E006BFB54 /* Release */,
-				21D8D5AF0FA01BB400A4F889 /* Distribution */,
+				218D07AA0FD99C3200390E41 /* App Store Distribution */,
+				21D8D5AF0FA01BB400A4F889 /* Ad Hoc Distribution */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -692,7 +726,8 @@
 			buildConfigurations = (
 				C01FCF4F08A954540054247B /* Debug */,
 				C01FCF5008A954540054247B /* Release */,
-				21D8D5AE0FA01BB400A4F889 /* Distribution */,
+				218D07A90FD99C3200390E41 /* App Store Distribution */,
+				21D8D5AE0FA01BB400A4F889 /* Ad Hoc Distribution */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

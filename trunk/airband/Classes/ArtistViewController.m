@@ -50,7 +50,7 @@
 		
 		// Create label views to contain the various pieces of text that make up the cell.
 		// Add these as subviews.
-		nameLabel                      = [[[UILabel alloc] initWithFrame:CGRectZero] retain];
+		nameLabel                      = [[UILabel alloc] initWithFrame:CGRectZero];
 		nameLabel.backgroundColor      = [UIColor clearColor];
 		nameLabel.opaque               = NO;
 		nameLabel.textColor            = [UIColor whiteColor];
@@ -59,7 +59,7 @@
 		[self.contentView addSubview:nameLabel];
         [nameLabel release];
 		
-		trackcountLabel                      = [[[UILabel alloc] initWithFrame:CGRectZero] retain];
+		trackcountLabel                      = [[UILabel alloc] initWithFrame:CGRectZero];
 		trackcountLabel.backgroundColor      = [UIColor clearColor];
 		trackcountLabel.opaque               = NO;
 		trackcountLabel.textColor            = [UIColor grayColor];
@@ -159,6 +159,9 @@
 
     shuffleview_ = FALSE;
     
+    artistActiveSections_ = nil;
+    artistSectionTitles_  = nil;
+    
     return self;
 }
 
@@ -166,6 +169,16 @@
 
 - (void)dealloc
 {
+    [artistList_ release];
+    [artistActiveSections_ release];
+    [artistSectionTitles_ release];
+    [savedArtistList_ release];
+
+    for( int i = 0; i < 27; i++ ) {
+        [artistDisplayList_[i] removeAllObjects];
+        [artistDisplayList_[i] release];
+    }
+
 	[super dealloc];
 }
 
@@ -204,8 +217,10 @@
     artistOrgControl_.tintColor             = [UIColor darkGrayColor];
 	artistOrgControl_.backgroundColor       = [UIColor clearColor];
     
+    
     azsortbutton_ = [[UIBarButtonItem alloc] initWithCustomView:artistOrgControl_];	
 	[azsortbutton_ release];
+    
     
 	UIColor *tablecolor                         = kBgColor;
 
@@ -283,8 +298,11 @@
     //[artistTable_ addSubview:searchfield_];
 
 	[mainview addSubview:artistTable_];
+    [artistTable_ release];
+    
 	//[mainview addSubview:searchfield_];
 	[mainview addSubview:artistOrgControl_];
+    [artistOrgControl_ release];
     
     self.view = mainview;
 }
@@ -300,6 +318,7 @@
 	}
     */
     self.artistTable_.tableHeaderView = searchfield_;
+    [searchfield_ release];
 
 	UINavigationBar *bar          = [self navigationController].navigationBar;
 	bar.barStyle                  = UIBarStyleBlackOpaque;
@@ -611,6 +630,9 @@
     // Create the secions
     //  
     nArtistActiveSessions_ = 0; 
+    if( artistActiveSections_ ) [artistActiveSections_ release];
+    if( artistSectionTitles_ )  [artistSectionTitles_ release];
+    
     artistActiveSections_  = [[NSMutableArray alloc] init];
     artistSectionTitles_   = [[NSMutableArray alloc] init];
 
@@ -672,7 +694,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title 
                atIndex:(NSInteger)index {
-    NSLog([NSString stringWithFormat:@"clicked index : %i",index]);
+    //NSLog([NSString stringWithFormat:@"clicked index : %i",index]);
     if (index == 0) {
         [tableView scrollRectToVisible:[[tableView tableHeaderView] bounds] animated:NO];
         return -1;
@@ -726,6 +748,7 @@
 	[self navigationController].navigationBarHidden = FALSE;
 
 	[[self navigationController] pushViewController:traxcontroller animated:YES];
+    [traxcontroller release];
          
 }
 
@@ -774,7 +797,7 @@ tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 	UIView *headerView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.bounds.size.width, 24)] 
                           autorelease];
 
-	UILabel *sectionTitle = [[[UILabel alloc] initWithFrame:CGRectMake(10, -1, tableView.bounds.size.width, 24)] retain];
+	UILabel *sectionTitle = [[UILabel alloc] initWithFrame:CGRectMake(10, -1, tableView.bounds.size.width, 24)];
 	sectionTitle.backgroundColor = [UIColor clearColor];
 	sectionTitle.font            = [UIFont boldSystemFontOfSize:18];
 	sectionTitle.textColor       = [UIColor whiteColor];
@@ -791,7 +814,7 @@ tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
         }
 	}
     
-    UIImageView *sectionBG       = [[[UIImageView alloc] initWithImage:sectionBGImage_] retain];
+    UIImageView *sectionBG       = [[UIImageView alloc] initWithImage:sectionBGImage_];
 
     [headerView addSubview:sectionBG];
     [sectionBG release];
@@ -817,7 +840,6 @@ tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPat
 	if (cell == nil) {
         cell = [[[ArtistCell alloc] initWithFrame:CGRectZero 
 								  reuseIdentifier:cellIdentifier] autorelease];
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	}
 	// get the view controller's info dictionary based on the indexPath's row
 	//cell.dataDictionary = [[artistList_ objectAtIndex:indexPath.row] retain];

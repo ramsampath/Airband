@@ -56,12 +56,11 @@
 						<string key="NSFrame">{{0, 20}, {320, 480}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<bool key="IBUIOpaque">NO</bool>
-						<bool key="IBUIAutoresizesSubviews">NO</bool>
 						<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<int key="IBUIContentHorizontalAlignment">0</int>
 						<object class="NSFont" key="IBUIFont">
-							<string key="NSName">Helvetica-Bold</string>
+							<string key="NSName">Helvetica-Oblique</string>
 							<double key="NSSize">1.500000e+01</double>
 							<int key="NSfFlags">16</int>
 						</object>
@@ -238,10 +237,6 @@
 							<bool key="IBUIEnablesReturnKeyAutomatically">YES</bool>
 							<bool key="IBUISecureTextEntry">YES</bool>
 						</object>
-						<object class="NSCustomResource" key="IBUIBackground">
-							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">gradientBackground.png</string>
-						</object>
 						<int key="IBUIClearButtonMode">1</int>
 					</object>
 					<object class="IBUILabel" id="422123912">
@@ -267,7 +262,7 @@
 					<int key="NSColorSpace">1</int>
 					<bytes key="NSRGB">MC41NDM0NzgyNSAwLjU0MzQ3ODI1IDAuNTQzNDc4MjUAA</bytes>
 				</object>
-				<bool key="IBUIAutoresizesSubviews">NO</bool>
+				<bool key="IBUIAutoresizesSubviews">YES</bool>
 				<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
 				<int key="IBUIContentMode">4</int>
 				<object class="IBUISimulatedStatusBarMetrics" key="IBUISimulatedStatusBarMetrics">
@@ -480,7 +475,7 @@
 					<string>AllSettingsController</string>
 					<boolean value="NO"/>
 					<string>UIResponder</string>
-					<string>{{239, 376}, {320, 480}}</string>
+					<string>{{1078, 373}, {320, 480}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<object class="NSMutableArray">
 						<bool key="EncodedWithXMLCoder">YES</bool>
