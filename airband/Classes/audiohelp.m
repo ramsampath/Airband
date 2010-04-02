@@ -685,7 +685,7 @@ static void* workerthread( void* pv )
 	
 	ghackApr29_finished_loading = 0;
 	
-	asyncaudio_ = [[[asyncaudio_II alloc] init] retain];
+	asyncaudio_ = [[asyncaudio_II alloc] init];
 	
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	
