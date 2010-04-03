@@ -581,7 +581,7 @@ static audiohelp_II *g_audio = nil;
 //      username, password, firstname (optional), lastname (optional)
 
 - (NSString*) createAccount:(NSDictionary*)userinfo
-{
+{	
 	NSMutableString *req = [[NSMutableString stringWithCapacity:512] retain];
 	
 	NSString *username  = [userinfo objectForKey:@"username"];
@@ -589,7 +589,7 @@ static audiohelp_II *g_audio = nil;
 	NSString *firstname = [userinfo objectForKey:@"firstname"];
 	NSString *lastname  = [userinfo objectForKey:@"lastname"];
 	
-	[req appendString: @"https://shop.mp3tunes.com/api/v1/login?output=xml" ];  
+	[req appendString: @"https://shop.mp3tunes.com/api/v1/createAccount?output=xml" ];  
 	[req appendString:[NSString stringWithFormat:@"&partner_token=%@", partner_token]];
 	
 	if( [firstname length] && [lastname length] ) {
@@ -601,7 +601,9 @@ static audiohelp_II *g_audio = nil;
 						   username, password]];
 	}
 	
-	NSURL *url = [NSURL URLWithString:req];
+	NSString *req2 = [req stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding];
+	
+	NSURL *url = [NSURL URLWithString:req2];
 	NSData *data = [NSData dataWithContentsOfURL:url];
 		
 	if(!data) {
@@ -610,6 +612,7 @@ static audiohelp_II *g_audio = nil;
 								   delegate:nil cancelButtonTitle:@"ok" otherButtonTitles:nil] show];
 		return nil;
 	}
+	
 	
 	NSXMLParser * parser = [[[NSXMLParser alloc] initWithData:data] autorelease];	
 	
@@ -626,7 +629,7 @@ static audiohelp_II *g_audio = nil;
 		
 	if( [status isEqualToString:@"1"] )
 	{
-		[[[UIAlertView alloc] initWithTitle:@"Account Created" 
+		[[[UIAlertView alloc] initWithTitle:@"Account Created!" 
 									message:username 
 								   delegate:nil cancelButtonTitle:@"ok" otherButtonTitles:nil] show];
 	}

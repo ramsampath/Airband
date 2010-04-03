@@ -349,6 +349,7 @@
 	status_.text = @"Try Again!";	
 	
     [loadingView_ removeView];
+	loadingView_ = nil;
     
 	[self prepForLogin];
 }
@@ -388,10 +389,6 @@
 }
 
 
-- (void)viewWillDisappear:(BOOL)animated
-{
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
-}
 
 - (void)viewDidUnload
 {
@@ -419,6 +416,7 @@
 	status_.text = signInProbs;
 
     [loadingView_ removeView];
+	loadingView_ = nil;
     
 	[self prepForLogin];
 }
@@ -441,6 +439,7 @@
 - (void) artistListReady:(id) unused
 {
     [loadingView_ removeView];
+	loadingView_ = nil;
     
 	airbandAppDelegate *airband = (airbandAppDelegate*) ([UIApplication sharedApplication].delegate);
 	[airband startMainUI];	
@@ -546,12 +545,26 @@
 
 - (IBAction) loginAction:(id)sender
 {
+	[self resignFirstResponder];
+	[self setViewMovedUp:FALSE];
 	[self goLogin];
 }
 
 
 - (IBAction) createAccountAction:(id)sender
 {		
+	[self resignFirstResponder];
+	[self setViewMovedUp:FALSE];
+	
+	AppData *app = [AppData get];
+	NSDictionary *userinfo = [[NSDictionary 
+							   dictionaryWithObjects:[NSArray arrayWithObjects:username_.text, password_.text, nil]
+							   forKeys:[NSArray arrayWithObjects:@"username", @"password", nil]] retain];
+	
+	[app createAccount:userinfo];
+	
+	[userinfo release];
+	return;
 }
 
 
@@ -566,10 +579,101 @@
 	if( thetextField == username_ ) {
 		[password_ becomeFirstResponder];
 	} else {
+		[self setViewMovedUp:FALSE];
 		[self goLogin];
 	}
 
 	return YES;
+}
+
+
+#pragma mark -------------------------------
+#pragma mark UIKeyboard handling
+#pragma mark -------------------------------
+
+#define kMin 200
+
+static UITextField *curfield = nil;
+
+// http://cocoawithlove.com/2008/10/sliding-uitextfields-around-to-avoid.html
+
+-(void)textFieldDidBeginEditing:(UITextField *)sender
+{	
+	curfield = sender;
+	
+	//move the main view, so that the keyboard does not hide it.
+	if (self.view.frame.origin.y + create_.frame.origin.y >= kMin) {
+        [self setViewMovedUp:YES]; 
+	}
+}
+
+
+-(void)textFieldDidEndEditing:(UITextField *)textField
+{
+	curfield = nil;
+}
+
+
+//method to move the view up/down whenever the keyboard is shown/dismissed
+-(void)setViewMovedUp:(BOOL)movedUp
+{
+	[UIView beginAnimations:nil context:NULL];
+	[UIView setAnimationDuration:0.3];
+	
+	CGRect rect = self.view.frame;
+	
+	if (movedUp)
+	{
+		// 1. move the view's origin up so that the text field that will be hidden come above the keyboard 
+		// 2. increase the size of the view so that the area behind the keyboard is covered up.
+		rect.origin.y = kMin - create_.frame.origin.y ;
+	}
+	else
+	{
+		// revert back to the normal state.
+		rect.origin.y = 0;
+	}
+	self.view.frame = rect;
+		
+	[UIView commitAnimations];
+}
+
+
+- (void)keyboardWillShow:(NSNotification *)notif
+{
+	if ([curfield isFirstResponder] && create_.frame.origin.y + self.view.frame.origin.y >= kMin)
+	{
+		[self setViewMovedUp:YES];
+	}
+	else if (![curfield isFirstResponder] && create_.frame.origin.y  + self.view.frame.origin.y < kMin)
+	{
+		[self setViewMovedUp:NO];
+	}
+	
+}
+
+- (void)keyboardWillHide:(NSNotification *)notif
+{
+	//	if (self.view.frame.origin.y < 0 ) {
+	//		[self setViewMovedUp:NO];
+	//	}
+}
+
+
+- (void)viewWillAppear:(BOOL)animated
+{
+	// register for keyboard notifications
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) 
+												 name:UIKeyboardWillShowNotification object:self.view.window]; 
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) 
+												 name:UIKeyboardWillHideNotification object:self.view.window]; 
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+	// unregister for keyboard notifications while not visible.
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil]; 
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 @end

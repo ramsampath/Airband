@@ -28,5 +28,6 @@
 
 - (IBAction) loginAction:(id)sender;
 - (IBAction) createAccountAction:(id)sender;
+- (void)setViewMovedUp:(BOOL)movedUp;
 
 @end
