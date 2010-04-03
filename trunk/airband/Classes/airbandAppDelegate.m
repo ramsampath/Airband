@@ -8,7 +8,7 @@
 
 #import "airbandAppDelegate.h"
 #import "ArtistViewController.h"
-#include "AlbumlistController.h"
+#import "AlbumlistController.h"
 #import "AllSettingsController.h"
 #import "SettingsController.h"
 #import "PlaylistController.h"

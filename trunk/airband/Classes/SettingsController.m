@@ -717,6 +717,7 @@
 }
 
 
+
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField 
 {		
 	return TRUE;
@@ -727,7 +728,6 @@
 - (void)textFieldDidEndEditing:(UITextField *)textField 
 {
 	[textField resignFirstResponder];
-
 }
 
 - (void)didReceiveMemoryWarning 
