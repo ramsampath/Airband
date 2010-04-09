@@ -548,12 +548,15 @@ static audiohelp_II *g_audio = nil;
 	return [g_audio percentLoaded]; 
 }
 
-- (BOOL) isrunning
+- (bool) isrunning
 {
-	BOOL running = [g_audio isrunning];
-	return running;
+	return [g_audio isrunning];
 }
 
+- (bool) hasfinished
+{
+	return [g_audio hasfinished];
+}
 
 - (BOOL) login
 {

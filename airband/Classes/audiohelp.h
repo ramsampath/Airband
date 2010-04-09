@@ -60,6 +60,7 @@
 -(void) setvolume:(float)v;
 -(BOOL) isrunning;
 -(float) percentLoaded;
+-(BOOL) hasfinished;
 
 @end
 

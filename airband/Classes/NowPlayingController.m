@@ -943,16 +943,16 @@
 		float cur = [app percent];
         float len = [app tracklength];
 
-        if( cur >= len ) {
-			[progbar_ setValue:0.0 animated:YES];
-            //[progbar_ setProgress:0.0];
-			[self nextTrack];
-            //[app stop];
+		
+        if( cur >= len ) {			
+			if ([app hasfinished]) {
+				[progbar_ setValue:0.0 animated:YES];
+				[self nextTrack];				
+			}
         }
 		else {
 			float per = cur/len;
 			[progbar_ setValue:per animated:YES];
-			//[progbar_ setProgress:per];
 		}
 	
 		float approxBitRateMult = 4.0;

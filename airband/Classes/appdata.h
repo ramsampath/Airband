@@ -102,8 +102,9 @@
 - (float) trackFileSize;
 - (bool) isPlaying;
 - (bool) isPaused;
+- (bool) hasfinished;
 // if audio track is being played
-- (BOOL) isrunning;
+- (bool) isrunning;
 
 + (AppData*) get;
 

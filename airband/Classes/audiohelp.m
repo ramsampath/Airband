@@ -150,8 +150,9 @@ static void MyAudioQueuePropertyListenerProc ( void                 *inClientDat
 		UInt32 isRunning=0;
 		dataSize = sizeof(isRunning);
 		status = AudioQueueGetProperty(inAQ, inID, &isRunning, &dataSize);
-		if( dataSize !=sizeof(isRunning) )
+		if( dataSize !=sizeof(isRunning) ) {
 			//dbg_printf( "queue get proprty wacked\n" );
+		}
 		
 		////dbg_printf( "audio is running prop: %d\n", isRunning );
 		if( !isRunning )
@@ -727,9 +728,22 @@ static void* workerthread( void* pv )
 	return asyncaudio_.bytesloaded_; 
 }
 
+-(BOOL) hasfinished
+{
+	if (!ghackApr29_finished_loading)
+		return false;
+	
+	for (int i=0; i<kNumAQBufs; ++i) {
+		if (asyncaudio_.myd_->inuse[i]) {
+			return false;
+		}
+	}
+	
+	return TRUE;
+}
 
 -(float) percentage
-{
+{	
 	if( !asyncaudio_ ) {
 		return -1.0;
 	}
@@ -743,6 +757,7 @@ static void* workerthread( void* pv )
 	UInt32  sampleRateSize = sizeof( sampleRate );
 	AudioQueueGetProperty( asyncaudio_.myd_->audioQueue_, kAudioQueueDeviceProperty_SampleRate, 
                             &sampleRate, &sampleRateSize ); 
+	
 	////dbg_printf ("sample : %f %d\n", fsampleRate, sampleRateSize );
 
 	if( sampleRateSize != sizeof( sampleRate ) || sampleRate == 0 ) {
@@ -752,6 +767,7 @@ static void* workerthread( void* pv )
         // convert from millseconds.
         t /= (sampleRate/1000);
     }
+	
 	return t;
 }
 
@@ -778,7 +794,6 @@ static void* workerthread( void* pv )
 {
 	paused_ = !paused_;
 	AudioQueueStart( asyncaudio_.myd_->audioQueue_, &asyncaudio_.myd_->pausedTimeStamp );
-	//AudioQueueStart( asyncaudio_.myd_->audioQueue_, NULL );
 }
 
 
