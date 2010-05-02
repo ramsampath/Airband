@@ -97,10 +97,11 @@
     usernameText_.secureTextEntry = NO;
     usernameText_.selected = NO;
     usernameText_.tag = 0;
-    usernameText_.text = @"";
     usernameText_.textAlignment = UITextAlignmentLeft;
     usernameText_.textColor = [UIColor colorWithWhite:0.000 alpha:1.000];
     usernameText_.userInteractionEnabled = YES;
+    AppData *app = [AppData get];
+    usernameText_.text = [app username_];
     
     UITextField *passwordText_ = [[UITextField alloc] initWithFrame:CGRectMake(111.0, 164.0, 178.0, 31.0)];
     passwordText_.frame = CGRectMake(111.0, 164.0, 178.0, 31.0);
@@ -135,6 +136,7 @@
     passwordText_.textAlignment = UITextAlignmentLeft;
     passwordText_.textColor = [UIColor colorWithWhite:0.000 alpha:1.000];
     passwordText_.userInteractionEnabled = YES;
+    passwordText_.text = [app password_];
     
     
     UIView *mainview               = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 480.0)];
@@ -427,26 +429,49 @@
 	// [NOTE] -- invalidate the timer here, might be too soon as the
 	//           artistlist can fail also.
 	
-	[timeout_ invalidate];
-	timeout_ = nil;
+    [timeout_ invalidate];
+    timeout_ = nil;
+    
+    AppData *app = [AppData get];
+
+    switch( app.startpage_ ) {
+        case 0:
+            [[NSNotificationCenter defaultCenter] addObserver:self 
+                                                     selector:@selector(listReady:) 
+                                                         name:@"artistListReady" 
+                                                       object:nil];
+            [app getArtistList];
+            break;
+        case 1:
+            [[NSNotificationCenter defaultCenter] addObserver:self 
+                                                     selector:@selector(listReady:) 
+                                                         name:@"albumListReady" 
+                                                       object:nil];
+            [app getAlbumList];
+            break;
+        case 2:
+            [[NSNotificationCenter defaultCenter] addObserver:self 
+                                                     selector:@selector(listReady:) 
+                                                         name:@"playListsReady" 
+                                                       object:nil];
+            [app getPlayListsAsync];
+            break;
+    }
+
 	
-	status_.text = @"Loading Artists...";
+    status_.text = @"Loading...";
     [loadingView_ removeView];
-    loadingView_ = [[LoadingView loadingViewInView:status_ loadingText:@"Loading Artists..." fontSize:12.0] retain];
+    loadingView_ = [[LoadingView loadingViewInView:status_ loadingText:@"Loading..." fontSize:12.0] retain];
 }
 
 
-- (void) artistListReady:(id) unused
+- (void) listReady:(id) unused
 {
     [loadingView_ removeView];
 	loadingView_ = nil;
     
 	airbandAppDelegate *airband = (airbandAppDelegate*) ([UIApplication sharedApplication].delegate);
 	[airband startMainUI];	
-}
-
-- (void) albumListReady:(id) unused
-{
 }
 
 
@@ -494,20 +519,16 @@
 											   object:nil];		
 	
 	// [TODO] -- might want to split this into just login 
-	//           and then go directly to artist view screen.
+	//           and then go directly to artist view screen or selected
+    // start page screen.
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self 
 											 selector:@selector(loginOK:) 
 												 name:@"loginOK" 
 											   object:nil];		
-	
-	[[NSNotificationCenter defaultCenter] addObserver:self 
-											 selector:@selector(artistListReady:) 
-												 name:@"artistListReady" 
-											   object:nil];
-    	
-	AppData *app = [AppData get];
 
+    	
+    AppData *app = [AppData get];
 	//
 	// save the input 
 	// [NOTE] -- doesn't get written to user data area just yet.

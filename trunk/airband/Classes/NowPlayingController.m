@@ -13,6 +13,79 @@
 #import "appdata.h"
 #import "imgcache.h"
 
+// IMAGE UTILITY FUNCTIONS
+//
+
+// MyCreateBitmapContext: Source based on Apple Sample Code
+CGContextRef MyCreateBitmapContext (int pixelsWide, int pixelsHigh)
+{
+    CGContextRef    context = NULL;
+    CGColorSpaceRef colorSpace;
+    void *          bitmapData;
+    int             bitmapByteCount;
+    int             bitmapBytesPerRow;
+	
+    bitmapBytesPerRow   = (pixelsWide * 4);
+    bitmapByteCount     = (bitmapBytesPerRow * pixelsHigh);
+	
+    colorSpace = CGColorSpaceCreateDeviceRGB();
+    bitmapData = malloc( bitmapByteCount );
+    if (bitmapData == NULL)
+    {
+        fprintf (stderr, "Memory not allocated!");
+        return NULL;
+    }
+    context = CGBitmapContextCreate (bitmapData, pixelsWide, pixelsHigh, 8, bitmapBytesPerRow, colorSpace, kCGImageAlphaPremultipliedLast);
+    if (context== NULL)
+    {
+        free (bitmapData);
+        fprintf (stderr, "Context not created!");
+        return NULL;
+    }
+    CGColorSpaceRelease( colorSpace );
+	
+    return context;
+}
+
+// Convert a 6-character hex color to a UIColor object
+CGColorRef getColor(NSString *hexColor)
+{
+	unsigned int red, green, blue;
+	NSRange range;
+	range.length = 2;
+	
+	range.location = 0; 
+	[[NSScanner scannerWithString:[hexColor substringWithRange:range]] scanHexInt:&red];
+	range.location = 2; 
+	[[NSScanner scannerWithString:[hexColor substringWithRange:range]] scanHexInt:&green];
+	range.location = 4; 
+	[[NSScanner scannerWithString:[hexColor substringWithRange:range]] scanHexInt:&blue];	
+	
+	return [[UIColor colorWithRed:(float)(red/255.0f) green:(float)(green/255.0f) blue:(float)(blue/255.0f) alpha:1.0f] CGColor];
+}
+
+// Create the target color swatch
+id createImage(NSString *crayonColor)
+{
+	CGRect aRect = CGRectMake(0.0f, 0.0f, 200.0f, 200.0f);
+	CGContextRef context = MyCreateBitmapContext(200, 200);
+	CGContextClearRect(context, aRect);
+	
+	CGContextSetFillColorWithColor(context, [[UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:0.25f] CGColor]);
+	CGContextFillEllipseInRect(context, aRect);
+	
+	CGContextSetFillColorWithColor(context, getColor(crayonColor));
+	CGContextFillEllipseInRect(context, CGRectInset(aRect, 40.0f, 40.0f));
+	
+	CGImageRef myRef = CGBitmapContextCreateImage (context);
+	free(CGBitmapContextGetData(context));
+	CGContextRelease(context);
+	
+	return [UIImage imageWithCGImage:myRef];
+}
+
+
+
 @implementation UINavigationBar (UINavigationBarCategory)
 
 -(void)setBackgroundImage:(UIImage*)image
@@ -181,8 +254,85 @@
 @end 
 // end --- volume knob
 
+#define CVC_VIEW_TAG		999
+
+// *********************************************
+// Extending UIView to reveal its heartbeat methods
+// 
+@interface UIView (extended)
+- (void) startHeartbeat: (SEL) aSelector inRunLoopMode: (id) mode;
+- (void) stopHeartbeat: (SEL) aSelector;
+@end
+
+
+// *********************************************
+// The FlipView layer prevents touches from reaching the Coverflow layer behind it.
+//
+@interface FlipView : UIView
+{
+	UILabel *flipLabel;
+}
+@property (nonatomic, retain)	UILabel *flipLabel;
+@end
+
+@implementation FlipView
+@synthesize flipLabel;
+
+-(FlipView *) initWithFrame: (CGRect) aRect
+{
+	self = [super initWithFrame:aRect];
+	
+	// Add the flip label that shows the name and hex value
+	self.flipLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 480.0f, 480.0f)];
+	self.flipLabel.textColor = [UIColor whiteColor];
+	self.flipLabel.backgroundColor = [UIColor clearColor];
+	self.flipLabel.textAlignment = UITextAlignmentCenter;
+	self.flipLabel.font = [UIFont boldSystemFontOfSize:24.0f];
+	self.flipLabel.userInteractionEnabled = NO;
+    
+	[self.flipLabel setNumberOfLines:3];
+	[self addSubview:self.flipLabel];
+	[self.flipLabel release];
+	
+	return self;
+}
+
+- (void) setText: (NSString *) theText
+{
+	self.flipLabel.text = theText;
+}
+
+// When touched, remove the label and unflip the swatch
+- (void) touchesEnded:(NSSet*)touches withEvent:(UIEvent*)event
+{
+	[self removeFromSuperview];
+	[(CoverFlowView *)[[[UIApplication sharedApplication] keyWindow] viewWithTag:CVC_VIEW_TAG] flipSelectedCover];
+}
+
+- (void) dealloc
+{
+	[self.flipLabel release];
+	[super dealloc];
+}
+
+@end
+
+
 
 @implementation NowPlayingController
+
+// *********************************************
+// Coverflow View Controller
+//
+
+@synthesize cfView;
+@synthesize covers;
+@synthesize titles;
+@synthesize colorDict;
+@synthesize whichItem;
+@synthesize portraitView;
+@synthesize landscapeView;
+
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
 	if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
@@ -274,7 +424,7 @@
     [b release];
     
     toolbartop_ = [[UIToolbar alloc] initWithFrame:CGRectMake( 0.0, 0.0, 0.0, 0.0 )];
-	toolbartop_.opaque                 = NO;
+    toolbartop_.opaque                 = NO;
     toolbartop_.barStyle               = UIBarStyleBlackOpaque;
     //toolbartop_.backgroundColor        = [UIColor clearColor];
     //[navBar addSubview:toolbartop_];
@@ -418,30 +568,81 @@
 }
 
 
+- (void) start
+{
+	[self.cfView startHeartbeat: @selector(tick) inRunLoopMode: (id)kCFRunLoopDefaultMode];
+	[self.cfView.cfLayer transitionIn:1.0f];
+}
+
+- (void) stop
+{
+	[self.cfView stopHeartbeat: @selector(tick)];
+}
+
+
+-(UIView *)create_landScapeView
+{	
+	NSArray *crayons = [[NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"crayons" ofType:@"txt"]] componentsSeparatedByString:@"\n"];
+	self.covers = [[NSMutableArray alloc] init];
+	self.titles = [[NSMutableArray alloc] init];
+	self.colorDict = [[NSMutableDictionary alloc] init];
+	
+	// Create the title and cover arrays
+	for (NSString *crayon in crayons)
+	{
+		NSArray *theCrayon = [crayon componentsSeparatedByString:@" #"];
+		if ([theCrayon count] != 2) continue;
+		[self.titles addObject:[theCrayon objectAtIndex:0]];
+		[self.covers addObject:createImage([theCrayon objectAtIndex:1])];
+		[self.colorDict setObject:[theCrayon objectAtIndex:1] forKey:[theCrayon objectAtIndex:0]];
+	}
+	
+	// Create the flip object
+	CGRect fliprect = CGRectMake(0.0f, 0.0f, 480.0f, 480.0f);
+	flippedView = [[FlipView alloc] initWithFrame:fliprect];
+	[flippedView setTransform:CGAffineTransformMakeRotation(3.141592f / 2.0f)];
+	[flippedView setUserInteractionEnabled:YES];
+	
+	// Initialize 
+	self.cfView = [[CoverFlowView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] andCount:[self.titles count]];
+	[self.cfView setUserInteractionEnabled:YES];
+	[self.cfView setHost:self];
+	
+	// Finish setting up the cover flow layer
+	self.whichItem = [self.titles count] / 2;
+	[self.cfView.cfLayer selectCoverAtIndex:self.whichItem];
+	[self.cfView.cfLayer setDelegate:self];
+	
+    [self start];
+    return self.cfView;
+}	
+
+
+
 - (void)loadView 
 {
 	
-	UIView *mainview          = [[UIView alloc] initWithFrame:CGRectMake(0, 40, 320, 480)];
-	mainview.alpha            = 1.000;
-	mainview.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | 
+    UIView *mainview          = [[UIView alloc] initWithFrame:CGRectMake(0, 40, 320, 480)];
+    mainview.alpha            = 1.000;
+    mainview.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | 
                                 UIViewAutoresizingFlexibleBottomMargin | 
                                 UIViewAutoresizingFlexibleTopMargin;
-	mainview.backgroundColor  = [UIColor colorWithRed:0.114 green:0.110 blue:0.090 alpha:1.000];
-	mainview.clearsContextBeforeDrawing = YES;
-	mainview.clipsToBounds              = NO;
-	mainview.contentMode                = UIViewContentModeScaleToFill;
-	mainview.hidden                     = NO;
-	mainview.multipleTouchEnabled       = NO;
-	mainview.opaque                     = YES;
-	mainview.tag                        = 0;
-	mainview.userInteractionEnabled     = YES;
+    mainview.backgroundColor  = [UIColor colorWithRed:0.114 green:0.110 blue:0.090 alpha:1.000];
+    mainview.clearsContextBeforeDrawing = YES;
+    mainview.clipsToBounds              = NO;
+    mainview.contentMode                = UIViewContentModeScaleToFill;
+    mainview.hidden                     = NO;
+    mainview.multipleTouchEnabled       = NO;
+    mainview.opaque                     = YES;
+    mainview.tag                        = 0;
+    mainview.userInteractionEnabled     = YES;
     mainview.backgroundColor            = [UIColor 
                                            colorWithPatternImage:[UIImage 
                                            imageNamed:@"now_playing_background.png"]];
 
-	//UIImageView *image = [[UIImageView alloc] initWithFrame:CGRectMake(0,0,320,640)];
-	//UIImage *grad = [UIImage imageNamed:@"gradientBackground.png"];
-	//image.image = grad;
+    //UIImageView *image = [[UIImageView alloc] initWithFrame:CGRectMake(0,0,320,640)];
+    //UIImage *grad = [UIImage imageNamed:@"gradientBackground.png"];
+    //image.image = grad;
 	
     UIImage *stetchLeftTrack  = [[UIImage imageNamed:@"leftslide.png"]
 								stretchableImageWithLeftCapWidth:10.0 topCapHeight:0.0];
@@ -452,23 +653,23 @@
     UIImage *stetchRightTrack2 = [[UIImage imageNamed:@"rightslide_transp.png"]
 								 stretchableImageWithLeftCapWidth:10.0 topCapHeight:0.0];
     
-	progbar_ = [[UISlider alloc] initWithFrame:CGRectMake( 140.0, 305.0, 170.0, 8.0 )];
+    progbar_ = [[UISlider alloc] initWithFrame:CGRectMake( 140.0, 305.0, 170.0, 8.0 )];
     progbar_.backgroundColor            = [UIColor clearColor];
 
     [progbar_ setThumbImage:nil forState:UIControlStateNormal];
     [progbar_ setMinimumTrackImage:stetchLeftTrack forState:UIControlStateNormal];
     [progbar_ setMaximumTrackImage:stetchRightTrack2 forState:UIControlStateNormal];
     progbar_.alpha                      = 1.0;
-	progbar_.clearsContextBeforeDrawing = YES;
-	progbar_.clipsToBounds              = NO;
-	progbar_.contentMode                = UIViewContentModeScaleToFill;
-	progbar_.multipleTouchEnabled       = YES;
-	progbar_.opaque                     = YES;
-	progbar_.tag                        = 0;
-	progbar_.userInteractionEnabled     = NO;
+    progbar_.clearsContextBeforeDrawing = YES;
+    progbar_.clipsToBounds              = NO;
+    progbar_.contentMode                = UIViewContentModeScaleToFill;
+    progbar_.multipleTouchEnabled       = YES;
+    progbar_.opaque                     = YES;
+    progbar_.tag                        = 0;
+    progbar_.userInteractionEnabled     = NO;
     progbar_.minimumValue               = 0.0;
     progbar_.maximumValue               = 1.0;
-	progbar_.value                      = 0.000;
+    progbar_.value                      = 0.000;
 
     progbar2_ = [[UISlider alloc] initWithFrame:CGRectMake( 140.0, 305.0, 170.0, 8.0 )];
     progbar2_.backgroundColor            = [UIColor clearColor];
@@ -476,19 +677,19 @@
     [progbar2_ setMinimumTrackImage:stetchLeftTrack2 forState:UIControlStateNormal];
     [progbar2_ setMaximumTrackImage:stetchRightTrack forState:UIControlStateNormal];
     progbar2_.alpha                      = 1.0;
-	progbar2_.clearsContextBeforeDrawing = YES;
-	progbar2_.clipsToBounds              = NO;
-	progbar2_.contentMode                = UIViewContentModeScaleToFill;
-	progbar2_.multipleTouchEnabled       = YES;
-	progbar2_.opaque                     = YES;
-	progbar2_.tag                        = 0;
-	progbar2_.userInteractionEnabled     = NO;
+    progbar2_.clearsContextBeforeDrawing = YES;
+    progbar2_.clipsToBounds              = NO;
+    progbar2_.contentMode                = UIViewContentModeScaleToFill;
+    progbar2_.multipleTouchEnabled       = YES;
+    progbar2_.opaque                     = YES;
+    progbar2_.tag                        = 0;
+    progbar2_.userInteractionEnabled     = NO;
     progbar2_.minimumValue               = 0.0;
     progbar2_.maximumValue               = 1.0;
-	progbar2_.value                      = 0.000;	
+    progbar2_.value                      = 0.000;	
 	
-	CGRect volframe = CGRectMake( 81.0, 305.0, 147.0, 23.0 );
-	[self create_Custom_UISlider:volframe];
+    CGRect volframe = CGRectMake( 81.0, 305.0, 147.0, 23.0 );
+    [self create_Custom_UISlider:volframe];
  	    
     UIImageView *btbg             = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"bottom_toolbar_background.png"]];
     btbg.frame                    = CGRectMake(0, 300, 320, 120);
@@ -531,48 +732,47 @@
     [trackinfo_ addSubview: tlabel_];
 		
 	//toolbar_ = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 382.0, 320.0, 44.0)];
-	toolbar_ = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 300.0, 320.0, 100.0)];
-	toolbar_.alpha = 1.000;
-	//toolbar_.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
-	//toolbar_.barStyle = UIBarStyleBlackTranslucent;
+    toolbar_ = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 300.0, 320.0, 100.0)];
+    toolbar_.alpha = 1.000;
+    //toolbar_.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
+    //toolbar_.barStyle = UIBarStyleBlackTranslucent;
 
-	toolbar_.clearsContextBeforeDrawing = NO;
-	toolbar_.clipsToBounds              = NO;
-	toolbar_.contentMode            = UIViewContentModeBottom;
-	toolbar_.hidden                 = NO;
-	toolbar_.multipleTouchEnabled   = NO;
-	toolbar_.opaque                 = NO;
-	toolbar_.tag                    = 0;
-	toolbar_.userInteractionEnabled = YES;
-	toolbar_.backgroundColor = [UIColor clearColor];
-    
+    toolbar_.clearsContextBeforeDrawing = NO;
+    toolbar_.clipsToBounds              = NO;
+    toolbar_.contentMode            = UIViewContentModeBottom;
+    toolbar_.hidden                 = NO;
+    toolbar_.multipleTouchEnabled   = NO;
+    toolbar_.opaque                 = NO;
+    toolbar_.tag                    = 0;
+    toolbar_.userInteractionEnabled = YES;
+    toolbar_.backgroundColor = [UIColor clearColor];
 
     back_ = [UIButton alloc];
     back_.enabled = YES;
-	back_.tag     = 0;
+    back_.tag     = 0;
 
     albumcovertracksview_ = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320.0, 300.0)];
-	albumcoverview_ = [[UIImageView alloc] initWithFrame:albumcovertracksview_.frame];
-	albumcoverview_.alpha                      = 1.000;
-	//albumcoverview_.autoresizingMask           = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-	albumcoverview_.clearsContextBeforeDrawing = NO;
-	albumcoverview_.clipsToBounds              = NO;
-	//albumcoverview_.contentMode                = UIViewContentModeScaleAspectFill;
-	albumcoverview_.hidden                     = NO;
-	albumcoverview_.image                      = nil;
-	albumcoverview_.multipleTouchEnabled       = NO;
-	albumcoverview_.opaque                     = NO;
-	albumcoverview_.tag                        = 0;
-	albumcoverview_.userInteractionEnabled     = NO;
+    albumcoverview_ = [[UIImageView alloc] initWithFrame:albumcovertracksview_.frame];
+    albumcoverview_.alpha                      = 1.000;
+    //albumcoverview_.autoresizingMask           = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    albumcoverview_.clearsContextBeforeDrawing = NO;
+    albumcoverview_.clipsToBounds              = NO;
+    //albumcoverview_.contentMode                = UIViewContentModeScaleAspectFill;
+    albumcoverview_.hidden                     = NO;
+    albumcoverview_.image                      = nil;
+    albumcoverview_.multipleTouchEnabled       = NO;
+    albumcoverview_.opaque                     = NO;
+    albumcoverview_.tag                        = 0;
+    albumcoverview_.userInteractionEnabled     = NO;
     
     [albumcovertracksview_ addSubview:albumcoverview_];
 
     
-	busyimg_ = [[UIImageView alloc] initWithFrame:CGRectMake(30, 30, 100, 100)];
-	busyimg_.image = [UIImage imageNamed:@"busySpinner.png"];
-	busyimg_.opaque  = NO;
-	busyimg_.alpha = 0;
-	busyimg_.hidden = NO;
+    busyimg_ = [[UIImageView alloc] initWithFrame:CGRectMake(30, 30, 100, 100)];
+    busyimg_.image = [UIImage imageNamed:@"busySpinner.png"];
+    busyimg_.opaque  = NO;
+    busyimg_.alpha = 0;
+    busyimg_.hidden = NO;
 	
     AppData *app = [AppData get];
     if( !app ) return;
@@ -585,19 +785,21 @@
     tracklistview_.dataSource = self;
     tracklistview_.delegate   = self;
 
-	[mainview addSubview:albumcovertracksview_];
+    [mainview addSubview:albumcovertracksview_];
     [mainview addSubview:progbar2_];
-	[mainview addSubview:progbar_];
-	[mainview addSubview:trackinfo_];
-	[mainview addSubview:busyimg_];
+    [mainview addSubview:progbar_];
+    [mainview addSubview:trackinfo_];
+    [mainview addSubview:busyimg_];
 
     emptyalbumartworkimage_ = [[app albumArtCache_] loadImage:@"empty_album_art.png"];
-    self.view = mainview;	
+    self.view = mainview;
+    self.portraitView = mainview;
+    self.landscapeView = [self create_landScapeView];
     
     flipsideview_ = true;
 	
 	// hacky -- let's listen for errors
-	[[NSNotificationCenter defaultCenter] addObserver:self 
+    [[NSNotificationCenter defaultCenter] addObserver:self 
 											 selector:@selector(connectionError:) 
 												 name:@"connectionError"
 											   object:nil];	
@@ -1006,6 +1208,7 @@
 
 - (void)viewDidAppear:(BOOL)animated
 {
+    printf("mmmmm\n");
 	[[NSNotificationCenter defaultCenter] addObserver:self 
 											 selector:@selector(artworkReady:) 
 												 name:@"artworkReady" 
@@ -1115,12 +1318,49 @@
 	[[AppData get] stop];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation 
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
-	// Return YES for supported orientations
-	return (interfaceOrientation == UIInterfaceOrientationPortrait);
+    printf("zzz\n");
 }
 
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation 
+{
+    printf("hhhhh0\n");
+
+    if(interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown) {
+        self.view = portraitView;
+        return YES;
+    }
+    else if(interfaceOrientation == UIInterfaceOrientationPortrait) {
+        self.view = portraitView;
+        return YES;
+    }
+    else if(interfaceOrientation == UIInterfaceOrientationLandscapeRight ) {
+        self.view = landscapeView;
+        return YES;
+    }
+    else {
+        return NO;
+    }
+
+    
+    return YES;
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    printf("hhhhh1\n");
+
+    if(self.interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown) {
+        self.view = portraitView;
+    }
+    else if(self.interfaceOrientation == UIInterfaceOrientationPortrait) {
+        self.view = portraitView;
+    }
+    else {
+        self.view = landscapeView;
+    }
+}
 
 - (void)didReceiveMemoryWarning 
 {
@@ -1131,7 +1371,14 @@
 
 - (void)dealloc 
 {
-	[super dealloc];
+    if (target) [target release];
+    if (flippedView) [flippedView release];
+    [self.cfView  release];
+    [self.covers release];
+    [self.titles release];
+    [self.colorDict release];
+    
+    [super dealloc];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView 
@@ -1161,6 +1408,8 @@
     [app setCurrentTrackIndex_:[indexPath row]];
     [tracklistview_ didSelectRowAtIndexPath:indexPath];
 }
+
+
 
 /**
  UIActionSheet
@@ -1201,4 +1450,72 @@
 **/
 
 
+
+// *********************************************
+// Coverflow delegate methods
+//
+- (void) coverFlow: (id) coverFlow selectionDidChange: (int) index
+{
+	self.whichItem = index;
+	[self.cfView.label setText:[self.titles objectAtIndex:index]];
+}
+
+// Detect the end of the flip -- both on reveal and hide
+- (void) coverFlowFlipDidEnd: (UICoverFlowLayer *)coverFlow 
+{
+	if (flipOut)
+		[[[UIApplication sharedApplication] keyWindow] addSubview:flippedView];
+	else
+		[flippedView removeFromSuperview];
+}
+
+
+// *********************************************
+// Coverflow datasource methods
+//
+
+- (void) coverFlow:(id)coverFlow requestImageAtIndex: (int)index quality: (int)quality
+{
+	UIImage *whichImg = [self.covers objectAtIndex:index];
+	[coverFlow setImage:[whichImg CGImage]  atIndex:index type:quality];
+}
+
+// Return a flip layer, one that preferably integrates into the flip presentation
+- (id) coverFlow: (UICoverFlowLayer *)coverFlow requestFlipLayerAtIndex: (int) index
+{
+	if (flipOut) [flippedView removeFromSuperview];
+	flipOut = !flipOut;
+	
+	// Prepare the flip text
+	[flippedView setText:[NSString stringWithFormat:@"%@\n%@", [self.titles objectAtIndex:index], [self.colorDict objectForKey:[self.titles objectAtIndex:index]]]];
+	
+	// Flip with a simple blank square
+	UIView *view = [[[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 140.0f, 140.0f)] autorelease];
+	[view setBackgroundColor:[UIColor clearColor]];
+	
+	return [view layer];
+}
+
+// *********************************************
+// Utility methods
+//
+
+- (int) selectedItem
+{
+	return self.whichItem;
+}
+
+
+// *********************************************
+// Callback method for double tap
+//
+
+- (void) doubleTapCallback
+{
+}
+
+
 @end
+
+
+

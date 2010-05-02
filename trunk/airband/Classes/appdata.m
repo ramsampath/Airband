@@ -40,6 +40,7 @@ static audiohelp_II *g_audio = nil;
 @synthesize lastVolume_;
 @synthesize autoLogin_;
 @synthesize albumArtCache_;
+@synthesize startpage_;
 
 // --------------------------------------------------------------------------
 // singelton
@@ -153,8 +154,7 @@ static audiohelp_II *g_audio = nil;
 		
 		if (sessionID_) {
 			[[NSNotificationCenter defaultCenter] postNotificationName:@"loginOK" object:nil];
-			// on to the next step
-			[self getArtistList];
+
 		}
 	}
 	else if( [which isEqualToString:@"artistList"] )
@@ -735,11 +735,32 @@ static audiohelp_II *g_audio = nil;
     lastVolume_ = [[[d objectForKey:@"lastVolume"] retain] floatValue];
     bitRate_    = [[[d objectForKey:@"bitRate"] retain] intValue];
     autoLogin_  = [[[d objectForKey:@"autoLogin"] retain] boolValue];
+      
+    
+    //
+    // Read the global preferences and set the app preferences 
+    //
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+
+	NSString *loginValue = [defaults stringForKey:@"loginkey"];
+	NSString *passwordValue = [defaults stringForKey:@"passwordkey"];
+	BOOL autologinValue = [defaults boolForKey:@"autologinkey"];
+	NSInteger streamingRateValue = [defaults integerForKey:@"streamingratekey"];
+	NSInteger startpageValue = [defaults integerForKey:@"startpagekey"];
+	
+    username_ = loginValue;
+    password_ = passwordValue;
+    [self setStreamingRate:streamingRateValue];
+    [self setAutoLogin_:autologinValue];
+    [self setStartpage_:startpageValue];
 }
 
 
 - (void) saveState
 {
+    //
+    // Airband related saved state settings
+    //
     NSMutableDictionary *d = [NSMutableDictionary dictionaryWithCapacity:10];
     [d setValue:username_   forKey:@"username"];
     [d setValue:password_   forKey:@"password"];
@@ -748,7 +769,32 @@ static audiohelp_II *g_audio = nil;
     [d setValue:[NSString stringWithFormat:@"%d", bitRate_] forKey:@"bitRate"];
     [d setValue:[NSString stringWithFormat:@"%d", autoLogin_] forKey:@"autoLogin"];
         
-    [self writeApplicationPlist:d toFile:@"airbandPlist"];  
+    [self writeApplicationPlist:d toFile:@"airbandPlist"];
+
+    //
+    // Write the global settings
+    //
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    
+    [defaults setBool:autoLogin_ forKey:@"autologinkey"];
+    [defaults setInteger:bitRate_ forKey:@"streamingratekey"];
+    [defaults setInteger:startpage_ forKey:@"startpagekey"];
+    [defaults setValue:username_ forKey:@"usernamekey"];
+    [defaults setValue:password_ forKey:@"passwordkey"];
+    
+    /*
+    NSDictionary *appPrerfs = [NSDictionary dictionaryWithObjectsAndKeys:
+                               username_, @"autologinkey",
+                               password_, @"passworckey",
+                               startpage_, @"startpagekey",
+                               autoLogin_, @"autologinkey",
+                               bitRate_, @"streamingratekey",
+                               nil];
+    [[NSUserDefaults standardUserDefaults] registerDefaults:appPrerfs];
+*/
+    [defaults synchronize];
+    //[[NSUserDefaults standardUserDefaults] synchronize];
+    return;
 }
 
 

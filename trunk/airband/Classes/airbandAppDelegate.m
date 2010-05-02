@@ -38,7 +38,10 @@
 	[application setStatusBarStyle:UIBarStyleBlackOpaque animated:YES];	
 
 	window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-			
+
+
+    //[app setStartpage_:startpageValue]; 
+    
 	//
 	// intro screen
 	//
@@ -53,34 +56,34 @@
 
 -(void) startMainUI
 {
-	ArtistViewController  *artistVC   = [[ArtistViewController alloc] init];
-	AllSettingsController *settingsVC = [[SettingsController   alloc] init];
+    ArtistViewController  *artistVC   = [[ArtistViewController alloc] init];
+    AllSettingsController *settingsVC = [[SettingsController   alloc] init];
     PlaylistController    *playlistVC = [[PlaylistController   alloc] init];
-	AlbumlistController   *albumsVC   = [[AlbumlistController  alloc] init];
+    AlbumlistController   *albumsVC   = [[AlbumlistController  alloc] init];
 	
-	artistVC.title   = @"Artists";
-	settingsVC.title = @"Settings";
-	playlistVC.title = @"Playlists";
-	albumsVC.title   = @"Albums";
+    artistVC.title   = @"Artists";
+    settingsVC.title = @"Settings";
+    playlistVC.title = @"Playlists";
+    albumsVC.title   = @"Albums";
     artistVC.tabBarItem.image   = [UIImage imageNamed:@"icon_artists.png"];	
     settingsVC.tabBarItem.image = [UIImage imageNamed:@"icon_settings.png"];
     playlistVC.tabBarItem.image = [UIImage imageNamed:@"icon_playlists.png"];
     albumsVC.tabBarItem.image   = [UIImage imageNamed:@"icon_albums.png"];
 	
-	UINavigationController *artistsNC = [[UINavigationController alloc] initWithRootViewController:artistVC];
+    UINavigationController *artistsNC = [[UINavigationController alloc] initWithRootViewController:artistVC];
     UINavigationController *albumsNC  = [[UINavigationController alloc] initWithRootViewController:albumsVC];
-	UINavigationController *settingsNC= [[UINavigationController alloc] initWithRootViewController:settingsVC];		
-	UINavigationController *playlistNC= [[UINavigationController alloc] initWithRootViewController:playlistVC];
+    UINavigationController *settingsNC= [[UINavigationController alloc] initWithRootViewController:settingsVC];		
+    UINavigationController *playlistNC= [[UINavigationController alloc] initWithRootViewController:playlistVC];
     
-	artistsNC.navigationBar.barStyle = UIBarStyleBlackTranslucent;
-	artistsNC.navigationBarHidden = NO;
+    artistsNC.navigationBar.barStyle = UIBarStyleBlackTranslucent;
+    artistsNC.navigationBarHidden = NO;
     albumsNC.navigationBar.barStyle = UIBarStyleBlackTranslucent;
-	albumsNC.navigationBarHidden = NO;
-	settingsNC.navigationBar.barStyle = UIBarStyleBlackTranslucent;
-	settingsNC.navigationBarHidden = NO;
-	playlistNC.navigationBar.barStyle = UIBarStyleBlackTranslucent;
+    albumsNC.navigationBarHidden = NO;
+    settingsNC.navigationBar.barStyle = UIBarStyleBlackTranslucent;
+    settingsNC.navigationBarHidden = NO;
+    playlistNC.navigationBar.barStyle = UIBarStyleBlackTranslucent;
 	
-	tabBarController = [[UITabBarController alloc] init];	
+    tabBarController = [[UITabBarController alloc] init];	
     tabBarController.viewControllers = [NSArray arrayWithObjects:artistsNC, albumsNC, playlistNC, settingsNC, nil];	
 	
 	[artistVC   release];
@@ -98,7 +101,19 @@
 	}
 	
 	[window addSubview:tabBarController.view];	
-	[window bringSubviewToFront:tabBarController.view];
+
+    tabBarController.selectedIndex = [appdata_ startpage_];
+    
+    int sindex = [appdata_ startpage_];
+    if( sindex > 0 && sindex < 2 ) {
+        //UIView *v = [tabBarController.viewControllers objectAtIndex:sindex];
+        
+        //[window bringSubviewToFront:v];
+    }
+    else {
+        [window bringSubviewToFront:tabBarController.view];
+    }
+
 }
 
 
@@ -124,8 +139,8 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
-	[appdata_ stop];
-	[appdata_ saveState];
+    [appdata_ saveState];
+    [appdata_ stop];
 }
 
 

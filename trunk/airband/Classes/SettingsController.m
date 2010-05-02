@@ -10,9 +10,13 @@
 #import "SettingsController.h"
 #import "appdata.h"
 #import "airbandAppDelegate.h"
+#import "StartPageTableViewController.h"
 
 
 @implementation SettingsController
+@synthesize startscreen_;
+@synthesize table_;
+@synthesize table2_;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil 
 {
@@ -133,6 +137,8 @@
 
 
 
+
+
 -(UITableViewCell*) create_Cell:(NSString *)labelName frame:(CGRect) labelframe 
 					textframe:(CGRect) textframe 
 					index:(int) index
@@ -144,51 +150,48 @@
 	}
 	
 	UILabel *label = [[UILabel alloc] initWithFrame:labelframe];
-	label.adjustsFontSizeToFitWidth = YES;
-	label.lineBreakMode = UILineBreakModeTailTruncation;
-	label.multipleTouchEnabled = NO;
-	label.numberOfLines = 1;
-	label.opaque = NO;
-	label.shadowOffset = CGSizeMake(0.0, -1.0);
-	label.tag = 0;
-	label.text = labelName;
-	label.textAlignment = UITextAlignmentLeft;
-	label.textColor = [UIColor colorWithRed:0.000 green:0.000 blue:0.000 alpha:1.000];
-	label.userInteractionEnabled = NO;
-	label.font = [UIFont systemFontOfSize:14.0];
+    label.adjustsFontSizeToFitWidth = YES;
+    label.lineBreakMode = UILineBreakModeTailTruncation;
+    label.multipleTouchEnabled = NO;
+    label.numberOfLines = 1;
+    label.opaque = NO;
+    label.shadowOffset = CGSizeMake(0.0, -1.0);
+    label.tag = 0;
+    label.text = labelName;
+    label.textAlignment = UITextAlignmentLeft;
+    label.textColor = [UIColor colorWithRed:0.000 green:0.000 blue:0.000 alpha:1.000];
+    label.userInteractionEnabled = NO;
 
 	
-	UITextField *textfield = [[UITextField alloc] initWithFrame:textframe];
-	textfield.adjustsFontSizeToFitWidth = NO;
-	textfield.alpha = 1.000;
-	textfield.autocapitalizationType = UITextAutocapitalizationTypeNone;
-	textfield.autocorrectionType = UITextAutocorrectionTypeNo;
-	textfield.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin;
-	textfield.borderStyle = UITextBorderStyleNone;
-	textfield.clearsContextBeforeDrawing = NO;
-	textfield.clearsOnBeginEditing = NO;
-	textfield.clipsToBounds = NO;
-	textfield.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-	textfield.contentMode = UIViewContentModeScaleToFill;
-	textfield.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-	textfield.enabled = YES;
-	textfield.enablesReturnKeyAutomatically = NO;
-	textfield.hidden = NO;
-	textfield.highlighted = NO;
-	textfield.keyboardAppearance = UIKeyboardAppearanceDefault;
-	textfield.keyboardType = UIKeyboardTypeDefault;
-	textfield.minimumFontSize = 17.000;
-	textfield.multipleTouchEnabled = NO;
-	textfield.opaque = NO;
-	textfield.placeholder = @"Required";
-	textfield.returnKeyType = UIReturnKeyDone;
-	textfield.secureTextEntry = NO;
-	textfield.selected = NO;
-	textfield.tag = 112;
-	textfield.text = @"";
-	textfield.textAlignment = UITextAlignmentLeft;
-	textfield.userInteractionEnabled = YES;
-	textfield.font = [UIFont systemFontOfSize:14.0];
+    UITextField *textfield = [[UITextField alloc] initWithFrame:textframe];
+    textfield.adjustsFontSizeToFitWidth = YES;
+    textfield.alpha = 1.000;
+    textfield.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    textfield.autocorrectionType = UITextAutocorrectionTypeNo;
+    textfield.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin;
+    textfield.borderStyle = UITextBorderStyleNone;
+    textfield.clearsContextBeforeDrawing = NO;
+    textfield.clearsOnBeginEditing = NO;
+    textfield.clipsToBounds = NO;
+    textfield.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    textfield.contentMode = UIViewContentModeScaleToFill;
+    textfield.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+    textfield.enabled = YES;
+    textfield.enablesReturnKeyAutomatically = NO;
+    textfield.hidden = NO;
+    textfield.highlighted = NO;
+    textfield.keyboardAppearance = UIKeyboardAppearanceDefault;
+    textfield.keyboardType = UIKeyboardTypeDefault;
+    textfield.multipleTouchEnabled = NO;
+    textfield.opaque = NO;
+    textfield.placeholder = @"Required";
+    textfield.returnKeyType = UIReturnKeyDone;
+    textfield.secureTextEntry = NO;
+    textfield.selected = NO;
+    textfield.tag = 112;
+    textfield.text = @"";
+    textfield.textAlignment = UITextAlignmentLeft;
+    textfield.userInteractionEnabled = YES;
 
 	if( index == 0 )  {
 		username_ = textfield;
@@ -292,7 +295,7 @@
 
 	UISegmentedControl *sbrButtons = [[UISegmentedControl alloc] initWithItems:segmentTextContent];
 	
-	CGRect frame = CGRectMake( 127, 200, 180, 30);
+	CGRect frame = CGRectMake( 127, 180, 180, 30);
 	
 	AppData *app = [AppData get];	
 
@@ -335,7 +338,7 @@
     
 	UISegmentedControl *alButtons = [[UISegmentedControl alloc] initWithItems:segmentTextContent];
 	
-	CGRect frame = CGRectMake( 127, 260, 180, 30);
+	CGRect frame = CGRectMake( 127, 240, 180, 30);
 	
 	AppData *app = [AppData get];	
     
@@ -397,68 +400,15 @@
 	return button;
 }
 
-
-- (UIButton *)create_ButtonWithImage:(NSString *)name
-							  frame:(CGRect)frame
-
-{	
-	// create the UIButtons with various background images
-	UIImage *buttonBackground = [UIImage imageNamed:@"whiteButton.png"];
-	UIImage *buttonBackgroundPressed = [UIImage imageNamed:@"blueButton.png"];
-	
-	UIButton *grayButton = [self buttonWithTitle:name
-								frame:frame
-								image:buttonBackground
-								imagePressed:buttonBackgroundPressed
-								darkTextColor:YES];
-	
-	grayButton.adjustsImageWhenDisabled = YES;
-	grayButton.adjustsImageWhenHighlighted = YES;
-	grayButton.alpha = 1.000;
-	grayButton.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
-	grayButton.clearsContextBeforeDrawing = NO;
-	grayButton.clipsToBounds = NO;
-	grayButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
-	grayButton.contentMode = UIViewContentModeScaleToFill;
-	grayButton.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-	grayButton.enabled = YES;
-#ifdef __IPHONE_3_0	
-	grayButton.titleLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:12.000];
-#else
-	grayButton.font = [UIFont fontWithName:@"Helvetica-Bold" size:12.000];
-#endif
-	
-	grayButton.hidden = NO;
-	grayButton.highlighted = NO;
-	grayButton.multipleTouchEnabled = NO;
-	grayButton.opaque = NO;
-	grayButton.reversesTitleShadowWhenHighlighted = NO;
-	grayButton.selected = NO;
-	grayButton.showsTouchWhenHighlighted = NO;
-	grayButton.tag = 0;
-	grayButton.userInteractionEnabled = YES;
-	
-	[grayButton setTitle:name forState:UIControlStateDisabled];
-	[grayButton setTitle:name forState:UIControlStateHighlighted];
-	[grayButton setTitle:name forState:UIControlStateNormal];
-	[grayButton setTitle:name forState:UIControlStateSelected];
-	[grayButton setTitleShadowColor:[UIColor colorWithWhite:0.000 alpha:1.000] forState:UIControlStateDisabled];
-	[grayButton setTitleShadowColor:[UIColor colorWithWhite:0.000 alpha:1.000] forState:UIControlStateHighlighted];
-	[grayButton setTitleShadowColor:[UIColor colorWithWhite:0.000 alpha:1.000] forState:UIControlStateNormal];
-	[grayButton setTitleShadowColor:[UIColor colorWithWhite:0.000 alpha:1.000] forState:UIControlStateSelected];
-	
-	return grayButton;
-}
-
 // Implement loadView to create a view hierarchy programmatically, without using a nib.
 - (void)loadView
 {
 	self.title = NSLocalizedString(@"Settings", @"");
 
-	table_ = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];
-    table_.delegate   = self;
-    table_.dataSource = self;
-    table_.backgroundColor       = [UIColor colorWithPatternImage:[UIImage imageNamed:@"LogoBkgrnd.png"]];
+    table_ = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];
+    table_.delegate        = self;
+    table_.dataSource      = self;
+    table_.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"LogoBkgrnd.png"]];
 
     //table_.sectionHeaderHeight = 20.0;
     //table_.rowHeight = 40.0;
@@ -469,41 +419,25 @@
     tableTitle.backgroundColor = [UIColor clearColor];
     tableTitle.opaque          = YES;
     tableTitle.font            = [UIFont boldSystemFontOfSize:16];
-	tableTitle.textAlignment   = UITextAlignmentCenter;
-    tableTitle.text            = @"mp3tunes.com";
+    tableTitle.textAlignment   = UITextAlignmentCenter;
+    tableTitle.text            = @"Server Settings";
 	
-	table_.tableHeaderView = tableTitle;
+    table_.tableHeaderView = tableTitle;
 	
-    /*
-	CGRect loginframe     = CGRectMake( 220.0, 310.0, 84.0, 37.0 );
-	UIButton *loginButton = [self create_ButtonWithImage:@"Login" frame:loginframe];
-	[loginButton addTarget:self action:@selector(login:) 
-          forControlEvents:UIControlEventTouchUpInside];
-	
-	CGRect caframe                = CGRectMake( 121.0, 310.0, 84.0, 37.0 );
-	UIButton *createAccountButton = [self create_ButtonWithImage:@"Create" frame:caframe];
-	[createAccountButton addTarget:self action:@selector(createAccount) 
-                  forControlEvents:UIControlEventTouchUpInside];
-
-	CGRect clearframe     = CGRectMake( 15.0, 310, 84.0, 37.0 );
-	UIButton *clearButton = [self create_ButtonWithImage:@"Clear" frame:clearframe];
-	[clearButton addTarget:self action:@selector(clearEverything:) 
-          forControlEvents:UIControlEventTouchUpInside];
-    */
-	CGRect usernameframe     = CGRectMake( 20.0, 6.0, 214.0, 31.0 );
-	CGRect usernametextframe = CGRectMake( 120.0, 6.0, 214.0, 31.0 );
-	usernamecell_ = [self create_Cell:@"User Name:" 
+    CGRect usernameframe     = CGRectMake( 20.0, 6.0, 214.0, 31.0 );
+    CGRect usernametextframe = CGRectMake( 120.0, 6.0, 214.0, 31.0 );
+    usernamecell_ = [self create_Cell:@"User Name:" 
                                 frame:usernameframe textframe:usernametextframe index:0];
 
-	CGRect passwordfieldframe = CGRectMake( 120.0, 6.0, 214.0, 31.0 );
-	CGRect passwordlabelframe = CGRectMake( 20.0, 6.0, 214.0, 31.0 );
-	passwordcell_ = [self create_Cell:@"Password:" frame:passwordlabelframe 
+    CGRect passwordfieldframe = CGRectMake( 120.0, 6.0, 214.0, 31.0 );
+    CGRect passwordlabelframe = CGRectMake( 20.0, 6.0, 214.0, 31.0 );
+    passwordcell_ = [self create_Cell:@"Password:" frame:passwordlabelframe 
                             textframe:passwordfieldframe index:1];
 	
-	UISegmentedControl *sbrButtons = [self create_streamingBitrateButtons];
-	UILabel *sbrLabel              = [[[UILabel alloc] init] autorelease];
-    sbrLabel.frame                 = CGRectMake( 15, 200, 200, 30);
-	sbrLabel.textAlignment         = UITextAlignmentLeft;
+    UISegmentedControl *sbrButtons = [self create_streamingBitrateButtons];
+    UILabel *sbrLabel              = [[[UILabel alloc] init] autorelease];
+    sbrLabel.frame                 = CGRectMake( 15, 180, 200, 30);
+    sbrLabel.textAlignment         = UITextAlignmentLeft;
     sbrLabel.text                  = @"Stream Rate";
     sbrLabel.font                  = [UIFont boldSystemFontOfSize:14.0];
     sbrLabel.textColor             = [UIColor whiteColor];
@@ -518,7 +452,13 @@
     alLabel.font                   = [UIFont boldSystemFontOfSize:14.0];
     alLabel.textColor              = [UIColor whiteColor];
     alLabel.backgroundColor        = [UIColor clearColor];
-	
+    
+    table2_ = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];
+    table2_.delegate   = self;
+    table2_.dataSource = self;
+    table2_.backgroundColor = [UIColor clearColor];    
+    table2_.frame = CGRectMake(0, 280, 320, 60);
+    
 	UIView *mainview               = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 367.0)];
 	mainview.frame                 = CGRectMake(0.0, 0.0, 320.0, 367.0);
 	mainview.alpha                 = 1.000;
@@ -538,14 +478,15 @@
 	
     //[tableTitle release];
 	//self.view = table_;
-	[table_ addSubview:usernamecell_];
-	[table_ addSubview:passwordcell_];
-
-	[mainview addSubview:table_];
+    [table_ addSubview:usernamecell_];
+    [table_ addSubview:passwordcell_];
+    
+    [mainview addSubview:table_];
+    [mainview addSubview:table2_];
 	//[mainview addSubview:clearButton];
 	//[mainview addSubview:loginButton];
 	//[mainview addSubview:createAccountButton];
-	[mainview addSubview:sbrButtons];
+    [mainview addSubview:sbrButtons];
     [mainview addSubview:sbrLabel];
 
     [mainview addSubview:alButtons];
@@ -690,30 +631,76 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView 
 {
-		return 1;
+    return 1;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	if( section == 0 )
-		return 2;
-	return 1;
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
+{
+    if( tableView == self.table_ ) {
+        return 2;
+    }
+    else {
+        return 1;
+    }
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell 
+forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+    cell.backgroundColor  = [UIColor whiteColor];
+    cell.textLabel.textColor = [UIColor blackColor];
+    cell.textLabel.adjustsFontSizeToFitWidth = YES;
+    cell.textLabel.text = @"Start Page";
+    return;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath 
 {	
-	switch( indexPath.row ) {
-		case 0:
-			if (indexPath.section == 0) {
-				return usernamecell_;
-			} 
-		case 1:
-			return passwordcell_;
-			break;
-		default:
-			break;
+    if( tableView == self.table_ ) {
+        switch( indexPath.row ) {
+            case 0:
+                if (indexPath.section == 0) {
+                    return usernamecell_;
+                } 
+            case 1:
+                if( indexPath.section == 0) {
+                    return passwordcell_;
+                }
+                break;
+            default:
+                break;
+                
+        }
 	}
-	
+    else if( tableView == self.table2_ ) {
+        NSString *cellIdentifier = @"StartPageCell";
+        
+        UITableViewCell *cell = (UITableViewCell *)[tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+        if( cell == nil ) {
+            CGRect startpageframe     = CGRectMake( 20.0, 0.0, 214.0, 20.0 );            
+            startpagecell_ = [[UITableViewCell alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 20.0) 
+                                                    reuseIdentifier:(nil)];
+            startpagecell_.accessoryType    = UITableViewCellAccessoryDisclosureIndicator;
+            startpagecell_.frame = startpageframe;
+        }
+        return startpagecell_;
+    }
 	return nil;
+}
+
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if( tableView == self.table2_ ) {
+        StartPageTableViewController *sp = [[StartPageTableViewController alloc] init];
+        
+        [self navigationController].navigationBarHidden = FALSE;
+        
+        [[self navigationController] pushViewController:sp animated:YES];
+        [sp release];
+        
+    }
 }
 
 
