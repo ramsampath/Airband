@@ -371,6 +371,8 @@
                                                      name:@"connectionFAIL"
                                                    object:nil];
     }
+    [app getArtistList];
+
 /*
 	UIView *v = self.view;
 	activity_ = [[UIActivityIndicatorView alloc] 

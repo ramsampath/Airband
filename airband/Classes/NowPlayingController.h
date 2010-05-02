@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "TracklistView.h"
 #import "LoadingView.h"
+#import "CoverFlowView.h"
 
 @interface VolumeKnob: UIView
 {
@@ -34,38 +35,38 @@
 @end
 
 
-@interface NowPlayingController : UIViewController< UITableViewDelegate, UITableViewDataSource >
+@interface NowPlayingController : UIViewController< CoverFlowHost, UITableViewDelegate, UITableViewDataSource >
 {
-	IBOutlet UIToolbar       *toolbar_;
+    IBOutlet UIToolbar       *toolbar_;
     IBOutlet UIToolbar       *toolbartop_;
     
     IBOutlet UIView              *albumcovertracksview_;   // album cover/track list view parent
     IBOutlet UIView              *albumcovertracksbview_;  // album cover/info button navigation button view parent
     IBOutlet UIButton            *albumcovertracksb_;      // the navigation bar's right button 
     
-	IBOutlet UIImageView         *albumcoverview_;         // the view which holds the album cover
+    IBOutlet UIImageView         *albumcoverview_;         // the view which holds the album cover
     IBOutlet UIImage             *infoimage_;              // the image which holds the info icon
     IBOutlet UIImage             *emptyalbumartworkimage_; // the image which holds the empty album cover 
     IBOutlet TracklistController *tracklistview_;         
 
-	IBOutlet UISlider        *volume_;                     // unused at the moment
-	IBOutlet UIView          *volumeviewslider_;           // ununsed at the moment
+    IBOutlet UISlider        *volume_;                     // unused at the moment
+    IBOutlet UIView          *volumeviewslider_;           // ununsed at the moment
 
     IBOutlet UIButton        *back_;
-	IBOutlet UIBarButtonItem *prev_;
-	IBOutlet UIBarButtonItem *pause_;
-	IBOutlet UIBarButtonItem *stop_;
-	IBOutlet UIBarButtonItem *play_;
-	IBOutlet UIBarButtonItem *next_;
-	IBOutlet UIBarButtonItem *flexbeg_;
+    IBOutlet UIBarButtonItem *prev_;
+    IBOutlet UIBarButtonItem *pause_;
+    IBOutlet UIBarButtonItem *stop_;
+    IBOutlet UIBarButtonItem *play_;
+    IBOutlet UIBarButtonItem *next_;
+    IBOutlet UIBarButtonItem *flexbeg_;
 	
-	IBOutlet UIBarButtonItem *fixedprev_;
-	IBOutlet UIBarButtonItem *fixedpause_;
-	IBOutlet UIBarButtonItem *fixedplay_;
-	IBOutlet UIBarButtonItem *flexend_;
+    IBOutlet UIBarButtonItem *fixedprev_;
+    IBOutlet UIBarButtonItem *fixedpause_;
+    IBOutlet UIBarButtonItem *fixedplay_;
+    IBOutlet UIBarButtonItem *flexend_;
 	
 	
-	IBOutlet UIView          *trackinfo_;
+    IBOutlet UIView          *trackinfo_;
     IBOutlet UILabel         *tlabel_;
     IBOutlet UILabel         *alabel_;
     IBOutlet UILabel         *allabel_;
@@ -74,18 +75,35 @@
     IBOutlet UISlider        *progbar2_;
 	
     IBOutlet UINavigationBar *nav_;
-	UIImageView              *busyimg_;
+    UIImageView              *busyimg_;
     VolumeKnob               *volumeknob_;
     
-	// current track info
+    // current track info
     NSDictionary             *dict_;
 	
-	bool                      paused_;
+    bool                      paused_;
     bool                      flipsideview_;
     
     // progress views
     UIView                   *progressView_;
     LoadingView              *loadingView_;
+    
+    //
+    // The cover flow
+    //
+    CoverFlowView		   *cfView;
+    NSMutableArray		*covers;
+    NSMutableArray		*titles;
+    int					whichItem;
+    id					   target;
+    SEL					selector;
+    
+    NSMutableDictionary	*colorDict;
+    UILabel				*flippedView;
+    BOOL				    flipOut;
+    
+    UIView              *portraitView;
+    UIView              *landscapeView;
 }
 
 
@@ -104,5 +122,13 @@
 -(void) setupnavigationitems:(UINavigationItem *)sender navBar:(UINavigationBar *)navbar
                     datadict:(NSDictionary *)dict;
 -(void) stopLoadingView;
+
+@property (nonatomic, retain)	CoverFlowView *cfView;
+@property (nonatomic, retain)	NSMutableArray *covers;
+@property (nonatomic, retain)	NSMutableArray *titles;
+@property (nonatomic, retain)	NSMutableDictionary *colorDict;
+@property						   int whichItem;
+@property( readwrite, retain ) UIView *portraitView;
+@property( readwrite, retain ) UIView *landscapeView;
 
 @end

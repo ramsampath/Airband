@@ -13,7 +13,7 @@
 	// in user's itunes during backup?
 	NSString *username_;
 	NSString *password_;
-	
+	 
 	// current session
 	NSString* sessionID_;	
 	// a list of dictionaries;  pythonesque in its wastefulness.
@@ -46,6 +46,7 @@
     int currentAlbumTrackIndex_;
     
     bool autoLogin_;
+    NSInteger startpage_;
     
     imagecache                  *albumArtCache_;
 
@@ -72,6 +73,7 @@
 @property (readonly)  int bitRate_;
 @property (readwrite) float lastVolume_;
 @property (readwrite) bool autoLogin_;
+@property (readwrite)  NSInteger startpage_;
 @property (readonly)  imagecache* albumArtCache_;
 
 - (NSString*) createAccount:(NSDictionary*)userinfo;
@@ -81,6 +83,7 @@
 - (void) getArtistList;
 - (void) getAlbumList;
 - (void) getPlayListsAsync;
+- (void) getAllAlbumArtworkAsync;
 - (void) getAlbumListAsync:(NSString*)artist_id;
 - (void) getTrackListAsync:(NSString*)album_id;
 - (void) getPlayListTracksAsync:(NSString*)playlist_id;

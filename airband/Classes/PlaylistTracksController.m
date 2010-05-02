@@ -569,7 +569,7 @@
 	
 	topLabel.text = cellMain; //[NSString stringWithFormat:@"Cell at row %ld.", [indexPath row]];
 	bottomLabel.text = cellExtra; //[NSString stringWithFormat:@"Some other information.", [indexPath row]];
-	
+
 	//
 	// Set the background and selected background images for the text.
 	// Since we will round the corners at the top and bottom of sections, we

@@ -14,9 +14,16 @@
 	IBOutlet UITextField     *username_;
 	IBOutlet UITextField     *password_;
 	IBOutlet UITableView     *table_;
+    IBOutlet UITableView     *table2_;
 	IBOutlet UITableViewCell *usernamecell_;
 	IBOutlet UITableViewCell *passwordcell_;
+    IBOutlet UITableViewCell *startpagecell_;
+    int                       startscreen_;
 }
+
+@property(readonly) int startscreen_;
+@property (nonatomic, retain) IBOutlet UITableView *table_;
+@property (nonatomic, retain) IBOutlet UITableView *table2_;
 
 -(IBAction) setPassword;
 -(IBAction) setUsername;
