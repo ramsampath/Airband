@@ -271,9 +271,9 @@
 // Implement loadView to create a view hierarchy programmatically, without using a nib.
 - (void)loadView
 {
-	UIColor *viewbgcolor = kBgColor;
+    UIColor *viewbgcolor = kBgColor;
 	
-	UIView *mainview                    = [[UIView alloc] initWithFrame:CGRectMake( 0.0, 0.0, 320.0, 480.0 )];
+    UIView *mainview                    = [[UIView alloc] initWithFrame:CGRectMake( 0.0, 0.0, 320.0, 480.0 )];
 	mainview.frame                      = CGRectMake(0.0, 0.0, 320.0, 480.0);
 	mainview.alpha                      = 1.000;
     //mainview.autoresizingMask           = UIViewAutoresizingFlexibleTopMargin;

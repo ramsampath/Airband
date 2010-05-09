@@ -13,6 +13,12 @@
 #import "appdata.h"
 #import "imgcache.h"
 
+#import "SimpleIO.h"
+
+static NSString *flickrRequestWithKeyword(NSString* keyword);
+static NSMutableArray* convertListToRequests( NSData* data );
+
+
 // IMAGE UTILITY FUNCTIONS
 //
 
@@ -24,10 +30,10 @@ CGContextRef MyCreateBitmapContext (int pixelsWide, int pixelsHigh)
     void *          bitmapData;
     int             bitmapByteCount;
     int             bitmapBytesPerRow;
-	
+    
     bitmapBytesPerRow   = (pixelsWide * 4);
     bitmapByteCount     = (bitmapBytesPerRow * pixelsHigh);
-	
+    
     colorSpace = CGColorSpaceCreateDeviceRGB();
     bitmapData = malloc( bitmapByteCount );
     if (bitmapData == NULL)
@@ -43,45 +49,8 @@ CGContextRef MyCreateBitmapContext (int pixelsWide, int pixelsHigh)
         return NULL;
     }
     CGColorSpaceRelease( colorSpace );
-	
+    
     return context;
-}
-
-// Convert a 6-character hex color to a UIColor object
-CGColorRef getColor(NSString *hexColor)
-{
-	unsigned int red, green, blue;
-	NSRange range;
-	range.length = 2;
-	
-	range.location = 0; 
-	[[NSScanner scannerWithString:[hexColor substringWithRange:range]] scanHexInt:&red];
-	range.location = 2; 
-	[[NSScanner scannerWithString:[hexColor substringWithRange:range]] scanHexInt:&green];
-	range.location = 4; 
-	[[NSScanner scannerWithString:[hexColor substringWithRange:range]] scanHexInt:&blue];	
-	
-	return [[UIColor colorWithRed:(float)(red/255.0f) green:(float)(green/255.0f) blue:(float)(blue/255.0f) alpha:1.0f] CGColor];
-}
-
-// Create the target color swatch
-id createImage(NSString *crayonColor)
-{
-	CGRect aRect = CGRectMake(0.0f, 0.0f, 200.0f, 200.0f);
-	CGContextRef context = MyCreateBitmapContext(200, 200);
-	CGContextClearRect(context, aRect);
-	
-	CGContextSetFillColorWithColor(context, [[UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:0.25f] CGColor]);
-	CGContextFillEllipseInRect(context, aRect);
-	
-	CGContextSetFillColorWithColor(context, getColor(crayonColor));
-	CGContextFillEllipseInRect(context, CGRectInset(aRect, 40.0f, 40.0f));
-	
-	CGImageRef myRef = CGBitmapContextCreateImage (context);
-	free(CGBitmapContextGetData(context));
-	CGContextRelease(context);
-	
-	return [UIImage imageWithCGImage:myRef];
 }
 
 
@@ -90,14 +59,14 @@ id createImage(NSString *crayonColor)
 
 -(void)setBackgroundImage:(UIImage*)image
 {
-	if(image == NULL){ //might be called with NULL argument
-		return;
-	}
-	UIImageView *aTabBarBackground = [[UIImageView alloc]initWithImage:image];
-	aTabBarBackground.frame = CGRectMake(0,0,self.frame.size.width, self.frame.size.height);
-	[self addSubview:aTabBarBackground];
-	[self sendSubviewToBack:aTabBarBackground];
-	[aTabBarBackground release];
+    if(image == NULL){ //might be called with NULL argument
+        return;
+    }
+    UIImageView *aTabBarBackground = [[UIImageView alloc]initWithImage:image];
+    aTabBarBackground.frame = CGRectMake(0,0,self.frame.size.width, self.frame.size.height);
+    [self addSubview:aTabBarBackground];
+    [self sendSubviewToBack:aTabBarBackground];
+    [aTabBarBackground release];
 }
 @end
 
@@ -109,14 +78,14 @@ id createImage(NSString *crayonColor)
 
 
 - (id)init
-{	
+{   
     self = [super initWithFrame:CGRectMake( 0, 300, 100, 100 )];
     
     self.userInteractionEnabled = TRUE;
     
     image_ = [[UIImage imageNamed:@"volume_knob_bigger.png"] retain];
 
-	UIImageView *imageView = [ [ UIImageView alloc ] initWithImage: image_];
+    UIImageView *imageView = [ [ UIImageView alloc ] initWithImage: image_];
 
     imageView.frame = CGRectMake( 10, 17, self.frame.size.width - 10, self.frame.size.height - 10 );
     [self addSubview:imageView];
@@ -210,16 +179,16 @@ id createImage(NSString *crayonColor)
 //- (void)volButtonDrag:(id)sender event:(id)event
 -(void) touchesMoved :(NSSet *)touches withEvent:(UIEvent *)event
 {
-	UITouch *touch = [touches anyObject];	
-	
-	// [note] -- doing the calc in the parent coord system
+    UITouch *touch = [touches anyObject];   
+    
+    // [note] -- doing the calc in the parent coord system
     CGPoint currentTouchPosition = [touch locationInView:self];
 
-	float cx = self.frame.size.width/2;
-	float cy = self.frame.size.height/2;
-	
-	float theta1 = atan2( -(dragStart_.y-cy), dragStart_.x-cx );
-	//float theta2 = atan2( -(currentTouchPosition.y-cy), currentTouchPosition.x-cx );
+    float cx = self.frame.size.width/2;
+    float cy = self.frame.size.height/2;
+    
+    float theta1 = atan2( -(dragStart_.y-cy), dragStart_.x-cx );
+    //float theta2 = atan2( -(currentTouchPosition.y-cy), currentTouchPosition.x-cx );
     
     float theta  = -theta1 ;
 
@@ -242,9 +211,9 @@ id createImage(NSString *crayonColor)
 //- (void)volButtonTapped:(id)sender event:(id)event
 -(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
-	UITouch *touch = [touches anyObject];	
+    UITouch *touch = [touches anyObject];   
     CGPoint currentTouchPosition = [touch locationInView:self];
-	dragStart_ = currentTouchPosition;
+    dragStart_ = currentTouchPosition;
     
     //printf("touches began %f %f\n", dragStart_.x, dragStart_.y);
     return;
@@ -254,70 +223,6 @@ id createImage(NSString *crayonColor)
 @end 
 // end --- volume knob
 
-#define CVC_VIEW_TAG		999
-
-// *********************************************
-// Extending UIView to reveal its heartbeat methods
-// 
-@interface UIView (extended)
-- (void) startHeartbeat: (SEL) aSelector inRunLoopMode: (id) mode;
-- (void) stopHeartbeat: (SEL) aSelector;
-@end
-
-
-// *********************************************
-// The FlipView layer prevents touches from reaching the Coverflow layer behind it.
-//
-@interface FlipView : UIView
-{
-	UILabel *flipLabel;
-}
-@property (nonatomic, retain)	UILabel *flipLabel;
-@end
-
-@implementation FlipView
-@synthesize flipLabel;
-
--(FlipView *) initWithFrame: (CGRect) aRect
-{
-	self = [super initWithFrame:aRect];
-	
-	// Add the flip label that shows the name and hex value
-	self.flipLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 480.0f, 480.0f)];
-	self.flipLabel.textColor = [UIColor whiteColor];
-	self.flipLabel.backgroundColor = [UIColor clearColor];
-	self.flipLabel.textAlignment = UITextAlignmentCenter;
-	self.flipLabel.font = [UIFont boldSystemFontOfSize:24.0f];
-	self.flipLabel.userInteractionEnabled = NO;
-    
-	[self.flipLabel setNumberOfLines:3];
-	[self addSubview:self.flipLabel];
-	[self.flipLabel release];
-	
-	return self;
-}
-
-- (void) setText: (NSString *) theText
-{
-	self.flipLabel.text = theText;
-}
-
-// When touched, remove the label and unflip the swatch
-- (void) touchesEnded:(NSSet*)touches withEvent:(UIEvent*)event
-{
-	[self removeFromSuperview];
-	[(CoverFlowView *)[[[UIApplication sharedApplication] keyWindow] viewWithTag:CVC_VIEW_TAG] flipSelectedCover];
-}
-
-- (void) dealloc
-{
-	[self.flipLabel release];
-	[super dealloc];
-}
-
-@end
-
-
 
 @implementation NowPlayingController
 
@@ -325,30 +230,33 @@ id createImage(NSString *crayonColor)
 // Coverflow View Controller
 //
 
-@synthesize cfView;
-@synthesize covers;
-@synthesize titles;
-@synthesize colorDict;
-@synthesize whichItem;
+
 @synthesize portraitView;
 @synthesize landscapeView;
 
+@synthesize detailItem, detailDescriptionLabel;
+@synthesize flickrButton;
+@synthesize flickrSearch;
+@synthesize flowCover;
+@synthesize imgView;
+@synthesize searchList_;
+
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-	if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
-		// Initialization code
-	}
+    if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
+        // Initialization code
+    }
 
-	return self;
+    return self;
 }
 
 -(id)init 
 {
-	if (self = [super init]) {
-		self.hidesBottomBarWhenPushed = TRUE;
-	}
+    if (self = [super init]) {
+        self.hidesBottomBarWhenPushed = TRUE;
+    }
     
-	return self;
+    return self;
 }
 
 
@@ -362,35 +270,35 @@ id createImage(NSString *crayonColor)
 #pragma mark
 - (void)create_Custom_UISlider:(CGRect)frame
 {
-	volume_ = [[UISlider alloc] initWithFrame:frame];
-	[volume_ addTarget:self action:@selector(setvolume:) forControlEvents:UIControlEventValueChanged];
+    volume_ = [[UISlider alloc] initWithFrame:frame];
+    [volume_ addTarget:self action:@selector(setvolume:) forControlEvents:UIControlEventValueChanged];
 
-	// in case the parent view draws with a custom color or gradient, use a transparent color
-	volume_.backgroundColor = [UIColor clearColor];	
+    // in case the parent view draws with a custom color or gradient, use a transparent color
+    volume_.backgroundColor = [UIColor clearColor]; 
 
-	[volume_ setThumbImage: [UIImage imageNamed:@"slider_ball_bw.png"] forState:UIControlStateNormal];
+    [volume_ setThumbImage: [UIImage imageNamed:@"slider_ball_bw.png"] forState:UIControlStateNormal];
 
-	volume_.minimumValue               = 0.0;
-	volume_.maximumValue               = 1.0;
-	volume_.continuous                 = YES;
-	volume_.value                      = 1.0;
-	volume_.alpha                      = 1.000;
-	volume_.autoresizingMask           = UIViewAutoresizingFlexibleRightMargin | 
+    volume_.minimumValue               = 0.0;
+    volume_.maximumValue               = 1.0;
+    volume_.continuous                 = YES;
+    volume_.value                      = 1.0;
+    volume_.alpha                      = 1.000;
+    volume_.autoresizingMask           = UIViewAutoresizingFlexibleRightMargin | 
                                          UIViewAutoresizingFlexibleBottomMargin;
-	volume_.clearsContextBeforeDrawing = YES;
-	volume_.clipsToBounds              = YES;
-	
-	
-	UIImage *stetchLeftTrack = [[UIImage imageNamed:@"leftslide.png"]
-								stretchableImageWithLeftCapWidth:10.0 topCapHeight:0.0];
+    volume_.clearsContextBeforeDrawing = YES;
+    volume_.clipsToBounds              = YES;
+    
+    
+    UIImage *stetchLeftTrack = [[UIImage imageNamed:@"leftslide.png"]
+                                stretchableImageWithLeftCapWidth:10.0 topCapHeight:0.0];
     UIImage *stetchRightTrack = [[UIImage imageNamed:@"rightslide.png"]
-								 stretchableImageWithLeftCapWidth:10.0 topCapHeight:0.0];
-	//    [customSlider setThumbImage: [UIImage imageNamed:@"slider_ball.png"] forState:UIControlStateNormal];
+                                 stretchableImageWithLeftCapWidth:10.0 topCapHeight:0.0];
+    //    [customSlider setThumbImage: [UIImage imageNamed:@"slider_ball.png"] forState:UIControlStateNormal];
     [volume_ setMinimumTrackImage:stetchLeftTrack forState:UIControlStateNormal];
     [volume_ setMaximumTrackImage:stetchRightTrack forState:UIControlStateNormal];
-	[volume_ setMinimumValueImage:[UIImage imageNamed:@"SpeakerSoft.tif"]];
-	[volume_ setMaximumValueImage:[UIImage imageNamed:@"SpeakerLoud.tif"]];
-		
+    [volume_ setMinimumValueImage:[UIImage imageNamed:@"SpeakerSoft.tif"]];
+    [volume_ setMaximumValueImage:[UIImage imageNamed:@"SpeakerLoud.tif"]];
+        
 }
 
 
@@ -433,82 +341,82 @@ id createImage(NSString *crayonColor)
     self.navigationItem.titleView.frame = CGRectMake( 0, 0, 320, 40 );
     
     pause_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemPause 
-														   target:self action:@selector(pause:)];
-	pause_.enabled = YES;
-	pause_.style   = UIBarButtonItemStylePlain;
-	pause_.tag     = 0;
-	pause_.width   = 0.000;
+                                                           target:self action:@selector(pause:)];
+    pause_.enabled = YES;
+    pause_.style   = UIBarButtonItemStylePlain;
+    pause_.tag     = 0;
+    pause_.width   = 0.000;
     
     flexbeg_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace 
                                                              target:nil action:nil];
-	flexbeg_.enabled = YES;
-	flexbeg_.style   = UIBarButtonItemStylePlain;
-	flexbeg_.tag     = 0;
-	flexbeg_.width   = 0.000;
-	
-	prev_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRewind 
-														  target:self	action:@selector(prev:)];
-	prev_.enabled = YES;
-	prev_.style   = UIBarButtonItemStylePlain;
-	prev_.tag     = 0;
-	prev_.width   = 0.000;
-	
-	fixedprev_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace 
+    flexbeg_.enabled = YES;
+    flexbeg_.style   = UIBarButtonItemStylePlain;
+    flexbeg_.tag     = 0;
+    flexbeg_.width   = 0.000;
+    
+    prev_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRewind 
+                                                          target:self   action:@selector(prev:)];
+    prev_.enabled = YES;
+    prev_.style   = UIBarButtonItemStylePlain;
+    prev_.tag     = 0;
+    prev_.width   = 0.000;
+    
+    fixedprev_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace 
                                                                target:nil action:nil];
-	fixedprev_.enabled = YES;
-	fixedprev_.style   = UIBarButtonItemStylePlain;
-	fixedprev_.tag     = 0;
-	fixedprev_.width   = 30.000;
-	
-	stop_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemStop
-														  target:self action:@selector(stop:)];
-	stop_.enabled = YES;
-	stop_.style   = UIBarButtonItemStylePlain;
-	stop_.tag     = 0;
-	stop_.width   = 0.000;
-	
-	pause_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemPause 
-														   target:self action:@selector(pause:)];
-	pause_.enabled = YES;
-	pause_.style   = UIBarButtonItemStylePlain;
-	pause_.tag     = 0;
-	pause_.width   = 0.000;
-	
-	fixedpause_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace
+    fixedprev_.enabled = YES;
+    fixedprev_.style   = UIBarButtonItemStylePlain;
+    fixedprev_.tag     = 0;
+    fixedprev_.width   = 30.000;
+    
+    stop_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemStop
+                                                          target:self action:@selector(stop:)];
+    stop_.enabled = YES;
+    stop_.style   = UIBarButtonItemStylePlain;
+    stop_.tag     = 0;
+    stop_.width   = 0.000;
+    
+    pause_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemPause 
+                                                           target:self action:@selector(pause:)];
+    pause_.enabled = YES;
+    pause_.style   = UIBarButtonItemStylePlain;
+    pause_.tag     = 0;
+    pause_.width   = 0.000;
+    
+    fixedpause_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace
                                                                 target:nil action:nil];
-	fixedpause_.enabled = YES;
-	fixedpause_.style   = UIBarButtonItemStylePlain;
-	fixedpause_.tag     = 0;
-	fixedpause_.width   = 30.000;
-	
-	play_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemPlay
-														  target:self action:@selector(play:)];
-	play_.enabled = YES;
-	play_.style   = UIBarButtonItemStylePlain;
-	play_.tag     = 0;
-	play_.width   = 0.000;
+    fixedpause_.enabled = YES;
+    fixedpause_.style   = UIBarButtonItemStylePlain;
+    fixedpause_.tag     = 0;
+    fixedpause_.width   = 30.000;
     
-	
-	fixedplay_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-	fixedplay_.enabled = YES;
-	fixedplay_.style   = UIBarButtonItemStylePlain;
-	fixedplay_.tag     = 0;
-	fixedplay_.width   = 30.000;
-	
-	next_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFastForward 
-														  target:self action:@selector(next:)];
-	next_.enabled = YES;
-	next_.style   = UIBarButtonItemStylePlain;
-	next_.tag     = 0;
-	next_.width   = 0.000;
+    play_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemPlay
+                                                          target:self action:@selector(play:)];
+    play_.enabled = YES;
+    play_.style   = UIBarButtonItemStylePlain;
+    play_.tag     = 0;
+    play_.width   = 0.000;
     
-	flexend_         = [[UIBarButtonItem alloc] 
+    
+    fixedplay_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+    fixedplay_.enabled = YES;
+    fixedplay_.style   = UIBarButtonItemStylePlain;
+    fixedplay_.tag     = 0;
+    fixedplay_.width   = 30.000;
+    
+    next_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFastForward 
+                                                          target:self action:@selector(next:)];
+    next_.enabled = YES;
+    next_.style   = UIBarButtonItemStylePlain;
+    next_.tag     = 0;
+    next_.width   = 0.000;
+    
+    flexend_         = [[UIBarButtonItem alloc] 
                         initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace 
                         target:nil action:nil];
-	flexend_.enabled = YES;
-	flexend_.style   = UIBarButtonItemStylePlain;
-	flexend_.tag     = 0;
-	flexend_.width   = 0.000;
+    flexend_.enabled = YES;
+    flexend_.style   = UIBarButtonItemStylePlain;
+    flexend_.tag     = 0;
+    flexend_.width   = 0.000;
 
     [toolbartop_ setItems:[NSArray arrayWithObjects: flexbeg_, prev_, fixedprev_, 
                            play_,  fixedplay_, next_, flexend_, nil]];
@@ -522,12 +430,12 @@ id createImage(NSString *crayonColor)
         [[NSNotificationCenter defaultCenter] addObserver:self 
                                                  selector:@selector(trackListReady:) 
                                                      name:@"trackListReady"
-                                                   object:nil];	
+                                                   object:nil]; 
         
         [[NSNotificationCenter defaultCenter] addObserver:self 
                                                  selector:@selector(playListTracksReady:) 
                                                      name:@"playListTracksReady"
-                                                   object:nil];	
+                                                   object:nil]; 
         
         NSString *req = [dict_ objectForKey:@"albumId"];
         NSString *playlistid = [dict objectForKey:@"playlistId"];
@@ -564,64 +472,91 @@ id createImage(NSString *crayonColor)
 
 - (void) viewDidDisappear
 {
-    [toolbar_ removeFromSuperview];
 }
-
-
-- (void) start
-{
-	[self.cfView startHeartbeat: @selector(tick) inRunLoopMode: (id)kCFRunLoopDefaultMode];
-	[self.cfView.cfLayer transitionIn:1.0f];
-}
-
-- (void) stop
-{
-	[self.cfView stopHeartbeat: @selector(tick)];
-}
-
 
 -(UIView *)create_landScapeView
-{	
-	NSArray *crayons = [[NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"crayons" ofType:@"txt"]] componentsSeparatedByString:@"\n"];
-	self.covers = [[NSMutableArray alloc] init];
-	self.titles = [[NSMutableArray alloc] init];
-	self.colorDict = [[NSMutableDictionary alloc] init];
-	
-	// Create the title and cover arrays
-	for (NSString *crayon in crayons)
-	{
-		NSArray *theCrayon = [crayon componentsSeparatedByString:@" #"];
-		if ([theCrayon count] != 2) continue;
-		[self.titles addObject:[theCrayon objectAtIndex:0]];
-		[self.covers addObject:createImage([theCrayon objectAtIndex:1])];
-		[self.colorDict setObject:[theCrayon objectAtIndex:1] forKey:[theCrayon objectAtIndex:0]];
-	}
-	
-	// Create the flip object
-	CGRect fliprect = CGRectMake(0.0f, 0.0f, 480.0f, 480.0f);
-	flippedView = [[FlipView alloc] initWithFrame:fliprect];
-	[flippedView setTransform:CGAffineTransformMakeRotation(3.141592f / 2.0f)];
-	[flippedView setUserInteractionEnabled:YES];
-	
-	// Initialize 
-	self.cfView = [[CoverFlowView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] andCount:[self.titles count]];
-	[self.cfView setUserInteractionEnabled:YES];
-	[self.cfView setHost:self];
-	
-	// Finish setting up the cover flow layer
-	self.whichItem = [self.titles count] / 2;
-	[self.cfView.cfLayer selectCoverAtIndex:self.whichItem];
-	[self.cfView.cfLayer setDelegate:self];
-	
-    [self start];
-    return self.cfView;
-}	
+{   
+}
+
+#pragma mark -
+#pragma mark Async Delegate
+
+
+- (void)viewDidUnload {
+    // Release any retained subviews of the main view.
+    // e.g. self.myOutlet = nil;
+}
+
+-(void) didFailWithError:(NSError*)err  userData:(id)user 
+{
+}
+
+-(BOOL) someData:(NSData*)data          userData:(id)user 
+{
+    return FALSE;
+}
+
+//
+// helper for image data
+//
+static void myProviderReleaseData (void *info,const void *data,size_t size)
+{
+    NSData *d = info;
+    [d release];
+}
+
+
+-(void) finishedWithData:(NSData*)data  userData:(id)user 
+{
+    @synchronized(self) {
+        NSString *str = user;
+        
+        if ([str compare:@"main"] == NSOrderedSame) {
+            NSMutableArray *result = convertListToRequests( data );
+            if (result) {
+                NSString *s;
+                for  (s in result) {
+                    ConnectionInfo *info = [[ConnectionInfo alloc] init];
+                    info.address_ = s;
+                    info.delegate_ = self;
+                    info.userdata_ = @"picture";   // +s
+                    [[SimpleIO singelton] request:info];    
+                    [info release];
+                    
+                }
+            }
+        }
+        else {
+            NSData *d = [[NSData dataWithData:data] retain];
+            CGDataProviderRef provider = CGDataProviderCreateWithData( d, [d bytes],[d length], 
+                                                                      myProviderReleaseData);
+            CGImageRef imageref = CGImageCreateWithJPEGDataProvider(provider, NULL, true, kCGRenderingIntentDefault);
+            if( !imageref ) {
+                return;      
+            }
+            
+            CGImageRetain(imageref);
+            UIImage *img = [UIImage imageWithCGImage:imageref];
+            CGDataProviderRelease(provider);        
+
+            CGImageRelease(imageref);
+
+            [flowCover resetItem:[images_ count]];
+            [images_ addObject:img];
+            
+            [imgView setImage:img];
+            
+            [flowCover setNeedsDisplay];
+            [flowCover draw];
+        }
+    }
+    printf("finished with data \n");
+}
 
 
 
 - (void)loadView 
 {
-	
     UIView *mainview          = [[UIView alloc] initWithFrame:CGRectMake(0, 40, 320, 480)];
     mainview.alpha            = 1.000;
     mainview.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | 
@@ -643,15 +578,15 @@ id createImage(NSString *crayonColor)
     //UIImageView *image = [[UIImageView alloc] initWithFrame:CGRectMake(0,0,320,640)];
     //UIImage *grad = [UIImage imageNamed:@"gradientBackground.png"];
     //image.image = grad;
-	
+    
     UIImage *stetchLeftTrack  = [[UIImage imageNamed:@"leftslide.png"]
-								stretchableImageWithLeftCapWidth:10.0 topCapHeight:0.0];
+                                stretchableImageWithLeftCapWidth:10.0 topCapHeight:0.0];
     UIImage *stetchLeftTrack2 = [[UIImage imageNamed:@"yellowslide.png"]
-								stretchableImageWithLeftCapWidth:10.0 topCapHeight:0.0];
+                                stretchableImageWithLeftCapWidth:10.0 topCapHeight:0.0];
     UIImage *stetchRightTrack = [[UIImage imageNamed:@"rightslide.png"]
-								 stretchableImageWithLeftCapWidth:10.0 topCapHeight:0.0];
+                                 stretchableImageWithLeftCapWidth:10.0 topCapHeight:0.0];
     UIImage *stetchRightTrack2 = [[UIImage imageNamed:@"rightslide_transp.png"]
-								 stretchableImageWithLeftCapWidth:10.0 topCapHeight:0.0];
+                                 stretchableImageWithLeftCapWidth:10.0 topCapHeight:0.0];
     
     progbar_ = [[UISlider alloc] initWithFrame:CGRectMake( 140.0, 305.0, 170.0, 8.0 )];
     progbar_.backgroundColor            = [UIColor clearColor];
@@ -686,11 +621,11 @@ id createImage(NSString *crayonColor)
     progbar2_.userInteractionEnabled     = NO;
     progbar2_.minimumValue               = 0.0;
     progbar2_.maximumValue               = 1.0;
-    progbar2_.value                      = 0.000;	
-	
+    progbar2_.value                      = 0.000;   
+    
     CGRect volframe = CGRectMake( 81.0, 305.0, 147.0, 23.0 );
     [self create_Custom_UISlider:volframe];
- 	    
+        
     UIImageView *btbg             = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"bottom_toolbar_background.png"]];
     btbg.frame                    = CGRectMake(0, 300, 320, 120);
     [mainview addSubview:btbg];
@@ -716,7 +651,7 @@ id createImage(NSString *crayonColor)
     allabel_                        =  [[UILabel alloc] 
                                        initWithFrame:CGRectMake(0 , 50 , 320 , 15)]; 
     allabel_.text                   = [dict_ objectForKey:@"albumTitle"];
-    allabel_.font = [UIFont fontWithName:@"Arial" size:12.0];
+    allabel_.font                   = [UIFont fontWithName:@"Arial" size:12.0];
     allabel_.textAlignment          = UITextAlignmentLeft;
     allabel_.backgroundColor        = [UIColor clearColor];
     allabel_.textColor              = [UIColor whiteColor];
@@ -730,8 +665,8 @@ id createImage(NSString *crayonColor)
     tlabel_.backgroundColor        = [UIColor clearColor];
     tlabel_.textColor              = [UIColor grayColor];
     [trackinfo_ addSubview: tlabel_];
-		
-	//toolbar_ = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 382.0, 320.0, 44.0)];
+        
+    //toolbar_ = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 382.0, 320.0, 44.0)];
     toolbar_ = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 300.0, 320.0, 100.0)];
     toolbar_.alpha = 1.000;
     //toolbar_.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
@@ -773,12 +708,12 @@ id createImage(NSString *crayonColor)
     busyimg_.opaque  = NO;
     busyimg_.alpha = 0;
     busyimg_.hidden = NO;
-	
+    
     AppData *app = [AppData get];
     if( !app ) return;
     
-	[volume_ setValue:[app lastVolume_]];
-	
+    [volume_ setValue:[app lastVolume_]];
+    
     CGRect r = CGRectMake( albumcoverview_.frame.origin.x, albumcoverview_.frame.origin.y, 
                            albumcoverview_.frame.size.width, albumcoverview_.frame.size.height );
     tracklistview_ = [[TracklistController alloc] initWithFrame:r];
@@ -794,21 +729,67 @@ id createImage(NSString *crayonColor)
     emptyalbumartworkimage_ = [[app albumArtCache_] loadImage:@"empty_album_art.png"];
     self.view = mainview;
     self.portraitView = mainview;
-    self.landscapeView = [self create_landScapeView];
     
+    CGRect fframe = CGRectMake(0, 0, 480, 300);
+    flowCover = [[FlowCoverView alloc] initWithFrame:fframe];
+
+    flowCover.delegate = self;
+    self.landscapeView = flowCover;
+    [self transformViewToLandscape];
+    images_ = [[NSMutableArray arrayWithCapacity:50] retain];
+    
+    // 
+    // create flickr album art
+    //
+    NSString *search = allabel_.text;
+    NSString *req = flickrRequestWithKeyword( search );
+    
+    ConnectionInfo *info = [[ConnectionInfo alloc] init];
+    info.address_ = req;
+    info.delegate_ = self;
+    info.userdata_ = @"main";
+    
+    [[SimpleIO singelton] request:info];    
+    [info release];
+    
+    //
+    //
     flipsideview_ = true;
-	
-	// hacky -- let's listen for errors
+    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(detectOrientation) name:@"UIDeviceOrientationDidChangeNotification" object:nil];
+    
+    // hacky -- let's listen for errors
     [[NSNotificationCenter defaultCenter] addObserver:self 
-											 selector:@selector(connectionError:) 
-												 name:@"connectionError"
-											   object:nil];	
-	
+                                             selector:@selector(connectionError:) 
+                                                 name:@"connectionError"
+                                               object:nil]; 
+    
     [[NSNotificationCenter defaultCenter] addObserver:self 
-											 selector:@selector(connectionFailed:) 
-												 name:@"connectionFailed"
-											   object:nil];
+                                             selector:@selector(connectionFailed:) 
+                                                 name:@"connectionFailed"
+                                               object:nil];
 }
+
+-(void) transformViewToLandscape
+{
+    NSInteger rotationDirection;
+    UIDeviceOrientation currentOrientation = [[UIDevice currentDevice] orientation];
+    
+    if(currentOrientation == UIDeviceOrientationLandscapeLeft){
+        rotationDirection = 1;
+    }else {
+        rotationDirection = -1;
+    }
+    
+    CGRect myFrame = CGRectMake( 0, 0, 480, 300 );
+    CGAffineTransform transform = [self.landscapeView transform];
+    transform = CGAffineTransformRotate(transform, (rotationDirection * -90) * M_PI/180);
+    [self.landscapeView setFrame: myFrame];
+    CGPoint center = CGPointMake(myFrame.size.height/2.0, myFrame.size.width/2.0);
+    [self.landscapeView setTransform: transform];
+    [self.landscapeView setCenter: center];
+}
+
 
 - (void)setArtwork:(UIImage *)image
 {
@@ -836,28 +817,25 @@ id createImage(NSString *crayonColor)
             [albumcovertracksb_ setBackgroundImage:image forState:UIControlStateNormal];
             [UIView commitAnimations];
         }        
-	} else {
-		albumcoverview_.image = emptyalbumartworkimage_;
+    } else {
+        albumcoverview_.image = emptyalbumartworkimage_;
         AppData *app = [AppData get];
         app.artwork_ = nil;
-	}
-	    
-	//[image drawInRect: CGRectMake(0.0f, 0.0f, 100.0f, 60.0f)]; // Draw in a custom rect.
-    
-	//UIImageView *imageView = [ [ UIImageView alloc ] initWithImage: albumcoverview_.image];
-	//imageView.frame = CGRectMake(20.0, 55.0, 280.0, 176.0);
-	//[self.view addSubview: imageView]; // Draw the image in self.view.
+    }
 }
 
 - (void)artworkReady:(NSObject*)notification
 {
-	AppData *app = [AppData get];
-	UIImage *img = app.artwork_;
+    AppData *app = [AppData get];
+    UIImage *img = app.artwork_;
     
     [self setArtwork:img];
+    //
+    // save the artwork in the image cache
+    //
+    [app.albumArtCache_.cache_ setObject:img forKey:app.currentAlbum_];
 
-
-	tlabel_.text  = app.currentTrackTitle_;
+    tlabel_.text  = app.currentTrackTitle_;
     alabel_.text  = app.currentArtist_;
     allabel_.text = app.currentAlbum_;
 }
@@ -865,14 +843,14 @@ id createImage(NSString *crayonColor)
 
 
 - (void) trackListReady:(id)object
-{			
+{           
     [self stopLoadingView];
     
-	AppData *app = [AppData get];
-	int num = [app.trackList_ count];
-	if( !num ) {
-		return;
-	}
+    AppData *app = [AppData get];
+    int num = [app.trackList_ count];
+    if( !num ) {
+        return;
+    }
 
     [app setCurrentTrackIndex_:0];
     NSDictionary *d = [app.trackList_ objectAtIndex:0];
@@ -897,14 +875,14 @@ id createImage(NSString *crayonColor)
 
 
 - (void) playListTracksReady:(id)object
-{			
+{           
     [self stopLoadingView];
     
-	AppData *app = [AppData get];
-	int num = [app.currentTracklist_ count];
-	if( !num ) {
-		return;
-	}
+    AppData *app = [AppData get];
+    int num = [app.currentTracklist_ count];
+    if( !num ) {
+        return;
+    }
     
     [app setCurrentTrackIndex_:0];
     NSDictionary *d = [app.currentTracklist_ objectAtIndex:0];
@@ -920,28 +898,28 @@ id createImage(NSString *crayonColor)
     // remove myself as next time another observer will be created.
     //
     [[NSNotificationCenter defaultCenter] addObserver:self 
-											 selector:@selector(connectionFailed:) 
-												 name:@"connectionFAIL"
-											   object:nil];
+                                             selector:@selector(connectionFailed:) 
+                                                 name:@"connectionFAIL"
+                                               object:nil];
 }
 
 
 -(void) connectionError:(id)object
 {
-	if ([object isKindOfClass:[NSURLResponse class]])
-	{ 
-		// [todo] -- something fancier?
-		//[[AppData get] stop];	
-	}
+    if ([object isKindOfClass:[NSURLResponse class]])
+    { 
+        // [todo] -- something fancier?
+        //[[AppData get] stop]; 
+    }
     
     [self stopLoadingView];
 
-	[self next:nil];
-	
+    [self next:nil];
+    
     [self displayPlayButton:nil];
-	[[[UIAlertView alloc] initWithTitle:@"Airband" 
-								message:@"Problem w/ track, skipping..."
-							   delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];	
+    [[[UIAlertView alloc] initWithTitle:@"Airband" 
+                                message:@"Problem w/ track, skipping..."
+                               delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];   
 }
 
 
@@ -949,20 +927,20 @@ id createImage(NSString *crayonColor)
 
 - (void)viewDidLoad 
 {
-	AppData *app = [AppData get];
+    AppData *app = [AppData get];
 
-	[volume_ setValue:[app lastVolume_]];
-	
+    [volume_ setValue:[app lastVolume_]];
+    
 
 
-   	// setup timer.
-	if( 1 )
-	{
-		[NSTimer scheduledTimerWithTimeInterval:(NSTimeInterval)0.5 
-										 target:self 
-									   selector:@selector(myTimerFireMethod:)
-									   userInfo:NULL repeats:YES ];
-	}	
+    // setup timer.
+    if( 1 )
+    {
+        [NSTimer scheduledTimerWithTimeInterval:(NSTimeInterval)0.5 
+                                         target:self 
+                                       selector:@selector(myTimerFireMethod:)
+                                       userInfo:NULL repeats:YES ];
+    }   
     
     // 
     // setup play/pause notifications to change the buttons appropriately
@@ -989,45 +967,45 @@ id createImage(NSString *crayonColor)
 
 /*
   [TODO] -- 
-		flip the displayed view from the main view to the flipside(song list) view and vice-versa.
+        flip the displayed view from the main view to the flipside(song list) view and vice-versa.
  */
 
 - (void) toggleView 
 {
-	/*
-	if (flipsideViewController == nil) {
-		[self loadFlipsideViewController];
-	}
-	
-	UIView *mainView = mainViewController.view;
-	UIView *flipsideView = flipsideViewController.view;
-	
-	[UIView beginAnimations:nil context:NULL];
-	[UIView setAnimationDuration:1];
-	[UIView setAnimationTransition:([mainView superview] ? UIViewAnimationTransitionFlipFromRight : UIViewAnimationTransitionFlipFromLeft) forView:self.view cache:YES];
-	
-	if ([mainView superview] != nil) {
-		[flipsideViewController viewWillAppear:YES];
-		[mainViewController viewWillDisappear:YES];
-		[mainView removeFromSuperview];
+    /*
+    if (flipsideViewController == nil) {
+        [self loadFlipsideViewController];
+    }
+    
+    UIView *mainView = mainViewController.view;
+    UIView *flipsideView = flipsideViewController.view;
+    
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDuration:1];
+    [UIView setAnimationTransition:([mainView superview] ? UIViewAnimationTransitionFlipFromRight : UIViewAnimationTransitionFlipFromLeft) forView:self.view cache:YES];
+    
+    if ([mainView superview] != nil) {
+        [flipsideViewController viewWillAppear:YES];
+        [mainViewController viewWillDisappear:YES];
+        [mainView removeFromSuperview];
         [infoButton removeFromSuperview];
-		[self.view addSubview:flipsideView];
-		[self.view insertSubview:flipsideNavigationBar aboveSubview:flipsideView];
-		[mainViewController viewDidDisappear:YES];
-		[flipsideViewController viewDidAppear:YES];
-		
-	} else {
-		[mainViewController viewWillAppear:YES];
-		[flipsideViewController viewWillDisappear:YES];
-		[flipsideView removeFromSuperview];
-		[flipsideNavigationBar removeFromSuperview];
-		[self.view addSubview:mainView];
-		[self.view insertSubview:infoButton aboveSubview:mainViewController.view];
-		[flipsideViewController viewDidDisappear:YES];
-		[mainViewController viewDidAppear:YES];
-	}
-	[UIView commitAnimations];
-	 */
+        [self.view addSubview:flipsideView];
+        [self.view insertSubview:flipsideNavigationBar aboveSubview:flipsideView];
+        [mainViewController viewDidDisappear:YES];
+        [flipsideViewController viewDidAppear:YES];
+        
+    } else {
+        [mainViewController viewWillAppear:YES];
+        [flipsideViewController viewWillDisappear:YES];
+        [flipsideView removeFromSuperview];
+        [flipsideNavigationBar removeFromSuperview];
+        [self.view addSubview:mainView];
+        [self.view insertSubview:infoButton aboveSubview:mainViewController.view];
+        [flipsideViewController viewDidDisappear:YES];
+        [mainViewController viewDidAppear:YES];
+    }
+    [UIView commitAnimations];
+     */
 }
 
 -(IBAction) flipToTracklistView:(id) sender
@@ -1038,7 +1016,7 @@ id createImage(NSString *crayonColor)
     // Animate the artwork to track list
     //
     [UIView beginAnimations:nil context:NULL];
-	[UIView setAnimationDuration:1];
+    [UIView setAnimationDuration:1];
  
     [UIView setAnimationTransition:([self.view superview] ? 
                                     UIViewAnimationTransitionFlipFromRight : UIViewAnimationTransitionFlipFromLeft) 
@@ -1046,26 +1024,26 @@ id createImage(NSString *crayonColor)
     
    
     if ([tracklistview_ superview])
-	{
-		[tracklistview_ removeFromSuperview];
-		[albumcovertracksview_ addSubview:albumcoverview_];
+    {
+        [tracklistview_ removeFromSuperview];
+        [albumcovertracksview_ addSubview:albumcoverview_];
         flipsideview_ = true;
-	}
-	else
-	{
-		[albumcoverview_ removeFromSuperview];
-		[albumcovertracksview_ addSubview:tracklistview_];
+    }
+    else
+    {
+        [albumcoverview_ removeFromSuperview];
+        [albumcovertracksview_ addSubview:tracklistview_];
         flipsideview_ = false;
-	}
+    }
     
-	
-	[UIView commitAnimations];	
+    
+    [UIView commitAnimations];  
     
     // 
     // Animate the navigation button to the opposite of the artwork animation
     //
     [UIView beginAnimations:nil context:NULL];
-	[UIView setAnimationDuration:1];
+    [UIView setAnimationDuration:1];
     
     
     [UIView setAnimationTransition:([self.view superview] ? 
@@ -1087,7 +1065,7 @@ id createImage(NSString *crayonColor)
         [albumcovertracksb_ setBackgroundImage:image forState:UIControlStateNormal];
     }
     
-    [UIView commitAnimations];	
+    [UIView commitAnimations];  
 
 }
 
@@ -1139,67 +1117,67 @@ id createImage(NSString *crayonColor)
 
 - (void)myTimerFireMethod:(NSTimer*)theTimer
 {
-	AppData *app = [AppData get];
+    AppData *app = [AppData get];
 
-   	if( [app isrunning] ) {
-		float cur = [app percent];
+    if( [app isrunning] ) {
+        float cur = [app percent];
         float len = [app tracklength];
 
-		
-        if( cur >= len ) {			
-			if ([app hasfinished]) {
-				[progbar_ setValue:0.0 animated:YES];
-				[self nextTrack];				
-			}
+        
+        if( cur >= len ) {          
+            if ([app hasfinished]) {
+                [progbar_ setValue:0.0 animated:YES];
+                [self nextTrack];               
+            }
         }
-		else {
-			float per = cur/len;
-			[progbar_ setValue:per animated:YES];
-		}
-	
-		float approxBitRateMult = 4.0;
-		float a = approxBitRateMult * [app trackFileSize] / app.currentTrackFileSize_;
-		//albumcoverview_.alpha = a;
-		//[progbar2_ setProgress:a];
+        else {
+            float per = cur/len;
+            [progbar_ setValue:per animated:YES];
+        }
+    
+        float approxBitRateMult = 4.0;
+        float a = approxBitRateMult * [app trackFileSize] / app.currentTrackFileSize_;
+        //albumcoverview_.alpha = a;
+        //[progbar2_ setProgress:a];
         progbar2_.value = a;
-		/*
-		if(a<1)
-		{
-			[UIView beginAnimations:@"thump" context:nil];
-			[UIView setAnimationDuration:0.5];
-			//busyimg_.alpha = a;
-			//busyimg_.transform = CGAffineTransformRotate( busyimg_.transform, a );			
-			albumcoverview_.transform = CGAffineTransformRotate( albumcoverview_.transform, a );
-			[UIView setAnimationRepeatAutoreverses:YES];			
-			[UIView commitAnimations];	
-		}
-		*/
-		
-		//printf( "loaded: %f/%f\n", [app trackFileSize], app.currentTrackFileSize_ );
-	}
-	
-	
+        /*
+        if(a<1)
+        {
+            [UIView beginAnimations:@"thump" context:nil];
+            [UIView setAnimationDuration:0.5];
+            //busyimg_.alpha = a;
+            //busyimg_.transform = CGAffineTransformRotate( busyimg_.transform, a );            
+            albumcoverview_.transform = CGAffineTransformRotate( albumcoverview_.transform, a );
+            [UIView setAnimationRepeatAutoreverses:YES];            
+            [UIView commitAnimations];  
+        }
+        */
+        
+        //printf( "loaded: %f/%f\n", [app trackFileSize], app.currentTrackFileSize_ );
+    }
+    
+    
     /*
-	if( 0 ){
-		[UIView beginAnimations:@"thump" context:nil];
-		[UIView setAnimationDuration:2.9];	
-		self.transform = CGAffineTransformMakeRotation(.5-drand48());
-		self.alpha = 1-.1*drand48();
-		[UIView setAnimationRepeatAutoreverses:YES];			
-		[UIView commitAnimations];	
-	}
+    if( 0 ){
+        [UIView beginAnimations:@"thump" context:nil];
+        [UIView setAnimationDuration:2.9];  
+        self.transform = CGAffineTransformMakeRotation(.5-drand48());
+        self.alpha = 1-.1*drand48();
+        [UIView setAnimationRepeatAutoreverses:YES];            
+        [UIView commitAnimations];  
+    }
      */
 }
 
 
 - (void) titleAvailable:(NSNotification*)notification
 {
-	NSDictionary *d     = notification.userInfo;
-	NSString *title     = [d objectForKey:@"trackTitle"];
-	NSString *artist    = [d objectForKey:@"artistName"];
-	NSString *album     = [d objectForKey:@"albumTitle"];
+    NSDictionary *d     = notification.userInfo;
+    NSString *title     = [d objectForKey:@"trackTitle"];
+    NSString *artist    = [d objectForKey:@"artistName"];
+    NSString *album     = [d objectForKey:@"albumTitle"];
 
-	tlabel_.text  = title;
+    tlabel_.text  = title;
     alabel_.text  = artist;
     allabel_.text = album;
 }
@@ -1208,16 +1186,15 @@ id createImage(NSString *crayonColor)
 
 - (void)viewDidAppear:(BOOL)animated
 {
-    printf("mmmmm\n");
-	[[NSNotificationCenter defaultCenter] addObserver:self 
-											 selector:@selector(artworkReady:) 
-												 name:@"artworkReady" 
-											   object:nil];	
+    [[NSNotificationCenter defaultCenter] addObserver:self 
+                                             selector:@selector(artworkReady:) 
+                                                 name:@"artworkReady" 
+                                               object:nil]; 
 
-	[[NSNotificationCenter defaultCenter] addObserver:self 
-											 selector:@selector(titleAvailable:) 
-												 name:@"titleAvailable" 
-											   object:nil];	
+    [[NSNotificationCenter defaultCenter] addObserver:self 
+                                             selector:@selector(titleAvailable:) 
+                                                 name:@"titleAvailable" 
+                                               object:nil]; 
     
     AppData *app = [AppData get];
     
@@ -1229,33 +1206,33 @@ id createImage(NSString *crayonColor)
                                pause_,  fixedplay_, next_, flexend_, nil]];
     }
     
-	[self artworkReady:nil];
+    [self artworkReady:nil];
 }
 
 
 - (void)viewDidDisappear:(BOOL)animated
 {
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 -(IBAction) setvolume:(id)sender
-{	
-	[[AppData get] setvolume:[volume_ value]];
+{   
+    [[AppData get] setvolume:[volume_ value]];
 }
 
 
 -(IBAction) random:(id)sender
 {
-	AppData *app = [AppData get];
-	NSArray* fullList = app.fullArtistList_;
-	int index = drand48() * [fullList count];
-	
-	NSDictionary *d = [fullList objectAtIndex:index];
-	//trackinfo_.text = [d objectForKey:@"albumTitle"];
-	
-	[app play:d];
+    AppData *app = [AppData get];
+    NSArray* fullList = app.fullArtistList_;
+    int index = drand48() * [fullList count];
+    
+    NSDictionary *d = [fullList objectAtIndex:index];
+    //trackinfo_.text = [d objectForKey:@"albumTitle"];
+    
+    [app play:d];
 }
-	
+    
 
 -(IBAction) taptap:(id)sender
 {
@@ -1264,16 +1241,16 @@ id createImage(NSString *crayonColor)
 
 -(IBAction) play:(id)sender
 {
-	AppData *app = [AppData get];
+    AppData *app = [AppData get];
 
-	if( [app isPaused] ) {
-		[app resume];
-	}
+    if( [app isPaused] ) {
+        [app resume];
+    }
     else {
-		int index = [app currentTrackIndex_];
-		NSDictionary *d = [app.trackList_ objectAtIndex:index];
-		[app playTrack:d];
-	}
+        int index = [app currentTrackIndex_];
+        NSDictionary *d = [app.trackList_ objectAtIndex:index];
+        [app playTrack:d];
+    }
 }
 
 
@@ -1306,51 +1283,61 @@ id createImage(NSString *crayonColor)
 
 -(IBAction) pause:(id)sender
 {
-	paused_ = true;
+    paused_ = true;
 
-	[[AppData get] pause];
-	//[[AppData get] stop];
+    [[AppData get] pause];
 }
 
 -(IBAction) stop:(id)sender
 {
-	paused_ = false;
-	[[AppData get] stop];
+    paused_ = false;
+    [[AppData get] stop];
 }
+
+
+
+-(void) detectOrientation 
+{    
+    if (([[UIDevice currentDevice] orientation] == UIDeviceOrientationLandscapeLeft) || 
+        ([[UIDevice currentDevice] orientation] == UIDeviceOrientationLandscapeRight)) {
+        printf("landscape\n");
+        self.view = self.landscapeView;
+        
+    } else if ([[UIDevice currentDevice] orientation] == UIDeviceOrientationPortrait) {
+        printf("portrait\n");
+        self.view = self.portraitView;        
+    }   
+}
+
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
-    printf("zzz\n");
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation 
 {
-    printf("hhhhh0\n");
-
     if(interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown) {
-        self.view = portraitView;
+        self.view = self.portraitView;
         return YES;
     }
     else if(interfaceOrientation == UIInterfaceOrientationPortrait) {
-        self.view = portraitView;
+        self.view = self.portraitView;
         return YES;
     }
     else if(interfaceOrientation == UIInterfaceOrientationLandscapeRight ) {
-        self.view = landscapeView;
+        self.view = self.landscapeView;
         return YES;
     }
     else {
-        return NO;
+        self.view = self.landscapeView;
+        return YES;
     }
 
-    
     return YES;
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    printf("hhhhh1\n");
-
     if(self.interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown) {
         self.view = portraitView;
     }
@@ -1364,32 +1351,25 @@ id createImage(NSString *crayonColor)
 
 - (void)didReceiveMemoryWarning 
 {
-	[super didReceiveMemoryWarning]; // Releases the view if it doesn't have a superview
-	// Release anything that's not essential, such as cached data
+    [super didReceiveMemoryWarning]; // Releases the view if it doesn't have a superview
+    // Release anything that's not essential, such as cached data
 }
 
 
 - (void)dealloc 
 {
-    if (target) [target release];
-    if (flippedView) [flippedView release];
-    [self.cfView  release];
-    [self.covers release];
-    [self.titles release];
-    [self.colorDict release];
-    
     [super dealloc];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView 
 {
-	return 1;
+    return 1;
 }
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
 {
-	tracklistview_.separatorStyle = UITableViewCellSeparatorStyleNone;
+    tracklistview_.separatorStyle = UITableViewCellSeparatorStyleNone;
     
     AppData *app = [AppData get];
     return [app.trackList_ count];
@@ -1415,107 +1395,192 @@ id createImage(NSString *crayonColor)
  UIActionSheet
  
 - (void)loadFlipsideViewController {
-	PreferencesViewController *viewController = [[PreferencesViewController alloc] initWithNibName:@"PreferencesView" bundle:nil];
-	self.preferencesViewController = viewController;
-	preferencesViewController.rootViewController = self;
-	[viewController release];
+    PreferencesViewController *viewController = [[PreferencesViewController alloc] initWithNibName:@"PreferencesView" bundle:nil];
+    self.preferencesViewController = viewController;
+    preferencesViewController.rootViewController = self;
+    [viewController release];
 }
 
 
-- (IBAction)toggleView:(id)sender {	
-	// This method is called when the info or Done button is pressed.
-	// It flips the displayed view from the main view to the flipside view and vice-versa.
-	
-	if (preferencesViewController == nil) {
-		[self loadFlipsideViewController];
-	}
-	
-	UIView *mainView = metronomeViewController.view;
-	
-	[UIView beginAnimations:nil context:NULL];
-	[UIView setAnimationDuration:1];
-	[UIView setAnimationTransition:([mainView superview] ? UIViewAnimationTransitionFlipFromLeft : UIViewAnimationTransitionFlipFromRight) forView:self.view cache:YES];
-	
-	UIView *flipsideView = preferencesViewController.view;
-	if ([mainView superview] != nil) {
-		[mainView removeFromSuperview];
-		[self.view addSubview:flipsideView];
-	} else {
-		[flipsideView removeFromSuperview];
-		[self.view addSubview:mainView];
-	}
-	[UIView commitAnimations];
+- (IBAction)toggleView:(id)sender { 
+    // This method is called when the info or Done button is pressed.
+    // It flips the displayed view from the main view to the flipside view and vice-versa.
+    
+    if (preferencesViewController == nil) {
+        [self loadFlipsideViewController];
+    }
+    
+    UIView *mainView = metronomeViewController.view;
+    
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDuration:1];
+    [UIView setAnimationTransition:([mainView superview] ? UIViewAnimationTransitionFlipFromLeft : UIViewAnimationTransitionFlipFromRight) forView:self.view cache:YES];
+    
+    UIView *flipsideView = preferencesViewController.view;
+    if ([mainView superview] != nil) {
+        [mainView removeFromSuperview];
+        [self.view addSubview:flipsideView];
+    } else {
+        [flipsideView removeFromSuperview];
+        [self.view addSubview:mainView];
+    }
+    [UIView commitAnimations];
 }
 
 **/
 
 
+/************************************************************************/
+/*																		*/
+/*	FlowCover Callbacks													*/
+/*																		*/
+/************************************************************************/
 
-// *********************************************
-// Coverflow delegate methods
-//
-- (void) coverFlow: (id) coverFlow selectionDidChange: (int) index
+- (int)flowCoverNumberImages:(FlowCoverView *)view
 {
-	self.whichItem = index;
-	[self.cfView.label setText:[self.titles objectAtIndex:index]];
+	return 75;
 }
 
-// Detect the end of the flip -- both on reveal and hide
-- (void) coverFlowFlipDidEnd: (UICoverFlowLayer *)coverFlow 
-{
-	if (flipOut)
-		[[[UIApplication sharedApplication] keyWindow] addSubview:flippedView];
-	else
-		[flippedView removeFromSuperview];
-}
-
-
-// *********************************************
-// Coverflow datasource methods
-//
-
-- (void) coverFlow:(id)coverFlow requestImageAtIndex: (int)index quality: (int)quality
-{
-	UIImage *whichImg = [self.covers objectAtIndex:index];
-	[coverFlow setImage:[whichImg CGImage]  atIndex:index type:quality];
-}
-
-// Return a flip layer, one that preferably integrates into the flip presentation
-- (id) coverFlow: (UICoverFlowLayer *)coverFlow requestFlipLayerAtIndex: (int) index
-{
-	if (flipOut) [flippedView removeFromSuperview];
-	flipOut = !flipOut;
+- (UIImage *)flowCover:(FlowCoverView *)view cover:(int)index
+{	
+	if (index >= [images_ count]) {
+		return [UIImage imageNamed:@"y.png"];
+	}
 	
-	// Prepare the flip text
-	[flippedView setText:[NSString stringWithFormat:@"%@\n%@", [self.titles objectAtIndex:index], [self.colorDict objectForKey:[self.titles objectAtIndex:index]]]];
+	UIImage *img = [images_ objectAtIndex:index];    
+	if (!img) {
+		return [UIImage imageNamed:@"z.png"];
+	}
 	
-	// Flip with a simple blank square
-	UIView *view = [[[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 140.0f, 140.0f)] autorelease];
-	[view setBackgroundColor:[UIColor clearColor]];
-	
-	return [view layer];
+	return img;
 }
 
-// *********************************************
-// Utility methods
-//
-
-- (int) selectedItem
+- (void)flowCover:(FlowCoverView *)view didSelect:(int)image
 {
-	return self.whichItem;
-}
-
-
-// *********************************************
-// Callback method for double tap
-//
-
-- (void) doubleTapCallback
-{
+	NSLog(@"Selected Index %d",image);
 }
 
 
 @end
+
+
+
+
+// --------------------------------------------------------------------------------
+// helper code for flickr
+// --------------------------------------------------------------------------------
+
+#pragma mark	-
+#pragma mark		xml parser delegate
+#pragma mark	-
+
+@interface FlickrXMLPictDelegate : NSObject {
+    NSMutableArray *picts_;
+}
+
+@property (readonly) NSMutableArray * picts_;
+@end
+
+
+@implementation FlickrXMLPictDelegate
+@synthesize picts_;
+
+- (id) init {
+    
+    if (self = [super init]) {
+        picts_ = [[NSMutableArray arrayWithCapacity:100] retain];
+    }
+    
+    return self;
+}
+
+- (void) dealloc {
+    [picts_ release];
+    [super dealloc];
+}
+
+- (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName
+  namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName
+    attributes:(NSDictionary *)attributeDict 
+{        
+    if ([elementName isEqualToString:@"photo"]) 
+    {    
+        [picts_ addObject:attributeDict];    
+    }
+}
+@end
+
+
+
+// --------------------------------------------------------------------------------
+// helper functions for flickr requests.
+// --------------------------------------------------------------------------------
+static NSMutableString* apiPrefix(NSString* method)
+{	
+    NSMutableString *prefix = [[[NSMutableString alloc] init] autorelease];
+    [prefix appendString:@"http://api.flickr.com/services/rest/?method="];
+    [prefix appendString:method];
+    [prefix appendString:@"&api_key=30b5b38adcaa90ff3db93e87d2e40fae"];	
+    return prefix;
+}
+
+
+NSString *flickrRequestWithKeyword(NSString* keyword)
+{	
+    NSMutableString *keyurl = apiPrefix(@"flickr.photos.search");
+    [keyurl appendString:@"&per_page=75&text="];
+    [keyurl appendString:keyword];  
+    NSString *encoded = [keyurl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    return encoded;
+}
+
+/* --------------------------------------------------------------------------------
+ Each <item> in the has these elements:
+ <photo id="2332251417" owner="8846275@N05" secret="3dc5ca2086" 
+ server="3227" farm="4" title="feh" ispublic="1" isfriend="0" isfamily="0" />
+ 
+ http://farm{farm-id}.static.flickr.com/{server-id}/{id}_{secret}_[mstb].jpg
+ ---------------------------------------------------------------------------------- */
+NSMutableArray* convertListToRequests( NSData* data )
+{
+    if( !data )
+        return nil;
+	
+    NSMutableArray *reqs = [NSMutableArray arrayWithCapacity:500];
+    
+    FlickrXMLPictDelegate * parseDelegate = [[[FlickrXMLPictDelegate alloc] init] autorelease];
+    NSXMLParser * parser = [[[NSXMLParser alloc] initWithData:data] autorelease];
+    [parser setDelegate:parseDelegate];
+    if ([parser parse]) {
+        NSDictionary * dict;				
+        for (dict in parseDelegate.picts_) 
+        {			
+            NSString *farm   = [dict objectForKey:@"farm"];
+            NSString *server = [dict objectForKey:@"server"];
+            NSString *userid = [dict objectForKey:@"id"];
+            NSString *secret = [dict objectForKey:@"secret"];
+            
+            if( farm && server && userid && secret )
+            {
+                NSString *pictureReq = [NSString stringWithFormat:@"http://farm%@.static.flickr.com/%@/%@_%@_m.jpg", 
+                                        farm, server, userid, secret ];
+                
+                [reqs addObject:pictureReq];
+            }
+        }
+    }
+	
+    return reqs;
+}
+
+
+
+
+
+
+
+
+
 
 
 

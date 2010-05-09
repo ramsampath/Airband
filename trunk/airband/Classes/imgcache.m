@@ -3,7 +3,7 @@
 // ================================================================================
 // how many thumbnails to keep in cache
 // ================================================================================
-#define kCACHE_CAPACITY 4
+#define kCACHE_CAPACITY 40
 // ================================================================================
 // thumbnail size in pixels
 // ================================================================================
@@ -79,6 +79,7 @@
 #pragma mark	-------------------------------------------------
 
 @implementation imagecache
+@synthesize cache_;
 
 - (id) init
 {
@@ -118,7 +119,6 @@
 
 - (UIImage *) loadImage:(NSString *) imagename
 {
-
     //
     // check if already there.
     //
@@ -139,8 +139,7 @@
 // --------------------------------------------------------------------------------
 
 - (UIImage*) loadWithURL:(NSString*)strurl
-				callback:(id)user  
-			callbackdata:(id)userdata
+				callback:(id)user callbackdata:(id)userdata
 {
     //
     // sanity check
