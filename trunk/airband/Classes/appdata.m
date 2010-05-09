@@ -392,24 +392,24 @@ static NSMutableArray* convertListToRequests( NSData* data );
 
 -(void) playTrack:(NSDictionary *)track
 {
-	NSString *playfile  = [track objectForKey:@"playURL"];
-	NSString *title     = [track objectForKey:@"trackTitle"];
-	NSString *tracksize = [track objectForKey:@"trackFileSize"];
-	NSString *tracklen  = [track objectForKey:@"trackLength"];
-	NSString *album     = [track objectForKey:@"albumTitle"];
+    NSString *playfile  = [track objectForKey:@"playURL"];
+    NSString *title     = [track objectForKey:@"trackTitle"];
+    NSString *tracksize = [track objectForKey:@"trackFileSize"];
+    NSString *tracklen  = [track objectForKey:@"trackLength"];
+    NSString *album     = [track objectForKey:@"albumTitle"];
     NSString *artist    = [track objectForKey:@"artistName"];
     NSString *tracknum  = [track objectForKey:@"trackNumber"];
     
-	currentTrackFileSize_   = [tracksize floatValue];
-	currentTrackLength_     = [tracklen floatValue];
+    currentTrackFileSize_   = [tracksize floatValue];
+    currentTrackLength_     = [tracklen floatValue];
     currentAlbumTrackIndex_ = [tracknum intValue];
     
-	if( !playfile ) {
-		[[[UIAlertView alloc] initWithTitle:@"Error w/ mp3tunes"
-									message:@"Couldn't get playfile" 
-								   delegate:nil cancelButtonTitle:@"ok" otherButtonTitles:nil] show];
-		return;
-	}
+    if( !playfile ) {
+        [[[UIAlertView alloc] initWithTitle:@"Error w/ mp3tunes"
+                                    message:@"Couldn't get playfile" 
+                                   delegate:nil cancelButtonTitle:@"ok" otherButtonTitles:nil] show];
+        return;
+    }
     
     /* - log plays
      */
@@ -474,10 +474,10 @@ static NSMutableArray* convertListToRequests( NSData* data );
 	
 	
 	// someone might want to know...
-	currentTrackTitle_ = title;
+    currentTrackTitle_ = title;
     currentArtist_     = artist;
     currentAlbum_      = album;
-	[[NSNotificationCenter defaultCenter] postNotificationName:@"titleAvailable" object:self userInfo:[track retain]];	
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"titleAvailable" object:self userInfo:[track retain]];	
     
     [[NSNotificationCenter defaultCenter] postNotificationName:@"appPlaying" object:nil];				
 }
@@ -759,7 +759,7 @@ static NSMutableArray* convertListToRequests( NSData* data );
     lastVolume_ = [[[d objectForKey:@"lastVolume"] retain] floatValue];
     bitRate_    = [[[d objectForKey:@"bitRate"] retain] intValue];
     autoLogin_  = [[[d objectForKey:@"autoLogin"] retain] boolValue];
-      
+    
     
     //
     // Read the global preferences and set the app preferences 
