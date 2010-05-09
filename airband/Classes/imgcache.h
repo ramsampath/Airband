@@ -56,6 +56,8 @@
 				callback:(id)user  
 			callbackdata:(id)userdata;
 
+@property(readonly) SimpleCache *cache_;
+
 
 - (void) stop;
 

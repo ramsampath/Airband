@@ -2,6 +2,7 @@
 #import "airbandAppDelegate.h"   // for access to global AppData
 #import "xmlhelp.h"
 #import "audiohelp.h"
+#import "SimpleIO.h"
 
 
 #pragma mark	-
@@ -13,9 +14,14 @@ static asyncIO *g_async = nil;
 static NSString *partner_token = @"3110321588";
 static audiohelp_II *g_audio = nil;
 
+static NSString *flickr_api_key = @"8eff2e7f6c26b0ef2890d3cb89e5d6ba";
+static NSString *flickrRequestWithKeyword(NSString* keyword);
+static NSMutableArray* convertListToRequests( NSData* data );
+
 // mp3 tunes API:
 // http://www.mp3tunes.com/api/doc/apiv1
 // static const char *mp3api = "http://ws.mp3tunes.com/api/v1/lockerData?output=xml";
+
 
 
 @implementation AppData
@@ -47,8 +53,8 @@ static audiohelp_II *g_audio = nil;
 // --------------------------------------------------------------------------
 +(AppData*) get
 {
-  airbandAppDelegate *airband = (airbandAppDelegate*) ([UIApplication sharedApplication].delegate);	
-  return airband.appdata_;
+    airbandAppDelegate *airband = (airbandAppDelegate*) ([UIApplication sharedApplication].delegate);	
+    return airband.appdata_;
 }
 
 
@@ -60,25 +66,26 @@ static audiohelp_II *g_audio = nil;
 {
 	if( self = [super init] )
 	{
-		username_          = nil;
-		password_          = nil;
-		sessionID_         = nil;
-		fullArtistList_    = nil;
-		albumInRequest_    = nil;
-		artwork_           = nil;
-		artworkdata_       = nil;
-		currentTracklist_  = nil;
-		albumList_         = nil;
-		trackList_         = nil;
-		currentTrackTitle_ = nil;
+        username_          = nil;
+        password_          = nil;
+        sessionID_         = nil;
+        fullArtistList_    = nil;
+        albumInRequest_    = nil;
+        artwork_           = nil;
+        artworkdata_       = nil;
+        currentTracklist_  = nil;
+        albumList_         = nil;
+        trackList_         = nil;
+        currentTrackTitle_ = nil;
         currentAlbum_      = nil;
         currentArtist_     = nil;
-		bitRate_           = 56000;
-		lastVolume_		   = 1;
+        bitRate_           = 56000;
+        lastVolume_		   = 1;
         albumArtCache_     = [[imagecache alloc] retain];
         autoLogin_         = true;
-		// read the user settings.
-		[self restoreState];
+        coverflowDisplayType_ = 0; // type albumart
+        // read the user settings.
+        [self restoreState];
 	}
 	
 	return self;
@@ -91,21 +98,21 @@ static audiohelp_II *g_audio = nil;
 {
     [self saveState];
 
-	[username_ release];
-	[password_ release];
+    [username_ release];
+    [password_ release];
     [sessionID_ release];
-	[fullArtistList_ release];
-	[albumInRequest_ release];
-	[artwork_ release];
-	[artworkdata_ release];
-	[currentTracklist_ release];
-	[albumList_ release];
-	[trackList_ release];
-	[currentTrackTitle_ release];
+    [fullArtistList_ release];
+    [albumInRequest_ release];
+    [artwork_ release];
+    [artworkdata_ release];
+    [currentTracklist_ release];
+    [albumList_ release];
+    [trackList_ release];
+    [currentTrackTitle_ release];
     [currentArtist_ release];
     [currentAlbum_ release];
     [albumArtCache_ release];
-	[super dealloc];
+    [super dealloc];
 }
 
 
@@ -114,13 +121,13 @@ static audiohelp_II *g_audio = nil;
 // --------------------------------------------------------------------------
 -(NSArray*) parseItemList:(NSData*)data
 {
-	NSXMLParser * parser = [[[NSXMLParser alloc] initWithData:data] autorelease];	
-	XMLParseItemList* parseDelegate = [[[XMLParseItemList alloc] init] autorelease];	
-	[parser setDelegate:parseDelegate];
-	[parser parse];	
+    NSXMLParser * parser = [[[NSXMLParser alloc] initWithData:data] autorelease];	
+    XMLParseItemList* parseDelegate = [[[XMLParseItemList alloc] init] autorelease];	
+    [parser setDelegate:parseDelegate];
+    [parser parse];	
 	
-	NSArray *a = [[NSArray arrayWithArray:parseDelegate.itemList_] retain];			
-	return a;
+    NSArray *a = [[NSArray arrayWithArray:parseDelegate.itemList_] retain];			
+    return a;
 }
 
 
@@ -134,30 +141,29 @@ static audiohelp_II *g_audio = nil;
 	
 	//printf( "----------- dataReady:%s\n", [which UTF8String] );
 	
-	if( [which isEqualToString:@"login"] )
-	{
-		NSXMLParser * parser = [[[NSXMLParser alloc] initWithData:data] autorelease];		
-		XMLParseSimpleElement* parseDelegate = [[[XMLParseSimpleElement alloc] init] autorelease];	
-		parseDelegate.search_ = @"session_id";	
-		[parser setDelegate:parseDelegate];
-		[parser parse];	
+    if( [which isEqualToString:@"login"] )
+    {
+        NSXMLParser * parser = [[[NSXMLParser alloc] initWithData:data] autorelease];		
+        XMLParseSimpleElement* parseDelegate = [[[XMLParseSimpleElement alloc] init] autorelease];	
+        parseDelegate.search_ = @"session_id";	
+        [parser setDelegate:parseDelegate];
+        [parser parse];	
 		
-		// save the session id.
-		sessionID_ = [[NSString stringWithString:parseDelegate.found_] retain];
+        // save the session id.
+        sessionID_ = [[NSString stringWithString:parseDelegate.found_] retain];
 
-		if( [sessionID_ length] < 4 ) {
-			[sessionID_ release];
-			sessionID_ = nil;			
-			[[NSNotificationCenter defaultCenter] postNotificationName:@"loginFAIL" object:nil];				
-			return;
-		}
+        if( [sessionID_ length] < 4 ) {
+            [sessionID_ release];
+            sessionID_ = nil;			
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"loginFAIL" object:nil];				
+            return;
+        }
 		
-		if (sessionID_) {
-			[[NSNotificationCenter defaultCenter] postNotificationName:@"loginOK" object:nil];
-
-		}
-	}
-	else if( [which isEqualToString:@"artistList"] )
+        if (sessionID_) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOK" object:nil];
+        }
+    }
+    else if( [which isEqualToString:@"artistList"] )
 	{
 		[fullArtistList_ release];
 		fullArtistList_ = [self parseItemList:data];
@@ -186,9 +192,9 @@ static audiohelp_II *g_audio = nil;
 		trackList_ = a;
 		[[NSNotificationCenter defaultCenter] postNotificationName:@"trackListReady" object:nil];		
 		//[self gotTrackList:a];
-	}
-	else if( [which isEqualToString:@"playlistTracks"] )
-	{
+    }
+    else if( [which isEqualToString:@"playlistTracks"] )
+    {
 		[currentTracklist_ release];
 		NSArray *a = [self parseItemList:data];
 		currentTracklist_ = a;
@@ -252,6 +258,7 @@ static audiohelp_II *g_audio = nil;
 };
 
 
+
 - (void) getAlbumList
 {
     if( [sessionID_ length] < 4 ) {
@@ -268,6 +275,7 @@ static audiohelp_II *g_audio = nil;
 	
 	[g_async loadWithURL:req asyncinfo:self asyncdata:@"albumList"];
 };
+
 
 - (void) getAlbumListAsyn
 {
@@ -331,13 +339,13 @@ static audiohelp_II *g_audio = nil;
 
 - (void) gotAlbumList:(NSArray*)albumlist
 {
-	NSUInteger numalbums = [albumlist count];
-	if( !albumlist || !numalbums ) {
-		[[[UIAlertView alloc] initWithTitle:@"Oh No!" 
-							  message:@"Couldn't get albumlist" 
-							  delegate:nil 
-							  cancelButtonTitle:@"ok" 
-							  otherButtonTitles:nil] show];
+    NSUInteger numalbums = [albumlist count];
+    if( !albumlist || !numalbums ) {
+        [[[UIAlertView alloc] initWithTitle:@"Oh No!" 
+                                    message:@"Couldn't get albumlist" 
+                                   delegate:nil 
+                          cancelButtonTitle:@"ok" 
+                          otherButtonTitles:nil] show];
 		return;
 	}
 	
@@ -348,14 +356,30 @@ static audiohelp_II *g_audio = nil;
      */
 }
 
+- (UIImage *)getAlbumArtwork:(NSString *)aid
+{
+}
 
 - (void) getAlbumListArtwork:(NSArray *)albumlist;
 {
+    /*
+    NSString *req = @"all";
+
+    ConnectionInfo *info = [[ConnectionInfo alloc] init];
+    info.address_ = req;
+    info.delegate_ = self;
+    info.userdata_ = @"main";
+    
+    [[SimpleIO singelton] request:info];	
+    [info release];
+    */
+    /*
     unsigned num = [albumlist count];
     for( int i = 0;  i < num; ++i ) {
-        //NSDictionary *album = [albumlist objectAtIndex:i];
-        //[self getAlbumArtwork:[album objectForKey:@"albumId"]];
-    }    
+        NSDictionary *album = [albumlist objectAtIndex:i];
+        [self getAlbumArtwork:[album objectForKey:@"albumId"]];
+    } 
+     */
 }
 
 
@@ -800,5 +824,8 @@ static audiohelp_II *g_audio = nil;
 
 
 @end
+
+
+
 
 

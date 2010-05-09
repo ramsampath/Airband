@@ -9,7 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "TracklistView.h"
 #import "LoadingView.h"
-#import "CoverFlowView.h"
+#import "FlowCoverView.h"
+#import "SimpleIO.h"
+
 
 @interface VolumeKnob: UIView
 {
@@ -35,7 +37,10 @@
 @end
 
 
-@interface NowPlayingController : UIViewController< CoverFlowHost, UITableViewDelegate, UITableViewDataSource >
+
+@interface NowPlayingController: UIViewController <AsyncCallback, FlowCoverViewDelegate,
+                 UITableViewDelegate, UITableViewDataSource> 
+
 {
     IBOutlet UIToolbar       *toolbar_;
     IBOutlet UIToolbar       *toolbartop_;
@@ -91,19 +96,23 @@
     //
     // The cover flow
     //
-    CoverFlowView		   *cfView;
-    NSMutableArray		*covers;
-    NSMutableArray		*titles;
-    int					whichItem;
-    id					   target;
-    SEL					selector;
-    
-    NSMutableDictionary	*colorDict;
-    UILabel				*flippedView;
-    BOOL				    flipOut;
     
     UIView              *portraitView;
     UIView              *landscapeView;
+
+    id       detailItem;
+    UILabel *detailDescriptionLabel;
+	
+    UIButton *flickrButton;	
+    UITextField *flickrSearch;
+	
+    FlowCoverView *flowCover;
+	
+    UIImageView    *imgView;
+    NSMutableArray *images_;
+    NSMutableArray *artworkimages_;
+	
+    NSMutableArray *searchList_;
 }
 
 
@@ -122,13 +131,25 @@
 -(void) setupnavigationitems:(UINavigationItem *)sender navBar:(UINavigationBar *)navbar
                     datadict:(NSDictionary *)dict;
 -(void) stopLoadingView;
+-(void) detectOrientation;
+-(void) transformViewToLandscape;
 
-@property (nonatomic, retain)	CoverFlowView *cfView;
-@property (nonatomic, retain)	NSMutableArray *covers;
-@property (nonatomic, retain)	NSMutableArray *titles;
-@property (nonatomic, retain)	NSMutableDictionary *colorDict;
-@property						   int whichItem;
+
 @property( readwrite, retain ) UIView *portraitView;
 @property( readwrite, retain ) UIView *landscapeView;
+
+//
+//
+//
+
+@property (nonatomic, retain)          id             detailItem;
+@property (nonatomic, retain) IBOutlet UILabel        *detailDescriptionLabel;
+@property (nonatomic, retain) IBOutlet UIButton       *flickrButton;
+@property (nonatomic, retain) IBOutlet UITextField    *flickrSearch;
+@property (nonatomic, retain) IBOutlet FlowCoverView  *flowCover;
+@property (nonatomic, retain) IBOutlet UIImageView    *imgView;
+@property (nonatomic, readonly)        NSMutableArray *searchList_;
+
+
 
 @end

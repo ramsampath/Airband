@@ -229,7 +229,7 @@
         // special due to callbacks involved.
         // 
         loadingView_ = [[LoadingView loadingViewInView:progressView_ loadingText:@"Loading Album List..."] retain]; 
-        if( artist_ != @"" ) {
+        if( artist_  ) {
             NSString *req = [artist_ objectForKey:@"artistId"];
             [app getAlbumListAsync:req];
         }
@@ -460,7 +460,7 @@
 //
 - (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	AppData *app = [AppData get];
+    AppData *app = [AppData get];
 	
 	NSString  *cellMain = nil;
 	NSString  *cellExtra = nil;
@@ -622,11 +622,16 @@
     // [NOTE] the following is just a temp image till a more comprehensive 
     // solution for the album art is worked out.
     //
+
+    cell.imageView.image = nil;
+    //cell.imageView.image = [app.albumArtCache_.cache_ objectForKey:cellMain];
+    if( cell.imageView.image == nil ) {
 #ifdef __IPHONE_3_0	
-	cell.imageView.image = [app.albumArtCache_ loadImage:@"music_note_gray.png"];
+        cell.imageView.image = [app.albumArtCache_ loadImage:@"music_note_gray.png"];
 #else
-	cell.image = [app.albumArtCache_ loadImage:@"music_note_gray.png"];
+        cell.image = [app.albumArtCache_ loadImage:@"music_note_gray.png"];
 #endif
+    }
 	return cell;
 }
 
