@@ -470,13 +470,11 @@ CGContextRef MyCreateBitmapContext (int pixelsWide, int pixelsHigh)
     }
 }
 
-- (void) viewDidDisappear
-{
-}
 
--(UIView *)create_landScapeView
-{   
-}
+
+
+
+
 
 #pragma mark -
 #pragma mark Async Delegate
@@ -550,7 +548,7 @@ static void myProviderReleaseData (void *info,const void *data,size_t size)
             [flowCover draw];
         }
     }
-    printf("finished with data \n");
+    printf("data\n");
 }
 
 
@@ -738,27 +736,17 @@ static void myProviderReleaseData (void *info,const void *data,size_t size)
     [self transformViewToLandscape];
     images_ = [[NSMutableArray arrayWithCapacity:50] retain];
     
-    // 
-    // create flickr album art
-    //
-    NSString *search = allabel_.text;
-    NSString *req = flickrRequestWithKeyword( search );
     
-    ConnectionInfo *info = [[ConnectionInfo alloc] init];
-    info.address_ = req;
-    info.delegate_ = self;
-    info.userdata_ = @"main";
-    
-    [[SimpleIO singelton] request:info];    
-    [info release];
+    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+    [[NSNotificationCenter defaultCenter] addObserver:self 
+                                             selector:@selector(detectOrientation) 
+                                                 name:@"UIDeviceOrientationDidChangeNotification" object:nil];
     
     //
     //
     flipsideview_ = true;
-    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(detectOrientation) name:@"UIDeviceOrientationDidChangeNotification" object:nil];
-    
-    // hacky -- let's listen for errors
+     // hacky -- let's listen for errors
     [[NSNotificationCenter defaultCenter] addObserver:self 
                                              selector:@selector(connectionError:) 
                                                  name:@"connectionError"
@@ -824,6 +812,7 @@ static void myProviderReleaseData (void *info,const void *data,size_t size)
     }
 }
 
+
 - (void)artworkReady:(NSObject*)notification
 {
     AppData *app = [AppData get];
@@ -838,6 +827,8 @@ static void myProviderReleaseData (void *info,const void *data,size_t size)
     tlabel_.text  = app.currentTrackTitle_;
     alabel_.text  = app.currentArtist_;
     allabel_.text = app.currentAlbum_;
+    
+    
 }
 
 
@@ -1180,6 +1171,24 @@ static void myProviderReleaseData (void *info,const void *data,size_t size)
     tlabel_.text  = title;
     alabel_.text  = artist;
     allabel_.text = album;
+    
+    // 
+    // create flickr album art
+    //
+    NSString *search = [NSString stringWithString:album];
+    NSString *req;
+    if( search != nil ) {
+        req = flickrRequestWithKeyword( search );
+        ConnectionInfo *info = [[ConnectionInfo alloc] init];
+        info.address_ = req;
+        info.delegate_ = self;
+        info.userdata_ = @"main";
+        
+        [[SimpleIO singelton] request:info];    
+        [info release];
+    }
+    
+    return;
 }
 
 
@@ -1207,10 +1216,13 @@ static void myProviderReleaseData (void *info,const void *data,size_t size)
     }
     
     [self artworkReady:nil];
+    
+
+    return;
 }
 
 
-- (void)viewDidDisappear:(BOOL)animated
+- (void) viewDidDisappear:(BOOL)animated
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
@@ -1526,7 +1538,7 @@ static NSMutableString* apiPrefix(NSString* method)
 
 
 NSString *flickrRequestWithKeyword(NSString* keyword)
-{	
+{
     NSMutableString *keyurl = apiPrefix(@"flickr.photos.search");
     [keyurl appendString:@"&per_page=75&text="];
     [keyurl appendString:keyword];  
