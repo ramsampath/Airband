@@ -59,6 +59,9 @@
     //
     //
     int coverflowDisplayType_;
+    //
+    //
+    NSMutableArray *images_;
 }
 
 @property (retain)    NSString *username_;
@@ -83,6 +86,7 @@
 @property (readwrite) NSInteger startpage_;
 @property (readonly)  imagecache* albumArtCache_;
 @property (readwrite) int coverflowdisplayType_;
+@property (readonly) NSMutableArray *images_;
 
 - (NSString*) createAccount:(NSDictionary*)userinfo;
 - (void) restoreState;

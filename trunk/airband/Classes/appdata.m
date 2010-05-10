@@ -47,6 +47,7 @@ static NSMutableArray* convertListToRequests( NSData* data );
 @synthesize autoLogin_;
 @synthesize albumArtCache_;
 @synthesize startpage_;
+@synthesize images_;
 
 // --------------------------------------------------------------------------
 // singelton
@@ -66,23 +67,24 @@ static NSMutableArray* convertListToRequests( NSData* data );
 {
 	if( self = [super init] )
 	{
-        username_          = nil;
-        password_          = nil;
-        sessionID_         = nil;
-        fullArtistList_    = nil;
-        albumInRequest_    = nil;
-        artwork_           = nil;
-        artworkdata_       = nil;
-        currentTracklist_  = nil;
-        albumList_         = nil;
-        trackList_         = nil;
-        currentTrackTitle_ = nil;
-        currentAlbum_      = nil;
-        currentArtist_     = nil;
-        bitRate_           = 56000;
-        lastVolume_		   = 1;
-        albumArtCache_     = [[imagecache alloc] retain];
-        autoLogin_         = true;
+        username_             = nil;
+        password_             = nil;
+        sessionID_            = nil;
+        fullArtistList_       = nil;
+        albumInRequest_       = nil;
+        artwork_              = nil;
+        artworkdata_          = nil;
+        currentTracklist_     = nil;
+        albumList_            = nil;
+        trackList_            = nil;
+        currentTrackTitle_    = nil;
+        currentAlbum_         = nil;
+        currentArtist_        = nil;
+        bitRate_              = 56000;
+        lastVolume_		      = 1;
+        albumArtCache_        = [[imagecache alloc] retain];
+        images_               = [[NSMutableArray arrayWithCapacity:50] retain];
+        autoLogin_            = true;
         coverflowDisplayType_ = 0; // type albumart
         // read the user settings.
         [self restoreState];
