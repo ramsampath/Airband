@@ -15,7 +15,7 @@
 
 #import "SimpleIO.h"
 
-static NSString *flickrRequestWithKeyword(NSString* keyword);
+static NSString *flickrRequestWithKeyword( NSString* keyword );
 static NSMutableArray* convertListToRequests( NSData* data );
 
 
@@ -23,7 +23,7 @@ static NSMutableArray* convertListToRequests( NSData* data );
 //
 
 // MyCreateBitmapContext: Source based on Apple Sample Code
-CGContextRef MyCreateBitmapContext (int pixelsWide, int pixelsHigh)
+CGContextRef MyCreateBitmapContext( int pixelsWide, int pixelsHigh )
 {
     CGContextRef    context = NULL;
     CGColorSpaceRef colorSpace;
@@ -41,7 +41,8 @@ CGContextRef MyCreateBitmapContext (int pixelsWide, int pixelsHigh)
         fprintf (stderr, "Memory not allocated!");
         return NULL;
     }
-    context = CGBitmapContextCreate (bitmapData, pixelsWide, pixelsHigh, 8, bitmapBytesPerRow, colorSpace, kCGImageAlphaPremultipliedLast);
+    context = CGBitmapContextCreate( bitmapData, pixelsWide, pixelsHigh, 8, bitmapBytesPerRow, 
+                                    colorSpace, kCGImageAlphaPremultipliedLast );
     if (context== NULL)
     {
         free (bitmapData);
@@ -472,15 +473,12 @@ CGContextRef MyCreateBitmapContext (int pixelsWide, int pixelsHigh)
 
 
 
-
-
-
-
 #pragma mark -
 #pragma mark Async Delegate
 
 
-- (void)viewDidUnload {
+- (void)viewDidUnload 
+{
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
 }
@@ -506,7 +504,9 @@ static void myProviderReleaseData (void *info,const void *data,size_t size)
 
 -(void) finishedWithData:(NSData*)data  userData:(id)user 
 {
-    @synchronized(self) {
+    AppData *app = [AppData get];
+    
+    @synchronized( self ) {
         NSString *str = user;
         
         if ([str compare:@"main"] == NSOrderedSame) {
@@ -527,20 +527,20 @@ static void myProviderReleaseData (void *info,const void *data,size_t size)
         else {
             NSData *d = [[NSData dataWithData:data] retain];
             CGDataProviderRef provider = CGDataProviderCreateWithData( d, [d bytes],[d length], 
-                                                                      myProviderReleaseData);
-            CGImageRef imageref = CGImageCreateWithJPEGDataProvider(provider, NULL, true, kCGRenderingIntentDefault);
+                                                                      myProviderReleaseData );
+            CGImageRef imageref = CGImageCreateWithJPEGDataProvider( provider, NULL, true, kCGRenderingIntentDefault );
             if( !imageref ) {
                 return;      
             }
             
-            CGImageRetain(imageref);
+            CGImageRetain( imageref );
             UIImage *img = [UIImage imageWithCGImage:imageref];
-            CGDataProviderRelease(provider);        
+            CGDataProviderRelease( provider );        
 
-            CGImageRelease(imageref);
+            CGImageRelease( imageref );
 
-            [flowCover resetItem:[images_ count]];
-            [images_ addObject:img];
+            [flowCover resetItem:[app.images_ count]];
+            [app.images_ addObject:img];
             
             [imgView setImage:img];
             
@@ -548,7 +548,6 @@ static void myProviderReleaseData (void *info,const void *data,size_t size)
             [flowCover draw];
         }
     }
-    printf("data\n");
 }
 
 
@@ -730,14 +729,11 @@ static void myProviderReleaseData (void *info,const void *data,size_t size)
     
     CGRect fframe = CGRectMake(0, 0, 480, 300);
     flowCover = [[FlowCoverView alloc] initWithFrame:fframe];
-
+    
     flowCover.delegate = self;
     self.landscapeView = flowCover;
     [self transformViewToLandscape];
-    images_ = [[NSMutableArray arrayWithCapacity:50] retain];
     
-    
-    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
     [[NSNotificationCenter defaultCenter] addObserver:self 
                                              selector:@selector(detectOrientation) 
@@ -922,8 +918,6 @@ static void myProviderReleaseData (void *info,const void *data,size_t size)
 
     [volume_ setValue:[app lastVolume_]];
     
-
-
     // setup timer.
     if( 1 )
     {
@@ -957,47 +951,13 @@ static void myProviderReleaseData (void *info,const void *data,size_t size)
 
 
 /*
-  [TODO] -- 
         flip the displayed view from the main view to the flipside(song list) view and vice-versa.
  */
 
 - (void) toggleView 
 {
-    /*
-    if (flipsideViewController == nil) {
-        [self loadFlipsideViewController];
-    }
-    
-    UIView *mainView = mainViewController.view;
-    UIView *flipsideView = flipsideViewController.view;
-    
-    [UIView beginAnimations:nil context:NULL];
-    [UIView setAnimationDuration:1];
-    [UIView setAnimationTransition:([mainView superview] ? UIViewAnimationTransitionFlipFromRight : UIViewAnimationTransitionFlipFromLeft) forView:self.view cache:YES];
-    
-    if ([mainView superview] != nil) {
-        [flipsideViewController viewWillAppear:YES];
-        [mainViewController viewWillDisappear:YES];
-        [mainView removeFromSuperview];
-        [infoButton removeFromSuperview];
-        [self.view addSubview:flipsideView];
-        [self.view insertSubview:flipsideNavigationBar aboveSubview:flipsideView];
-        [mainViewController viewDidDisappear:YES];
-        [flipsideViewController viewDidAppear:YES];
-        
-    } else {
-        [mainViewController viewWillAppear:YES];
-        [flipsideViewController viewWillDisappear:YES];
-        [flipsideView removeFromSuperview];
-        [flipsideNavigationBar removeFromSuperview];
-        [self.view addSubview:mainView];
-        [self.view insertSubview:infoButton aboveSubview:mainViewController.view];
-        [flipsideViewController viewDidDisappear:YES];
-        [mainViewController viewDidAppear:YES];
-    }
-    [UIView commitAnimations];
-     */
 }
+
 
 -(IBAction) flipToTracklistView:(id) sender
 {
@@ -1131,33 +1091,7 @@ static void myProviderReleaseData (void *info,const void *data,size_t size)
         //albumcoverview_.alpha = a;
         //[progbar2_ setProgress:a];
         progbar2_.value = a;
-        /*
-        if(a<1)
-        {
-            [UIView beginAnimations:@"thump" context:nil];
-            [UIView setAnimationDuration:0.5];
-            //busyimg_.alpha = a;
-            //busyimg_.transform = CGAffineTransformRotate( busyimg_.transform, a );            
-            albumcoverview_.transform = CGAffineTransformRotate( albumcoverview_.transform, a );
-            [UIView setAnimationRepeatAutoreverses:YES];            
-            [UIView commitAnimations];  
-        }
-        */
-        
-        //printf( "loaded: %f/%f\n", [app trackFileSize], app.currentTrackFileSize_ );
     }
-    
-    
-    /*
-    if( 0 ){
-        [UIView beginAnimations:@"thump" context:nil];
-        [UIView setAnimationDuration:2.9];  
-        self.transform = CGAffineTransformMakeRotation(.5-drand48());
-        self.alpha = 1-.1*drand48();
-        [UIView setAnimationRepeatAutoreverses:YES];            
-        [UIView commitAnimations];  
-    }
-     */
 }
 
 
@@ -1310,6 +1244,13 @@ static void myProviderReleaseData (void *info,const void *data,size_t size)
 
 -(void) detectOrientation 
 {    
+    printf("detect orientation");
+    [self performSelector:@selector(updateLandscapeView) withObject:nil afterDelay:0];
+}
+
+- (void)updateLandscapeView
+{
+    printf("update\n");
     if (([[UIDevice currentDevice] orientation] == UIDeviceOrientationLandscapeLeft) || 
         ([[UIDevice currentDevice] orientation] == UIDeviceOrientationLandscapeRight)) {
         printf("landscape\n");
@@ -1321,6 +1262,7 @@ static void myProviderReleaseData (void *info,const void *data,size_t size)
     }   
 }
 
+/*
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
@@ -1360,6 +1302,7 @@ static void myProviderReleaseData (void *info,const void *data,size_t size)
         self.view = landscapeView;
     }
 }
+*/
 
 - (void)didReceiveMemoryWarning 
 {
@@ -1403,45 +1346,6 @@ static void myProviderReleaseData (void *info,const void *data,size_t size)
 
 
 
-/**
- UIActionSheet
- 
-- (void)loadFlipsideViewController {
-    PreferencesViewController *viewController = [[PreferencesViewController alloc] initWithNibName:@"PreferencesView" bundle:nil];
-    self.preferencesViewController = viewController;
-    preferencesViewController.rootViewController = self;
-    [viewController release];
-}
-
-
-- (IBAction)toggleView:(id)sender { 
-    // This method is called when the info or Done button is pressed.
-    // It flips the displayed view from the main view to the flipside view and vice-versa.
-    
-    if (preferencesViewController == nil) {
-        [self loadFlipsideViewController];
-    }
-    
-    UIView *mainView = metronomeViewController.view;
-    
-    [UIView beginAnimations:nil context:NULL];
-    [UIView setAnimationDuration:1];
-    [UIView setAnimationTransition:([mainView superview] ? UIViewAnimationTransitionFlipFromLeft : UIViewAnimationTransitionFlipFromRight) forView:self.view cache:YES];
-    
-    UIView *flipsideView = preferencesViewController.view;
-    if ([mainView superview] != nil) {
-        [mainView removeFromSuperview];
-        [self.view addSubview:flipsideView];
-    } else {
-        [flipsideView removeFromSuperview];
-        [self.view addSubview:mainView];
-    }
-    [UIView commitAnimations];
-}
-
-**/
-
-
 /************************************************************************/
 /*																		*/
 /*	FlowCover Callbacks													*/
@@ -1455,17 +1359,20 @@ static void myProviderReleaseData (void *info,const void *data,size_t size)
 
 - (UIImage *)flowCover:(FlowCoverView *)view cover:(int)index
 {	
-	if (index >= [images_ count]) {
+    AppData *app = [AppData get];
+    
+	if (index >= [app.images_ count]) {
 		return [UIImage imageNamed:@"y.png"];
 	}
 	
-	UIImage *img = [images_ objectAtIndex:index];    
+	UIImage *img = [app.images_ objectAtIndex:index];    
 	if (!img) {
 		return [UIImage imageNamed:@"z.png"];
 	}
 	
 	return img;
 }
+
 
 - (void)flowCover:(FlowCoverView *)view didSelect:(int)image
 {

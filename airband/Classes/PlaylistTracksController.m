@@ -283,7 +283,7 @@
 - (void) nowPlaying:(id) sender
 {
     NowPlayingController *nowplayingVC = [[NowPlayingController alloc] init];    
-	nowplayingVC.hidesBottomBarWhenPushed = TRUE;
+    nowplayingVC.hidesBottomBarWhenPushed = TRUE;
 
     [nowplayingVC setupnavigationitems:self.navigationItem 
                                 navBar:[self navigationController].navigationBar
@@ -317,13 +317,12 @@
     if (row == NSNotFound) 
 		return;
 
-	AppData *app = [AppData get];
-	
+    AppData *app = [AppData get];
+    [app.images_ removeAllObjects];
+
 	if( artist_ ) 
 	{
-		NSDictionary *d = [app.albumList_ objectAtIndex:[indexPath row]];
-
-
+        NSDictionary *d = [app.albumList_ objectAtIndex:[indexPath row]];
         
         NowPlayingController *nowplayingVC = [[NowPlayingController alloc] init];			
 		
@@ -333,7 +332,7 @@
         
            
         [self navigationController].navigationBarHidden = FALSE;
- 		[[self navigationController] pushViewController:nowplayingVC animated:YES];	
+        [[self navigationController] pushViewController:nowplayingVC animated:YES];	
         //
         // reset the application artwork
         [nowplayingVC setArtwork:nil];
@@ -373,9 +372,9 @@
         
         [self navigationController].navigationBarHidden = FALSE;
 
-		//[app playTrack:d];
+        //[app playTrack:d];
 
-		[[self navigationController] pushViewController:nowplayingVC animated:YES];		
+        [[self navigationController] pushViewController:nowplayingVC animated:YES];		
         [nowplayingVC setArtwork:nil];
 
         
@@ -398,7 +397,7 @@
         
 		//[app playTrack:d];
 
-		[[self navigationController] pushViewController:nowplayingVC animated:YES];		
+        [[self navigationController] pushViewController:nowplayingVC animated:YES];		
         [nowplayingVC setArtwork:nil];
 
         [nowplayingVC release];

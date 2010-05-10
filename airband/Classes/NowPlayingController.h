@@ -109,8 +109,7 @@
     FlowCoverView *flowCover;
 	
     UIImageView    *imgView;
-    NSMutableArray *images_;
-    NSMutableArray *artworkimages_;
+
 	
     NSMutableArray *searchList_;
 }
