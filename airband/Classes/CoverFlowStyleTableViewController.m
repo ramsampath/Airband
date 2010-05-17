@@ -1,9 +1,9 @@
 
 #import "appdata.h"
-#import "StartPageTableViewController.h"
+#import "CoverFlowStyleTableViewController.h"
 
 
-@implementation StartPageTableViewController
+@implementation CoverFlowStyleTableViewController
 @synthesize toolbar;
 @synthesize pages;
 @synthesize selectedArray;
@@ -30,7 +30,7 @@
     UIColor *viewbgcolor                = kBgColor;
 	
     UIView *mainview                    = [[UIView alloc] initWithFrame:CGRectMake( 0.0, 0.0, 320.0, 480.0 )];
-    mainview.frame                      = CGRectMake(0.0, 0.0, 320.0, 480.0);
+    mainview.frame                      = CGRectMake( 0.0, 0.0, 320.0, 480.0 );
     mainview.alpha                      = 1.000;
 	//mainview.autoresizingMask           = UIViewAutoresizingFlexibleTopMargin;
     //
@@ -75,7 +75,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
 {
-    return 3;
+    return 2;
 }
 
 - (NSInteger)
@@ -89,11 +89,12 @@ numberOfSectionsInTableView:(UITableView *)tableView
 {
     NSInteger row = [indexPath row];
 
-    for(NSInteger i = 0; i < 3; i++) {
+    for(NSInteger i = 0; i < 2; i++) {
         checkboxArray[i] = FALSE;
     }
+    
     AppData *app = [AppData get];
-    app.startpage_ = row;
+    app.coverflowDisplayType_ = row;
     checkboxArray[row] = TRUE;
     [tableV reloadData];
 
@@ -103,8 +104,7 @@ numberOfSectionsInTableView:(UITableView *)tableView
 {    
 	static NSString *CellIdentifier = @"Cell";
 	UITableViewCell *cell = [aTableView dequeueReusableCellWithIdentifier:CellIdentifier];
-	if (cell == nil)
-	{
+	if (cell == nil) {
 		//
 		// Create the cell.
 		//
@@ -123,8 +123,8 @@ numberOfSectionsInTableView:(UITableView *)tableView
     cell.textLabel.textColor = [UIColor whiteColor];
     AppData *app = [AppData get];
 
-    for(NSInteger i = 0; i < 3; i++) {
-        if( i == app.startpage_ )
+    for( NSInteger i = 0; i < 2; i++ ) {
+        if( i == app.coverflowDisplayType_ )
             checkboxArray[i] = TRUE;
         else {
             checkboxArray[i] = FALSE;
@@ -134,19 +134,11 @@ numberOfSectionsInTableView:(UITableView *)tableView
 		cell.imageView.image = [UIImage imageNamed:@"checked.png"];
     else
         cell.imageView.image = [UIImage imageNamed:@"unchecked.png"];
-    if (row  == 0)
-	{
-        cell.textLabel.text = [NSString stringWithFormat:@"Artists", [indexPath row]];
-
+    if (row  == 0) {
+        cell.textLabel.text = [NSString stringWithFormat:@"Album Art", [indexPath row]];
 	}
-	else if (row == 1)
-	{
-        cell.textLabel.text = [NSString stringWithFormat:@"Albums", [indexPath row]];
-
-	}
-	else
-	{
-        cell.textLabel.text = [NSString stringWithFormat:@"Playlists", [indexPath row]];
+	else if (row == 1) {
+        cell.textLabel.text = [NSString stringWithFormat:@"Flickr Images", [indexPath row]];
 	}
 
 	

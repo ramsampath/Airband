@@ -11,12 +11,13 @@
 #import "appdata.h"
 #import "airbandAppDelegate.h"
 #import "StartPageTableViewController.h"
-
+#import "CoverFlowStyleTableViewController.h"
 
 @implementation SettingsController
 @synthesize startscreen_;
 @synthesize table_;
 @synthesize table2_;
+@synthesize table3_;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil 
 {
@@ -149,7 +150,7 @@
 		return nil;
 	}
 	
-	UILabel *label = [[UILabel alloc] initWithFrame:labelframe];
+    UILabel *label = [[UILabel alloc] initWithFrame:labelframe];
     label.adjustsFontSizeToFitWidth = YES;
     label.lineBreakMode = UILineBreakModeTailTruncation;
     label.multipleTouchEnabled = NO;
@@ -422,7 +423,7 @@
     tableTitle.textAlignment   = UITextAlignmentCenter;
     tableTitle.text            = @"Server Settings";
 	
-    table_.tableHeaderView = tableTitle;
+    table_.tableHeaderView     = tableTitle;
 	
     CGRect usernameframe     = CGRectMake( 20.0, 6.0, 214.0, 31.0 );
     CGRect usernametextframe = CGRectMake( 120.0, 6.0, 214.0, 31.0 );
@@ -453,29 +454,37 @@
     alLabel.textColor              = [UIColor whiteColor];
     alLabel.backgroundColor        = [UIColor clearColor];
     
-    table2_ = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];
-    table2_.delegate   = self;
-    table2_.dataSource = self;
-    table2_.backgroundColor = [UIColor clearColor];    
-    table2_.frame = CGRectMake(0, 280, 320, 60);
+    table2_                        = [[UITableView alloc] 
+                                      initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];
+    table2_.delegate               = self;
+    table2_.dataSource             = self;
+    table2_.backgroundColor        = [UIColor clearColor];    
+    table2_.frame                  = CGRectMake( 0, 280, 320, 60 );
     
-	UIView *mainview               = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 367.0)];
-	mainview.frame                 = CGRectMake(0.0, 0.0, 320.0, 367.0);
-	mainview.alpha                 = 1.000;
-	mainview.autoresizingMask      = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
+    table3_                        = [[UITableView alloc] 
+                                      initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];
+    table3_.delegate               = self;
+    table3_.dataSource             = self;
+    table3_.backgroundColor        = [UIColor clearColor];    
+    table3_.frame                  = CGRectMake( 0, 340, 320, 60 );
+    
+    UIScrollView *mainview         = [[UIScrollView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 480.0)];
+    mainview.frame                 = CGRectMake(0.0, 0.0, 320.0, 480.0);
+    mainview.alpha                 = 1.000;
+    mainview.autoresizingMask      = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
 	//mainview.backgroundColor       = [UIColor colorWithRed:0.549 green:0.549 blue:0.549 alpha:1.000];
     mainview.backgroundColor       = [UIColor colorWithPatternImage:[UIImage imageNamed:@"LogoBkgrnd.png"]];
 
-	mainview.clearsContextBeforeDrawing = YES;
-	mainview.clipsToBounds              = NO;
-	mainview.contentMode                = UIViewContentModeScaleToFill;
+    mainview.clearsContextBeforeDrawing = YES;
+    mainview.clipsToBounds              = NO;
+    mainview.contentMode                = UIViewContentModeScaleToFill;
 
-	mainview.hidden                 = NO;
-	mainview.multipleTouchEnabled   = NO;
-	mainview.opaque                 = YES;
-	mainview.tag                    = 0;
-	mainview.userInteractionEnabled = YES;
-	
+    mainview.hidden                 = NO;
+    mainview.multipleTouchEnabled   = NO;
+    mainview.opaque                 = YES;
+    mainview.tag                    = 0;
+    mainview.userInteractionEnabled = YES;
+    mainview.contentSize = mainview.frame.size;
     //[tableTitle release];
 	//self.view = table_;
     [table_ addSubview:usernamecell_];
@@ -483,6 +492,7 @@
     
     [mainview addSubview:table_];
     [mainview addSubview:table2_];
+    [mainview addSubview:table3_];
 	//[mainview addSubview:clearButton];
 	//[mainview addSubview:loginButton];
 	//[mainview addSubview:createAccountButton];
@@ -493,7 +503,7 @@
     [mainview addSubview:alLabel];
 	
 	
-	self.view = mainview;
+    self.view = mainview;
 	
 	//[sbrButtons release];
 
@@ -647,11 +657,14 @@
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell 
 forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
     cell.backgroundColor  = [UIColor whiteColor];
     cell.textLabel.textColor = [UIColor blackColor];
     cell.textLabel.adjustsFontSizeToFitWidth = YES;
-    cell.textLabel.text = @"Start Page";
+    if( tableView == self.table2_ ) 
+        cell.textLabel.text = @"Start Page";
+    else if( tableView == self.table3_ ) 
+        cell.textLabel.text = @"Cover Flow Style";
+    
     return;
 }
 
@@ -674,17 +687,30 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
         }
 	}
     else if( tableView == self.table2_ ) {
-        NSString *cellIdentifier = @"StartPageCell";
+        NSString *cellIdentifier = @"CoverFlowStylePageCell";
         
         UITableViewCell *cell = (UITableViewCell *)[tableView dequeueReusableCellWithIdentifier:cellIdentifier];
         if( cell == nil ) {
-            CGRect startpageframe     = CGRectMake( 20.0, 0.0, 214.0, 20.0 );            
-            startpagecell_ = [[UITableViewCell alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 20.0) 
+            CGRect startpageframe         = CGRectMake( 20.0, 0.0, 214.0, 20.0 );            
+            startpagecell_                = [[UITableViewCell alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 20.0) 
                                                     reuseIdentifier:(nil)];
-            startpagecell_.accessoryType    = UITableViewCellAccessoryDisclosureIndicator;
-            startpagecell_.frame = startpageframe;
+            startpagecell_.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
+            startpagecell_.frame          = startpageframe;
         }
         return startpagecell_;
+    }
+    else if( tableView == self.table3_ ) {
+        NSString *cellIdentifier = @"CoverFlowStylePageCell";
+        
+        UITableViewCell *cell = (UITableViewCell *)[tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+        if( cell == nil ) {
+            CGRect coverflowstyleframe         = CGRectMake( 20.0, 0.0, 214.0, 20.0 );            
+            coverflowstylecell_                = [[UITableViewCell alloc] initWithFrame:coverflowstyleframe
+                                                                   reuseIdentifier:(nil)];
+            coverflowstylecell_.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
+            coverflowstylecell_.frame          = coverflowstyleframe;
+        }
+        return coverflowstylecell_;        
     }
 	return nil;
 }
@@ -699,7 +725,14 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
         
         [[self navigationController] pushViewController:sp animated:YES];
         [sp release];
+    }
+    if( tableView == self.table3_ ) {
+        CoverFlowStyleTableViewController *sp = [[CoverFlowStyleTableViewController alloc] init];
         
+        [self navigationController].navigationBarHidden = FALSE;
+        
+        [[self navigationController] pushViewController:sp animated:YES];
+        [sp release];
     }
 }
 

@@ -800,7 +800,22 @@ static void myProviderReleaseData (void *info,const void *data,size_t size)
                                    forView:albumcovertracksbview_ cache:YES];
             [albumcovertracksb_ setBackgroundImage:image forState:UIControlStateNormal];
             [UIView commitAnimations];
-        }        
+        }
+        //
+        // if the cover flow display type is album art add this
+        // album art
+        //
+        AppData *app = [AppData get];
+        if( app.coverflowDisplayType_ == 0 ) {
+            printf("app image count %d\n", [app.images_ count]);
+            [flowCover resetItem:[app.images_ count]];
+            [app.images_ addObject:image];
+            [imgView setImage:image];
+            [flowCover setNeedsDisplay];
+            [flowCover draw];
+             
+        }
+        
     } else {
         albumcoverview_.image = emptyalbumartworkimage_;
         AppData *app = [AppData get];
@@ -818,13 +833,11 @@ static void myProviderReleaseData (void *info,const void *data,size_t size)
     //
     // save the artwork in the image cache
     //
-    [app.albumArtCache_.cache_ setObject:img forKey:app.currentAlbum_];
-
+    //[app.albumArtCache_.cache_ setObject:img forKey:app.currentAlbum_];
+    
     tlabel_.text  = app.currentTrackTitle_;
     alabel_.text  = app.currentArtist_;
     allabel_.text = app.currentAlbum_;
-    
-    
 }
 
 
@@ -1109,17 +1122,21 @@ static void myProviderReleaseData (void *info,const void *data,size_t size)
     // 
     // create flickr album art
     //
-    NSString *search = [NSString stringWithString:album];
-    NSString *req;
-    if( search != nil ) {
-        req = flickrRequestWithKeyword( search );
-        ConnectionInfo *info = [[ConnectionInfo alloc] init];
-        info.address_ = req;
-        info.delegate_ = self;
-        info.userdata_ = @"main";
-        
-        [[SimpleIO singelton] request:info];    
-        [info release];
+    AppData *app = [AppData get];
+    
+    if( app.coverflowDisplayType_ == 1 ) {
+        NSString *search = [NSString stringWithString:album];
+        NSString *req;
+        if( search != nil ) {
+            req = flickrRequestWithKeyword( search );
+            ConnectionInfo *info = [[ConnectionInfo alloc] init];
+            info.address_ = req;
+            info.delegate_ = self;
+            info.userdata_ = @"main";
+            
+            [[SimpleIO singelton] request:info];    
+            [info release];
+        }
     }
     
     return;
@@ -1250,14 +1267,11 @@ static void myProviderReleaseData (void *info,const void *data,size_t size)
 
 - (void)updateLandscapeView
 {
-    printf("update\n");
     if (([[UIDevice currentDevice] orientation] == UIDeviceOrientationLandscapeLeft) || 
         ([[UIDevice currentDevice] orientation] == UIDeviceOrientationLandscapeRight)) {
-        printf("landscape\n");
         self.view = self.landscapeView;
         
     } else if ([[UIDevice currentDevice] orientation] == UIDeviceOrientationPortrait) {
-        printf("portrait\n");
         self.view = self.portraitView;        
     }   
 }
@@ -1361,6 +1375,7 @@ static void myProviderReleaseData (void *info,const void *data,size_t size)
 {	
     AppData *app = [AppData get];
     
+    printf("index: %d\n", index);
 	if (index >= [app.images_ count]) {
 		return [UIImage imageNamed:@"y.png"];
 	}
