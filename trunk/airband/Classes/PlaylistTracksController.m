@@ -318,7 +318,9 @@
 		return;
 
     AppData *app = [AppData get];
-    [app.images_ removeAllObjects];
+    
+    if( app.coverflowDisplayType_ == 1 )
+        [app.images_ removeAllObjects];
 
 	if( artist_ ) 
 	{

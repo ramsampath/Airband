@@ -87,6 +87,7 @@
 @property (readonly)  imagecache* albumArtCache_;
 @property (readwrite) int coverflowdisplayType_;
 @property (readonly) NSMutableArray *images_;
+@property (readwrite) int coverflowDisplayType_;
 
 - (NSString*) createAccount:(NSDictionary*)userinfo;
 - (void) restoreState;

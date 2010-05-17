@@ -8,7 +8,7 @@
 #define kLabelIndentedRect	CGRectMake(40.0, 12.0, 275.0, 20.0)
 #define kLabelRect			CGRectMake(15.0, 12.0, 275.0, 20.0)
 
-@interface StartPageTableViewController : 	
+@interface CoverFlowStyleTableViewController : 	
 UIViewController< UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UISearchBarDelegate >
 {
     UIToolbar            *toolbar;

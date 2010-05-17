@@ -46,7 +46,6 @@
 		2179A83C0FCF3FEE00EF78E7 /* AsyncImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2179A83B0FCF3FEE00EF78E7 /* AsyncImageView.m */; };
 		2179A9E90FCF776200EF78E7 /* music_note_gray.png in Resources */ = {isa = PBXBuildFile; fileRef = 2179A9E80FCF776200EF78E7 /* music_note_gray.png */; };
 		217EE52E0FA6F95000C06684 /* LogoBkgrnd.png in Resources */ = {isa = PBXBuildFile; fileRef = 217EE52D0FA6F95000C06684 /* LogoBkgrnd.png */; };
-		21805E9D1189FF9D00D48D1E /* CoverFlowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 21805E991189FF9D00D48D1E /* CoverFlowView.m */; };
 		21836A38118F5AE5005F6584 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 21836A37118F5AE5005F6584 /* OpenGLES.framework */; };
 		21836A3C118F5B07005F6584 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 21836A3B118F5B07005F6584 /* CoreGraphics.framework */; };
 		21836A3E118F5B07005F6584 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 21836A3D118F5B07005F6584 /* Foundation.framework */; };
@@ -56,6 +55,7 @@
 		21836B27118F5B68005F6584 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 21836B26118F5B68005F6584 /* AudioToolbox.framework */; };
 		218776010F899B9C005809E3 /* checked.png in Resources */ = {isa = PBXBuildFile; fileRef = 218776000F899B9C005809E3 /* checked.png */; };
 		218776030F899BB3005809E3 /* unchecked.png in Resources */ = {isa = PBXBuildFile; fileRef = 218776020F899BB3005809E3 /* unchecked.png */; };
+		2187E04F11A0FE3600AFAAEA /* CoverFlowStyleTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2187E04E11A0FE3600AFAAEA /* CoverFlowStyleTableViewController.m */; };
 		2190DFCF0FC5375F003D0B96 /* track_info_withbg.png in Resources */ = {isa = PBXBuildFile; fileRef = 2190DFCE0FC5375F003D0B96 /* track_info_withbg.png */; };
 		21A66D930FCBC9EB00B26158 /* LoadingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 21A66D910FCBC9EB00B26158 /* LoadingView.m */; };
 		21A7852C0F7E84FC0053E9AD /* lastfmappdata.m in Sources */ = {isa = PBXBuildFile; fileRef = 21A7852B0F7E84FC0053E9AD /* lastfmappdata.m */; };
@@ -158,8 +158,6 @@
 		2179A83B0FCF3FEE00EF78E7 /* AsyncImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AsyncImageView.m; sourceTree = "<group>"; };
 		2179A9E80FCF776200EF78E7 /* music_note_gray.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = music_note_gray.png; sourceTree = "<group>"; };
 		217EE52D0FA6F95000C06684 /* LogoBkgrnd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LogoBkgrnd.png; sourceTree = "<group>"; };
-		21805E981189FF9D00D48D1E /* CoverFlowView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoverFlowView.h; sourceTree = "<group>"; };
-		21805E991189FF9D00D48D1E /* CoverFlowView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoverFlowView.m; sourceTree = "<group>"; };
 		21805E9C1189FF9D00D48D1E /* UICoverFlowLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UICoverFlowLayer.h; sourceTree = "<group>"; };
 		21836A37118F5AE5005F6584 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		21836A3B118F5B07005F6584 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -170,6 +168,8 @@
 		21836B26118F5B68005F6584 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		218776000F899B9C005809E3 /* checked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = checked.png; sourceTree = "<group>"; };
 		218776020F899BB3005809E3 /* unchecked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = unchecked.png; sourceTree = "<group>"; };
+		2187E04D11A0FE3600AFAAEA /* CoverFlowStyleTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoverFlowStyleTableViewController.h; sourceTree = "<group>"; };
+		2187E04E11A0FE3600AFAAEA /* CoverFlowStyleTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoverFlowStyleTableViewController.m; sourceTree = "<group>"; };
 		2190DFCE0FC5375F003D0B96 /* track_info_withbg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = track_info_withbg.png; sourceTree = "<group>"; };
 		21A66D910FCBC9EB00B26158 /* LoadingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoadingView.m; sourceTree = "<group>"; };
 		21A66D920FCBC9EB00B26158 /* LoadingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoadingView.h; sourceTree = "<group>"; };
@@ -421,13 +421,13 @@
 		7D8DF9510E6A4F4500EA4BB8 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				2187E04D11A0FE3600AFAAEA /* CoverFlowStyleTableViewController.h */,
+				2187E04E11A0FE3600AFAAEA /* CoverFlowStyleTableViewController.m */,
 				21F36DCC118E653900C7851F /* DataCache.h */,
 				21F36DCD118E653900C7851F /* DataCache.m */,
 				21F36DC9118E653100C7851F /* FlowCoverView.h */,
 				21F36DCA118E653100C7851F /* FlowCoverView.m */,
 				21ED9757118A3D5C000BCEEC /* UICoverFlowLayer.h */,
-				21805E981189FF9D00D48D1E /* CoverFlowView.h */,
-				21805E991189FF9D00D48D1E /* CoverFlowView.m */,
 				21805E9C1189FF9D00D48D1E /* UICoverFlowLayer.h */,
 				211EDFFF11743C3F00F69A23 /* StartPageTableViewController.h */,
 				211EE00011743C3F00F69A23 /* StartPageTableViewController.m */,
@@ -628,10 +628,10 @@
 				213AD74C0FCBE55B0024081C /* imgcache.m in Sources */,
 				2179A83C0FCF3FEE00EF78E7 /* AsyncImageView.m in Sources */,
 				211EE00111743C3F00F69A23 /* StartPageTableViewController.m in Sources */,
-				21805E9D1189FF9D00D48D1E /* CoverFlowView.m in Sources */,
 				211B25BC118E193900C0D8A5 /* SimpleIO.m in Sources */,
 				21F36DCB118E653100C7851F /* FlowCoverView.m in Sources */,
 				21F36DCE118E653900C7851F /* DataCache.m in Sources */,
+				2187E04F11A0FE3600AFAAEA /* CoverFlowStyleTableViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

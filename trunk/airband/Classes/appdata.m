@@ -48,6 +48,7 @@ static NSMutableArray* convertListToRequests( NSData* data );
 @synthesize albumArtCache_;
 @synthesize startpage_;
 @synthesize images_;
+@synthesize coverflowDisplayType_;
 
 // --------------------------------------------------------------------------
 // singelton
@@ -761,6 +762,7 @@ static NSMutableArray* convertListToRequests( NSData* data );
     lastVolume_ = [[[d objectForKey:@"lastVolume"] retain] floatValue];
     bitRate_    = [[[d objectForKey:@"bitRate"] retain] intValue];
     autoLogin_  = [[[d objectForKey:@"autoLogin"] retain] boolValue];
+    coverflowDisplayType_ = [[[d objectForKey:@"coverflowstyle"] retain] intValue];
     
     
     //
@@ -773,12 +775,15 @@ static NSMutableArray* convertListToRequests( NSData* data );
 	BOOL autologinValue = [defaults boolForKey:@"autologinkey"];
 	NSInteger streamingRateValue = [defaults integerForKey:@"streamingratekey"];
 	NSInteger startpageValue = [defaults integerForKey:@"startpagekey"];
-	
+	NSInteger coverflowstyle = [defaults integerForKey:@"coverflowstyle"];
+    
     username_ = loginValue;
     password_ = passwordValue;
     [self setStreamingRate:streamingRateValue];
     [self setAutoLogin_:autologinValue];
     [self setStartpage_:startpageValue];
+    [self setCoverflowDisplayType_:coverflowstyle];
+    return;
 }
 
 
@@ -794,6 +799,7 @@ static NSMutableArray* convertListToRequests( NSData* data );
     [d setValue:[NSString stringWithFormat:@"%f", lastVolume_] forKey:@"lastVolume"];
     [d setValue:[NSString stringWithFormat:@"%d", bitRate_] forKey:@"bitRate"];
     [d setValue:[NSString stringWithFormat:@"%d", autoLogin_] forKey:@"autoLogin"];
+    [d setValue:[NSString stringWithFormat:@"%d", coverflowDisplayType_] forKey:@"coverflowstyle"];
         
     [self writeApplicationPlist:d toFile:@"airbandPlist"];
 
@@ -807,6 +813,7 @@ static NSMutableArray* convertListToRequests( NSData* data );
     [defaults setInteger:startpage_ forKey:@"startpagekey"];
     [defaults setValue:username_ forKey:@"usernamekey"];
     [defaults setValue:password_ forKey:@"passwordkey"];
+    [defaults setValue:coverflowDisplayType_ forKey:@"coverflowstyle"];
     
     /*
     NSDictionary *appPrerfs = [NSDictionary dictionaryWithObjectsAndKeys:
