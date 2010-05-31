@@ -404,7 +404,7 @@
 // Implement loadView to create a view hierarchy programmatically, without using a nib.
 - (void)loadView
 {
-	self.title = NSLocalizedString(@"Settings", @"");
+    self.title = NSLocalizedString(@"Settings", @"");
 
     table_ = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];
     table_.delegate        = self;
@@ -421,7 +421,7 @@
     tableTitle.opaque          = YES;
     tableTitle.font            = [UIFont boldSystemFontOfSize:16];
     tableTitle.textAlignment   = UITextAlignmentCenter;
-    tableTitle.text            = @"Server Settings";
+    tableTitle.text            = @"Settings";
 	
     table_.tableHeaderView     = tableTitle;
 	
@@ -460,6 +460,7 @@
     table2_.dataSource             = self;
     table2_.backgroundColor        = [UIColor clearColor];    
     table2_.frame                  = CGRectMake( 0, 280, 320, 60 );
+    table2_.scrollEnabled          = FALSE;
     
     table3_                        = [[UITableView alloc] 
                                       initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];
@@ -467,6 +468,7 @@
     table3_.dataSource             = self;
     table3_.backgroundColor        = [UIColor clearColor];    
     table3_.frame                  = CGRectMake( 0, 340, 320, 60 );
+    table3_.scrollEnabled          = FALSE;
     
     UIScrollView *mainview         = [[UIScrollView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 480.0)];
     mainview.frame                 = CGRectMake(0.0, 0.0, 320.0, 480.0);
@@ -509,6 +511,11 @@
 
 }
 
+- (void) viewWillAppear:(BOOL)animated 
+{
+    [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:YES animated:animated];
+}
 
 #if TARGET_IPHONE_SIMULATOR_FEH
 + (BOOL)addKeychainItem:(NSString *)keychainItemName 
@@ -663,7 +670,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
     if( tableView == self.table2_ ) 
         cell.textLabel.text = @"Start Page";
     else if( tableView == self.table3_ ) 
-        cell.textLabel.text = @"Cover Flow Style";
+        cell.textLabel.text = @"Album Art Style";
     
     return;
 }
@@ -718,6 +725,8 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+
     if( tableView == self.table2_ ) {
         StartPageTableViewController *sp = [[StartPageTableViewController alloc] init];
         

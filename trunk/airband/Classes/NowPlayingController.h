@@ -112,6 +112,9 @@
 
 	
     NSMutableArray *searchList_;
+    
+    //
+    int albumartdisplaycounter_;
 }
 
 
@@ -148,6 +151,7 @@
 @property (nonatomic, retain) IBOutlet FlowCoverView  *flowCover;
 @property (nonatomic, retain) IBOutlet UIImageView    *imgView;
 @property (nonatomic, readonly)        NSMutableArray *searchList_;
+@property (readwrite)                  int albumartdisplaycounter_;
 
 
 
