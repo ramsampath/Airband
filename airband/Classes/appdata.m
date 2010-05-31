@@ -49,6 +49,7 @@ static NSMutableArray* convertListToRequests( NSData* data );
 @synthesize startpage_;
 @synthesize images_;
 @synthesize coverflowDisplayType_;
+@synthesize albumartimages_;
 
 // --------------------------------------------------------------------------
 // singelton
@@ -86,6 +87,7 @@ static NSMutableArray* convertListToRequests( NSData* data );
         albumArtCache_        = [[imagecache alloc] retain];
         images_               = [[NSMutableArray arrayWithCapacity:50] retain];
         autoLogin_            = true;
+        albumartimages_       = [[NSMutableArray arrayWithCapacity:50] retain];
         coverflowDisplayType_ = 0; // type albumart
         // read the user settings.
         [self restoreState];
@@ -115,6 +117,7 @@ static NSMutableArray* convertListToRequests( NSData* data );
     [currentArtist_ release];
     [currentAlbum_ release];
     [albumArtCache_ release];
+    [albumartimages_ release];
     [super dealloc];
 }
 
@@ -762,7 +765,7 @@ static NSMutableArray* convertListToRequests( NSData* data );
     lastVolume_ = [[[d objectForKey:@"lastVolume"] retain] floatValue];
     bitRate_    = [[[d objectForKey:@"bitRate"] retain] intValue];
     autoLogin_  = [[[d objectForKey:@"autoLogin"] retain] boolValue];
-    coverflowDisplayType_ = [[[d objectForKey:@"coverflowstyle"] retain] intValue];
+    coverflowDisplayType_ = [[[d objectForKey:@"albumartstyle"] retain] intValue];
     
     
     //
@@ -775,7 +778,7 @@ static NSMutableArray* convertListToRequests( NSData* data );
 	BOOL autologinValue = [defaults boolForKey:@"autologinkey"];
 	NSInteger streamingRateValue = [defaults integerForKey:@"streamingratekey"];
 	NSInteger startpageValue = [defaults integerForKey:@"startpagekey"];
-	NSInteger coverflowstyle = [defaults integerForKey:@"coverflowstyle"];
+	NSInteger coverflowstyle = [defaults integerForKey:@"albumartstyle"];
     
     username_ = loginValue;
     password_ = passwordValue;

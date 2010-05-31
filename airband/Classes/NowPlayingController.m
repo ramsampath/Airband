@@ -6,6 +6,8 @@
 //  Copyright 2008 Elliptic. All rights reserved.
 //
 
+#import <QuartzCore/CAAnimation.h>
+
 
 #import "NowPlayingController.h"
 #import "PlaylistTracksController.h"
@@ -227,10 +229,6 @@ CGContextRef MyCreateBitmapContext( int pixelsWide, int pixelsHigh )
 
 @implementation NowPlayingController
 
-// *********************************************
-// Coverflow View Controller
-//
-
 
 @synthesize portraitView;
 @synthesize landscapeView;
@@ -256,10 +254,10 @@ CGContextRef MyCreateBitmapContext( int pixelsWide, int pixelsHigh )
     if (self = [super init]) {
         self.hidesBottomBarWhenPushed = TRUE;
     }
+    albumartdisplaycounter_ = 0;
     
     return self;
 }
-
 
 
 /*
@@ -520,7 +518,6 @@ static void myProviderReleaseData (void *info,const void *data,size_t size)
                     info.userdata_ = @"picture";   // +s
                     [[SimpleIO singelton] request:info];    
                     [info release];
-                    
                 }
             }
         }
@@ -538,7 +535,8 @@ static void myProviderReleaseData (void *info,const void *data,size_t size)
             CGDataProviderRelease( provider );        
 
             CGImageRelease( imageref );
-
+            [app.albumartimages_ addObject:img];
+            /*
             [flowCover resetItem:[app.images_ count]];
             [app.images_ addObject:img];
             
@@ -546,6 +544,7 @@ static void myProviderReleaseData (void *info,const void *data,size_t size)
             
             [flowCover setNeedsDisplay];
             [flowCover draw];
+             */
         }
     }
 }
@@ -727,7 +726,7 @@ static void myProviderReleaseData (void *info,const void *data,size_t size)
     self.view = mainview;
     self.portraitView = mainview;
     
-    CGRect fframe = CGRectMake(0, 0, 480, 300);
+    CGRect fframe = CGRectMake( 0, 0, 480, 300 );
     flowCover = [[FlowCoverView alloc] initWithFrame:fframe];
     
     flowCover.delegate = self;
@@ -775,8 +774,43 @@ static void myProviderReleaseData (void *info,const void *data,size_t size)
 }
 
 
+- (void)albumArtChange:(NSTimer*)theTimer
+{
+    AppData *app = [AppData get];
+    
+    NSInteger n = [app.albumartimages_ count];
+
+    if( flipsideview_ == true && n != 0 ) {
+
+        [UIView beginAnimations:nil context:nil];
+        [UIView setAnimationDuration:5];
+        [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
+        [UIView setAnimationsEnabled:YES];
+        [UIView setAnimationDelegate:self];        
+        UIImage *image = [app.albumartimages_ objectAtIndex:albumartdisplaycounter_];
+        albumcoverview_.image = image;
+        [imgView setImage:image];
+        [UIView commitAnimations];
+        
+        /*
+        [UIView beginAnimations:nil context:NULL];
+        [UIView setAnimationDuration:1];
+        [UIView setAnimationTransition:UIViewAnimationTransitionCurlDown forView:albumcovertracksview_ cache:YES];
+        UIImage *image = [app.albumartimages_ objectAtIndex:albumartdisplaycounter_];
+        albumcoverview_.image = image;
+        [UIView commitAnimations];
+        [imgView setImage:image];
+         */
+    }
+    albumartdisplaycounter_++;
+    if( albumartdisplaycounter_ > [app.albumartimages_ count] -1 )
+        albumartdisplaycounter_ /= [app.albumartimages_ count];
+}
+
+
 - (void)setArtwork:(UIImage *)image
 {
+    albumartdisplaycounter_ = 0;
     if( image ) {
         // 
         // if viewing the album art at the moment transition the album art to the new artwork
@@ -806,20 +840,19 @@ static void myProviderReleaseData (void *info,const void *data,size_t size)
         // album art
         //
         AppData *app = [AppData get];
-        if( app.coverflowDisplayType_ == 0 ) {
-            printf("app image count %d\n", [app.images_ count]);
-            [flowCover resetItem:[app.images_ count]];
-            [app.images_ addObject:image];
-            [imgView setImage:image];
-            [flowCover setNeedsDisplay];
-            [flowCover draw];
-             
-        }
+        [app.albumartimages_ removeAllObjects];
+
+        [flowCover resetItem:[app.images_ count]];
+        [app.images_ addObject:image];
+        [imgView setImage:image];
+        [flowCover setNeedsDisplay];
+        [flowCover draw];
         
     } else {
         albumcoverview_.image = emptyalbumartworkimage_;
         AppData *app = [AppData get];
         app.artwork_ = nil;
+        [app.albumartimages_ removeAllObjects];
     }
 }
 
@@ -1155,6 +1188,10 @@ static void myProviderReleaseData (void *info,const void *data,size_t size)
                                              selector:@selector(titleAvailable:) 
                                                  name:@"titleAvailable" 
                                                object:nil]; 
+    [NSTimer scheduledTimerWithTimeInterval:(NSTimeInterval)5
+                                     target:self 
+                                   selector:@selector(albumArtChange:)
+                                   userInfo:NULL repeats:YES ];
     
     AppData *app = [AppData get];
     
@@ -1177,6 +1214,7 @@ static void myProviderReleaseData (void *info,const void *data,size_t size)
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
+
 
 -(IBAction) setvolume:(id)sender
 {   
@@ -1261,17 +1299,19 @@ static void myProviderReleaseData (void *info,const void *data,size_t size)
 
 -(void) detectOrientation 
 {    
-    printf("detect orientation");
     [self performSelector:@selector(updateLandscapeView) withObject:nil afterDelay:0];
 }
 
 - (void)updateLandscapeView
 {
+
     if (([[UIDevice currentDevice] orientation] == UIDeviceOrientationLandscapeLeft) || 
         ([[UIDevice currentDevice] orientation] == UIDeviceOrientationLandscapeRight)) {
+        [self.navigationController setNavigationBarHidden:YES animated:NO];
         self.view = self.landscapeView;
         
     } else if ([[UIDevice currentDevice] orientation] == UIDeviceOrientationPortrait) {
+        [self.navigationController setNavigationBarHidden:NO animated:NO];
         self.view = self.portraitView;        
     }   
 }
@@ -1375,14 +1415,13 @@ static void myProviderReleaseData (void *info,const void *data,size_t size)
 {	
     AppData *app = [AppData get];
     
-    printf("index: %d\n", index);
 	if (index >= [app.images_ count]) {
-		return [UIImage imageNamed:@"y.png"];
+		return [UIImage imageNamed:@"empty_album_art.png"];
 	}
 	
 	UIImage *img = [app.images_ objectAtIndex:index];    
 	if (!img) {
-		return [UIImage imageNamed:@"z.png"];
+		return [UIImage imageNamed:@"empty_album_art.png"];
 	}
 	
 	return img;

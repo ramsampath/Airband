@@ -135,10 +135,10 @@ numberOfSectionsInTableView:(UITableView *)tableView
     else
         cell.imageView.image = [UIImage imageNamed:@"unchecked.png"];
     if (row  == 0) {
-        cell.textLabel.text = [NSString stringWithFormat:@"Album Art", [indexPath row]];
+        cell.textLabel.text = [NSString stringWithFormat:@"Static Album Art", [indexPath row]];
 	}
 	else if (row == 1) {
-        cell.textLabel.text = [NSString stringWithFormat:@"Flickr Images", [indexPath row]];
+        cell.textLabel.text = [NSString stringWithFormat:@"Animated Flickr Images", [indexPath row]];
 	}
 
 	
