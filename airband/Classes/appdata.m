@@ -14,10 +14,6 @@ static asyncIO *g_async = nil;
 static NSString *partner_token = @"3110321588";
 static audiohelp_II *g_audio = nil;
 
-static NSString *flickr_api_key = @"8eff2e7f6c26b0ef2890d3cb89e5d6ba";
-static NSString *flickrRequestWithKeyword(NSString* keyword);
-static NSMutableArray* convertListToRequests( NSData* data );
-
 // mp3 tunes API:
 // http://www.mp3tunes.com/api/doc/apiv1
 // static const char *mp3api = "http://ws.mp3tunes.com/api/v1/lockerData?output=xml";
@@ -137,6 +133,14 @@ static NSMutableArray* convertListToRequests( NSData* data );
 }
 
 
+// --------------------------------------------------------------------------
+// helper for image data
+// --------------------------------------------------------------------------
+static void myProviderReleaseData (void *info,const void *data,size_t size)
+{
+    NSData *d = info;
+    [d release];
+}
 
 // --------------------------------------------------------------------------
 // callback from async
@@ -220,7 +224,8 @@ static NSMutableArray* convertListToRequests( NSData* data );
 		{			
 			[artworkdata_ release];
 			artworkdata_ = [[NSData dataWithData:data] retain];
-			CGDataProviderRef provider = CGDataProviderCreateWithData( NULL, [artworkdata_ bytes], [artworkdata_ length], NULL );
+			CGDataProviderRef provider = CGDataProviderCreateWithData( NULL, [artworkdata_ bytes], [artworkdata_ length], 
+																	  myProviderReleaseData );
 			CGImageRef imageref = CGImageCreateWithJPEGDataProvider(provider, NULL, true, kCGRenderingIntentDefault);						
 			if( imageref )
 			{
@@ -362,8 +367,9 @@ static NSMutableArray* convertListToRequests( NSData* data );
      */
 }
 
-- (UIImage *)getAlbumArtwork:(NSString *)aid
+- (UIImage *)getAlbumArtwork:(NSString *)str
 {
+	return nil;	
 }
 
 - (void) getAlbumListArtwork:(NSArray *)albumlist;
@@ -759,7 +765,7 @@ static NSMutableArray* convertListToRequests( NSData* data );
 
     [username_ release];
     [password_ release];
-
+	
     username_   = [[d objectForKey:@"username"] retain];
     password_   = [[d objectForKey:@"password"] retain];
     lastVolume_ = [[[d objectForKey:@"lastVolume"] retain] floatValue];
@@ -773,7 +779,7 @@ static NSMutableArray* convertListToRequests( NSData* data );
     //
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 
-	NSString *loginValue = [defaults stringForKey:@"loginkey"];
+	NSString *loginValue = [defaults stringForKey:@"usernamekey"];
 	NSString *passwordValue = [defaults stringForKey:@"passwordkey"];
 	BOOL autologinValue = [defaults boolForKey:@"autologinkey"];
 	NSInteger streamingRateValue = [defaults integerForKey:@"streamingratekey"];
@@ -816,7 +822,7 @@ static NSMutableArray* convertListToRequests( NSData* data );
     [defaults setInteger:startpage_ forKey:@"startpagekey"];
     [defaults setValue:username_ forKey:@"usernamekey"];
     [defaults setValue:password_ forKey:@"passwordkey"];
-    [defaults setValue:coverflowDisplayType_ forKey:@"coverflowstyle"];
+    [defaults setInteger:coverflowDisplayType_ forKey:@"coverflowstyle"];
     
     /*
     NSDictionary *appPrerfs = [NSDictionary dictionaryWithObjectsAndKeys:

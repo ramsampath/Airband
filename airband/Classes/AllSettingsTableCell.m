@@ -14,7 +14,7 @@
 
 - (id)initWithFrame:(CGRect)frame reuseIdentifier:(NSString *)reuseIdentifier 
 {
-    if (self = [super initWithFrame:frame reuseIdentifier:reuseIdentifier]) {
+	if (self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier]) {
         // Initialization code
 		self.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
         self.selectionStyle = UITableViewCellSelectionStyleBlue;

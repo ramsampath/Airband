@@ -613,8 +613,6 @@ static void* workerthread( void* pv )
 {
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	
-	//dbg_printf( "connectionDidFinishLoading\n" );
-
 #ifdef APR29_LATEST_HACKS	
 	ghackApr29_finished_loading = 1;
 #endif
@@ -732,14 +730,22 @@ static void* workerthread( void* pv )
 {
 	if (!ghackApr29_finished_loading)
 		return false;
+
+	pthread_mutex_lock(&asyncaudio_.myd_->mutex);
 	
+	bool done = true;
 	for (int i=0; i<kNumAQBufs; ++i) {
 		if (asyncaudio_.myd_->inuse[i]) {
-			return false;
+			done = false;
 		}
 	}
+
+	pthread_mutex_unlock(&asyncaudio_.myd_->mutex);	
+	//if (done) {
+    //printf( "track finished\n" );
+	//}
 	
-	return TRUE;
+	return done;
 }
 
 -(float) percentage
