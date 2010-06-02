@@ -42,7 +42,7 @@
 
 - (id)initWithFrame:(CGRect)aRect reuseIdentifier:(NSString *)identifier
 {
-	self = [super initWithFrame:aRect reuseIdentifier:identifier];
+	self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
 	if (self)
 	{
 		// you can do this here specifically or at the table level for all cells

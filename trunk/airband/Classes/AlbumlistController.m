@@ -53,7 +53,7 @@
 - (id)initWithFrame:(CGRect)aRect 
     reuseIdentifier:(NSString *)identifier tableView:(UITableView *)aTableView image:(UIImage *) albumart
 {
-    self = [super initWithFrame:aRect reuseIdentifier:identifier];
+	self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
 
     if( self ) {
         const NSInteger TOP_LABEL_TAG    = 1001;

@@ -232,14 +232,13 @@ CGContextRef MyCreateBitmapContext( int pixelsWide, int pixelsHigh )
 
 @synthesize portraitView;
 @synthesize landscapeView;
-
 @synthesize detailItem, detailDescriptionLabel;
 @synthesize flickrButton;
 @synthesize flickrSearch;
 @synthesize flowCover;
 @synthesize imgView;
 @synthesize searchList_;
-
+@synthesize albumartdisplaycounter_;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
@@ -503,7 +502,8 @@ static void myProviderReleaseData (void *info,const void *data,size_t size)
 -(void) finishedWithData:(NSData*)data  userData:(id)user 
 {
     AppData *app = [AppData get];
-    
+	SimpleIO *io = [SimpleIO singelton];
+	
     @synchronized( self ) {
         NSString *str = user;
         
@@ -516,7 +516,7 @@ static void myProviderReleaseData (void *info,const void *data,size_t size)
                     info.address_ = s;
                     info.delegate_ = self;
                     info.userdata_ = @"picture";   // +s
-                    [[SimpleIO singelton] request:info];    
+                    [io request:info];    
                     [info release];
                 }
             }
@@ -536,15 +536,6 @@ static void myProviderReleaseData (void *info,const void *data,size_t size)
 
             CGImageRelease( imageref );
             [app.albumartimages_ addObject:img];
-            /*
-            [flowCover resetItem:[app.images_ count]];
-            [app.images_ addObject:img];
-            
-            [imgView setImage:img];
-            
-            [flowCover setNeedsDisplay];
-            [flowCover draw];
-             */
         }
     }
 }
@@ -779,32 +770,26 @@ static void myProviderReleaseData (void *info,const void *data,size_t size)
     AppData *app = [AppData get];
     
     NSInteger n = [app.albumartimages_ count];
+	
+    if( flipsideview_ && n ) {
 
-    if( flipsideview_ == true && n != 0 ) {
+		albumartdisplaycounter_ = albumartdisplaycounter_ % n;
 
+		/* there is nothing animating here yet...
+		[UIView setAnimationsEnabled:YES];
         [UIView beginAnimations:nil context:nil];
         [UIView setAnimationDuration:5];
-        [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
-        [UIView setAnimationsEnabled:YES];
+		[UIView setAnimationCurve:(n&1)?UIViewAnimationCurveEaseIn:UIViewAnimationTransitionCurlDown];
         [UIView setAnimationDelegate:self];        
+		 */
         UIImage *image = [app.albumartimages_ objectAtIndex:albumartdisplaycounter_];
         albumcoverview_.image = image;
         [imgView setImage:image];
-        [UIView commitAnimations];
-        
-        /*
-        [UIView beginAnimations:nil context:NULL];
-        [UIView setAnimationDuration:1];
-        [UIView setAnimationTransition:UIViewAnimationTransitionCurlDown forView:albumcovertracksview_ cache:YES];
-        UIImage *image = [app.albumartimages_ objectAtIndex:albumartdisplaycounter_];
-        albumcoverview_.image = image;
-        [UIView commitAnimations];
-        [imgView setImage:image];
-         */
-    }
-    albumartdisplaycounter_++;
-    if( albumartdisplaycounter_ > [app.albumartimages_ count] -1 )
-        albumartdisplaycounter_ /= [app.albumartimages_ count];
+        //[UIView commitAnimations];        
+		albumartdisplaycounter_ = (albumartdisplaycounter_+1) % n;
+    } else {
+		albumartdisplaycounter_ = 0;
+	}	
 }
 
 
@@ -1141,6 +1126,26 @@ static void myProviderReleaseData (void *info,const void *data,size_t size)
 }
 
 
+- (void) getReadyForArtwork
+{
+    AppData *app = [AppData get];
+    
+    if( app.coverflowDisplayType_ == 1 ) {
+        NSString *search = [NSString stringWithString:app.currentAlbum_];
+        if( search != nil ) {
+            NSString *req = flickrRequestWithKeyword( search );
+            ConnectionInfo *info = [[ConnectionInfo alloc] init];
+            info.address_ = req;
+            info.delegate_ = self;
+            info.userdata_ = @"main";
+            
+            [[SimpleIO singelton] request:info];    
+            [info release];
+        }
+    }	
+}
+
+
 - (void) titleAvailable:(NSNotification*)notification
 {
     NSDictionary *d     = notification.userInfo;
@@ -1152,27 +1157,7 @@ static void myProviderReleaseData (void *info,const void *data,size_t size)
     alabel_.text  = artist;
     allabel_.text = album;
     
-    // 
-    // create flickr album art
-    //
-    AppData *app = [AppData get];
-    
-    if( app.coverflowDisplayType_ == 1 ) {
-        NSString *search = [NSString stringWithString:album];
-        NSString *req;
-        if( search != nil ) {
-            req = flickrRequestWithKeyword( search );
-            ConnectionInfo *info = [[ConnectionInfo alloc] init];
-            info.address_ = req;
-            info.delegate_ = self;
-            info.userdata_ = @"main";
-            
-            [[SimpleIO singelton] request:info];    
-            [info release];
-        }
-    }
-    
-    return;
+	[self getReadyForArtwork];	
 }
 
 
@@ -1188,7 +1173,8 @@ static void myProviderReleaseData (void *info,const void *data,size_t size)
                                              selector:@selector(titleAvailable:) 
                                                  name:@"titleAvailable" 
                                                object:nil]; 
-    [NSTimer scheduledTimerWithTimeInterval:(NSTimeInterval)5
+	
+    [NSTimer scheduledTimerWithTimeInterval:(NSTimeInterval)7
                                      target:self 
                                    selector:@selector(albumArtChange:)
                                    userInfo:NULL repeats:YES ];
@@ -1203,10 +1189,9 @@ static void myProviderReleaseData (void *info,const void *data,size_t size)
                                pause_,  fixedplay_, next_, flexend_, nil]];
     }
     
-    [self artworkReady:nil];
-    
-
-    return;
+    [self artworkReady:nil];	
+	// if returning from something like settings...
+	[self getReadyForArtwork];
 }
 
 

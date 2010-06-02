@@ -50,6 +50,15 @@
     //AllSettingsController *splash = [AllSettingsController alloc];
 	[window addSubview:splash.view];	
 	[window makeKeyAndVisible];
+	
+#if 0
+	UIDevice* device = [UIDevice currentDevice];
+	BOOL backgroundSupported = NO;
+	if ([device respondsToSelector:@selector(isMultitaskingSupported)]) {
+		backgroundSupported = device.multitaskingSupported;	
+		printf( "backgroundSupported: %d\n", (int) backgroundSupported );
+	}
+#endif
 }
 
 
@@ -136,6 +145,11 @@
 	//[appdata_ saveState];	
 }
 
+
+- (void)applicationDidEnterBackground:(UIApplication *)application
+{
+	printf( "ApplicationDidEnterBackground\n");
+}
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
