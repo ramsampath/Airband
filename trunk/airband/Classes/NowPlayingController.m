@@ -299,19 +299,25 @@ CGContextRef MyCreateBitmapContext( int pixelsWide, int pixelsHigh )
         
 }
 
+- (void)backAction:(id)sender 
+{
+    SimpleIO *io = [SimpleIO singelton];
 
+    [io cancelAll];
+    [self.navigationController popViewControllerAnimated:YES]; 
+}
 
 -(void) setupnavigationitems:(UINavigationItem *) ni 
                       navBar:(UINavigationBar *) navBar
                       datadict:(NSDictionary *)dict
 {
+    /*
     UIImage *backimage    = [UIImage imageNamed:@"back_arrow.png"];
     
-    UIBarButtonItem *b    = [UIBarButtonItem alloc];
-    b.style               = UIBarButtonItemStyleBordered;
-    b.image               = backimage;
-    ni.backBarButtonItem  = b;
-    [b release];
+    UIBarButtonItem *b = [[[UIBarButtonItem alloc] initWithImage:backimage style:UIBarButtonItemStyleBordered target:self action:@selector(backAction)] autorelease];
+    ni.hidesBackButton = YES;
+    ni.leftBarButtonItem  = b;
+    */
     
     infoimage_            = [UIImage imageNamed:@"track_info_withbg.png"];
 
@@ -325,7 +331,8 @@ CGContextRef MyCreateBitmapContext( int pixelsWide, int pixelsHigh )
     [albumcovertracksb_ setBackgroundImage:infoimage_ forState:UIControlStateNormal];
     [albumcovertracksbview_ addSubview:albumcovertracksb_];
     
-    b                      = [[UIBarButtonItem alloc] initWithCustomView:albumcovertracksbview_];
+    
+    UIBarButtonItem *b                      = [[UIBarButtonItem alloc] initWithCustomView:albumcovertracksbview_];
     [self.navigationItem setRightBarButtonItem:b];
     [b release];
     
@@ -502,7 +509,7 @@ static void myProviderReleaseData (void *info,const void *data,size_t size)
 -(void) finishedWithData:(NSData*)data  userData:(id)user 
 {
     AppData *app = [AppData get];
-	SimpleIO *io = [SimpleIO singelton];
+    SimpleIO *io = [SimpleIO singelton];
 	
     @synchronized( self ) {
         NSString *str = user;
@@ -770,21 +777,35 @@ static void myProviderReleaseData (void *info,const void *data,size_t size)
     AppData *app = [AppData get];
     
     NSInteger n = [app.albumartimages_ count];
-	
+    if( albumartdisplaycounter_ > [app.albumartimages_ count] - 1 )
+        albumartdisplaycounter_ /= [app.albumartimages_ count];
+
     if( flipsideview_ && n ) {
 
-		albumartdisplaycounter_ = albumartdisplaycounter_ % n;
-
-		/* there is nothing animating here yet...
-		[UIView setAnimationsEnabled:YES];
-        [UIView beginAnimations:nil context:nil];
-        [UIView setAnimationDuration:5];
-		[UIView setAnimationCurve:(n&1)?UIViewAnimationCurveEaseIn:UIViewAnimationTransitionCurlDown];
+		/* there is nothing animating here yet... */
+     
+        if( [app.albumartimages_ count] != 0 ) {
+            UIImage *image = [app.albumartimages_ objectAtIndex:albumartdisplaycounter_];
+            albumcoverview_.image = image;
+            [imgView setImage:image];
+        }
         [UIView setAnimationDelegate:self];        
-		 */
+		 
         UIImage *image = [app.albumartimages_ objectAtIndex:albumartdisplaycounter_];
         albumcoverview_.image = image;
         [imgView setImage:image];
+        
+        /*
+        [UIView beginAnimations:nil context:NULL];
+        [UIView setAnimationDuration:1];
+        [UIView setAnimationTransition:UIViewAnimationTransitionCurlDown forView:albumcovertracksview_ cache:YES];
+        UIImage *image = [app.albumartimages_ objectAtIndex:albumartdisplaycounter_];
+        albumcoverview_.image = image;
+        [UIView commitAnimations];
+        [imgView setImage:image];
+         }
+         */
+
         //[UIView commitAnimations];        
 		albumartdisplaycounter_ = (albumartdisplaycounter_+1) % n;
     } else {
@@ -1129,10 +1150,11 @@ static void myProviderReleaseData (void *info,const void *data,size_t size)
 - (void) getReadyForArtwork
 {
     AppData *app = [AppData get];
-    
+
     if( app.coverflowDisplayType_ == 1 ) {
         NSString *search = [NSString stringWithString:app.currentAlbum_];
         if( search != nil ) {
+            albumartdisplaycounter_ = 0;
             NSString *req = flickrRequestWithKeyword( search );
             ConnectionInfo *info = [[ConnectionInfo alloc] init];
             info.address_ = req;
@@ -1148,6 +1170,10 @@ static void myProviderReleaseData (void *info,const void *data,size_t size)
 
 - (void) titleAvailable:(NSNotification*)notification
 {
+    [self getReadyForArtwork];	
+
+    if( notification == nil ) return;
+
     NSDictionary *d     = notification.userInfo;
     NSString *title     = [d objectForKey:@"trackTitle"];
     NSString *artist    = [d objectForKey:@"artistName"];
@@ -1157,7 +1183,6 @@ static void myProviderReleaseData (void *info,const void *data,size_t size)
     alabel_.text  = artist;
     allabel_.text = album;
     
-	[self getReadyForArtwork];	
 }
 
 
@@ -1174,11 +1199,16 @@ static void myProviderReleaseData (void *info,const void *data,size_t size)
                                                  name:@"titleAvailable" 
                                                object:nil]; 
 	
-    [NSTimer scheduledTimerWithTimeInterval:(NSTimeInterval)7
-                                     target:self 
-                                   selector:@selector(albumArtChange:)
-                                   userInfo:NULL repeats:YES ];
+    albumartchangetimer_ =  [NSTimer scheduledTimerWithTimeInterval:(NSTimeInterval)7
+                                                             target:self 
+                                                           selector:@selector(albumArtChange:)
+                                                           userInfo:NULL repeats:YES ];
     
+    UIImage *backimage    = [UIImage imageNamed:@"back_arrow.png"];
+    UIBarButtonItem *b = [[[UIBarButtonItem alloc] initWithImage:backimage style:UIBarButtonItemStyleBordered target:self action:@selector(backAction:)] autorelease];
+    self.navigationItem.leftBarButtonItem  = b;
+    
+    self.navigationItem.hidesBackButton = TRUE;
     AppData *app = [AppData get];
     
     if( [app isPaused] )
@@ -1189,15 +1219,19 @@ static void myProviderReleaseData (void *info,const void *data,size_t size)
                                pause_,  fixedplay_, next_, flexend_, nil]];
     }
     
-    [self artworkReady:nil];	
-	// if returning from something like settings...
-	[self getReadyForArtwork];
+    albumartdisplaycounter_ = 0;
+    [self artworkReady:nil];
+    [self titleAvailable:nil];
 }
 
+-(void) viewWillDisappear:(BOOL)animated
+{
+}
 
 - (void) viewDidDisappear:(BOOL)animated
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [albumartchangetimer_ invalidate];
 }
 
 
@@ -1485,8 +1519,11 @@ static NSMutableString* apiPrefix(NSString* method)
 
 NSString *flickrRequestWithKeyword(NSString* keyword)
 {
+    AppData *app = [AppData get];
+
+    [app.albumartimages_ removeAllObjects];
     NSMutableString *keyurl = apiPrefix(@"flickr.photos.search");
-    [keyurl appendString:@"&per_page=75&text="];
+    [keyurl appendString:@"&per_page=20&text="];
     [keyurl appendString:keyword];  
     NSString *encoded = [keyurl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     return encoded;

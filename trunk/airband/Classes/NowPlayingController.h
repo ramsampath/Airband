@@ -115,6 +115,7 @@
     
     //
     int albumartdisplaycounter_;
+    NSTimer *albumartchangetimer_;
 }
 
 
@@ -132,6 +133,7 @@
 -(void) displayPlayButton:(id) sender;
 -(void) setupnavigationitems:(UINavigationItem *)sender navBar:(UINavigationBar *)navbar
                     datadict:(NSDictionary *)dict;
+-(void) backAction:(id)sender;
 -(void) stopLoadingView;
 -(void) detectOrientation;
 -(void) transformViewToLandscape;

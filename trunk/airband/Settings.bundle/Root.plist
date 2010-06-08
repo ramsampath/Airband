@@ -20,7 +20,7 @@
 			<key>Title</key>
 			<string>Login</string>
 			<key>Key</key>
-			<string>loginkey</string>
+			<string>usernamekey</string>
 			<key>DefaultValue</key>
 			<string></string>
 			<key>IsSecure</key>

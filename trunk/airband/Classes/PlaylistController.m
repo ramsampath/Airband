@@ -215,6 +215,7 @@
 {
     //NowPlayingController *nowplayingVC = [[NowPlayingController alloc] initWithNibName:@"NowPlayingArranged" bundle:nil];    
     NowPlayingController *nowplayingVC = [[NowPlayingController alloc] init];
+    self.navigationItem.hidesBackButton = TRUE;
 
     [nowplayingVC setupnavigationitems:self.navigationItem 
                                 navBar:[self navigationController].navigationBar
