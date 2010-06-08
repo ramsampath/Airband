@@ -707,13 +707,13 @@
     
     NowPlayingController *nowplayingVC = [NowPlayingController alloc];
     
-	nowplayingVC.hidesBottomBarWhenPushed = TRUE;
-    
+    nowplayingVC.hidesBottomBarWhenPushed = TRUE;
     [nowplayingVC setupnavigationitems:self.navigationItem 
                                 navBar:[self navigationController].navigationBar
                               datadict:nil];
     
-    
+    self.navigationItem.hidesBackButton = TRUE;
+
     [[self navigationController] pushViewController:nowplayingVC animated:YES];		
     
     [nowplayingVC release];
