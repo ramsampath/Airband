@@ -14,8 +14,10 @@
 
 #import "appdata.h"
 #import "imgcache.h"
+#import "AlbumInfo.h"
 
 #import "SimpleIO.h"
+#import "UIImageExtras.h"
 
 static NSString *flickrRequestWithKeyword( NSString* keyword );
 static NSMutableArray* convertListToRequests( NSData* data );
@@ -139,7 +141,6 @@ CGContextRef MyCreateBitmapContext( int pixelsWide, int pixelsHigh )
         theta = vol - ( M_PI + starttheta_ );
     }
     
-    //printf("Last Vol: %f %f %f\n", [app lastVolume_], vol, theta);
     
     return theta;
 }
@@ -218,7 +219,6 @@ CGContextRef MyCreateBitmapContext( int pixelsWide, int pixelsHigh )
     CGPoint currentTouchPosition = [touch locationInView:self];
     dragStart_ = currentTouchPosition;
     
-    //printf("touches began %f %f\n", dragStart_.x, dragStart_.y);
     return;
 }
 
@@ -235,7 +235,6 @@ CGContextRef MyCreateBitmapContext( int pixelsWide, int pixelsHigh )
 @synthesize detailItem, detailDescriptionLabel;
 @synthesize flickrButton;
 @synthesize flickrSearch;
-@synthesize flowCover;
 @synthesize imgView;
 @synthesize searchList_;
 @synthesize albumartdisplaycounter_;
@@ -259,294 +258,12 @@ CGContextRef MyCreateBitmapContext( int pixelsWide, int pixelsHigh )
 }
 
 
-/*
- Implement loadView if you want to create a view hierarchy programmatically
- */
-
-#pragma mark
-#pragma mark UISlider (Custom)
-#pragma mark
-- (void)create_Custom_UISlider:(CGRect)frame
-{
-    volume_ = [[UISlider alloc] initWithFrame:frame];
-    [volume_ addTarget:self action:@selector(setvolume:) forControlEvents:UIControlEventValueChanged];
-
-    // in case the parent view draws with a custom color or gradient, use a transparent color
-    volume_.backgroundColor = [UIColor clearColor]; 
-
-    [volume_ setThumbImage: [UIImage imageNamed:@"slider_ball_bw.png"] forState:UIControlStateNormal];
-
-    volume_.minimumValue               = 0.0;
-    volume_.maximumValue               = 1.0;
-    volume_.continuous                 = YES;
-    volume_.value                      = 1.0;
-    volume_.alpha                      = 1.000;
-    volume_.autoresizingMask           = UIViewAutoresizingFlexibleRightMargin | 
-                                         UIViewAutoresizingFlexibleBottomMargin;
-    volume_.clearsContextBeforeDrawing = YES;
-    volume_.clipsToBounds              = YES;
-    
-    
-    UIImage *stetchLeftTrack = [[UIImage imageNamed:@"leftslide.png"]
-                                stretchableImageWithLeftCapWidth:10.0 topCapHeight:0.0];
-    UIImage *stetchRightTrack = [[UIImage imageNamed:@"rightslide.png"]
-                                 stretchableImageWithLeftCapWidth:10.0 topCapHeight:0.0];
-    //    [customSlider setThumbImage: [UIImage imageNamed:@"slider_ball.png"] forState:UIControlStateNormal];
-    [volume_ setMinimumTrackImage:stetchLeftTrack forState:UIControlStateNormal];
-    [volume_ setMaximumTrackImage:stetchRightTrack forState:UIControlStateNormal];
-    [volume_ setMinimumValueImage:[UIImage imageNamed:@"SpeakerSoft.tif"]];
-    [volume_ setMaximumValueImage:[UIImage imageNamed:@"SpeakerLoud.tif"]];
-        
-}
-
-- (void)backAction:(id)sender 
-{
-    SimpleIO *io = [SimpleIO singelton];
-
-    [io cancelAll];
-    [self.navigationController popViewControllerAnimated:YES]; 
-}
-
--(void) setupnavigationitems:(UINavigationItem *) ni 
-                      navBar:(UINavigationBar *) navBar
-                      datadict:(NSDictionary *)dict
-{
-    /*
-    UIImage *backimage    = [UIImage imageNamed:@"back_arrow.png"];
-    
-    UIBarButtonItem *b = [[[UIBarButtonItem alloc] initWithImage:backimage style:UIBarButtonItemStyleBordered target:self action:@selector(backAction)] autorelease];
-    ni.hidesBackButton = YES;
-    ni.leftBarButtonItem  = b;
-    */
-    
-    infoimage_            = [UIImage imageNamed:@"track_info_withbg.png"];
-
-    albumcovertracksbview_             = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 35, 32)] retain];
-    albumcovertracksb_                 = [[[UIButton alloc] initWithFrame:CGRectMake( 0, 0, 35, 32 )] retain];
-    albumcovertracksb_.backgroundColor = [UIColor clearColor];
-    
-    navBar.barStyle                    = UIBarStyleBlackOpaque;
-
-    [albumcovertracksb_ addTarget:self action:@selector(flipToTracklistView:) forControlEvents:UIControlEventTouchUpInside];
-    [albumcovertracksb_ setBackgroundImage:infoimage_ forState:UIControlStateNormal];
-    [albumcovertracksbview_ addSubview:albumcovertracksb_];
-    
-    
-    UIBarButtonItem *b                      = [[UIBarButtonItem alloc] initWithCustomView:albumcovertracksbview_];
-    [self.navigationItem setRightBarButtonItem:b];
-    [b release];
-    
-    toolbartop_ = [[UIToolbar alloc] initWithFrame:CGRectMake( 0.0, 0.0, 0.0, 0.0 )];
-    toolbartop_.opaque                 = NO;
-    toolbartop_.barStyle               = UIBarStyleBlackOpaque;
-    //toolbartop_.backgroundColor        = [UIColor clearColor];
-    //[navBar addSubview:toolbartop_];
-    
-    self.navigationItem.titleView       = toolbartop_;
-    self.navigationItem.titleView.frame = CGRectMake( 0, 0, 320, 40 );
-    
-    pause_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemPause 
-                                                           target:self action:@selector(pause:)];
-    pause_.enabled = YES;
-    pause_.style   = UIBarButtonItemStylePlain;
-    pause_.tag     = 0;
-    pause_.width   = 0.000;
-    
-    flexbeg_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace 
-                                                             target:nil action:nil];
-    flexbeg_.enabled = YES;
-    flexbeg_.style   = UIBarButtonItemStylePlain;
-    flexbeg_.tag     = 0;
-    flexbeg_.width   = 0.000;
-    
-    prev_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRewind 
-                                                          target:self   action:@selector(prev:)];
-    prev_.enabled = YES;
-    prev_.style   = UIBarButtonItemStylePlain;
-    prev_.tag     = 0;
-    prev_.width   = 0.000;
-    
-    fixedprev_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace 
-                                                               target:nil action:nil];
-    fixedprev_.enabled = YES;
-    fixedprev_.style   = UIBarButtonItemStylePlain;
-    fixedprev_.tag     = 0;
-    fixedprev_.width   = 30.000;
-    
-    stop_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemStop
-                                                          target:self action:@selector(stop:)];
-    stop_.enabled = YES;
-    stop_.style   = UIBarButtonItemStylePlain;
-    stop_.tag     = 0;
-    stop_.width   = 0.000;
-    
-    pause_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemPause 
-                                                           target:self action:@selector(pause:)];
-    pause_.enabled = YES;
-    pause_.style   = UIBarButtonItemStylePlain;
-    pause_.tag     = 0;
-    pause_.width   = 0.000;
-    
-    fixedpause_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace
-                                                                target:nil action:nil];
-    fixedpause_.enabled = YES;
-    fixedpause_.style   = UIBarButtonItemStylePlain;
-    fixedpause_.tag     = 0;
-    fixedpause_.width   = 30.000;
-    
-    play_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemPlay
-                                                          target:self action:@selector(play:)];
-    play_.enabled = YES;
-    play_.style   = UIBarButtonItemStylePlain;
-    play_.tag     = 0;
-    play_.width   = 0.000;
-    
-    
-    fixedplay_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-    fixedplay_.enabled = YES;
-    fixedplay_.style   = UIBarButtonItemStylePlain;
-    fixedplay_.tag     = 0;
-    fixedplay_.width   = 30.000;
-    
-    next_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFastForward 
-                                                          target:self action:@selector(next:)];
-    next_.enabled = YES;
-    next_.style   = UIBarButtonItemStylePlain;
-    next_.tag     = 0;
-    next_.width   = 0.000;
-    
-    flexend_         = [[UIBarButtonItem alloc] 
-                        initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace 
-                        target:nil action:nil];
-    flexend_.enabled = YES;
-    flexend_.style   = UIBarButtonItemStylePlain;
-    flexend_.tag     = 0;
-    flexend_.width   = 0.000;
-
-    [toolbartop_ setItems:[NSArray arrayWithObjects: flexbeg_, prev_, fixedprev_, 
-                           play_,  fixedplay_, next_, flexend_, nil]];
-    if( dict ) {
-        dict_ = dict;
-        
-        AppData *app = [AppData get];
-        //
-        // view loaded, queue up tracklist.
-        //
-        [[NSNotificationCenter defaultCenter] addObserver:self 
-                                                 selector:@selector(trackListReady:) 
-                                                     name:@"trackListReady"
-                                                   object:nil]; 
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self 
-                                                 selector:@selector(playListTracksReady:) 
-                                                     name:@"playListTracksReady"
-                                                   object:nil]; 
-        
-        NSString *req = [dict_ objectForKey:@"albumId"];
-        NSString *playlistid = [dict objectForKey:@"playlistId"];
-        
-        if( playlistid ) {
-            NSString *enc = [playlistid stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding];
-            [app getPlayListTracksAsync:enc];
-        }
-        else {
-            [app getTrackListAsync:req];
-        }
-        
-        //
-        // setup the progress view
-        //
-        if( progressView_ ) {
-            [progressView_ removeFromSuperview];
-            [progressView_ release];
-            progressView_ = nil;
-        }
-        
-        progressView_                 = [[[UILabel alloc] initWithFrame:CGRectMake( 30, 100, 250, 100)] retain];
-        progressView_.backgroundColor = [UIColor clearColor];
-        progressView_.alpha           = 1.0;
-        [self.view addSubview:progressView_];
-        [progressView_ release];
-        
-        if( loadingView_ ) [loadingView_ release];
-        loadingView_ = nil;
-        
-        loadingView_ = [[LoadingView loadingViewInView:progressView_ loadingText:@"Loading Track List..."] retain]; 
-    }
-}
-
-
-
-#pragma mark -
-#pragma mark Async Delegate
-
 
 - (void)viewDidUnload 
 {
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
 }
-
--(void) didFailWithError:(NSError*)err  userData:(id)user 
-{
-}
-
--(BOOL) someData:(NSData*)data          userData:(id)user 
-{
-    return FALSE;
-}
-
-//
-// helper for image data
-//
-static void myProviderReleaseData (void *info,const void *data,size_t size)
-{
-    NSData *d = info;
-    [d release];
-}
-
-
--(void) finishedWithData:(NSData*)data  userData:(id)user 
-{
-    AppData *app = [AppData get];
-    SimpleIO *io = [SimpleIO singelton];
-	
-    @synchronized( self ) {
-        NSString *str = user;
-        
-        if ([str compare:@"main"] == NSOrderedSame) {
-            NSMutableArray *result = convertListToRequests( data );
-            if (result) {
-                NSString *s;
-                for  (s in result) {
-                    ConnectionInfo *info = [[ConnectionInfo alloc] init];
-                    info.address_ = s;
-                    info.delegate_ = self;
-                    info.userdata_ = @"picture";   // +s
-                    [io request:info];    
-                    [info release];
-                }
-            }
-        }
-        else {
-            NSData *d = [[NSData dataWithData:data] retain];
-            CGDataProviderRef provider = CGDataProviderCreateWithData( d, [d bytes],[d length], 
-                                                                      myProviderReleaseData );
-            CGImageRef imageref = CGImageCreateWithJPEGDataProvider( provider, NULL, true, kCGRenderingIntentDefault );
-            if( !imageref ) {
-                return;      
-            }
-            
-            CGImageRetain( imageref );
-            UIImage *img = [UIImage imageWithCGImage:imageref];
-            CGDataProviderRelease( provider );        
-
-            CGImageRelease( imageref );
-            [app.albumartimages_ addObject:img];
-        }
-    }
-}
-
 
 
 - (void)loadView 
@@ -720,22 +437,32 @@ static void myProviderReleaseData (void *info,const void *data,size_t size)
     [mainview addSubview:trackinfo_];
     [mainview addSubview:busyimg_];
 
-    emptyalbumartworkimage_ = [[app albumArtCache_] loadImage:@"empty_album_art.png"];
-    self.view = mainview;
+    emptyalbumartworkimage_ = [UIImage imageNamed:@"empty_album_art.png"];
+
+    CGRect fframe = CGRectMake( 0, 0, 480, 320 );
+
+    afFlowCover = [[AFOpenFlowView alloc] initWithFrame:fframe];
+    afFlowCover.frame = fframe;
+    
+    //self.landscapeView = flowCover;
+    
+    afFlowCover.viewDelegate  = self;
+    afFlowCover.dataSource    = self;
+    self.landscapeView        = afFlowCover;
+     
+    //[self transformViewToLandscape];
+    [afFlowCover setUpInitialState];
+  
+    self.view         = mainview;
     self.portraitView = mainview;
     
-    CGRect fframe = CGRectMake( 0, 0, 480, 300 );
-    flowCover = [[FlowCoverView alloc] initWithFrame:fframe];
-    
-    flowCover.delegate = self;
-    self.landscapeView = flowCover;
-    [self transformViewToLandscape];
-    
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+    
+    
     [[NSNotificationCenter defaultCenter] addObserver:self 
                                              selector:@selector(detectOrientation) 
                                                  name:@"UIDeviceOrientationDidChangeNotification" object:nil];
-    
+
     //
     //
     flipsideview_ = true;
@@ -751,28 +478,202 @@ static void myProviderReleaseData (void *info,const void *data,size_t size)
                                                object:nil];
 }
 
--(void) transformViewToLandscape
+- (void)viewDidLoad 
 {
-    NSInteger rotationDirection;
-    UIDeviceOrientation currentOrientation = [[UIDevice currentDevice] orientation];
+    AppData *app = [AppData get];
     
-    if(currentOrientation == UIDeviceOrientationLandscapeLeft){
-        rotationDirection = 1;
-    }else {
-        rotationDirection = -1;
-    }
+    [volume_ setValue:[app lastVolume_]];
     
-    CGRect myFrame = CGRectMake( 0, 0, 480, 300 );
-    CGAffineTransform transform = [self.landscapeView transform];
-    transform = CGAffineTransformRotate(transform, (rotationDirection * -90) * M_PI/180);
-    [self.landscapeView setFrame: myFrame];
-    CGPoint center = CGPointMake(myFrame.size.height/2.0, myFrame.size.width/2.0);
-    [self.landscapeView setTransform: transform];
-    [self.landscapeView setCenter: center];
+    // setup timer.
+    if( 1 ) {
+        [NSTimer scheduledTimerWithTimeInterval:(NSTimeInterval)0.5 
+                                         target:self 
+                                       selector:@selector(myTimerFireMethod:)
+                                       userInfo:NULL repeats:YES ];
+    }   
+    
+    // 
+    // setup play/pause notifications to change the buttons appropriately
+    //
+    [[NSNotificationCenter defaultCenter] addObserver:self 
+                                             selector:@selector(displayPauseButton:) 
+                                                 name:@"appPlaying" 
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self 
+                                             selector:@selector(displayPlayButton:) 
+                                                 name:@"appPaused" 
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self 
+                                             selector:@selector(displayPauseButton:) 
+                                                 name:@"appResumed" 
+                                               object:nil];
 }
 
 
-- (void)albumArtChange:(NSTimer*)theTimer
+
+
+
+/*
+ flip the displayed view from the main view to the flipside(song list) view and vice-versa.
+ */
+
+- (void) toggleView 
+{
+}
+
+
+-(IBAction) flipToTracklistView:(id) sender
+{
+    AppData *app = [AppData get];
+    
+    //
+    // Animate the artwork to track list
+    //
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDuration:1];
+    
+    [UIView setAnimationTransition:([self.view superview] ? 
+                                    UIViewAnimationTransitionFlipFromRight : UIViewAnimationTransitionFlipFromLeft) 
+                           forView:albumcovertracksview_ cache:YES];
+    
+    
+    if ([tracklistview_ superview])
+    {
+        [tracklistview_ removeFromSuperview];
+        [albumcovertracksview_ addSubview:albumcoverview_];
+        flipsideview_ = true;
+    }
+    else
+    {
+        [albumcoverview_ removeFromSuperview];
+        [albumcovertracksview_ addSubview:tracklistview_];
+        flipsideview_ = false;
+    }
+    
+    
+    [UIView commitAnimations];  
+    
+    // 
+    // Animate the navigation button to the opposite of the artwork animation
+    //
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDuration:1];
+    
+    
+    [UIView setAnimationTransition:([self.view superview] ? 
+                                    UIViewAnimationTransitionFlipFromRight : UIViewAnimationTransitionFlipFromLeft) 
+                           forView:albumcovertracksbview_ cache:YES];
+    
+    if( flipsideview_ == true ) {
+        [albumcovertracksb_ addTarget:self action:@selector(flipToTracklistView:) 
+                     forControlEvents:UIControlEventTouchUpInside];
+        [albumcovertracksb_ setBackgroundImage:infoimage_ forState:UIControlStateNormal];
+        
+        [albumcovertracksb_ addTarget:self action:@selector(flipToTracklistView:) 
+                     forControlEvents:UIControlEventTouchUpInside];
+    }
+    else {
+        UIImage *image = app.artwork_;
+        if( image == nil )
+            image = emptyalbumartworkimage_;
+        [albumcovertracksb_ setBackgroundImage:image forState:UIControlStateNormal];
+    }
+    
+    [UIView commitAnimations];  
+    
+}
+
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self 
+                                             selector:@selector(artworkReady:) 
+                                                 name:@"artworkReady" 
+                                               object:nil]; 
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self 
+                                             selector:@selector(titleAvailable:) 
+                                                 name:@"titleAvailable" 
+                                               object:nil]; 
+	
+    albumartchangetimer_ =  [NSTimer scheduledTimerWithTimeInterval:(NSTimeInterval)7
+                                                             target:self 
+                                                           selector:@selector(albumArtChange:)
+                                                           userInfo:NULL repeats:YES ];
+    
+    UIImage *backimage    = [UIImage imageNamed:@"back_arrow.png"];
+    UIBarButtonItem *b = [[[UIBarButtonItem alloc] initWithImage:backimage style:UIBarButtonItemStyleBordered target:self action:@selector(backAction:)] autorelease];
+    self.navigationItem.leftBarButtonItem  = b;
+    
+    self.navigationItem.hidesBackButton = TRUE;
+    AppData *app = [AppData get];
+    
+    if( [app isPaused] )
+        [toolbartop_ setItems:[NSArray arrayWithObjects:flexbeg_, prev_, fixedprev_,
+                               play_,  fixedplay_, next_, flexend_, nil]];
+    else {
+        [toolbartop_ setItems:[NSArray arrayWithObjects:flexbeg_, prev_, fixedprev_,
+                               pause_,  fixedplay_, next_, flexend_, nil]];
+    }
+    
+    albumartdisplaycounter_ = 0;
+    
+    
+    tlabel_.text  = app.currentTrackTitle_;
+    alabel_.text  = app.currentArtist_;
+    allabel_.text = app.currentAlbum_;
+
+    [self setArtwork:app.artwork_ animated:NO];
+    //
+    // Restore the titles
+    //
+    [self titleAvailable:nil];
+}
+
+
+- (void) viewDidDisappear:(BOOL)animated
+{
+    AppData *app = [AppData get];
+    
+    tlabel_.text  = app.currentTrackTitle_;
+    alabel_.text  = app.currentArtist_;
+    allabel_.text = app.currentAlbum_;
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [albumartchangetimer_ invalidate];
+}
+
+
+-(void) transformViewToLandscape
+{
+    UIDeviceOrientation currentOrientation = [[UIDevice currentDevice] orientation];
+
+
+    // unknown, portrait, portrait u/d, landscape L, landscape R
+    CGAffineTransform  transform = CGAffineTransformMakeRotation(M_PI/2);
+    
+    NSInteger rotationDirection;
+    
+    if( currentOrientation == UIDeviceOrientationLandscapeLeft ){
+        rotationDirection = 1;
+    } else {
+        rotationDirection = -1;
+    }
+    
+    CGRect myFrame = CGRectMake( 0, 0, 480, 320 );
+     [self.landscapeView setFrame: myFrame];
+    CGPoint center = CGPointMake(myFrame.size.height/2.0, myFrame.size.width/2.0);
+    //CGPoint center = CGPointMake(0,320);
+
+    [self.landscapeView setCenter: center];
+    [self.landscapeView setTransform: transform];
+    [self.landscapeView setBounds:myFrame];
+}
+
+
+- (void)albumArtChange:(NSTimer *)theTimer
 {
     AppData *app = [AppData get];
     
@@ -794,71 +695,118 @@ static void myProviderReleaseData (void *info,const void *data,size_t size)
         UIImage *image = [app.albumartimages_ objectAtIndex:albumartdisplaycounter_];
         albumcoverview_.image = image;
         [imgView setImage:image];
-        
-        /*
-        [UIView beginAnimations:nil context:NULL];
-        [UIView setAnimationDuration:1];
-        [UIView setAnimationTransition:UIViewAnimationTransitionCurlDown forView:albumcovertracksview_ cache:YES];
-        UIImage *image = [app.albumartimages_ objectAtIndex:albumartdisplaycounter_];
-        albumcoverview_.image = image;
-        [UIView commitAnimations];
-        [imgView setImage:image];
-         }
-         */
-
-        //[UIView commitAnimations];        
-		albumartdisplaycounter_ = (albumartdisplaycounter_+1) % n;
+               
+        albumartdisplaycounter_ = (albumartdisplaycounter_+1) % n;
     } else {
 		albumartdisplaycounter_ = 0;
 	}	
 }
 
+- (void)resetArtwork
+{
+    albumcoverview_.image = emptyalbumartworkimage_;
+    AppData *app          = [AppData get];
+    app.artwork_          = emptyalbumartworkimage_;
+    [app.albumartimages_ removeAllObjects];
+}
 
-- (void)setArtwork:(UIImage *)image
+
+- (void)setArtwork:(UIImage *)image animated:(BOOL)animated
 {
     albumartdisplaycounter_ = 0;
-    if( image ) {
+    AppData *app = [AppData get];
+    
+    //NSLog( @"Setting Artwork for %s\n", [allabel_.text UTF8String]);
+    if( allabel_.text == nil ) return;
+    
+    @synchronized( self ) {
         // 
-        // if viewing the album art at the moment transition the album art to the new artwork
+        // Save the album art to history
         //
-        if( flipsideview_ == true ) {
-            [UIView beginAnimations:nil context:NULL];
-            [UIView setAnimationDuration:1];
-            [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromLeft forView:albumcovertracksview_ cache:YES];
+        AlbumInfo *ainfo = [app.albumHistory_ objectForKey:allabel_.text];
+        if( ainfo == nil ) {
+            ainfo = [[AlbumInfo alloc] init];
+            if( image ) {
+                CGImageRef cgImage = [image CGImage];
+                CGImageRef ncgImage = CGImageCreateCopy(cgImage);
+                // Make a new image from the CG Reference
+                UIImage *cimg = [[UIImage alloc] initWithCGImage:ncgImage];
+                UIImage *img  = [cimg rescaleImageToSize:CGSizeMake(255, 255)];
+                ainfo.art     = img;
+                
+            }
+            else {
+                UIImage *img = [emptyalbumartworkimage_ rescaleImageToSize:CGSizeMake(255, 255)];
+                ainfo.art    = img;
+            }
+            ainfo.artistName = [dict_ objectForKey:@"artistName"];
+            ainfo.albumIdReq = [dict_ objectForKey:@"albumId"];
+            ainfo.index      = [app.albumHistory_ count];
+            [app.albumHistory_ setValue:ainfo forKey:allabel_.text];
+            [ainfo release];
         }
-        albumcoverview_.image = image;
-        if( flipsideview_ == true )
-            [UIView commitAnimations];
+        else {
+            if( image ) {
+                CGImageRef cgImage = [image CGImage];
+                CGImageRef ncgImage = CGImageCreateCopy(cgImage);
+                UIImage *cimg = [[UIImage alloc] initWithCGImage:ncgImage];
+                UIImage *img  = [cimg rescaleImageToSize:CGSizeMake(255, 255)];
+                ainfo.art        = img;
+            }
+        }
         
         // 
-        // if viewing the track list at the moment transition the navigation button's album artwork to the new one
+        // Update the landscape view
         //
-        if( flipsideview_ == false ) {
-            [UIView beginAnimations:nil context:NULL];
-            [UIView setAnimationDuration:1];
-            [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromLeft 
-                                   forView:albumcovertracksbview_ cache:YES];
-            [albumcovertracksb_ setBackgroundImage:image forState:UIControlStateNormal];
-            [UIView commitAnimations];
-        }
-        //
-        // if the cover flow display type is album art add this
-        // album art
-        //
-        AppData *app = [AppData get];
-        [app.albumartimages_ removeAllObjects];
-
-        [flowCover resetItem:[app.images_ count]];
-        [app.images_ addObject:image];
-        [imgView setImage:image];
-        [flowCover setNeedsDisplay];
-        [flowCover draw];
+        [afFlowCover setNumberOfImages:[app.albumHistory_ count]];
+        [afFlowCover forceUpdateCoverImage:[afFlowCover coverForIndex:ainfo.index]];
+        [afFlowCover setSelectedCover:ainfo.index];
+        [afFlowCover centerOnSelectedCover:YES];
         
-    } else {
-        albumcoverview_.image = emptyalbumartworkimage_;
-        AppData *app = [AppData get];
-        app.artwork_ = nil;
-        [app.albumartimages_ removeAllObjects];
+        //
+        // Now update the portrait view
+        //
+        if( image ) {
+            //
+            // Add to the list of albums played so far
+            //
+            
+            // 
+            // if viewing the album art at the moment transition the album art to the new artwork
+            //
+            if( flipsideview_ == true ) {
+                if( animated ) {
+                    [UIView beginAnimations:nil context:NULL];
+                    [UIView setAnimationDuration:1];
+                    [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromLeft forView:albumcovertracksview_ cache:YES];
+                }
+            }
+            albumcoverview_.image = image;
+            if( flipsideview_ == true ) {
+                if( animated )
+                    [UIView commitAnimations];
+            }
+            
+            // 
+            // if viewing the track list at the moment transition the navigation button's album artwork to the new one
+            //
+            if( flipsideview_ == false ) {
+                [UIView beginAnimations:nil context:NULL];
+                [UIView setAnimationDuration:1];
+                [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromLeft 
+                                       forView:albumcovertracksbview_ cache:YES];
+                [albumcovertracksb_ setBackgroundImage:image forState:UIControlStateNormal];
+                [UIView commitAnimations];
+            }
+            //
+            // if the cover flow display type is album art add this
+            // album art
+            //
+            [app.albumartimages_ removeAllObjects];
+            [imgView setImage:ainfo.art];
+        } else {
+            [self resetArtwork];
+        }
     }
 }
 
@@ -868,15 +816,16 @@ static void myProviderReleaseData (void *info,const void *data,size_t size)
     AppData *app = [AppData get];
     UIImage *img = app.artwork_;
     
-    [self setArtwork:img];
     //
     // save the artwork in the image cache
     //
     //[app.albumArtCache_.cache_ setObject:img forKey:app.currentAlbum_];
-    
+ 
     tlabel_.text  = app.currentTrackTitle_;
     alabel_.text  = app.currentArtist_;
     allabel_.text = app.currentAlbum_;
+
+    [self setArtwork:img animated:YES];
 }
 
 
@@ -892,8 +841,11 @@ static void myProviderReleaseData (void *info,const void *data,size_t size)
     }
 
     [app setCurrentTrackIndex_:0];
+
     NSDictionary *d = [app.trackList_ objectAtIndex:0];
     [app playTrack:d];
+    
+    //[self setArtwork:app.artwork_ animated:NO];
 }
 
 -(void) stopLoadingView
@@ -925,6 +877,7 @@ static void myProviderReleaseData (void *info,const void *data,size_t size)
     
     [app setCurrentTrackIndex_:0];
     NSDictionary *d = [app.currentTracklist_ objectAtIndex:0];
+
     [app playTrack:d];
 }
 
@@ -964,121 +917,6 @@ static void myProviderReleaseData (void *info,const void *data,size_t size)
 
 
 
-- (void)viewDidLoad 
-{
-    AppData *app = [AppData get];
-
-    [volume_ setValue:[app lastVolume_]];
-    
-    // setup timer.
-    if( 1 )
-    {
-        [NSTimer scheduledTimerWithTimeInterval:(NSTimeInterval)0.5 
-                                         target:self 
-                                       selector:@selector(myTimerFireMethod:)
-                                       userInfo:NULL repeats:YES ];
-    }   
-    
-    // 
-    // setup play/pause notifications to change the buttons appropriately
-    //
-    [[NSNotificationCenter defaultCenter] addObserver:self 
-                                             selector:@selector(displayPauseButton:) 
-                                                 name:@"appPlaying" 
-                                               object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self 
-                                             selector:@selector(displayPlayButton:) 
-                                                 name:@"appPaused" 
-                                               object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self 
-                                             selector:@selector(displayPauseButton:) 
-                                                 name:@"appResumed" 
-                                               object:nil];
-}
-
-
-
-
-
-/*
-        flip the displayed view from the main view to the flipside(song list) view and vice-versa.
- */
-
-- (void) toggleView 
-{
-}
-
-
--(IBAction) flipToTracklistView:(id) sender
-{
-    AppData *app = [AppData get];
-
-    //
-    // Animate the artwork to track list
-    //
-    [UIView beginAnimations:nil context:NULL];
-    [UIView setAnimationDuration:1];
- 
-    [UIView setAnimationTransition:([self.view superview] ? 
-                                    UIViewAnimationTransitionFlipFromRight : UIViewAnimationTransitionFlipFromLeft) 
-                                    forView:albumcovertracksview_ cache:YES];
-    
-   
-    if ([tracklistview_ superview])
-    {
-        [tracklistview_ removeFromSuperview];
-        [albumcovertracksview_ addSubview:albumcoverview_];
-        flipsideview_ = true;
-    }
-    else
-    {
-        [albumcoverview_ removeFromSuperview];
-        [albumcovertracksview_ addSubview:tracklistview_];
-        flipsideview_ = false;
-    }
-    
-    
-    [UIView commitAnimations];  
-    
-    // 
-    // Animate the navigation button to the opposite of the artwork animation
-    //
-    [UIView beginAnimations:nil context:NULL];
-    [UIView setAnimationDuration:1];
-    
-    
-    [UIView setAnimationTransition:([self.view superview] ? 
-                                    UIViewAnimationTransitionFlipFromRight : UIViewAnimationTransitionFlipFromLeft) 
-                           forView:albumcovertracksbview_ cache:YES];
-    
-    if( flipsideview_ == true ) {
-        [albumcovertracksb_ addTarget:self action:@selector(flipToTracklistView:) 
-                     forControlEvents:UIControlEventTouchUpInside];
-        [albumcovertracksb_ setBackgroundImage:infoimage_ forState:UIControlStateNormal];
-    
-        [albumcovertracksb_ addTarget:self action:@selector(flipToTracklistView:) 
-                     forControlEvents:UIControlEventTouchUpInside];
-    }
-    else {
-        UIImage *image = app.artwork_;
-        if( image == nil )
-            image = emptyalbumartworkimage_;
-        [albumcovertracksb_ setBackgroundImage:image forState:UIControlStateNormal];
-    }
-    
-    [UIView commitAnimations];  
-
-}
-
-
-/*
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    [self flipToTracklistView];
-}
-*/
 
 
 
@@ -1183,56 +1021,10 @@ static void myProviderReleaseData (void *info,const void *data,size_t size)
     alabel_.text  = artist;
     allabel_.text = album;
     
+
 }
 
 
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [[NSNotificationCenter defaultCenter] addObserver:self 
-                                             selector:@selector(artworkReady:) 
-                                                 name:@"artworkReady" 
-                                               object:nil]; 
-
-    [[NSNotificationCenter defaultCenter] addObserver:self 
-                                             selector:@selector(titleAvailable:) 
-                                                 name:@"titleAvailable" 
-                                               object:nil]; 
-	
-    albumartchangetimer_ =  [NSTimer scheduledTimerWithTimeInterval:(NSTimeInterval)7
-                                                             target:self 
-                                                           selector:@selector(albumArtChange:)
-                                                           userInfo:NULL repeats:YES ];
-    
-    UIImage *backimage    = [UIImage imageNamed:@"back_arrow.png"];
-    UIBarButtonItem *b = [[[UIBarButtonItem alloc] initWithImage:backimage style:UIBarButtonItemStyleBordered target:self action:@selector(backAction:)] autorelease];
-    self.navigationItem.leftBarButtonItem  = b;
-    
-    self.navigationItem.hidesBackButton = TRUE;
-    AppData *app = [AppData get];
-    
-    if( [app isPaused] )
-        [toolbartop_ setItems:[NSArray arrayWithObjects:flexbeg_, prev_, fixedprev_,
-                               play_,  fixedplay_, next_, flexend_, nil]];
-    else {
-        [toolbartop_ setItems:[NSArray arrayWithObjects:flexbeg_, prev_, fixedprev_,
-                               pause_,  fixedplay_, next_, flexend_, nil]];
-    }
-    
-    albumartdisplaycounter_ = 0;
-    [self artworkReady:nil];
-    [self titleAvailable:nil];
-}
-
--(void) viewWillDisappear:(BOOL)animated
-{
-}
-
-- (void) viewDidDisappear:(BOOL)animated
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [albumartchangetimer_ invalidate];
-}
 
 
 -(IBAction) setvolume:(id)sender
@@ -1323,7 +1115,6 @@ static void myProviderReleaseData (void *info,const void *data,size_t size)
 
 - (void)updateLandscapeView
 {
-
     if (([[UIDevice currentDevice] orientation] == UIDeviceOrientationLandscapeLeft) || 
         ([[UIDevice currentDevice] orientation] == UIDeviceOrientationLandscapeRight)) {
         [self.navigationController setNavigationBarHidden:YES animated:NO];
@@ -1335,33 +1126,18 @@ static void myProviderReleaseData (void *info,const void *data,size_t size)
     }   
 }
 
-/*
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
+
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation 
 {
-    if(interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown) {
-        self.view = self.portraitView;
-        return YES;
-    }
-    else if(interfaceOrientation == UIInterfaceOrientationPortrait) {
-        self.view = self.portraitView;
-        return YES;
-    }
-    else if(interfaceOrientation == UIInterfaceOrientationLandscapeRight ) {
-        self.view = self.landscapeView;
-        return YES;
-    }
-    else {
-        self.view = self.landscapeView;
-        return YES;
-    }
-
+    [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
     return YES;
 }
+
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
@@ -1375,7 +1151,7 @@ static void myProviderReleaseData (void *info,const void *data,size_t size)
         self.view = landscapeView;
     }
 }
-*/
+
 
 - (void)didReceiveMemoryWarning 
 {
@@ -1388,6 +1164,221 @@ static void myProviderReleaseData (void *info,const void *data,size_t size)
 {
     [super dealloc];
 }
+
+#pragma mark -
+#pragma mark UISlider (Custom)
+
+- (void)create_Custom_UISlider:(CGRect)frame
+{
+    volume_ = [[UISlider alloc] initWithFrame:frame];
+    [volume_ addTarget:self action:@selector(setvolume:) forControlEvents:UIControlEventValueChanged];
+    
+    // in case the parent view draws with a custom color or gradient, use a transparent color
+    volume_.backgroundColor = [UIColor clearColor]; 
+    
+    [volume_ setThumbImage: [UIImage imageNamed:@"slider_ball_bw.png"] forState:UIControlStateNormal];
+    
+    volume_.minimumValue               = 0.0;
+    volume_.maximumValue               = 1.0;
+    volume_.continuous                 = YES;
+    volume_.value                      = 1.0;
+    volume_.alpha                      = 1.000;
+    volume_.autoresizingMask           = UIViewAutoresizingFlexibleRightMargin | 
+    UIViewAutoresizingFlexibleBottomMargin;
+    volume_.clearsContextBeforeDrawing = YES;
+    volume_.clipsToBounds              = YES;
+    
+    
+    UIImage *stetchLeftTrack = [[UIImage imageNamed:@"leftslide.png"]
+                                stretchableImageWithLeftCapWidth:10.0 topCapHeight:0.0];
+    UIImage *stetchRightTrack = [[UIImage imageNamed:@"rightslide.png"]
+                                 stretchableImageWithLeftCapWidth:10.0 topCapHeight:0.0];
+    //    [customSlider setThumbImage: [UIImage imageNamed:@"slider_ball.png"] forState:UIControlStateNormal];
+    [volume_ setMinimumTrackImage:stetchLeftTrack forState:UIControlStateNormal];
+    [volume_ setMaximumTrackImage:stetchRightTrack forState:UIControlStateNormal];
+    [volume_ setMinimumValueImage:[UIImage imageNamed:@"SpeakerSoft.tif"]];
+    [volume_ setMaximumValueImage:[UIImage imageNamed:@"SpeakerLoud.tif"]];
+    
+}
+
+- (void)backAction:(id)sender 
+{
+    SimpleIO *io = [SimpleIO singelton];
+    
+    [io cancelAll];
+    [self.navigationController popViewControllerAnimated:YES]; 
+}
+
+-(void) setupnavigationitems:(UINavigationItem *) ni 
+                      navBar:(UINavigationBar *) navBar
+                    datadict:(NSDictionary *)dict
+{
+    /*
+     UIImage *backimage    = [UIImage imageNamed:@"back_arrow.png"];
+     
+     UIBarButtonItem *b = [[[UIBarButtonItem alloc] initWithImage:backimage style:UIBarButtonItemStyleBordered target:self action:@selector(backAction)] autorelease];
+     ni.hidesBackButton = YES;
+     ni.leftBarButtonItem  = b;
+     */
+    
+    infoimage_            = [UIImage imageNamed:@"track_info_withbg.png"];
+    
+    albumcovertracksbview_             = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 35, 32)] retain];
+    albumcovertracksb_                 = [[[UIButton alloc] initWithFrame:CGRectMake( 0, 0, 35, 32 )] retain];
+    albumcovertracksb_.backgroundColor = [UIColor clearColor];
+    
+    navBar.barStyle                    = UIBarStyleBlackOpaque;
+    
+    [albumcovertracksb_ addTarget:self action:@selector(flipToTracklistView:) forControlEvents:UIControlEventTouchUpInside];
+    [albumcovertracksb_ setBackgroundImage:infoimage_ forState:UIControlStateNormal];
+    [albumcovertracksbview_ addSubview:albumcovertracksb_];
+    
+    
+    UIBarButtonItem *b                      = [[UIBarButtonItem alloc] initWithCustomView:albumcovertracksbview_];
+    [self.navigationItem setRightBarButtonItem:b];
+    [b release];
+    
+    toolbartop_ = [[UIToolbar alloc] initWithFrame:CGRectMake( 0.0, 0.0, 0.0, 0.0 )];
+    toolbartop_.opaque                 = NO;
+    toolbartop_.barStyle               = UIBarStyleBlackOpaque;
+    //toolbartop_.backgroundColor        = [UIColor clearColor];
+    //[navBar addSubview:toolbartop_];
+    
+    self.navigationItem.titleView       = toolbartop_;
+    self.navigationItem.titleView.frame = CGRectMake( 0, 0, 320, 40 );
+    
+    pause_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemPause 
+                                                           target:self action:@selector(pause:)];
+    pause_.enabled = YES;
+    pause_.style   = UIBarButtonItemStylePlain;
+    pause_.tag     = 0;
+    pause_.width   = 0.000;
+    
+    flexbeg_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace 
+                                                             target:nil action:nil];
+    flexbeg_.enabled = YES;
+    flexbeg_.style   = UIBarButtonItemStylePlain;
+    flexbeg_.tag     = 0;
+    flexbeg_.width   = 0.000;
+    
+    prev_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRewind 
+                                                          target:self   action:@selector(prev:)];
+    prev_.enabled = YES;
+    prev_.style   = UIBarButtonItemStylePlain;
+    prev_.tag     = 0;
+    prev_.width   = 0.000;
+    
+    fixedprev_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace 
+                                                               target:nil action:nil];
+    fixedprev_.enabled = YES;
+    fixedprev_.style   = UIBarButtonItemStylePlain;
+    fixedprev_.tag     = 0;
+    fixedprev_.width   = 30.000;
+    
+    stop_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemStop
+                                                          target:self action:@selector(stop:)];
+    stop_.enabled = YES;
+    stop_.style   = UIBarButtonItemStylePlain;
+    stop_.tag     = 0;
+    stop_.width   = 0.000;
+    
+    pause_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemPause 
+                                                           target:self action:@selector(pause:)];
+    pause_.enabled = YES;
+    pause_.style   = UIBarButtonItemStylePlain;
+    pause_.tag     = 0;
+    pause_.width   = 0.000;
+    
+    fixedpause_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace
+                                                                target:nil action:nil];
+    fixedpause_.enabled = YES;
+    fixedpause_.style   = UIBarButtonItemStylePlain;
+    fixedpause_.tag     = 0;
+    fixedpause_.width   = 30.000;
+    
+    play_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemPlay
+                                                          target:self action:@selector(play:)];
+    play_.enabled = YES;
+    play_.style   = UIBarButtonItemStylePlain;
+    play_.tag     = 0;
+    play_.width   = 0.000;
+    
+    
+    fixedplay_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+    fixedplay_.enabled = YES;
+    fixedplay_.style   = UIBarButtonItemStylePlain;
+    fixedplay_.tag     = 0;
+    fixedplay_.width   = 30.000;
+    
+    next_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFastForward 
+                                                          target:self action:@selector(next:)];
+    next_.enabled = YES;
+    next_.style   = UIBarButtonItemStylePlain;
+    next_.tag     = 0;
+    next_.width   = 0.000;
+    
+    flexend_         = [[UIBarButtonItem alloc] 
+                        initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace 
+                        target:nil action:nil];
+    flexend_.enabled = YES;
+    flexend_.style   = UIBarButtonItemStylePlain;
+    flexend_.tag     = 0;
+    flexend_.width   = 0.000;
+    
+    [toolbartop_ setItems:[NSArray arrayWithObjects: flexbeg_, prev_, fixedprev_, 
+                           play_,  fixedplay_, next_, flexend_, nil]];
+    if( dict ) {
+        dict_ = dict;
+        
+        AppData *app = [AppData get];
+        //
+        // view loaded, queue up tracklist.
+        //
+        [[NSNotificationCenter defaultCenter] addObserver:self 
+                                                 selector:@selector(trackListReady:) 
+                                                     name:@"trackListReady"
+                                                   object:nil]; 
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self 
+                                                 selector:@selector(playListTracksReady:) 
+                                                     name:@"playListTracksReady"
+                                                   object:nil]; 
+        
+        NSString *req = [dict_ objectForKey:@"albumId"];
+        NSString *playlistid = [dict objectForKey:@"playlistId"];
+        
+        if( playlistid ) {
+            NSString *enc = [playlistid stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding];
+            [app getPlayListTracksAsync:enc];
+        }
+        else {
+            [app getTrackListAsync:req];
+        }
+        
+        //
+        // setup the progress view
+        //
+        if( progressView_ ) {
+            [progressView_ removeFromSuperview];
+            [progressView_ release];
+            progressView_ = nil;
+        }
+        
+        progressView_                 = [[[UILabel alloc] initWithFrame:CGRectMake( 30, 100, 250, 100)] retain];
+        progressView_.backgroundColor = [UIColor clearColor];
+        progressView_.alpha           = 1.0;
+        [self.view addSubview:progressView_];
+        [progressView_ release];
+        
+        if( loadingView_ ) [loadingView_ release];
+        loadingView_ = nil;
+        
+        loadingView_ = [[LoadingView loadingViewInView:progressView_ loadingText:@"Loading Track List..."] retain]; 
+    }
+}
+
+#pragma mark -
+#pragma mark Table View delegates
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView 
 {
@@ -1418,53 +1409,139 @@ static void myProviderReleaseData (void *info,const void *data,size_t size)
 }
 
 
+#pragma mark -
+#pragma mark Async Delegate
 
-/************************************************************************/
-/*																		*/
-/*	FlowCover Callbacks													*/
-/*																		*/
-/************************************************************************/
 
-- (int)flowCoverNumberImages:(FlowCoverView *)view
+
+-(void) didFailWithError:(NSError*)err  userData:(id)user 
 {
-	return 75;
 }
 
-- (UIImage *)flowCover:(FlowCoverView *)view cover:(int)index
-{	
+-(BOOL) someData:(NSData*)data          userData:(id)user 
+{
+    return FALSE;
+}
+
+//
+// helper for image data
+//
+static void myProviderReleaseData (void *info,const void *data,size_t size)
+{
+    NSData *d = info;
+    [d release];
+}
+
+
+-(void) finishedWithData:(NSData*)data  userData:(id)user 
+{
+    AppData *app = [AppData get];
+    SimpleIO *io = [SimpleIO singelton];
+	
+    @synchronized( self ) {
+        NSString *str = user;
+        
+        if ([str compare:@"main"] == NSOrderedSame) {
+            NSMutableArray *result = convertListToRequests( data );
+            if (result) {
+                NSString *s;
+                for  (s in result) {
+                    ConnectionInfo *info = [[ConnectionInfo alloc] init];
+                    info.address_ = s;
+                    info.delegate_ = self;
+                    info.userdata_ = @"picture";   // +s
+                    [io request:info];    
+                    [info release];
+                }
+            }
+        }
+        else {
+            NSData *d = [[NSData dataWithData:data] retain];
+            CGDataProviderRef provider = CGDataProviderCreateWithData( d, [d bytes],[d length], 
+                                                                      myProviderReleaseData );
+            CGImageRef imageref = CGImageCreateWithJPEGDataProvider( provider, NULL, true, kCGRenderingIntentDefault );
+            if( !imageref ) {
+                return;      
+            }
+            
+            CGImageRetain( imageref );
+            UIImage *img = [UIImage imageWithCGImage:imageref];
+            CGDataProviderRelease( provider );        
+            
+            CGImageRelease( imageref );
+            [app.albumartimages_ addObject:img];
+        }
+    }
+}
+
+
+
+
+#pragma mark -
+#pragma mark Cover flow delegates
+
+- (UIImage *)defaultImage 
+{
+    defaultCoverFlowImage_ = [emptyalbumartworkimage_ cropCenterAndScaleImageToSize:CGSizeMake(255, 255)];
+	return defaultCoverFlowImage_;
+}
+
+-(void)openFlowView:(AFOpenFlowView *)openFlowView requestImageForIndex:(int)index 
+{
     AppData *app = [AppData get];
     
-	if (index >= [app.images_ count]) {
-		return [UIImage imageNamed:@"empty_album_art.png"];
+	if( index >= [app.albumHistory_ count] ) {
+        [(AFOpenFlowView *)self.landscapeView setImage:emptyalbumartworkimage_ forIndex:index];
+        return;
 	}
-	
-	UIImage *img = [app.images_ objectAtIndex:index];    
-	if (!img) {
-		return [UIImage imageNamed:@"empty_album_art.png"];
-	}
-	
-	return img;
+    
+    NSArray *keys = [app.albumHistory_ allKeys];
+	// values in foreach loop
+	for( NSString *key in keys ) {
+        AlbumInfo *i = [app.albumHistory_ objectForKey:key];
+        if( i ) {
+            if( i.index == index ) {
+                [(AFOpenFlowView *)self.landscapeView setImageAndText:i.art
+                                                           albumLabel:key
+                                                          artistLabel:i.artistName
+                                                             forIndex:i.index];
+                //[(AFOpenFlowView *)self.landscapeView setImage:i.art forIndex:i.index];
+                return;
+            }
+        }
+    }
+    [(AFOpenFlowView *)self.landscapeView setImage:emptyalbumartworkimage_ forIndex:index];
 }
 
-
-- (void)flowCover:(FlowCoverView *)view didSelect:(int)image
+- (void)openFlowView:(AFOpenFlowView *)openFlowView selectionDidChange:(int)index 
 {
-	NSLog(@"Selected Index %d",image);
+    AppData *app = [AppData get];
+    NSArray *keys = [app.albumHistory_ allKeys];
+	// values in foreach loop
+	for( NSString *key in keys ) {
+        AlbumInfo *i = [app.albumHistory_ objectForKey:key];
+        if( i ) {
+            if( i.index == index ) {
+                NSString *req = i.albumIdReq;
+                [app getTrackListAsync:req];
+            }
+        }
+    }
+    
 }
+
+#pragma end
 
 
 @end
 
 
-
+#pragma mark -
 
 // --------------------------------------------------------------------------------
 // helper code for flickr
 // --------------------------------------------------------------------------------
 
-#pragma mark	-
-#pragma mark		xml parser delegate
-#pragma mark	-
 
 @interface FlickrXMLPictDelegate : NSObject {
     NSMutableArray *picts_;
@@ -1512,7 +1589,8 @@ static NSMutableString* apiPrefix(NSString* method)
     NSMutableString *prefix = [[[NSMutableString alloc] init] autorelease];
     [prefix appendString:@"http://api.flickr.com/services/rest/?method="];
     [prefix appendString:method];
-    [prefix appendString:@"&api_key=30b5b38adcaa90ff3db93e87d2e40fae"];	
+    //[prefix appendString:@"&api_key=30b5b38adcaa90ff3db93e87d2e40fae"];	
+    [prefix appendString:@"&api_key=1fcef533bbef1c9136ce74b00fff8af2"];
     return prefix;
 }
 

@@ -735,9 +735,9 @@
 
 
 
-#pragma mark ------------------------------------------------
+#pragma mark -
 #pragma mark UITableView delegates
-#pragma mark ------------------------------------------------
+#pragma mark -
 
 - (NSArray *) sectionIndexTitlesForTableView:(UITableView *) tableView 
 {
@@ -758,6 +758,7 @@
 	return UITableViewCellAccessoryDisclosureIndicator;
 }
  */
+
 
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -784,7 +785,7 @@
 		//printf( "outta bounds: %d\n", sectionIndex );
 		return;
 	}
-    
+
 	NSDictionary *d = [albumDisplayList_[sectionIndex] objectAtIndex:indexPath.row];
     
     NowPlayingController *nowplayingVC = [[NowPlayingController alloc] init];
@@ -794,26 +795,14 @@
                               datadict:d];
     
     [self navigationController].navigationBarHidden = FALSE;
-    
-    //NSString *req = [d objectForKey:@"albumId"];
-    //[app getTrackListAsync:req];
-    
-    /*
-    [[NSNotificationCenter defaultCenter] addObserver:self 
-											 selector:@selector(trackListReady:) 
-												 name:@"trackListReady" 
-											   object:nil];	
-	*/
-    
-    
-    [nowplayingVC setArtwork:nil];
+
     [[self navigationController] pushViewController:nowplayingVC animated:YES];		
     
     [nowplayingVC release];
 }
 
 
-#pragma mark UITableView datasource methods
+#pragma mark UITableView datasource
 
 
 - (NSString *)tableView:(UITableView *)tableView

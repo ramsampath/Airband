@@ -22,12 +22,15 @@
     UIView      *progressView_;
     
     bool         clearTable_;
+    
+    NSDictionary* selectionDict_;
 }
 
 @property (nonatomic, retain) UITableView* table_;
 @property (nonatomic, retain) NSDictionary* playlist_;
 @property (nonatomic, retain) NSDictionary* artist_;
 @property (nonatomic, retain) NSDictionary* albumtracks_;
+@property (nonatomic, retain) NSDictionary* selectionDict_;
 
 - (void) nowPlaying:(id) sender;
 

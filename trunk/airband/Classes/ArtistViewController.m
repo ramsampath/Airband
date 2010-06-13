@@ -187,80 +187,80 @@
 // Implement loadView to create a view hierarchy programmatically, without using a nib.
 - (void)loadView
 {
-	UIColor *viewbgcolor                = kBgColor;
+    UIColor *viewbgcolor                = kBgColor;
 	
-	UIView *mainview                    = [[UIView alloc] initWithFrame:CGRectMake( 0.0, 0.0, 320.0, 480.0 )];
-	mainview.frame                      = CGRectMake(0.0, 0.0, 320.0, 480.0);
-	mainview.alpha                      = 1.000;
-	//mainview.autoresizingMask           = UIViewAutoresizingFlexibleTopMargin;
+    UIView *mainview                    = [[UIView alloc] initWithFrame:CGRectMake( 0.0, 0.0, 320.0, 480.0 )];
+    mainview.frame                      = CGRectMake(0.0, 0.0, 320.0, 480.0);
+    mainview.alpha                      = 1.000;
+    //mainview.autoresizingMask           = UIViewAutoresizingFlexibleTopMargin;
     //
     // the autoresizing is set to None to prevent the table to slide under the navigation bar
     //
     mainview.autoresizingMask           = UIViewAutoresizingNone;
     
-	mainview.backgroundColor            = viewbgcolor;
-	mainview.clearsContextBeforeDrawing = YES;
-	mainview.clipsToBounds              = NO;
-	mainview.contentMode                = UIViewContentModeScaleToFill;
-	mainview.hidden                     = NO;
-	mainview.multipleTouchEnabled       = NO;
-	mainview.opaque                     = YES;
-	mainview.tag                        = 0;
-	mainview.userInteractionEnabled     = YES;
-    mainview.backgroundColor            = [UIColor colorWithPatternImage:[UIImage imageNamed:@"LogoBkgrnd.png"]];
+    mainview.backgroundColor            = viewbgcolor;
+    mainview.clearsContextBeforeDrawing = YES;
+    mainview.clipsToBounds              = NO;
+    mainview.contentMode                = UIViewContentModeScaleToFill;
+    mainview.hidden                     = NO;
+    mainview.multipleTouchEnabled       = NO;
+    mainview.opaque                     = YES;
+    mainview.tag                        = 0;
+    mainview.userInteractionEnabled     = YES;
+    mainview.backgroundColor            = [UIColor colorWithPatternImage:[UIImage imageNamed:@"LogoBkgrnd@2x.png"]];
     artistOrgControl_                   = [[UISegmentedControl alloc] initWithItems:
                                           [NSArray arrayWithObjects:@"A-Z", @"Shuffle", nil]];
-	[artistOrgControl_ addTarget:self action:@selector(artistOrgControlAction:) 
+    [artistOrgControl_ addTarget:self action:@selector(artistOrgControlAction:) 
                 forControlEvents:UIControlEventValueChanged];
-	artistOrgControl_.selectedSegmentIndex  = 0.0;	
-	artistOrgControl_.segmentedControlStyle = UISegmentedControlStyleBar;
+    artistOrgControl_.selectedSegmentIndex  = 0.0;	
+    artistOrgControl_.segmentedControlStyle = UISegmentedControlStyleBar;
     artistOrgControl_.tintColor             = [UIColor darkGrayColor];
-	artistOrgControl_.backgroundColor       = [UIColor clearColor];
+    artistOrgControl_.backgroundColor       = [UIColor clearColor];
     
     
     azsortbutton_ = [[UIBarButtonItem alloc] initWithCustomView:artistOrgControl_];	
-	[azsortbutton_ release];
+    [azsortbutton_ release];
     
     
-	UIColor *tablecolor                         = kBgColor;
+    UIColor *tablecolor                         = kBgColor;
 
 
-	artistTable_                                 = [[UITableView alloc] init];
+    artistTable_                                 = [[UITableView alloc] init];
     artistTable_.delegate                        = self;
     artistTable_.dataSource                      = self;
-	//artistTable_.frame                           = CGRectMake( 0.0, 40.5, 320.0, 450 );
+    //artistTable_.frame                           = CGRectMake( 0.0, 40.5, 320.0, 450 );
     float h = self.navigationController.navigationBar.bounds.size.height;
 
     artistTable_.frame                           = CGRectMake( 0.0, 0.0, 320, 480 );
-	artistTable_.allowsSelectionDuringEditing    = NO;
-	artistTable_.alpha                           = 1.0;
-	artistTable_.alwaysBounceHorizontal          = NO;
-	artistTable_.alwaysBounceVertical            = NO;
-	artistTable_.autoresizingMask                = UIViewAutoresizingFlexibleWidth | 
+    artistTable_.allowsSelectionDuringEditing    = NO;
+    artistTable_.alpha                           = 1.0;
+    artistTable_.alwaysBounceHorizontal          = NO;
+    artistTable_.alwaysBounceVertical            = NO;
+    artistTable_.autoresizingMask                = UIViewAutoresizingFlexibleWidth | 
     UIViewAutoresizingFlexibleHeight ;
-	artistTable_.backgroundColor                 = tablecolor;
-	artistTable_.bounces                         = YES;
-	artistTable_.bouncesZoom                     = YES;
-	artistTable_.canCancelContentTouches         = YES;
-	artistTable_.clearsContextBeforeDrawing      = NO;
-	artistTable_.clipsToBounds                   = YES;
+    artistTable_.backgroundColor                 = tablecolor;
+    artistTable_.bounces                         = YES;
+    artistTable_.bouncesZoom                     = YES;
+    artistTable_.canCancelContentTouches         = YES;
+    artistTable_.clearsContextBeforeDrawing      = NO;
+    artistTable_.clipsToBounds                   = YES;
 	//artistTable_.contentMode                     = UIViewContentModeScaleToFill;
-	artistTable_.delaysContentTouches            = YES;
-	artistTable_.directionalLockEnabled          = NO;
-	artistTable_.hidden                          = NO;
-	artistTable_.indicatorStyle                  = UIScrollViewIndicatorStyleDefault;
-	artistTable_.maximumZoomScale                = 1.000;
-	artistTable_.minimumZoomScale                = 1.000;
-	artistTable_.multipleTouchEnabled            = NO;
-	artistTable_.opaque                          = NO;
-	artistTable_.pagingEnabled                   = NO;
-	artistTable_.scrollEnabled                   = YES;
-	artistTable_.separatorStyle                  = UITableViewCellSeparatorStyleNone;
-	artistTable_.separatorColor                  = kBgColor;
-	artistTable_.showsHorizontalScrollIndicator  = YES;
-	artistTable_.showsVerticalScrollIndicator    = YES;
-	artistTable_.tag                             = 0;
-	artistTable_.userInteractionEnabled          = YES;
+    artistTable_.delaysContentTouches            = YES;
+    artistTable_.directionalLockEnabled          = NO;
+    artistTable_.hidden                          = NO;
+    artistTable_.indicatorStyle                  = UIScrollViewIndicatorStyleDefault;
+    artistTable_.maximumZoomScale                = 1.000;
+    artistTable_.minimumZoomScale                = 1.000;
+    artistTable_.multipleTouchEnabled            = NO;
+    artistTable_.opaque                          = NO;
+    artistTable_.pagingEnabled                   = NO;
+    artistTable_.scrollEnabled                   = YES;
+    artistTable_.separatorStyle                  = UITableViewCellSeparatorStyleNone;
+    artistTable_.separatorColor                  = kBgColor;
+    artistTable_.showsHorizontalScrollIndicator  = YES;
+    artistTable_.showsVerticalScrollIndicator    = YES;
+    artistTable_.tag                             = 0;
+    artistTable_.userInteractionEnabled          = YES;
     artistTable_.backgroundColor                 = [UIColor clearColor];
 
 
@@ -278,30 +278,29 @@
 	searchfield_.userInteractionEnabled = YES;
     
     //
-	// don't get in the way of user typing
+    // don't get in the way of user typing
     //
     searchfield_.autocorrectionType     = UITextAutocorrectionTypeNo;
     searchfield_.autocapitalizationType = UITextAutocapitalizationTypeNone;
-	searchfield_.tintColor              = kBgColor;
+    searchfield_.tintColor              = kBgColor;
     searchfield_.showsCancelButton      = NO;
-	searchfield_.delegate               = self;
-	UIView  *subView;
-	NSArray *subViews = [searchfield_ subviews];
-	for( subView in subViews ) {
+    searchfield_.delegate               = self;
+    UIView  *subView;
+    NSArray *subViews = [searchfield_ subviews];
+    for( subView in subViews ) {
 		if( [subView isKindOfClass:[UITextField class]] ) {
 			UITextField *tf                  = (UITextField*)subView;
 			tf.delegate                      = self;
 			tf.enablesReturnKeyAutomatically = NO;
 		}
-        
-	}
+    }
     //[artistTable_ addSubview:searchfield_];
 
-	[mainview addSubview:artistTable_];
+    [mainview addSubview:artistTable_];
     [artistTable_ release];
     
-	//[mainview addSubview:searchfield_];
-	[mainview addSubview:artistOrgControl_];
+    //[mainview addSubview:searchfield_];
+    [mainview addSubview:artistOrgControl_];
     [artistOrgControl_ release];
     
     self.view = mainview;
@@ -324,14 +323,6 @@
 	bar.barStyle                  = UIBarStyleBlackOpaque;
     self.navigationItem.titleView = artistOrgControl_;	
     sectionBGImage_               = [UIImage imageNamed:@"greenbar.png"];
-	
-    /*
-	if( [artistList_ count] ) {
-		return;
-	}
-	
-	artistList_ = nil;	
-	*/
     
     //
     // if artistlist is not yet avaliable request the artist list
@@ -372,22 +363,6 @@
                                                    object:nil];
     }
     [app getArtistList];
-
-/*
-	UIView *v = self.view;
-	activity_ = [[UIActivityIndicatorView alloc] 
-                 initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-	activity_.center = v.center;
-	activity_.hidesWhenStopped = TRUE;
-	[v addSubview:activity_];
-	[v bringSubviewToFront:activity_];
-	[activity_ startAnimating];
-	
-	[UIView beginAnimations:@"animationID" context:nil];
-	[UIView setAnimationDuration:10.0];	
-	activity_.transform = CGAffineTransformMakeScale( 1.25,1.25 );
-	[UIView commitAnimations];	
-	*/
 	
 }
 
@@ -400,9 +375,8 @@
 
 - (void)viewDidAppear:(BOOL)animated
 {
-	[self navigationController].navigationBarHidden = FALSE;
+    [self navigationController].navigationBarHidden = FALSE;
     [self navigationController].navigationBar.barStyle = UIBarStyleBlackOpaque;
-    //[self reload];
     [artistTable_ reloadData];
     
     AppData *app = [AppData get];
@@ -515,6 +489,7 @@
 	}
 	return nil;
 }
+
 
 - (void) artistOrgControlAction:(id)sender
 {
@@ -714,11 +689,11 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	[searchfield_ resignFirstResponder];
-	//if( [artistList_ count] == 0 ) return;
+    [searchfield_ resignFirstResponder];
+    //if( [artistList_ count] == 0 ) return;
     if( artistActiveSections_ == nil ) return;
 
-	//NSDictionary *d = [artistList_ objectAtIndex:[indexPath row]];
+    //NSDictionary *d = [artistList_ objectAtIndex:[indexPath row]];
     NSString *secTitle = [artistSectionTitles_ objectAtIndex:indexPath.section];
 
     unichar buffer[1];
@@ -728,28 +703,28 @@
     [secTitle getCharacters:buffer range:r];
     NSInteger sectionIndex = buffer[0] - 65;
 	
-	if( sectionIndex<0 ) {
-		sectionIndex = sizeof(artistDisplayList_)/sizeof(artistDisplayList_[0]) - 1;
-	}
+    if( sectionIndex<0 ) {
+        sectionIndex = sizeof(artistDisplayList_)/sizeof(artistDisplayList_[0]) - 1;
+    }
 		
-	if( sectionIndex<0 || sectionIndex >= 27 ) {
-		//printf( "outta bounds: %d\n", sectionIndex );
-		return;
-	}
+    if( sectionIndex<0 || sectionIndex >= 27 ) {
+        //printf( "outta bounds: %d\n", sectionIndex );
+        return;
+    }
 		
-	NSDictionary *d = [artistDisplayList_[sectionIndex] objectAtIndex:indexPath.row];
+    NSDictionary *d = [artistDisplayList_[sectionIndex] objectAtIndex:indexPath.row];
 	//PlaylistTracksController *traxcontroller = [[PlaylistTracksController alloc] 
     //                                            initWithNibName:@"PlaylistTracks" bundle:nil];
     PlaylistTracksController *traxcontroller = [[PlaylistTracksController alloc] init];
 
-	traxcontroller.artist_ = d;
+    traxcontroller.artist_ = d;
 	
-	traxcontroller.navigationItem.title = [d objectForKey:@"artistName"];
+    traxcontroller.navigationItem.title = [d objectForKey:@"artistName"];
 
 	
-	[self navigationController].navigationBarHidden = FALSE;
+    [self navigationController].navigationBarHidden = FALSE;
 
-	[[self navigationController] pushViewController:traxcontroller animated:YES];
+    [[self navigationController] pushViewController:traxcontroller animated:YES];
     [traxcontroller release];
          
 }
