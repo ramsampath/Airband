@@ -143,10 +143,7 @@
 }
 
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-	// Return YES for supported orientations
-	return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
+
 
 
 - (void)didReceiveMemoryWarning {
@@ -210,6 +207,10 @@
 	}	
 }
 
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation 
+{
+    return YES;
+}
 
 - (void) nowPlaying:(id) sender
 {
@@ -266,10 +267,7 @@
     [nowplayingVC setupnavigationitems:self.navigationItem 
                                 navBar:[self navigationController].navigationBar
                               datadict:d];
-    //
-    // reset the artwork.
-    //
-    [nowplayingVC setArtwork:nil];
+
 
     [self navigationController].navigationBarHidden = FALSE;
     [[self navigationController] pushViewController:nowplayingVC animated:YES];

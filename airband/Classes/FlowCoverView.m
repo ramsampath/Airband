@@ -587,6 +587,7 @@ static void *GData = NULL;
 	CGPoint where = [t locationInView:self];
 	double pos = (where.x / r.size.width) * 10 - 5;
 	
+    
 	if (touchFlag == YES) {
 		// Touched location; only accept on touching inner 256x256 area
 		r.origin.x += (r.size.width - 256)/2;

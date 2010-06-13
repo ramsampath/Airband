@@ -46,6 +46,8 @@ static audiohelp_II *g_audio = nil;
 @synthesize images_;
 @synthesize coverflowDisplayType_;
 @synthesize albumartimages_;
+@synthesize albumHistory_;
+@synthesize albumIndexHistory_;
 
 // --------------------------------------------------------------------------
 // singelton
@@ -85,6 +87,8 @@ static audiohelp_II *g_audio = nil;
         autoLogin_            = true;
         albumartimages_       = [[NSMutableArray arrayWithCapacity:50] retain];
         coverflowDisplayType_ = 0; // type albumart
+        albumHistory_         = [[NSMutableDictionary alloc] init];
+        albumIndexHistory_    = [[NSMutableDictionary alloc] init];
         // read the user settings.
         [self restoreState];
 	}
@@ -114,6 +118,8 @@ static audiohelp_II *g_audio = nil;
     [currentAlbum_ release];
     [albumArtCache_ release];
     [albumartimages_ release];
+    [albumHistory_ release];
+    [albumIndexHistory_ release];
     [super dealloc];
 }
 
@@ -225,10 +231,9 @@ static void myProviderReleaseData (void *info,const void *data,size_t size)
 			[artworkdata_ release];
 			artworkdata_ = [[NSData dataWithData:data] retain];
 			CGDataProviderRef provider = CGDataProviderCreateWithData( NULL, [artworkdata_ bytes], [artworkdata_ length], 
-																	  myProviderReleaseData );
+																	           myProviderReleaseData );
 			CGImageRef imageref = CGImageCreateWithJPEGDataProvider(provider, NULL, true, kCGRenderingIntentDefault);						
-			if( imageref )
-			{
+			if( imageref ) {
 				[artwork_ release];
 				CGImageRetain(imageref);			
 				artwork_ = [[UIImage imageWithCGImage:imageref] retain];			

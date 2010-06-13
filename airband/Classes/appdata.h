@@ -1,6 +1,7 @@
 #import <UIKit/UIKit.h>
 #import "xmlhelp.h"
 #import "imgcache.h"
+#import "AlbumInfo.h"
 
 #pragma mark	-------------------------------------------------
 #pragma mark	AppData
@@ -63,6 +64,10 @@
     //
     NSMutableArray *images_;
     NSMutableArray *albumartimages_;
+    
+    NSMutableDictionary   *albumHistory_;
+    NSMutableDictionary   *albumIndexHistory_;
+
 }
 
 @property (retain)    NSString *username_;
@@ -76,7 +81,7 @@
 @property (readonly)  NSArray* trackList_;
 @property (readonly)  NSString* currentTrackTitle_;
 @property (readonly)  NSString* currentArtist_;
-@property (readonly)  NSString* currentAlbum_;
+@property (readwrite, retain)  NSString* currentAlbum_;
 @property (readonly)  float currentTrackLength_;
 @property (readonly)  float currentTrackFileSize_;
 @property (readonly)  int currentAlbumTrackIndex_;
@@ -89,6 +94,10 @@
 @property (readwrite) int coverflowDisplayType_;
 @property (readonly) NSMutableArray *images_;
 @property (readonly) NSMutableArray *albumartimages_;
+
+@property (retain) NSDictionary *albumHistory_;
+@property (retain) NSDictionary *albumIndexHistory_;
+
 
 - (NSString*) createAccount:(NSDictionary*)userinfo;
 - (void) restoreState;

@@ -9,8 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "TracklistView.h"
 #import "LoadingView.h"
-#import "FlowCoverView.h"
 #import "SimpleIO.h"
+#import "AFOpenFlowView.h"
 
 
 @interface VolumeKnob: UIView
@@ -38,12 +38,14 @@
 
 
 
-@interface NowPlayingController: UIViewController <AsyncCallback, FlowCoverViewDelegate,
-                 UITableViewDelegate, UITableViewDataSource> 
+@interface NowPlayingController: 
+UIViewController <AsyncCallback,  
+                  AFOpenFlowViewDataSource, AFOpenFlowViewDelegate, 
+                  UITableViewDelegate, UITableViewDataSource> 
 
 {
-    IBOutlet UIToolbar       *toolbar_;
-    IBOutlet UIToolbar       *toolbartop_;
+    IBOutlet UIToolbar           *toolbar_;
+    IBOutlet UIToolbar           *toolbartop_;
     
     IBOutlet UIView              *albumcovertracksview_;   // album cover/track list view parent
     IBOutlet UIView              *albumcovertracksbview_;  // album cover/info button navigation button view parent
@@ -54,16 +56,16 @@
     IBOutlet UIImage             *emptyalbumartworkimage_; // the image which holds the empty album cover 
     IBOutlet TracklistController *tracklistview_;         
 
-    IBOutlet UISlider        *volume_;                     // unused at the moment
-    IBOutlet UIView          *volumeviewslider_;           // ununsed at the moment
+    IBOutlet UISlider            *volume_;                     // unused at the moment
+    IBOutlet UIView              *volumeviewslider_;           // ununsed at the moment
 
-    IBOutlet UIButton        *back_;
-    IBOutlet UIBarButtonItem *prev_;
-    IBOutlet UIBarButtonItem *pause_;
-    IBOutlet UIBarButtonItem *stop_;
-    IBOutlet UIBarButtonItem *play_;
-    IBOutlet UIBarButtonItem *next_;
-    IBOutlet UIBarButtonItem *flexbeg_;
+    IBOutlet UIButton            *back_;
+    IBOutlet UIBarButtonItem     *prev_;
+    IBOutlet UIBarButtonItem     *pause_;
+    IBOutlet UIBarButtonItem     *stop_;
+    IBOutlet UIBarButtonItem     *play_;
+    IBOutlet UIBarButtonItem     *next_;
+    IBOutlet UIBarButtonItem     *flexbeg_;
 	
     IBOutlet UIBarButtonItem *fixedprev_;
     IBOutlet UIBarButtonItem *fixedpause_;
@@ -97,8 +99,8 @@
     // The cover flow
     //
     
-    UIView              *portraitView;
-    UIView              *landscapeView;
+    UIView                   *portraitView;
+    UIView                   *landscapeView;
 
     id       detailItem;
     UILabel *detailDescriptionLabel;
@@ -106,8 +108,7 @@
     UIButton *flickrButton;	
     UITextField *flickrSearch;
 	
-    FlowCoverView *flowCover;
-	
+    AFOpenFlowView *afFlowCover;
     UIImageView    *imgView;
 
 	
@@ -116,6 +117,8 @@
     //
     int albumartdisplaycounter_;
     NSTimer *albumartchangetimer_;
+    
+    UIImage *defaultCoverFlowImage_;
 }
 
 
@@ -125,7 +128,11 @@
 -(IBAction) play:(id)sender;
 -(IBAction) next:(id)sender;
 -(IBAction) prev:(id)sender;
--(IBAction) setArtwork:(UIImage *)artwork;
+-(IBAction) setArtwork:(UIImage *)artwork animated:(BOOL)animated;
+-(IBAction) resetArtwork;
+-(IBAction) titleAvailable:(NSObject *)obj;
+-(IBAction) artworkReady:(NSObject *)obj;
+
 
 -(IBAction) random:(id)sender;
 -(IBAction) taptap:(id)sender;
@@ -137,6 +144,8 @@
 -(void) stopLoadingView;
 -(void) detectOrientation;
 -(void) transformViewToLandscape;
+- (void)create_Custom_UISlider:(CGRect)frame;
+
 
 
 @property( readwrite, retain ) UIView *portraitView;
@@ -150,11 +159,9 @@
 @property (nonatomic, retain) IBOutlet UILabel        *detailDescriptionLabel;
 @property (nonatomic, retain) IBOutlet UIButton       *flickrButton;
 @property (nonatomic, retain) IBOutlet UITextField    *flickrSearch;
-@property (nonatomic, retain) IBOutlet FlowCoverView  *flowCover;
 @property (nonatomic, retain) IBOutlet UIImageView    *imgView;
 @property (nonatomic, readonly)        NSMutableArray *searchList_;
 @property (readwrite)                  int albumartdisplaycounter_;
-
 
 
 @end

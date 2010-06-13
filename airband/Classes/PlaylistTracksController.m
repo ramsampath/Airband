@@ -18,6 +18,7 @@
 @synthesize playlist_;
 @synthesize artist_;
 @synthesize albumtracks_;
+@synthesize selectionDict_;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil 
 {
@@ -40,6 +41,7 @@
     artist_       = nil;
     clearTable_   = true;
     
+    selectionDict_ = nil;
     return self;
 }
 
@@ -253,18 +255,20 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     AppData *app = [AppData get];
-    if( [app isrunning] )
+    if( [app isrunning] ) {
         [self navigationController].navigationBar.topItem.rightBarButtonItem = [[UIBarButtonItem alloc] 
                                                                                 initWithTitle:@"Now Playing"
                                                                                 style:UIBarButtonItemStyleBordered
                                                                                 target:self action:@selector(nowPlaying:)];
+    }
 }
 
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation 
 {
 	// Return YES for supported orientations
-	return (interfaceOrientation == UIInterfaceOrientationPortrait);
+	//return (interfaceOrientation == UIInterfaceOrientationPortrait);
+    return YES;
 }
 
 
@@ -277,7 +281,7 @@
 
 - (void)dealloc 
 {
-	[super dealloc];
+    [super dealloc];
 }
 
 - (void) nowPlaying:(id) sender
@@ -287,7 +291,7 @@
 
     [nowplayingVC setupnavigationitems:self.navigationItem 
                                 navBar:[self navigationController].navigationBar
-                                datadict:nil];
+                                datadict:selectionDict_];
     
 
     [[self navigationController] pushViewController:nowplayingVC animated:YES];		
@@ -322,88 +326,55 @@
     if( app.coverflowDisplayType_ == 1 )
         [app.images_ removeAllObjects];
 
-	if( artist_ ) 
-	{
+    NowPlayingController *nowplayingVC = [[NowPlayingController alloc] init];
+
+
+    if( artist_ )  {
         NSDictionary *d = [app.albumList_ objectAtIndex:[indexPath row]];
-        
-        NowPlayingController *nowplayingVC = [[NowPlayingController alloc] init];			
-		
+        app.currentAlbum_ = [d objectForKey:@"albumTitle"];
+
+        selectionDict_ = d;
         [nowplayingVC setupnavigationitems:self.navigationItem 
 									navBar:[self navigationController].navigationBar
 								  datadict:d];
         
            
         [self navigationController].navigationBarHidden = FALSE;
-        [[self navigationController] pushViewController:nowplayingVC animated:YES];	
-        //
-        // reset the application artwork
-        [nowplayingVC setArtwork:nil];
-
-        
-        [nowplayingVC release];
-		
-		/*
-		PlaylistTracksController *traxcontroller = [[PlaylistTracksController alloc] initWithNibName:@"PlaylistTracks" bundle:nil];	
-		traxcontroller.albumtracks_ = d;
-		
-		traxcontroller.navigationItem.title = [d objectForKey:@"albumTitle"];
-		[traxcontroller.navigationItem 
-		 setRightBarButtonItem:[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"playlist.png"] 
-																style:UIBarButtonItemStylePlain 
-															   target:nil 
-															   action:nil]];
-        
-		[[self navigationController] pushViewController:traxcontroller animated:YES];
-        [self navigationController].navigationBar.topItem.rightBarButtonItem = [[UIBarButtonItem alloc] 
-                                                                                initWithTitle:@"Now Playing"
-                                                                                style:UIBarButtonItemStyleBordered
-                                                                                target:self action:@selector(nowPlaying:)];
-		 */
-		
+        [[self navigationController] pushViewController:nowplayingVC animated:YES];
+                
 	}
 	else if( albumtracks_ )
 	{		
-		NSDictionary *d = [app.trackList_ objectAtIndex:[indexPath row]];
+        NSDictionary *d   = [app.trackList_ objectAtIndex:[indexPath row]];
+        app.currentAlbum_ = [d objectForKey:@"albumTitle"];
 
-        NowPlayingController *nowplayingVC = [[NowPlayingController alloc] init];
-
-
+        selectionDict_ = d;
         [nowplayingVC setupnavigationitems:self.navigationItem 
                                  navBar:[self navigationController].navigationBar
                                  datadict:d];
         
         [self navigationController].navigationBarHidden = FALSE;
 
-        //[app playTrack:d];
+        [[self navigationController] pushViewController:nowplayingVC animated:YES];
 
-        [[self navigationController] pushViewController:nowplayingVC animated:YES];		
-        [nowplayingVC setArtwork:nil];
-
-        
         [app setCurrentTrackIndex_:[indexPath row]];
-        [nowplayingVC release];
 	}
 	else if( playlist_ ) 
 	{
-		NSDictionary *d = [app.currentTracklist_ objectAtIndex:[indexPath row]];	
-        
-        NowPlayingController *nowplayingVC = [[NowPlayingController alloc] init];
+        NSDictionary *d = [app.currentTracklist_ objectAtIndex:[indexPath row]];	
+        app.currentAlbum_ = [d objectForKey:@"albumTitle"];
 
-        
+        selectionDict_ = d;
         [nowplayingVC setupnavigationitems:self.navigationItem 
                                  navBar:[self navigationController].navigationBar
                                  datadict:d];
 
         [self navigationController].navigationBarHidden = FALSE;
         
-        
-		//[app playTrack:d];
-
-        [[self navigationController] pushViewController:nowplayingVC animated:YES];		
-        [nowplayingVC setArtwork:nil];
-
-        [nowplayingVC release];
+        [[self navigationController] pushViewController:nowplayingVC animated:YES];
     }
+    [nowplayingVC resetArtwork];
+    [nowplayingVC release];
 }
 
 #pragma mark UITableView datasource methods
