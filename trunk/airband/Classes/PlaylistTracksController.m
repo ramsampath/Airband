@@ -328,7 +328,6 @@
 
     NowPlayingController *nowplayingVC = [[NowPlayingController alloc] init];
 
-
     if( artist_ )  {
         NSDictionary *d = [app.albumList_ objectAtIndex:[indexPath row]];
         app.currentAlbum_ = [d objectForKey:@"albumTitle"];

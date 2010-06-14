@@ -309,8 +309,8 @@
 		2117629211C00FC40042F832 /* OpenFlow */ = {
 			isa = PBXGroup;
 			children = (
-				211764BA11C057A50042F832 /* UIImageExtras.h */,
 				211764BB11C057A50042F832 /* UIImageExtras.m */,
+				211764BA11C057A50042F832 /* UIImageExtras.h */,
 				2117629311C00FC40042F832 /* AFItemView.h */,
 				2117629411C00FC40042F832 /* AFItemView.m */,
 				2117629511C00FC40042F832 /* AFOpenFlowConstants.h */,
