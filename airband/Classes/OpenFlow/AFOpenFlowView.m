@@ -349,7 +349,6 @@ const static CGFloat kReflectionFraction = 0.85;
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
 	isSingleTap = NO;
 	isDoubleTap = NO;
-	
 	// Only scroll if the user started on a cover.
 	if (!isDraggingACover)
 		return;
@@ -369,31 +368,33 @@ const static CGFloat kReflectionFraction = 0.85;
 	}
 }
 
-- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event 
+{
 
+    // Which cover did the user tap?
+    CGPoint targetPoint = [[touches anyObject] locationInView:self];
+    CALayer *targetLayer = (CALayer *)[scrollView.layer hitTest:targetPoint];
+    AFItemView *targetCover = [self findCoverOnscreen:targetLayer];
+    NSNumber *coverNumber = [NSNumber numberWithInt:targetCover.number];
     
-	if (isSingleTap) {
-		// Which cover did the user tap?
-		CGPoint targetPoint = [[touches anyObject] locationInView:self];
-		CALayer *targetLayer = (CALayer *)[scrollView.layer hitTest:targetPoint];
-		AFItemView *targetCover = [self findCoverOnscreen:targetLayer];
-        NSNumber *coverNumber = [NSNumber numberWithInt:targetCover.number];
-
-        NSString *albumName = (NSString *)[albumNames objectForKey:coverNumber];
-        NSString *artistName = (NSString *)[artistNames objectForKey:coverNumber];
+    NSString *albumName = (NSString *)[albumNames objectForKey:coverNumber];
+    NSString *artistName = (NSString *)[artistNames objectForKey:coverNumber];
+    
+    artistLabel_.text = artistName;
+    albumLabel_.text  = albumName;
         
-        artistLabel_.text = artistName;
-        albumLabel_.text  = albumName;
-        
-		if (targetCover && (targetCover.number != selectedCoverView.number))
+    if (isSingleTap) {
+        if (targetCover && (targetCover.number != selectedCoverView.number))
 			[self setSelectedCover:targetCover.number];
 	}
 	[self centerOnSelectedCover:YES];
 	
-	// And send the delegate the newly selected cover message.
-	if (beginningCover != selectedCoverView.number)
-		if ([self.viewDelegate respondsToSelector:@selector(openFlowView:selectionDidChange:)])
-			[self.viewDelegate openFlowView:self selectionDidChange:selectedCoverView.number];
+    if( isDoubleTap ) {
+        // And send the delegate the newly selected cover message.
+        //if (beginningCover != selectedCoverView.number)
+            if ([self.viewDelegate respondsToSelector:@selector(openFlowView:selectionDidChange:)])
+                [self.viewDelegate openFlowView:self selectionDidChange:selectedCoverView.number];
+    }
 }
 
 - (void)centerOnSelectedCover:(BOOL)animated {

@@ -726,7 +726,6 @@
 
     [[self navigationController] pushViewController:traxcontroller animated:YES];
     [traxcontroller release];
-         
 }
 
 

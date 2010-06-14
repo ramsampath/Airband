@@ -739,8 +739,10 @@ CGContextRef MyCreateBitmapContext( int pixelsWide, int pixelsHigh )
                 UIImage *img = [emptyalbumartworkimage_ rescaleImageToSize:CGSizeMake(255, 255)];
                 ainfo.art    = img;
             }
-            ainfo.artistName = [dict_ objectForKey:@"artistName"];
-            ainfo.albumIdReq = [dict_ objectForKey:@"albumId"];
+            if( dict_ ) {
+                ainfo.artistName = [dict_ objectForKey:@"artistName"];
+                ainfo.albumIdReq = [dict_ objectForKey:@"albumId"];
+            }
             ainfo.index      = [app.albumHistory_ count];
             [app.albumHistory_ setValue:ainfo forKey:allabel_.text];
             [ainfo release];
