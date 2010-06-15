@@ -337,7 +337,8 @@ const static CGFloat kReflectionFraction = 0.85;
 	beginningCover = selectedCoverView.number;
 	// Make sure the user is tapping on a cover.
 	startPosition = (startPoint.x / 1.5) + scrollView.contentOffset.x;
-	
+	startTouch    = startPoint.x;
+    
 	if (isSingleTap)
 		isDoubleTap = YES;
 		
@@ -389,7 +390,7 @@ const static CGFloat kReflectionFraction = 0.85;
 	}
 	[self centerOnSelectedCover:YES];
 	
-    if( isDoubleTap ) {
+    if( targetPoint.x == startTouch ) {
         // And send the delegate the newly selected cover message.
         //if (beginningCover != selectedCoverView.number)
             if ([self.viewDelegate respondsToSelector:@selector(openFlowView:selectionDidChange:)])

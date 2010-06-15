@@ -61,6 +61,7 @@
 	Boolean isDoubleTap;
 	Boolean isDraggingACover;
 	CGFloat startPosition;
+    CGFloat startTouch;
     
     UILabel        *artistLabel_;
     UILabel        *albumLabel_;

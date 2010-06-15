@@ -787,9 +787,11 @@
 	}
 
 	NSDictionary *d = [albumDisplayList_[sectionIndex] objectAtIndex:indexPath.row];
+    AppData *app = [AppData get];
     
     NowPlayingController *nowplayingVC = [[NowPlayingController alloc] init];
-    
+    app.currentAlbum_ = [d objectForKey:@"albumTitle"];
+
     [nowplayingVC setupnavigationitems:self.navigationItem 
                                 navBar:[self navigationController].navigationBar
                               datadict:d];

@@ -716,7 +716,6 @@ CGContextRef MyCreateBitmapContext( int pixelsWide, int pixelsHigh )
     albumartdisplaycounter_ = 0;
     AppData *app = [AppData get];
     
-    //NSLog( @"Setting Artwork for %s\n", [allabel_.text UTF8String]);
     if( allabel_.text == nil ) return;
     
     @synchronized( self ) {
@@ -727,6 +726,7 @@ CGContextRef MyCreateBitmapContext( int pixelsWide, int pixelsHigh )
         if( ainfo == nil ) {
             ainfo = [[AlbumInfo alloc] init];
             if( image ) {
+
                 CGImageRef cgImage = [image CGImage];
                 CGImageRef ncgImage = CGImageCreateCopy(cgImage);
                 // Make a new image from the CG Reference
@@ -817,7 +817,6 @@ CGContextRef MyCreateBitmapContext( int pixelsWide, int pixelsHigh )
 {
     AppData *app = [AppData get];
     UIImage *img = app.artwork_;
-    
     //
     // save the artwork in the image cache
     //
@@ -876,7 +875,10 @@ CGContextRef MyCreateBitmapContext( int pixelsWide, int pixelsHigh )
     if( !num ) {
         return;
     }
-    
+    //app.currentAlbum_ = [[app.currentTracklist_ objectAtIndex:0] objectForKey:@"albumTitle"];
+
+    dict_ = [app.currentTracklist_ objectAtIndex:0];
+
     [app setCurrentTrackIndex_:0];
     NSDictionary *d = [app.currentTracklist_ objectAtIndex:0];
 

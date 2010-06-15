@@ -16,9 +16,12 @@
 	IBOutlet  UITableView  *table_;
     LoadingView            *loadingView_;
     UIView                 *progressView_;
+    NSDictionary           *selectionDict_;
+
 }
 
 @property (nonatomic, retain) UITableView* table_;
+@property (nonatomic, retain) NSDictionary* selectionDict_;
 
 @end
 
