@@ -291,7 +291,7 @@
 
     [nowplayingVC setupnavigationitems:self.navigationItem 
                                 navBar:[self navigationController].navigationBar
-                                datadict:selectionDict_];
+                                datadict:nil];
     
 
     [[self navigationController] pushViewController:nowplayingVC animated:YES];		

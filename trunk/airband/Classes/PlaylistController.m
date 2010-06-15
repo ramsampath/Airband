@@ -18,12 +18,19 @@
 @implementation PlaylistController
 
 @synthesize table_;
+@synthesize selectionDict_;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
 	if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
 		// Initialization code
 	}
 	return self;
+}
+
+- (id) init
+{
+    selectionDict_ = nil;
+    return self;
 }
 
 
@@ -220,7 +227,7 @@
 
     [nowplayingVC setupnavigationitems:self.navigationItem 
                                 navBar:[self navigationController].navigationBar
-                              datadict:nil];
+                              datadict:selectionDict_];
     
     
     [[self navigationController] pushViewController:nowplayingVC animated:YES];		
@@ -249,9 +256,10 @@
     if (row == NSNotFound) 
 		return;
 	
-	AppData *app = [AppData get];			
-	NSDictionary *d = [app.playLists_ objectAtIndex:[indexPath row]];
-	
+    AppData *app = [AppData get];			
+    NSDictionary *d = [app.playLists_ objectAtIndex:[indexPath row]];
+    selectionDict_ = d;
+
     /*
     PlaylistTracksController *traxcontroller = [[PlaylistTracksController alloc] init];
 
