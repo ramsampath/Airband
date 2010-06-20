@@ -132,6 +132,7 @@ UIViewController <AsyncCallback,
 -(IBAction) resetArtwork;
 -(IBAction) titleAvailable:(NSObject *)obj;
 -(IBAction) artworkReady:(NSObject *)obj;
+-(IBAction) nextTrack;
 
 
 -(IBAction) random:(id)sender;

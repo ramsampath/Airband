@@ -766,14 +766,14 @@ static void myProviderReleaseData (void *info,const void *data,size_t size)
 {
 
     NSDictionary *d = [self applicationPlistFromFile:@"airbandPlist"];  
-    if( !d ) return;
 
     [username_ release];
     [password_ release];
 	
     //username_   = [[d objectForKey:@"username"] retain];
     //password_   = [[d objectForKey:@"password"] retain];
-    lastVolume_ = [[[d objectForKey:@"lastVolume"] retain] floatValue];
+    if( d )
+        lastVolume_ = [[[d objectForKey:@"lastVolume"] retain] floatValue];
     //bitRate_    = [[[d objectForKey:@"bitRate"] retain] intValue];
     //autoLogin_  = [[[d objectForKey:@"autoLogin"] retain] boolValue];
     //coverflowDisplayType_ = [[[d objectForKey:@"albumartstyle"] retain] intValue];

@@ -390,7 +390,7 @@ const static CGFloat kReflectionFraction = 0.85;
 	}
 	[self centerOnSelectedCover:YES];
 	
-    if( targetPoint.x == startTouch ) {
+    if( isDoubleTap ) {
         // And send the delegate the newly selected cover message.
         //if (beginningCover != selectedCoverView.number)
             if ([self.viewDelegate respondsToSelector:@selector(openFlowView:selectionDidChange:)])

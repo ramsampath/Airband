@@ -47,13 +47,13 @@
     mainview.opaque                     = YES;
     mainview.tag                        = 0;
     mainview.userInteractionEnabled     = YES;
-    mainview.backgroundColor            = [UIColor colorWithPatternImage:[UIImage imageNamed:@"LogoBkgrnd.png"]];
+    mainview.backgroundColor            = [UIColor colorWithPatternImage:[UIImage imageNamed:@"LogoBkgrnd@2x.png"]];
 
     tableV                              = [[UITableView alloc] init];
     tableV.delegate                     = self;
     tableV.dataSource                   = self;
     tableV.frame                        = CGRectMake(0, 0, 320, 480);
-    tableV.backgroundColor              = [UIColor colorWithPatternImage:[UIImage imageNamed:@"LogoBkgrnd.png"]];
+    tableV.backgroundColor              = [UIColor colorWithPatternImage:[UIImage imageNamed:@"LogoBkgrnd@2x.png"]];
     tableV.separatorStyle               = UITableViewCellSeparatorStyleNone;
 
     [mainview addSubview:tableV];
