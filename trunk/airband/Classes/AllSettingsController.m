@@ -173,7 +173,7 @@
     [mainButton_ setTitleColor:[UIColor colorWithRed:1.000 green:1.000 blue:1.000 alpha:1.000] forState:UIControlStateNormal];
     [mainButton_ setTitleColor:[UIColor colorWithWhite:1.000 alpha:1.000] forState:UIControlStateHighlighted];
     [mainButton_ setTitleShadowColor:[UIColor colorWithWhite:0.500 alpha:1.000] forState:UIControlStateNormal];
-    mainButton_.backgroundColor       = [UIColor colorWithPatternImage:[UIImage imageNamed:@"airband_splash02.png"]];
+    mainButton_.backgroundColor       = [UIColor colorWithPatternImage:[UIImage imageNamed:@"airband_splash02@2x.png"]];
 
     UIButton *createButton_ = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     createButton_.frame = CGRectMake(120.0, 270.0, 80.0, 22.0);

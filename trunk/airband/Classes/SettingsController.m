@@ -409,7 +409,7 @@
     table_ = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];
     table_.delegate        = self;
     table_.dataSource      = self;
-    table_.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"LogoBkgrnd.png"]];
+    table_.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"LogoBkgrnd@2x.png"]];
 
     //table_.sectionHeaderHeight = 20.0;
     //table_.rowHeight = 40.0;

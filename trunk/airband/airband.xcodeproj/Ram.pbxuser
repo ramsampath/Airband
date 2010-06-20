@@ -914,6 +914,80 @@
 		rLen = 0;
 		rLoc = 9223372036854775807;
 	};
+	2188F43011CE800500C4E321 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 21E011D30FBC96FE006FD562 /* TracklistView.m */;
+		name = "TracklistView.m: 27";
+		rLen = 0;
+		rLoc = 656;
+		rType = 0;
+		vrLen = 964;
+		vrLoc = 83;
+	};
+	2188F43111CE800500C4E321 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 7D1233E10E74D5F80053381A /* PlaylistTracksController.m */;
+		name = "PlaylistTracksController.m: 334";
+		rLen = 0;
+		rLoc = 10145;
+		rType = 0;
+		vrLen = 966;
+		vrLoc = 9540;
+	};
+	2188F43211CE800500C4E321 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 7D8A3DCC0E664DE700110D42 /* PlaylistController.m */;
+		name = "PlaylistController.m: 57";
+		rLen = 0;
+		rLoc = 1689;
+		rType = 0;
+		vrLen = 1184;
+		vrLoc = 1105;
+	};
+	2188F43311CE800500C4E321 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 21DBAEFF0FCA431500399A50 /* AlbumlistController.m */;
+		name = "AlbumlistController.m: 438";
+		rLen = 8;
+		rLoc = 14984;
+		rType = 0;
+		vrLen = 728;
+		vrLoc = 14487;
+	};
+	2188F43411CE800500C4E321 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 7D8A3DC00E664D6900110D42 /* ArtistViewController.m */;
+		name = "ArtistViewController.m: 321";
+		rLen = 0;
+		rLoc = 11265;
+		rType = 0;
+		vrLen = 641;
+		vrLoc = 10994;
+	};
+	2188F43511CE800500C4E321 /* PlistBookmark */ = {
+		isa = PlistBookmark;
+		fRef = 8D1107310486CEB800E47090 /* Info.plist */;
+		fallbackIsa = PBXBookmark;
+		isK = 0;
+		kPath = (
+			CFBundleInfoDictionaryVersion,
+		);
+		name = /Users/Ram/soft/iPhone/airband/Info.plist;
+		rLen = 0;
+		rLoc = 9223372036854775807;
+	};
+	2188F43611CE800500C4E321 /* PlistBookmark */ = {
+		isa = PlistBookmark;
+		fRef = 8D1107310486CEB800E47090 /* Info.plist */;
+		fallbackIsa = PBXBookmark;
+		isK = 0;
+		kPath = (
+			CFBundleInfoDictionaryVersion,
+		);
+		name = /Users/Ram/soft/iPhone/airband/Info.plist;
+		rLen = 0;
+		rLoc = 9223372036854775807;
+	};
 	21A66D910FCBC9EB00B26158 /* LoadingView.m */ = {
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {852, 3488}}";
@@ -1333,9 +1407,9 @@
 	};
 	21DBAEFF0FCA431500399A50 /* AlbumlistController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {873, 16768}}";
+			sepNavIntBoundsRect = "{{0, 0}, {788, 17152}}";
 			sepNavSelRange = "{14984, 8}";
-			sepNavVisRange = "{14239, 1523}";
+			sepNavVisRange = "{14487, 728}";
 			sepNavWindowFrame = "{{51, 5}, {1283, 868}}";
 		};
 	};
@@ -1355,9 +1429,9 @@
 	};
 	21E011D30FBC96FE006FD562 /* TracklistView.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {908, 2000}}";
+			sepNavIntBoundsRect = "{{0, 0}, {908, 2032}}";
 			sepNavSelRange = "{656, 0}";
-			sepNavVisRange = "{83, 1677}";
+			sepNavVisRange = "{83, 964}";
 		};
 	};
 	21E011D40FBC96FE006FD562 /* TrackListTableCell.h */ = {
@@ -1479,7 +1553,7 @@
 	29B97313FDCFA39411CA2CEA /* Project object */ = {
 		activeBuildConfigurationName = "App Store Distribution";
 		activeExecutable = 210C97830FCC5E9E00984991 /* airband */;
-		activeSDKPreference = iphonesimulator4.0;
+		activeSDKPreference = iphoneos4.0;
 		activeTarget = 1D6058900D05DD3D006BFB54 /* airband */;
 		addToTargets = (
 			1D6058900D05DD3D006BFB54 /* airband */,
@@ -1621,6 +1695,13 @@
 			2187E0EE11A107BC00AFAAEA = 2187E0EE11A107BC00AFAAEA /* PBXTextBookmark */;
 			2188F3EF11CE7AB600C4E321 /* PlistBookmark */ = 2188F3EF11CE7AB600C4E321 /* PlistBookmark */;
 			2188F40411CE7C2300C4E321 /* PlistBookmark */ = 2188F40411CE7C2300C4E321 /* PlistBookmark */;
+			2188F43011CE800500C4E321 /* PBXTextBookmark */ = 2188F43011CE800500C4E321 /* PBXTextBookmark */;
+			2188F43111CE800500C4E321 /* PBXTextBookmark */ = 2188F43111CE800500C4E321 /* PBXTextBookmark */;
+			2188F43211CE800500C4E321 /* PBXTextBookmark */ = 2188F43211CE800500C4E321 /* PBXTextBookmark */;
+			2188F43311CE800500C4E321 /* PBXTextBookmark */ = 2188F43311CE800500C4E321 /* PBXTextBookmark */;
+			2188F43411CE800500C4E321 /* PBXTextBookmark */ = 2188F43411CE800500C4E321 /* PBXTextBookmark */;
+			2188F43511CE800500C4E321 /* PlistBookmark */ = 2188F43511CE800500C4E321 /* PlistBookmark */;
+			2188F43611CE800500C4E321 /* PlistBookmark */ = 2188F43611CE800500C4E321 /* PlistBookmark */;
 			21A86A2911C7376500196B4D = 21A86A2911C7376500196B4D /* PBXTextBookmark */;
 			21AB62CC11CDBA7F00CAA460 = 21AB62CC11CDBA7F00CAA460 /* PBXBookmark */;
 			21AB62CD11CDBA7F00CAA460 = 21AB62CD11CDBA7F00CAA460 /* PBXTextBookmark */;
@@ -1702,9 +1783,9 @@
 	};
 	7D1233E10E74D5F80053381A /* PlaylistTracksController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {873, 9760}}";
-			sepNavSelRange = "{10043, 0}";
-			sepNavVisRange = "{9366, 1530}";
+			sepNavIntBoundsRect = "{{0, 0}, {788, 10032}}";
+			sepNavSelRange = "{10145, 0}";
+			sepNavVisRange = "{9540, 966}";
 			sepNavWindowFrame = "{{157, 0}, {1283, 868}}";
 		};
 	};
@@ -1745,9 +1826,9 @@
 	};
 	7D8A3DC00E664D6900110D42 /* ArtistViewController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {796, 15184}}";
-			sepNavSelRange = "{11011, 0}";
-			sepNavVisRange = "{10869, 1340}";
+			sepNavIntBoundsRect = "{{0, 0}, {788, 15776}}";
+			sepNavSelRange = "{11265, 0}";
+			sepNavVisRange = "{10994, 641}";
 			sepNavWindowFrame = "{{51, 5}, {1283, 868}}";
 		};
 	};
@@ -1793,8 +1874,8 @@
 	7D8A3DCC0E664DE700110D42 /* PlaylistController.m */ = {
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {824, 5280}}";
-			sepNavSelRange = "{1507, 0}";
-			sepNavVisRange = "{717, 1830}";
+			sepNavSelRange = "{1689, 0}";
+			sepNavVisRange = "{1105, 1184}";
 			sepNavWindowFrame = "{{51, 5}, {1283, 868}}";
 		};
 	};

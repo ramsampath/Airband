@@ -291,7 +291,7 @@
 	mainview.opaque                     = YES;
 	mainview.tag                        = 0;
 	mainview.userInteractionEnabled     = YES;
-    mainview.backgroundColor            = [UIColor colorWithPatternImage:[UIImage imageNamed:@"LogoBkgrnd.png"]];
+    mainview.backgroundColor            = [UIColor colorWithPatternImage:[UIImage imageNamed:@"LogoBkgrnd@2x.png"]];
     albumOrgControl_                   = [[UISegmentedControl alloc] initWithItems:
                                            [NSArray arrayWithObjects:@"A-Z", @"Shuffle", nil]];
 	[albumOrgControl_ addTarget:self action:@selector(albumOrgControlAction:) 
@@ -788,6 +788,9 @@
 
 	NSDictionary *d = [albumDisplayList_[sectionIndex] objectAtIndex:indexPath.row];
     AppData *app = [AppData get];
+    
+    if( app.coverflowDisplayType_ == 1 )
+        [app.images_ removeAllObjects];
     
     NowPlayingController *nowplayingVC = [[NowPlayingController alloc] init];
     app.currentAlbum_ = [d objectForKey:@"albumTitle"];

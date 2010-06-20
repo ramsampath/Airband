@@ -49,7 +49,7 @@
     mainview.opaque = YES;
     mainview.tag = 0;
     mainview.userInteractionEnabled = YES;
-    mainview.backgroundColor            = [UIColor colorWithPatternImage:[UIImage imageNamed:@"LogoBkgrnd.png"]];
+    mainview.backgroundColor            = [UIColor colorWithPatternImage:[UIImage imageNamed:@"LogoBkgrnd@2x.png"]];
 
     table_ = [[UITableView alloc] 
               initWithFrame:CGRectMake(0.0, 0.0, 320.0, 460.0) 
@@ -257,6 +257,10 @@
 		return;
 	
     AppData *app = [AppData get];			
+
+    if( app.coverflowDisplayType_ == 1 )
+        [app.images_ removeAllObjects];
+    
     NSDictionary *d = [app.playLists_ objectAtIndex:[indexPath row]];
     selectionDict_ = d;
 
@@ -279,6 +283,8 @@
 
     [self navigationController].navigationBarHidden = FALSE;
     [[self navigationController] pushViewController:nowplayingVC animated:YES];
+    [nowplayingVC resetArtwork];
+    [nowplayingVC release];
 }
 
 #pragma mark ------------------------------------------------

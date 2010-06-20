@@ -625,11 +625,16 @@ CGContextRef MyCreateBitmapContext( int pixelsWide, int pixelsHigh )
     alabel_.text  = app.currentArtist_;
     allabel_.text = app.currentAlbum_;
 
+    //
+    // set the default album artwork
+    //
     [self setArtwork:app.artwork_ animated:NO];
     //
     // Restore the titles
     //
+
     [self titleAvailable:nil];
+
 }
 
 
@@ -716,8 +721,9 @@ CGContextRef MyCreateBitmapContext( int pixelsWide, int pixelsHigh )
     albumartdisplaycounter_ = 0;
     AppData *app = [AppData get];
     
+
     if( allabel_.text == nil ) return;
-    
+
     @synchronized( self ) {
         // 
         // Save the album art to history
@@ -825,8 +831,31 @@ CGContextRef MyCreateBitmapContext( int pixelsWide, int pixelsHigh )
     tlabel_.text  = app.currentTrackTitle_;
     alabel_.text  = app.currentArtist_;
     allabel_.text = app.currentAlbum_;
-
+    //
+    // set the real album artwork
+    //
     [self setArtwork:img animated:YES];
+}
+
+- (void) getReadyForArtwork
+{
+    AppData *app = [AppData get];
+    
+    if( app.coverflowDisplayType_ == 1 ) {
+        if( app.currentAlbum_ == nil ) return;
+        NSString *search = [NSString stringWithString:app.currentAlbum_];
+        if( search != nil ) {
+            albumartdisplaycounter_ = 0;
+            NSString *req = flickrRequestWithKeyword( search );
+            ConnectionInfo *info = [[ConnectionInfo alloc] init];
+            info.address_ = req;
+            info.delegate_ = self;
+            info.userdata_ = @"main";
+            
+            [[SimpleIO singelton] request:info];    
+            [info release];
+        }
+    }	
 }
 
 
@@ -869,7 +898,7 @@ CGContextRef MyCreateBitmapContext( int pixelsWide, int pixelsHigh )
 - (void) playListTracksReady:(id)object
 {           
     [self stopLoadingView];
-    
+
     AppData *app = [AppData get];
     int num = [app.currentTracklist_ count];
     if( !num ) {
@@ -878,6 +907,20 @@ CGContextRef MyCreateBitmapContext( int pixelsWide, int pixelsHigh )
     //app.currentAlbum_ = [[app.currentTracklist_ objectAtIndex:0] objectForKey:@"albumTitle"];
 
     dict_ = [app.currentTracklist_ objectAtIndex:0];
+
+    app.currentAlbum_      = [dict_ objectForKey:@"albumTitle"];
+    allabel_.text          = [dict_ objectForKey:@"artistName"];
+    tlabel_.text           = [dict_ objectForKey:@"trackTitle"];
+    
+    tlabel_.text  = app.currentTrackTitle_;
+    alabel_.text  = app.currentArtist_;
+    allabel_.text = app.currentAlbum_;
+    //
+    // set the default album artwork for the playlist track
+    //
+    [self setArtwork:app.artwork_ animated:NO];
+    
+    [self getReadyForArtwork];	
 
     [app setCurrentTrackIndex_:0];
     NSDictionary *d = [app.currentTracklist_ objectAtIndex:0];
@@ -939,6 +982,33 @@ CGContextRef MyCreateBitmapContext( int pixelsWide, int pixelsHigh )
     [tracklistview_ scrollToTrack:index];
     
     [app playTrack:d];
+    //
+    // update the entry to the dictionary with the information
+    // pertaining to the track played (happens in a playlist play)
+    // and set the right information in that case
+    //
+    dict_ = d;
+    app.currentAlbum_      = [dict_ objectForKey:@"albumTitle"];
+    allabel_.text          = [dict_ objectForKey:@"artistName"];
+    tlabel_.text           = [dict_ objectForKey:@"trackTitle"];
+    
+    tlabel_.text  = app.currentTrackTitle_;
+    alabel_.text  = app.currentArtist_;
+    allabel_.text = app.currentAlbum_;
+   
+    // 
+    // first reset the artwork
+    //
+    [self resetArtwork];
+    [self setArtwork:app.artwork_ animated:NO];
+    
+    //
+    // set the default album artwork when the track
+    // is advanced (a different album is played in a playlist play)
+    //
+    //
+
+    [self setArtwork:app.artwork_ animated:NO];
 }
 
 
@@ -989,25 +1059,7 @@ CGContextRef MyCreateBitmapContext( int pixelsWide, int pixelsHigh )
 }
 
 
-- (void) getReadyForArtwork
-{
-    AppData *app = [AppData get];
 
-    if( app.coverflowDisplayType_ == 1 ) {
-        NSString *search = [NSString stringWithString:app.currentAlbum_];
-        if( search != nil ) {
-            albumartdisplaycounter_ = 0;
-            NSString *req = flickrRequestWithKeyword( search );
-            ConnectionInfo *info = [[ConnectionInfo alloc] init];
-            info.address_ = req;
-            info.delegate_ = self;
-            info.userdata_ = @"main";
-            
-            [[SimpleIO singelton] request:info];    
-            [info release];
-        }
-    }	
-}
 
 
 - (void) titleAvailable:(NSNotification*)notification
@@ -1409,6 +1461,28 @@ CGContextRef MyCreateBitmapContext( int pixelsWide, int pixelsHigh )
     AppData *app = [AppData get];
     
     [app setCurrentTrackIndex_:[indexPath row]];
+    
+    //
+    // set the correct data entry when a different track is played.
+    // set the default album artwork when the track
+    // is advanced (a different album is played in a playlist play)
+    //
+    dict_ = [app.currentTracklist_ objectAtIndex:[indexPath row]];
+    
+    app.currentAlbum_      = [dict_ objectForKey:@"albumTitle"];
+    allabel_.text          = [dict_ objectForKey:@"artistName"];
+    tlabel_.text           = [dict_ objectForKey:@"trackTitle"];
+    
+    tlabel_.text  = app.currentTrackTitle_;
+    alabel_.text  = app.currentArtist_;
+    allabel_.text = app.currentAlbum_;
+
+    [self resetArtwork];
+    [self setArtwork:app.artwork_ animated:NO];
+    
+    //
+    // call the tracklistview's delegate
+    //
     [tracklistview_ didSelectRowAtIndexPath:indexPath];
 }
 

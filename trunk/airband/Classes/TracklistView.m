@@ -24,7 +24,7 @@
     UITableView *table_ = self;
     
     table_.allowsSelectionDuringEditing = NO;
-    self.backgroundColor              = [UIColor colorWithPatternImage:[UIImage imageNamed:@"tracklist_background.png"]];    
+    self.backgroundColor              = [UIColor colorWithPatternImage:[UIImage imageNamed:@"tracklist_background@2x.png"]];    
     table_.alpha                      = 1.000;
     table_.alwaysBounceHorizontal     = NO;
     table_.alwaysBounceVertical       = NO;
