@@ -69,6 +69,118 @@
 		21AD9B4E0FBA93B10036E91E /* empty_album_art.png in Resources */ = {isa = PBXBuildFile; fileRef = 21AD9B4D0FBA93B00036E91E /* empty_album_art.png */; };
 		21AD9B5D0FBA95460036E91E /* volume_knob_big.png in Resources */ = {isa = PBXBuildFile; fileRef = 21AD9B5C0FBA95460036E91E /* volume_knob_big.png */; };
 		21AD9B680FBA96E80036E91E /* volume_knob_bigger.png in Resources */ = {isa = PBXBuildFile; fileRef = 21AD9B670FBA96E80036E91E /* volume_knob_bigger.png */; };
+		21B0615E11CFA048000A0A50 /* spiky.png in Resources */ = {isa = PBXBuildFile; fileRef = 7D12339C0E74CDCA0053381A /* spiky.png */; };
+		21B0615F11CFA048000A0A50 /* gears.png in Resources */ = {isa = PBXBuildFile; fileRef = 7D12339D0E74CDCA0053381A /* gears.png */; };
+		21B0616011CFA048000A0A50 /* headphones.png in Resources */ = {isa = PBXBuildFile; fileRef = 7D12339E0E74CDCA0053381A /* headphones.png */; };
+		21B0616111CFA048000A0A50 /* playlist.png in Resources */ = {isa = PBXBuildFile; fileRef = 7D1233CF0E74D1740053381A /* playlist.png */; };
+		21B0616211CFA048000A0A50 /* airband.png in Resources */ = {isa = PBXBuildFile; fileRef = 7DF829F50E8205840032257F /* airband.png */; };
+		21B0616311CFA048000A0A50 /* cloud.png in Resources */ = {isa = PBXBuildFile; fileRef = 7D9648CD0E900F010034FC93 /* cloud.png */; };
+		21B0616411CFA048000A0A50 /* SettingsData.plist in Resources */ = {isa = PBXBuildFile; fileRef = 21F439B80F7DB5E700928851 /* SettingsData.plist */; };
+		21B0616511CFA048000A0A50 /* checked.png in Resources */ = {isa = PBXBuildFile; fileRef = 218776000F899B9C005809E3 /* checked.png */; };
+		21B0616611CFA048000A0A50 /* unchecked.png in Resources */ = {isa = PBXBuildFile; fileRef = 218776020F899BB3005809E3 /* unchecked.png */; };
+		21B0616711CFA048000A0A50 /* slider_ball.png in Resources */ = {isa = PBXBuildFile; fileRef = 21BBC8060F9BDD4600827637 /* slider_ball.png */; };
+		21B0616811CFA048000A0A50 /* yellowslide.png in Resources */ = {isa = PBXBuildFile; fileRef = 21BBC8070F9BDD4600827637 /* yellowslide.png */; };
+		21B0616911CFA048000A0A50 /* orangeslide.png in Resources */ = {isa = PBXBuildFile; fileRef = 21BBC8080F9BDD4600827637 /* orangeslide.png */; };
+		21B0616A11CFA048000A0A50 /* whiteButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 21BBC8440F9C182500827637 /* whiteButton.png */; };
+		21B0616B11CFA048000A0A50 /* leftslide.png in Resources */ = {isa = PBXBuildFile; fileRef = 21C3B1E90F9D87D90059C2CE /* leftslide.png */; };
+		21B0616C11CFA048000A0A50 /* rightslide.png in Resources */ = {isa = PBXBuildFile; fileRef = 21C3B1EA0F9D87D90059C2CE /* rightslide.png */; };
+		21B0616D11CFA048000A0A50 /* SpeakerLoud.tif in Resources */ = {isa = PBXBuildFile; fileRef = 21C3B2780F9D8E1D0059C2CE /* SpeakerLoud.tif */; };
+		21B0616E11CFA048000A0A50 /* SpeakerSoft.tif in Resources */ = {isa = PBXBuildFile; fileRef = 21C3B2790F9D8E1D0059C2CE /* SpeakerSoft.tif */; };
+		21B0616F11CFA048000A0A50 /* slider_ball_bw.png in Resources */ = {isa = PBXBuildFile; fileRef = 21C3B2FA0F9D980C0059C2CE /* slider_ball_bw.png */; };
+		21B0617011CFA048000A0A50 /* airband_logo01.png in Resources */ = {isa = PBXBuildFile; fileRef = 216256510F9F6AD500D21BFE /* airband_logo01.png */; };
+		21B0617111CFA048000A0A50 /* airband_logo02.png in Resources */ = {isa = PBXBuildFile; fileRef = 216256520F9F6AD500D21BFE /* airband_logo02.png */; };
+		21B0617211CFA048000A0A50 /* airband_splash02.png in Resources */ = {isa = PBXBuildFile; fileRef = 216256540F9F6AD500D21BFE /* airband_splash02.png */; };
+		21B0617311CFA048000A0A50 /* LogoBkgrnd.png in Resources */ = {isa = PBXBuildFile; fileRef = 217EE52D0FA6F95000C06684 /* LogoBkgrnd.png */; };
+		21B0617411CFA048000A0A50 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 210C88960FA757C7001A66B1 /* Default.png */; };
+		21B0617511CFA048000A0A50 /* icon_settings.png in Resources */ = {isa = PBXBuildFile; fileRef = 21501AE00FA82CBC00C12314 /* icon_settings.png */; };
+		21B0617611CFA048000A0A50 /* icon_playlists.png in Resources */ = {isa = PBXBuildFile; fileRef = 21501AE10FA82CBC00C12314 /* icon_playlists.png */; };
+		21B0617711CFA048000A0A50 /* icon_artists.png in Resources */ = {isa = PBXBuildFile; fileRef = 21501AE20FA82CBC00C12314 /* icon_artists.png */; };
+		21B0617811CFA048000A0A50 /* icon_airbands.png in Resources */ = {isa = PBXBuildFile; fileRef = 21501AE30FA82CBC00C12314 /* icon_airbands.png */; };
+		21B0617911CFA048000A0A50 /* greenbar.png in Resources */ = {isa = PBXBuildFile; fileRef = 21501BBF0FA8354100C12314 /* greenbar.png */; };
+		21B0617A11CFA048000A0A50 /* busySpinner.png in Resources */ = {isa = PBXBuildFile; fileRef = 215FF8BE0FB1C5D600C721D6 /* busySpinner.png */; };
+		21B0617B11CFA048000A0A50 /* gradientBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 215FF8CC0FB1C5FF00C721D6 /* gradientBackground.png */; };
+		21B0617C11CFA048000A0A50 /* rightslide_downloads.png in Resources */ = {isa = PBXBuildFile; fileRef = 215FF8D60FB1C9D000C721D6 /* rightslide_downloads.png */; };
+		21B0617D11CFA048000A0A50 /* back_arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 215FF9230FB1F19A00C721D6 /* back_arrow.png */; };
+		21B0617E11CFA048000A0A50 /* nowplaying_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 215ABE320FB2BB98009301CD /* nowplaying_background.png */; };
+		21B0617F11CFA048000A0A50 /* track_info.png in Resources */ = {isa = PBXBuildFile; fileRef = 215ABF740FB323B1009301CD /* track_info.png */; };
+		21B0618011CFA048000A0A50 /* bottom_toolbar_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 215AC0DC0FB343E8009301CD /* bottom_toolbar_background.png */; };
+		21B0618111CFA048000A0A50 /* volume_knob.png in Resources */ = {isa = PBXBuildFile; fileRef = 215AC0FE0FB34697009301CD /* volume_knob.png */; };
+		21B0618211CFA048000A0A50 /* volume_indicator.png in Resources */ = {isa = PBXBuildFile; fileRef = 215AC0FF0FB34697009301CD /* volume_indicator.png */; };
+		21B0618311CFA048000A0A50 /* volume_minus.png in Resources */ = {isa = PBXBuildFile; fileRef = 215F2BEB0FB3EA6000948567 /* volume_minus.png */; };
+		21B0618411CFA048000A0A50 /* volume_plus.png in Resources */ = {isa = PBXBuildFile; fileRef = 215F2BEC0FB3EA6000948567 /* volume_plus.png */; };
+		21B0618511CFA048000A0A50 /* slider_ball_transp.png in Resources */ = {isa = PBXBuildFile; fileRef = 215F2C710FB3FE4300948567 /* slider_ball_transp.png */; };
+		21B0618611CFA048000A0A50 /* topAndBottomRow.png in Resources */ = {isa = PBXBuildFile; fileRef = 7D1C85490FB7588D00B3B2CB /* topAndBottomRow.png */; };
+		21B0618711CFA048000A0A50 /* middleRow.png in Resources */ = {isa = PBXBuildFile; fileRef = 7D1C854E0FB758BF00B3B2CB /* middleRow.png */; };
+		21B0618811CFA048000A0A50 /* middleRowSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 7D1C854F0FB758BF00B3B2CB /* middleRowSelected.png */; };
+		21B0618911CFA048000A0A50 /* indicator.png in Resources */ = {isa = PBXBuildFile; fileRef = 7D1C855F0FB759CD00B3B2CB /* indicator.png */; };
+		21B0618A11CFA048000A0A50 /* bottomRow.png in Resources */ = {isa = PBXBuildFile; fileRef = 7D1C854C0FB758A800B3B2CB /* bottomRow.png */; };
+		21B0618B11CFA048000A0A50 /* topRowSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 7D1C854B0FB758A800B3B2CB /* topRowSelected.png */; };
+		21B0618C11CFA048000A0A50 /* music_note.png in Resources */ = {isa = PBXBuildFile; fileRef = 212FF3380FB8DC70003993F1 /* music_note.png */; };
+		21B0618D11CFA048000A0A50 /* empty_album_art.png in Resources */ = {isa = PBXBuildFile; fileRef = 21AD9B4D0FBA93B00036E91E /* empty_album_art.png */; };
+		21B0618E11CFA048000A0A50 /* volume_knob_big.png in Resources */ = {isa = PBXBuildFile; fileRef = 21AD9B5C0FBA95460036E91E /* volume_knob_big.png */; };
+		21B0618F11CFA048000A0A50 /* volume_knob_bigger.png in Resources */ = {isa = PBXBuildFile; fileRef = 21AD9B670FBA96E80036E91E /* volume_knob_bigger.png */; };
+		21B0619011CFA048000A0A50 /* rightslide_transp.png in Resources */ = {isa = PBXBuildFile; fileRef = 2136B2F20FBC034900378089 /* rightslide_transp.png */; };
+		21B0619111CFA048000A0A50 /* yellow_bar.png in Resources */ = {isa = PBXBuildFile; fileRef = 21E012670FBCA6CD006FD562 /* yellow_bar.png */; };
+		21B0619211CFA048000A0A50 /* tracklist_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 21E012690FBCA6D6006FD562 /* tracklist_background.png */; };
+		21B0619311CFA048000A0A50 /* currently_playing_arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 21FC356F0FBD131300F12B49 /* currently_playing_arrow.png */; };
+		21B0619411CFA048000A0A50 /* track_info_withbg.png in Resources */ = {isa = PBXBuildFile; fileRef = 2190DFCE0FC5375F003D0B96 /* track_info_withbg.png */; };
+		21B0619611CFA048000A0A50 /* icon_albums.png in Resources */ = {isa = PBXBuildFile; fileRef = 213AD7450FCBE4D50024081C /* icon_albums.png */; };
+		21B0619711CFA048000A0A50 /* loginbutton_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 213AD9340FCBEEFF0024081C /* loginbutton_bg.png */; };
+		21B0619811CFA048000A0A50 /* music_note_gray.png in Resources */ = {isa = PBXBuildFile; fileRef = 2179A9E80FCF776200EF78E7 /* music_note_gray.png */; };
+		21B0619911CFA048000A0A50 /* AppIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 216B4E060FD1A79400D42BB8 /* AppIcon.png */; };
+		21B0619A11CFA048000A0A50 /* Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7D8D71920E7F66ED006D0DE5 /* Entitlements.plist */; };
+		21B0619B11CFA048000A0A50 /* selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 211EE00211743CA200F69A23 /* selected.png */; };
+		21B0619C11CFA048000A0A50 /* unselected.png in Resources */ = {isa = PBXBuildFile; fileRef = 211EE00311743CA200F69A23 /* unselected.png */; };
+		21B0619D11CFA048000A0A50 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 21B91821117E383500314DC9 /* Settings.bundle */; };
+		21B0619E11CFA048000A0A50 /* airband_splash02@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2184C57011BEF94900138258 /* airband_splash02@2x.png */; };
+		21B0619F11CFA048000A0A50 /* LogoBkgrnd@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2184C5F611BEFD8F00138258 /* LogoBkgrnd@2x.png */; };
+		21B061A011CFA048000A0A50 /* tracklist_background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2184C5F811BEFDE800138258 /* tracklist_background@2x.png */; };
+		21B061A111CFA048000A0A50 /* greenbar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2184C61911BEFED500138258 /* greenbar@2x.png */; };
+		21B061A311CFA048000A0A50 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
+		21B061A411CFA048000A0A50 /* airbandAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* airbandAppDelegate.m */; };
+		21B061A511CFA048000A0A50 /* ArtistViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D8A3DC00E664D6900110D42 /* ArtistViewController.m */; };
+		21B061A611CFA048000A0A50 /* NowPlayingController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D8A3DC30E664D7300110D42 /* NowPlayingController.m */; };
+		21B061A711CFA048000A0A50 /* SettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D8A3DC90E664D9F00110D42 /* SettingsController.m */; };
+		21B061A811CFA048000A0A50 /* PlaylistController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D8A3DCC0E664DE700110D42 /* PlaylistController.m */; };
+		21B061A911CFA048000A0A50 /* audiohelp.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D8D86040E67B1C300CB845D /* audiohelp.m */; };
+		21B061AA11CFA048000A0A50 /* xmlhelp.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D8D86060E67B1C300CB845D /* xmlhelp.m */; };
+		21B061AB11CFA048000A0A50 /* songview.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D8D860A0E67B20D00CB845D /* songview.m */; };
+		21B061AC11CFA048000A0A50 /* appdata.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D8DF8560E6A405800EA4BB8 /* appdata.m */; };
+		21B061AD11CFA048000A0A50 /* CloudController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4791360E6B9195005783F7 /* CloudController.m */; };
+		21B061AE11CFA048000A0A50 /* cloudview.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D47913E0E6B922A005783F7 /* cloudview.m */; };
+		21B061AF11CFA048000A0A50 /* PlaylistTracksController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D1233E10E74D5F80053381A /* PlaylistTracksController.m */; };
+		21B061B011CFA048000A0A50 /* AllSettingsTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 21D329B50F7BFA0A00E0C6B0 /* AllSettingsTableCell.m */; };
+		21B061B111CFA048000A0A50 /* lastfmappdata.m in Sources */ = {isa = PBXBuildFile; fileRef = 21A7852B0F7E84FC0053E9AD /* lastfmappdata.m */; };
+		21B061B211CFA048000A0A50 /* AllSettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 210E10170F8B165B00BBA95A /* AllSettingsController.m */; };
+		21B061B311CFA048000A0A50 /* TracklistView.m in Sources */ = {isa = PBXBuildFile; fileRef = 21E011D30FBC96FE006FD562 /* TracklistView.m */; };
+		21B061B411CFA048000A0A50 /* TrackListTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 21E011D50FBC96FE006FD562 /* TrackListTableCell.m */; };
+		21B061B511CFA048000A0A50 /* AlbumlistController.m in Sources */ = {isa = PBXBuildFile; fileRef = 21DBAEFF0FCA431500399A50 /* AlbumlistController.m */; };
+		21B061B611CFA048000A0A50 /* LoadingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 21A66D910FCBC9EB00B26158 /* LoadingView.m */; };
+		21B061B711CFA048000A0A50 /* imgcache.m in Sources */ = {isa = PBXBuildFile; fileRef = 213AD74B0FCBE55B0024081C /* imgcache.m */; };
+		21B061B811CFA048000A0A50 /* AsyncImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2179A83B0FCF3FEE00EF78E7 /* AsyncImageView.m */; };
+		21B061B911CFA048000A0A50 /* StartPageTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 211EE00011743C3F00F69A23 /* StartPageTableViewController.m */; };
+		21B061BA11CFA048000A0A50 /* SimpleIO.m in Sources */ = {isa = PBXBuildFile; fileRef = 211B25BB118E193900C0D8A5 /* SimpleIO.m */; };
+		21B061BB11CFA048000A0A50 /* DataCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 21F36DCD118E653900C7851F /* DataCache.m */; };
+		21B061BC11CFA048000A0A50 /* CoverFlowStyleTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2187E04E11A0FE3600AFAAEA /* CoverFlowStyleTableViewController.m */; };
+		21B061BD11CFA048000A0A50 /* AFItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2117629411C00FC40042F832 /* AFItemView.m */; };
+		21B061BE11CFA048000A0A50 /* AFOpenFlowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2117629711C00FC40042F832 /* AFOpenFlowView.m */; };
+		21B061BF11CFA048000A0A50 /* AFUIImageReflection.m in Sources */ = {isa = PBXBuildFile; fileRef = 2117629911C00FC40042F832 /* AFUIImageReflection.m */; };
+		21B061C011CFA048000A0A50 /* AlbumInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 211762A811C011080042F832 /* AlbumInfo.m */; };
+		21B061C111CFA048000A0A50 /* UIImageExtras.m in Sources */ = {isa = PBXBuildFile; fileRef = 211764BB11C057A50042F832 /* UIImageExtras.m */; };
+		21B061C211CFA048000A0A50 /* TrackInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 21B94F6011C47680004E4DD9 /* TrackInfoView.m */; };
+		21B061C411CFA048000A0A50 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 21836A37118F5AE5005F6584 /* OpenGLES.framework */; };
+		21B061C511CFA048000A0A50 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 21836A3B118F5B07005F6584 /* CoreGraphics.framework */; };
+		21B061C611CFA048000A0A50 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 21836A3D118F5B07005F6584 /* Foundation.framework */; };
+		21B061C711CFA048000A0A50 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 21836A3F118F5B07005F6584 /* QuartzCore.framework */; };
+		21B061C811CFA048000A0A50 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 21836A41118F5B07005F6584 /* UIKit.framework */; };
+		21B061C911CFA048000A0A50 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 21836B0C118F5B2A005F6584 /* CoreAudio.framework */; };
+		21B061CA11CFA048000A0A50 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 21836B26118F5B68005F6584 /* AudioToolbox.framework */; };
+		21B061D511CFA049000A0A50 /* CloudView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 21B061D311CFA049000A0A50 /* CloudView.xib */; };
+		21B061D611CFA049000A0A50 /* Settings.xib in Resources */ = {isa = PBXBuildFile; fileRef = 21B061D411CFA049000A0A50 /* Settings.xib */; };
+		21B0622111CFE9BC000A0A50 /* Settings-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 21B0622011CFE9BC000A0A50 /* Settings-iPad.xib */; };
+		21B0622311CFE9DD000A0A50 /* Settings-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 21B0622211CFE9DD000A0A50 /* Settings-iPad.xib */; };
+		21B0623911CFEC0C000A0A50 /* airband_splash02@2x-iPad.png in Resources */ = {isa = PBXBuildFile; fileRef = 21B0623811CFEC0C000A0A50 /* airband_splash02@2x-iPad.png */; };
+		21B0623E11CFECC6000A0A50 /* greenbar@2x-iPad.png in Resources */ = {isa = PBXBuildFile; fileRef = 21B0623D11CFECC6000A0A50 /* greenbar@2x-iPad.png */; };
 		21B91822117E383500314DC9 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 21B91821117E383500314DC9 /* Settings.bundle */; };
 		21B94F6211C47680004E4DD9 /* TrackInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 21B94F6011C47680004E4DD9 /* TrackInfoView.m */; };
 		21BBC8090F9BDD4600827637 /* slider_ball.png in Resources */ = {isa = PBXBuildFile; fileRef = 21BBC8060F9BDD4600827637 /* slider_ball.png */; };
@@ -196,6 +308,13 @@
 		21AD9B4D0FBA93B00036E91E /* empty_album_art.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = empty_album_art.png; sourceTree = "<group>"; };
 		21AD9B5C0FBA95460036E91E /* volume_knob_big.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = volume_knob_big.png; sourceTree = "<group>"; };
 		21AD9B670FBA96E80036E91E /* volume_knob_bigger.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = volume_knob_bigger.png; sourceTree = "<group>"; };
+		21B061D011CFA048000A0A50 /* airband-Upgraded.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "airband-Upgraded.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		21B061D311CFA049000A0A50 /* CloudView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = CloudView.xib; path = "Resources-iPad/CloudView.xib"; sourceTree = "<group>"; };
+		21B061D411CFA049000A0A50 /* Settings.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Settings.xib; path = "Resources-iPad/Settings.xib"; sourceTree = "<group>"; };
+		21B0622011CFE9BC000A0A50 /* Settings-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "Settings-iPad.xib"; sourceTree = "<group>"; };
+		21B0622211CFE9DD000A0A50 /* Settings-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "Settings-iPad.xib"; sourceTree = "<group>"; };
+		21B0623811CFEC0C000A0A50 /* airband_splash02@2x-iPad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "airband_splash02@2x-iPad.png"; sourceTree = "<group>"; };
+		21B0623D11CFECC6000A0A50 /* greenbar@2x-iPad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "greenbar@2x-iPad.png"; sourceTree = "<group>"; };
 		21B8AF7A0F8F3567006399A6 /* NowPlayingArranged.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NowPlayingArranged.xib; sourceTree = "<group>"; };
 		21B91821117E383500314DC9 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		21B94F5F11C47680004E4DD9 /* TrackInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrackInfoView.h; sourceTree = "<group>"; };
@@ -286,6 +405,20 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		21B061C311CFA048000A0A50 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				21B061C411CFA048000A0A50 /* OpenGLES.framework in Frameworks */,
+				21B061C511CFA048000A0A50 /* CoreGraphics.framework in Frameworks */,
+				21B061C611CFA048000A0A50 /* Foundation.framework in Frameworks */,
+				21B061C711CFA048000A0A50 /* QuartzCore.framework in Frameworks */,
+				21B061C811CFA048000A0A50 /* UIKit.framework in Frameworks */,
+				21B061C911CFA048000A0A50 /* CoreAudio.framework in Frameworks */,
+				21B061CA11CFA048000A0A50 /* AudioToolbox.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -302,6 +435,7 @@
 			isa = PBXGroup;
 			children = (
 				1D6058910D05DD3D006BFB54 /* airband.app */,
+				21B061D011CFA048000A0A50 /* airband-Upgraded.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -323,9 +457,20 @@
 			path = Classes/OpenFlow;
 			sourceTree = "<group>";
 		};
+		21B061D211CFA048000A0A50 /* Resources-iPad */ = {
+			isa = PBXGroup;
+			children = (
+				21B061D311CFA049000A0A50 /* CloudView.xib */,
+				21B061D411CFA049000A0A50 /* Settings.xib */,
+			);
+			name = "Resources-iPad";
+			sourceTree = "<group>";
+		};
 		21BBC8480F9C183500827637 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				21B0623D11CFECC6000A0A50 /* greenbar@2x-iPad.png */,
+				21B0623811CFEC0C000A0A50 /* airband_splash02@2x-iPad.png */,
 				2184C61911BEFED500138258 /* greenbar@2x.png */,
 				2184C57011BEF94900138258 /* airband_splash02@2x.png */,
 				211EE00211743CA200F69A23 /* selected.png */,
@@ -403,10 +548,12 @@
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				21BBC8480F9C183500827637 /* Images */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
+				21B061D211CFA048000A0A50 /* Resources-iPad */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 				7D8D71920E7F66ED006D0DE5 /* Entitlements.plist */,
 				21B91821117E383500314DC9 /* Settings.bundle */,
+				21B0622011CFE9BC000A0A50 /* Settings-iPad.xib */,
 			);
 			name = airband;
 			sourceTree = "<group>";
@@ -425,6 +572,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				21B0622211CFE9DD000A0A50 /* Settings-iPad.xib */,
 				21B8AF7A0F8F3567006399A6 /* NowPlayingArranged.xib */,
 				21F439B80F7DB5E700928851 /* SettingsData.plist */,
 				7D8A3E570E665AD500110D42 /* ArtistsView.xib */,
@@ -540,6 +688,23 @@
 			productReference = 1D6058910D05DD3D006BFB54 /* airband.app */;
 			productType = "com.apple.product-type.application";
 		};
+		21B0615B11CFA048000A0A50 /* airband-iPad */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 21B061CB11CFA048000A0A50 /* Build configuration list for PBXNativeTarget "airband-iPad" */;
+			buildPhases = (
+				21B0615C11CFA048000A0A50 /* Resources */,
+				21B061A211CFA048000A0A50 /* Sources */,
+				21B061C311CFA048000A0A50 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "airband-iPad";
+			productName = airband;
+			productReference = 21B061D011CFA048000A0A50 /* airband-Upgraded.app */;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -553,6 +718,7 @@
 			projectRoot = "";
 			targets = (
 				1D6058900D05DD3D006BFB54 /* airband */,
+				21B0615B11CFA048000A0A50 /* airband-iPad */,
 			);
 		};
 /* End PBXProject section */
@@ -634,6 +800,86 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		21B0615C11CFA048000A0A50 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				21B0615E11CFA048000A0A50 /* spiky.png in Resources */,
+				21B0615F11CFA048000A0A50 /* gears.png in Resources */,
+				21B0616011CFA048000A0A50 /* headphones.png in Resources */,
+				21B0616111CFA048000A0A50 /* playlist.png in Resources */,
+				21B0616211CFA048000A0A50 /* airband.png in Resources */,
+				21B0616311CFA048000A0A50 /* cloud.png in Resources */,
+				21B0616411CFA048000A0A50 /* SettingsData.plist in Resources */,
+				21B0616511CFA048000A0A50 /* checked.png in Resources */,
+				21B0616611CFA048000A0A50 /* unchecked.png in Resources */,
+				21B0616711CFA048000A0A50 /* slider_ball.png in Resources */,
+				21B0616811CFA048000A0A50 /* yellowslide.png in Resources */,
+				21B0616911CFA048000A0A50 /* orangeslide.png in Resources */,
+				21B0616A11CFA048000A0A50 /* whiteButton.png in Resources */,
+				21B0616B11CFA048000A0A50 /* leftslide.png in Resources */,
+				21B0616C11CFA048000A0A50 /* rightslide.png in Resources */,
+				21B0616D11CFA048000A0A50 /* SpeakerLoud.tif in Resources */,
+				21B0616E11CFA048000A0A50 /* SpeakerSoft.tif in Resources */,
+				21B0616F11CFA048000A0A50 /* slider_ball_bw.png in Resources */,
+				21B0617011CFA048000A0A50 /* airband_logo01.png in Resources */,
+				21B0617111CFA048000A0A50 /* airband_logo02.png in Resources */,
+				21B0617211CFA048000A0A50 /* airband_splash02.png in Resources */,
+				21B0617311CFA048000A0A50 /* LogoBkgrnd.png in Resources */,
+				21B0617411CFA048000A0A50 /* Default.png in Resources */,
+				21B0617511CFA048000A0A50 /* icon_settings.png in Resources */,
+				21B0617611CFA048000A0A50 /* icon_playlists.png in Resources */,
+				21B0617711CFA048000A0A50 /* icon_artists.png in Resources */,
+				21B0617811CFA048000A0A50 /* icon_airbands.png in Resources */,
+				21B0617911CFA048000A0A50 /* greenbar.png in Resources */,
+				21B0617A11CFA048000A0A50 /* busySpinner.png in Resources */,
+				21B0617B11CFA048000A0A50 /* gradientBackground.png in Resources */,
+				21B0617C11CFA048000A0A50 /* rightslide_downloads.png in Resources */,
+				21B0617D11CFA048000A0A50 /* back_arrow.png in Resources */,
+				21B0617E11CFA048000A0A50 /* nowplaying_background.png in Resources */,
+				21B0617F11CFA048000A0A50 /* track_info.png in Resources */,
+				21B0618011CFA048000A0A50 /* bottom_toolbar_background.png in Resources */,
+				21B0618111CFA048000A0A50 /* volume_knob.png in Resources */,
+				21B0618211CFA048000A0A50 /* volume_indicator.png in Resources */,
+				21B0618311CFA048000A0A50 /* volume_minus.png in Resources */,
+				21B0618411CFA048000A0A50 /* volume_plus.png in Resources */,
+				21B0618511CFA048000A0A50 /* slider_ball_transp.png in Resources */,
+				21B0618611CFA048000A0A50 /* topAndBottomRow.png in Resources */,
+				21B0618711CFA048000A0A50 /* middleRow.png in Resources */,
+				21B0618811CFA048000A0A50 /* middleRowSelected.png in Resources */,
+				21B0618911CFA048000A0A50 /* indicator.png in Resources */,
+				21B0618A11CFA048000A0A50 /* bottomRow.png in Resources */,
+				21B0618B11CFA048000A0A50 /* topRowSelected.png in Resources */,
+				21B0618C11CFA048000A0A50 /* music_note.png in Resources */,
+				21B0618D11CFA048000A0A50 /* empty_album_art.png in Resources */,
+				21B0618E11CFA048000A0A50 /* volume_knob_big.png in Resources */,
+				21B0618F11CFA048000A0A50 /* volume_knob_bigger.png in Resources */,
+				21B0619011CFA048000A0A50 /* rightslide_transp.png in Resources */,
+				21B0619111CFA048000A0A50 /* yellow_bar.png in Resources */,
+				21B0619211CFA048000A0A50 /* tracklist_background.png in Resources */,
+				21B0619311CFA048000A0A50 /* currently_playing_arrow.png in Resources */,
+				21B0619411CFA048000A0A50 /* track_info_withbg.png in Resources */,
+				21B0619611CFA048000A0A50 /* icon_albums.png in Resources */,
+				21B0619711CFA048000A0A50 /* loginbutton_bg.png in Resources */,
+				21B0619811CFA048000A0A50 /* music_note_gray.png in Resources */,
+				21B0619911CFA048000A0A50 /* AppIcon.png in Resources */,
+				21B0619A11CFA048000A0A50 /* Entitlements.plist in Resources */,
+				21B0619B11CFA048000A0A50 /* selected.png in Resources */,
+				21B0619C11CFA048000A0A50 /* unselected.png in Resources */,
+				21B0619D11CFA048000A0A50 /* Settings.bundle in Resources */,
+				21B0619E11CFA048000A0A50 /* airband_splash02@2x.png in Resources */,
+				21B0619F11CFA048000A0A50 /* LogoBkgrnd@2x.png in Resources */,
+				21B061A011CFA048000A0A50 /* tracklist_background@2x.png in Resources */,
+				21B061A111CFA048000A0A50 /* greenbar@2x.png in Resources */,
+				21B061D511CFA049000A0A50 /* CloudView.xib in Resources */,
+				21B061D611CFA049000A0A50 /* Settings.xib in Resources */,
+				21B0622111CFE9BC000A0A50 /* Settings-iPad.xib in Resources */,
+				21B0622311CFE9DD000A0A50 /* Settings-iPad.xib in Resources */,
+				21B0623911CFEC0C000A0A50 /* airband_splash02@2x-iPad.png in Resources */,
+				21B0623E11CFECC6000A0A50 /* greenbar@2x-iPad.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -676,6 +922,45 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		21B061A211CFA048000A0A50 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				21B061A311CFA048000A0A50 /* main.m in Sources */,
+				21B061A411CFA048000A0A50 /* airbandAppDelegate.m in Sources */,
+				21B061A511CFA048000A0A50 /* ArtistViewController.m in Sources */,
+				21B061A611CFA048000A0A50 /* NowPlayingController.m in Sources */,
+				21B061A711CFA048000A0A50 /* SettingsController.m in Sources */,
+				21B061A811CFA048000A0A50 /* PlaylistController.m in Sources */,
+				21B061A911CFA048000A0A50 /* audiohelp.m in Sources */,
+				21B061AA11CFA048000A0A50 /* xmlhelp.m in Sources */,
+				21B061AB11CFA048000A0A50 /* songview.m in Sources */,
+				21B061AC11CFA048000A0A50 /* appdata.m in Sources */,
+				21B061AD11CFA048000A0A50 /* CloudController.m in Sources */,
+				21B061AE11CFA048000A0A50 /* cloudview.m in Sources */,
+				21B061AF11CFA048000A0A50 /* PlaylistTracksController.m in Sources */,
+				21B061B011CFA048000A0A50 /* AllSettingsTableCell.m in Sources */,
+				21B061B111CFA048000A0A50 /* lastfmappdata.m in Sources */,
+				21B061B211CFA048000A0A50 /* AllSettingsController.m in Sources */,
+				21B061B311CFA048000A0A50 /* TracklistView.m in Sources */,
+				21B061B411CFA048000A0A50 /* TrackListTableCell.m in Sources */,
+				21B061B511CFA048000A0A50 /* AlbumlistController.m in Sources */,
+				21B061B611CFA048000A0A50 /* LoadingView.m in Sources */,
+				21B061B711CFA048000A0A50 /* imgcache.m in Sources */,
+				21B061B811CFA048000A0A50 /* AsyncImageView.m in Sources */,
+				21B061B911CFA048000A0A50 /* StartPageTableViewController.m in Sources */,
+				21B061BA11CFA048000A0A50 /* SimpleIO.m in Sources */,
+				21B061BB11CFA048000A0A50 /* DataCache.m in Sources */,
+				21B061BC11CFA048000A0A50 /* CoverFlowStyleTableViewController.m in Sources */,
+				21B061BD11CFA048000A0A50 /* AFItemView.m in Sources */,
+				21B061BE11CFA048000A0A50 /* AFOpenFlowView.m in Sources */,
+				21B061BF11CFA048000A0A50 /* AFUIImageReflection.m in Sources */,
+				21B061C011CFA048000A0A50 /* AlbumInfo.m in Sources */,
+				21B061C111CFA048000A0A50 /* UIImageExtras.m in Sources */,
+				21B061C211CFA048000A0A50 /* TrackInfoView.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
@@ -694,6 +979,7 @@
 				GCC_PREFIX_HEADER = airband_Prefix.pch;
 				INFOPLIST_FILE = Info.plist;
 				PRODUCT_NAME = airband;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -711,6 +997,7 @@
 				GCC_PREFIX_HEADER = airband_Prefix.pch;
 				INFOPLIST_FILE = Info.plist;
 				PRODUCT_NAME = airband;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -722,7 +1009,7 @@
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 2.2.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
 				PREBINDING = NO;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos4.0;
@@ -733,7 +1020,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -744,8 +1031,97 @@
 				INFOPLIST_FILE = Info.plist;
 				PRODUCT_NAME = airband;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = "App Store Distribution";
+		};
+		21B061CC11CFA048000A0A50 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_UNIVERSAL_IPHONE_OS)";
+				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\\\"$(SRCROOT)\\\"",
+				);
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = airband_Prefix.pch;
+				INFOPLIST_FILE = Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 3.2;
+				PRODUCT_NAME = "airband-Upgraded";
+				SDKROOT = iphoneos3.2;
+				TARGETED_DEVICE_FAMILY = 2;
+			};
+			name = Debug;
+		};
+		21B061CD11CFA048000A0A50 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_UNIVERSAL_IPHONE_OS)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Ram Sampath";
+				COPY_PHASE_STRIP = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\\\"$(SRCROOT)\\\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = airband_Prefix.pch;
+				INFOPLIST_FILE = Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 3.2;
+				PRODUCT_NAME = "airband-Upgraded";
+				SDKROOT = iphoneos3.2;
+				TARGETED_DEVICE_FAMILY = 2;
+			};
+			name = Release;
+		};
+		21B061CE11CFA048000A0A50 /* App Store Distribution */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_UNIVERSAL_IPHONE_OS)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				COPY_PHASE_STRIP = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\\\"$(SRCROOT)\\\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = airband_Prefix.pch;
+				INFOPLIST_FILE = Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 3.2;
+				PRODUCT_NAME = "airband-Upgraded";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				SDKROOT = iphoneos3.2;
+				TARGETED_DEVICE_FAMILY = 2;
+			};
+			name = "App Store Distribution";
+		};
+		21B061CF11CFA048000A0A50 /* Ad Hoc Distribution */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_UNIVERSAL_IPHONE_OS)";
+				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos2.2.1]" = "iPhone Distribution: Centroid PIC";
+				COPY_PHASE_STRIP = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\\\"$(SRCROOT)\\\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = airband_Prefix.pch;
+				INFOPLIST_FILE = Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 3.2;
+				PRODUCT_NAME = "airband-Upgraded";
+				"PROVISIONING_PROFILE[sdk=iphoneos2.2.1]" = "C2143047-AB3F-446A-A832-68CFC34713C4";
+				SDKROOT = iphoneos3.2;
+				TARGETED_DEVICE_FAMILY = 2;
+			};
+			name = "Ad Hoc Distribution";
 		};
 		21D8D5AE0FA01BB400A4F889 /* Ad Hoc Distribution */ = {
 			isa = XCBuildConfiguration;
@@ -779,6 +1155,7 @@
 				INFOPLIST_FILE = Info.plist;
 				PRODUCT_NAME = airband;
 				"PROVISIONING_PROFILE[sdk=iphoneos2.2.1]" = "C2143047-AB3F-446A-A832-68CFC34713C4";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = "Ad Hoc Distribution";
 		};
@@ -820,6 +1197,17 @@
 				1D6058950D05DD3E006BFB54 /* Release */,
 				218D07AA0FD99C3200390E41 /* App Store Distribution */,
 				21D8D5AF0FA01BB400A4F889 /* Ad Hoc Distribution */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		21B061CB11CFA048000A0A50 /* Build configuration list for PBXNativeTarget "airband-iPad" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				21B061CC11CFA048000A0A50 /* Debug */,
+				21B061CD11CFA048000A0A50 /* Release */,
+				21B061CE11CFA048000A0A50 /* App Store Distribution */,
+				21B061CF11CFA048000A0A50 /* Ad Hoc Distribution */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
