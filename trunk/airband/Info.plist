@@ -11,7 +11,7 @@
 	<key>CFBundleIconFile</key>
 	<string>AppIcon.png</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.centroidpic.AirBand</string>
+	<string>com.centroidpic.Airband</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>

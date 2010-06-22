@@ -413,7 +413,15 @@
 
     //table_.sectionHeaderHeight = 20.0;
     //table_.rowHeight = 40.0;
-    CGRect titleRect = CGRectMake( 0, 20, 300, 40 );
+    CGRect titleRect;
+    
+    if( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
+        titleRect = CGRectMake( 0, 40, 600, 40 );
+    }
+    else {
+        titleRect = CGRectMake( 0, 20, 300, 40 );
+    }
+    
     UILabel *tableTitle = [[UILabel alloc] initWithFrame:titleRect];
 	
     tableTitle.textColor       = [UIColor whiteColor];

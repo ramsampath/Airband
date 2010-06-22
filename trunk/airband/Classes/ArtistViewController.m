@@ -322,8 +322,12 @@
 	UINavigationBar *bar          = [self navigationController].navigationBar;
 	bar.barStyle                  = UIBarStyleBlackOpaque;
     self.navigationItem.titleView = artistOrgControl_;	
-    sectionBGImage_               = [UIImage imageNamed:@"greenbar.png"];
-    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        sectionBGImage_               = [UIImage imageNamed:@"greenbar@2x-iPad.png"];
+    }
+    else {
+        sectionBGImage_               = [UIImage imageNamed:@"greenbar.png"];
+    }
     //
     // if artistlist is not yet avaliable request the artist list
     //

@@ -29,6 +29,7 @@
 {
     [super loadView];
     
+    printf("LoadView\n");
     UIButton *loginButton_ = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     loginButton_.frame = CGRectMake(120.0, 227.0, 80.0, 22.0);
     loginButton_.adjustsImageWhenDisabled = YES;
@@ -139,7 +140,13 @@
     passwordText_.text = [app password_];
     
     
-    UIView *mainview               = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 480.0)];
+    UIView *mainview;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        mainview = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 768, 1024.0)];
+    }
+    else {
+        mainview = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 480.0)];
+    }
 	mainview.alpha                 = 1.000;
 	mainview.autoresizingMask      = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
 	mainview.backgroundColor       = [UIColor colorWithRed:0.549 green:0.549 blue:0.549 alpha:1.000];
@@ -173,8 +180,14 @@
     [mainButton_ setTitleColor:[UIColor colorWithRed:1.000 green:1.000 blue:1.000 alpha:1.000] forState:UIControlStateNormal];
     [mainButton_ setTitleColor:[UIColor colorWithWhite:1.000 alpha:1.000] forState:UIControlStateHighlighted];
     [mainButton_ setTitleShadowColor:[UIColor colorWithWhite:0.500 alpha:1.000] forState:UIControlStateNormal];
-    mainButton_.backgroundColor       = [UIColor colorWithPatternImage:[UIImage imageNamed:@"airband_splash02@2x.png"]];
+    printf("heee %d\n", UI_USER_INTERFACE_IDIOM());
 
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        mainButton_.backgroundColor       = [UIColor colorWithPatternImage:[UIImage imageNamed:@"airband_splash02@2x-iPad.png"]];
+    }
+    else {
+        mainButton_.backgroundColor       = [UIColor colorWithPatternImage:[UIImage imageNamed:@"airband_splash02@2x.png"]];
+    }
     UIButton *createButton_ = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     createButton_.frame = CGRectMake(120.0, 270.0, 80.0, 22.0);
     createButton_.adjustsImageWhenDisabled = YES;

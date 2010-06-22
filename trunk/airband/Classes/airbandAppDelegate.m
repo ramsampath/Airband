@@ -46,7 +46,13 @@
 	// intro screen
 	//
 	
-	AllSettingsController *splash = [[AllSettingsController alloc] initWithNibName:@"Settings" bundle:nil];
+	AllSettingsController *splash;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        splash = [[AllSettingsController alloc] initWithNibName:@"Settings-iPad" bundle:nil];
+    }
+    else {
+        splash = [[AllSettingsController alloc] initWithNibName:@"Settings" bundle:nil];
+    }
     //AllSettingsController *splash = [AllSettingsController alloc];
 	[window addSubview:splash.view];	
 	[window makeKeyAndVisible];

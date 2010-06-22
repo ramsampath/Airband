@@ -434,8 +434,12 @@
     loadingView_ = [[LoadingView loadingViewInView:progressView_ loadingText:@"Loading Albums..."] retain];
 	
     self.navigationItem.titleView = albumOrgControl_;
-    
-    sectionBGImage_      = [UIImage imageNamed:@"greenbar.png"];
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        sectionBGImage_               = [UIImage imageNamed:@"greenbar@2x-iPad.png"];
+    }
+    else {
+        sectionBGImage_               = [UIImage imageNamed:@"greenbar.png"];
+    }
 }
 
 
