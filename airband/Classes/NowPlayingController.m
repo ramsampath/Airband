@@ -1601,6 +1601,7 @@ static void myProviderReleaseData (void *info,const void *data,size_t size)
         if( i ) {
             if( i.index == index ) {
                 NSString *req = i.albumIdReq;
+                [self resetArtwork];
                 [app getTrackListAsync:req];
             }
         }
